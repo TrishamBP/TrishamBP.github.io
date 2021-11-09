@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<!--
+	Escape Velocity by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>3D Convection in an Electronic Box</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="no-sidebar is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<section id="header" class="wrapper">
+
+					<!-- Logo -->
+						<div id="logo">
+							<h1><a href="index.html">3D Convection in an Electronic Box.</a></h1>
+							
+						</div>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li><a href="index.html">Home</a></li>
+								
+									
+							</ul>
+						</nav>
+
+				</section>
+
+			<!-- Main -->
+				<div id="main" class="wrapper style2">
+					<div class="title">Report</div>
+					<div class="container">
+
+						<!-- Content -->
+							<div id="content">
+								<article class="box post">
+									<header class="style1">
+										<h2>3D Convection in an Electronic Box.</p>
+									</header>
+									<a href="#" class="image featured">
+										<img src="images/pic01.jpg" alt="" />
+									</a>
+									<p>Problem Statement:
+
+										Currently, a design for an electronics box calls for 11 electronic boards and a battery to be enclosed. Each electronic component will generate 2.1 watts of heat. The current design uses two fans to blow air through the box to cool the electronics. The fans blow air at a rate of 35 cubic feet per minute. The box is expected to operate in an environment where the temperature reaches a maximum of 114 degrees Fahrenheit. The main constraint on the design is that the electronic components need to be maintained below 200 degrees Fahrenheit, otherwise the components could be damaged.
+										The box itself is ABS plastic. 
+										<h3><a href="#">Properties of materials.</a></h3>
+									<a href="#" class="image featured"><img src="images/Picture5.png" alt="" /></a>
+										 										</p>
+									<p>Methodology/Steps:
+										<p>A.Pre-Analysis and Setup:Open ANSYS Workbench and load Fluid Flow or ANSYS-Fluent.</p>
+										
+										<p>B.Geometry:The geometry for this box was designed in Solidworks and consists of 11 electronic boards, 2 inlet and outlet holes, 16 connection holes and 6 side wall panels. Import the geometry in workbench.The next step is to create a flow geometry. The air is going to flow through the inside of the box; however, we need a geometry for this empty space for the software to be able to calculate the solution. We accomplish this by creating Caps, then using those caps to create Fill. 
+											Next, we need to create fill geometry. Go to Tools > Fill. Name the fill, Flow Geometry. Also, change the Extraction Type. Select Extraction Type > By Caps.
+											Select all the bodies and form a new part, then connect the geometry to the mesh.
+											</p>
+											
+										</p>
+									<p>C.Mesh:
+										Created named selection by selecting the outlet and inlet holes and name them outlet and inlet.
+										Selected the surface behind the front surface, electronic boards and the battery, then named them as Heat Generation. (As they are responsible for heat generation).
+										Generated the mesh using default element size.
+										</p>
+									<p>D.Physics:
+										Double click on setup to launch ANSYS-Fluent.
+										The first thing that needs to be done is to tell Fluent to solve for temperature. To do this, we need to turn on the Energy Equation.
+										Create materials air copper and ABS with the values given in the table.
+										In the Boundary Conditions window, select Inlet. Check to make sure that the Type has correctly defaulted to Velocity-Inlet and press Edit. In the Momentum Tab, we will specify the velocity of the incoming air. Knowing that the inlet feed rate is 35 ft3/min and that the diameter of the holes is 4.72 inches, we can solve for the inlet speed. 
+										The ambient air is 114 degrees Fahrenheit. Fluent only accepts temperatures in Kelvins. 114 degrees Fahrenheit = 318.706 Kelvins.
+										The Backflow Total Temperature to 318.76 Kelvin.
+										In the Boundary Conditions menu, select wall-solid and press Edit. Select the Thermal tab, and change the Material to ABS.
+										Under Zones, select Heat Generation and press Edit. Change the material name to copper.
+										Enter the heat generation as 40682 w/m3.
+										In the Outline, select Reference Values. Underneath Compute From, select Inlet.
+										</p>
+										<p>Conclusion: From the temperature profile of the electronic board from the temperature of the electronic board, it can be concluded that the maximum temperature of the electronic components is 336K, which is lower than the maximum limit of 200F (366.483K), so it can be concluded that the electronic components will not be damaged and that the air circulating fan system works properly for the electronic board box.</p>
+								</article>
+							</div>
+
+					</div>
+				</div>
+
+				
+						<div class="row aln-center">
+							<div class="col-9 col-18-large">
+								<section class="highlight">
+									<h3><a href="#">3D Model of the electronic box.</a></h3>
+									<a href="#" class="image featured"><img src="images/Picture1.png" alt="" /></a>
+									<h3><a href="#">Velocity contours of air flow.</a></h3>
+									<a href="#" class="image featured"><img src="images/Picture2.png" alt="" /></a>
+									<h3><a href="#">Temperature profile of electronic boards.</a></h3>
+									<a href="#" class="image featured"><img src="images/Picture3.png" alt="" /></a>
+									<h3><a href="#">Plot of residuals.</a></h3>
+									<a href="#" class="image featured"><img src="images/Picture4.png" alt="" /></a>
+							
+			
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

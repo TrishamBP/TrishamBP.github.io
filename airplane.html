@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<!--
+	Escape Velocity by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Airplane Wing</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="no-sidebar is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<section id="header" class="wrapper">
+
+					<!-- Logo -->
+						<div id="logo">
+							<h1><a href="index.html">Modelling external compressible flow on an airplane wing.</a></h1>
+							
+						</div>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li><a href="index.html">Home</a></li>
+								
+							</ul>
+						</nav>
+
+				</section>
+
+			<!-- Main -->
+				<div id="main" class="wrapper style2">
+					<div class="title">Report</div>
+					<div class="container">
+
+						<!-- Content -->
+							<div id="content">
+								<article class="box post">
+									<header class="style1">
+										<h2>Modelling external compressible flow on an airplane wing.</p>
+									</header>
+									<a href="#" class="image featured">
+										<img src="images/pic01.jpg" alt="" />
+									</a>
+									<p>Problem Statement:
+
+										The problem considers the flow around a wing at an angle of attack α=3.06° and a free stream Mach number of 0.8395 (M∞=0.8395). The flow is transonic and has a shock near the mid-chord (x/c 0.20) on the upper (suction) side. The wing has a mean aerodynamic chord length of 0.64607 m, a span of 1.1963 m, an aspect ratio of 3.8, and a taper ratio of 0.562. 
+                                        The geometry of the wing is shown in the figure below. 
+										<h3><a href="#">Problem Figure.</a></h3>
+									<a href="#" class="image featured"><img src="images/Picture26.png" alt="" /></a>
+										
+                                </p>
+                                <p>Introduction: The purpose of this project is to compute the turbulent flow past a transonic wing at a nonzero angle of attack. I will use the k-ω SST turbulence model. 
+                                    This project will demonstrate how to do the following: 
+                                    Model compressible flow (using the ideal gas law for density). 
+                                    Set boundary conditions for external aerodynamics. 
+                                    Use the k-ω SST turbulence model/ two-equation eddy-viscosity model. 
+                                    Calculate a solution using the pressure-based coupled solver with the pseudo transient option. 
+                                    Check the near-wall mesh resolution by plotting the distribution of y+. 
+                                    </p>
+									<p>Methodology/Steps: In ANSYS Workbench, component systems, select fluent meshing, open meshing.
+                                        Add local sizing to the geometry, select yes on local sizing and change the growth rate and target mesh size to 1.2 and 10 respectively and select the wing top and wing bottom to apply the local sizing to.
+                                        Add local sizing to the wing edge, set the growth rate and target mesh size to 1.2 and 2 respectively.
+                                        Generate surface mesh, change the maximum size to 1000, keep the rest as default and generate surface mesh.
+                                        Update boundaries and regions and add 12 for the number of layers in boundary layers,
+                                        Generate the volume mesh, change the max cell length to 512, enable parallel meshing and check yes on self-proximity and generate the mesh.
+                                        
+                                         
+                                        
+                                         
+                                        In the general settings keep the default properties and retain/ keep the default properties for k-omega model in the viscous box.
+                                        In the properties of air, change it to ideal gas and change the viscosity to sutherland and keep the default properties.
+                                        Change the mach number, x and z component of flow direction and set the temperature to 255.56K for the pressure far field boundary condition. Also change the operating pressure to 80600 Pa and initialize the solution.
+                                        
+										
+
+										</p>
+										<p>E.Solution: In the fluid report definition, enable it, to monitor the velocity, temperature, and mass flow rate throughout the manifold.
+											Initialize the solution, change the number of iterations to 100 and time scale factor to 5.
+											.</p>
+								</article>
+							</div>
+
+					</div>
+				</div>
+
+				
+						<div class="row aln-center">
+							<div class="col-9 col-18-large">
+								<section class="highlight">
+									<h3><a href="#">Mesh.</a></h3>
+									<a href="#" class="image featured"><img src="images/Picture27.png" alt="" /></a>
+									
+									<a href="#" class="image featured"><img src="images/Picture28.png" alt="" /></a>
+									<h3><a href="#">y+ Contours (Turbulence).</a></h3>
+									<a href="#" class="image featured"><img src="images/Picture29.png" alt="" /></a>
+									<h3><a href="#">Contour plot of y+ pressure.</a></h3>
+									<a href="#" class="image featured"><img src="images/Picture30.png" alt="" /></a>
+									<h3><a href="#">Velocity contours- Contour plot of mach number.</a></h3>
+									<a href="#" class="image featured"><img src="images/Picture31.png" alt="" /></a>
+									<h3><a href="#">Velocity contours- Contour plot of X-component of velocity.</a></h3>
+									<a href="#" class="image featured"><img src="images/Picture32.png" alt="" /></a>
+									<h3><a href="#">X-component velocity vector.</a></h3>
+									<a href="#" class="image featured"><img src="images/Picture33.png" alt="" /></a>
+									<h3><a href="#">XY Plot of x Wall Shear Stress.</a></h3>
+									<a href="#" class="image featured"><img src="images/Picture34.png" alt="" /></a>
+							
+			
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

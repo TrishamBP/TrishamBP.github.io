@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<!--
+	Escape Velocity by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Fluid Flow in Exhaust Manifold</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="no-sidebar is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<section id="header" class="wrapper">
+
+					<!-- Logo -->
+						<div id="logo">
+							<h1><a href="index.html">Fluid flow in exhaust manifold.</a></h1>
+							
+						</div>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li><a href="index.html">Home</a></li>
+								
+							</ul>
+						</nav>
+
+				</section>
+
+			<!-- Main -->
+				<div id="main" class="wrapper style2">
+					<div class="title">Report</div>
+					<div class="container">
+
+						<!-- Content -->
+							<div id="content">
+								<article class="box post">
+									<header class="style1">
+										<h2>Fluid flow in exhaust manifold.</p>
+									</header>
+									<a href="#" class="image featured">
+										<img src="images/pic01.jpg" alt="" />
+									</a>
+									<p>Problem Statement:
+
+										Hot air flows through the 3 inlets at 925K and the same inlet velocity of 10m/s and then exits through the outlet. Convective heat transfer takes place between the fluid and the manifold. 
+										<h3><a href="#">Model of exhaust manifold.</a></h3>
+									<a href="#" class="image featured"><img src="images/Picture8.png" alt="" /></a>
+										 										</p>
+									<p>Methodology/Steps:
+										<p>A.Pre-Analysis and Setup:Open ANSYS Workbench and load Fluid Flow or ANSYS-Fluent.</p>
+										
+										<p>B.Geometry:The geometry for this manifold was designed in Solidworks.
+											</p>
+											
+										</p>
+									<p>C.Mesh:
+										Meshing was done in Fluent-Mesher with the default properties. The geometry workflow is selected as watertight geometry.
+ 
+Created caps for inlets and outlets of the exhaust manifold.
+The number of fluid regions is set to 1.
+Add boundary layers and generate the mesh.
+
+										</p>
+									<p>D.Physics:
+										Double click on setup to launch ANSYS-Fluent.
+										After the mesh is done click on setup solution.
+Enable heat transfer by activating the energy equation.
+k-w SST turbulence model is used for viscous flow.
+Change the material from aluminum to cast iron and edit the properties and change them to cast iron.
+Apply the boundary condition for the inlet, setting the velocity, turbulence, and thermal boundary conditions to 10m/s, 10% for turbulence intensity, 40mm for hydraulic diameter and 925K for the inlet temperature.
+Change the outlet boundary conditions to 0.1 turbulent intensity fraction and 40mm for hydraulic diameter.
+Change the boundary wall conditions for the inlets, outlets, and wall, edit the heat transfer coefficient to 10 and the free stream temperature as 300K.
+In the solution method change the specific dissipation rate to first order upwind.
+
+										</p>
+										<p>E.Solution: In the fluid report definition, enable it, to monitor the velocity, temperature, and mass flow rate throughout the manifold.
+											Initialize the solution, change the number of iterations to 100 and time scale factor to 5.
+											.</p>
+								</article>
+							</div>
+
+					</div>
+				</div>
+
+				
+						<div class="row aln-center">
+							<div class="col-9 col-18-large">
+								<section class="highlight">
+									<h3><a href="#">Outlet Velocity.</a></h3>
+									<a href="#" class="image featured"><img src="images/Picture10.png" alt="" /></a>
+									<h3><a href="#">Mass flow rate through inlet.</a></h3>
+									<a href="#" class="image featured"><img src="images/Picture11.png" alt="" /></a>
+									<h3><a href="#">Residuals.</a></h3>
+									<a href="#" class="image featured"><img src="images/Picture12.png" alt="" /></a>
+									<h3><a href="#">Total mass flow rate.</a></h3>
+									<a href="#" class="image featured"><img src="images/Picture17.png" alt="" /></a>
+									<h3><a href="#">Path lines through manifold.</a></h3>
+									<a href="#" class="image featured"><img src="images/Picture13.png" alt="" /></a>
+									<h3><a href="#">Path lines through manifold and mesh.</a></h3>
+									<a href="#" class="image featured"><img src="images/Picture14.png" alt="" /></a>
+									<h3><a href="#">Velocity contours at outlet.</a></h3>
+									<a href="#" class="image featured"><img src="images/Picture15.png" alt="" /></a>
+									<h3><a href="#">Temperature profile of walls of the manifold.</a></h3>
+									<a href="#" class="image featured"><img src="images/Picture16.png" alt="" /></a>
+							
+			
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
