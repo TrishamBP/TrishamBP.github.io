@@ -1,20 +1,23 @@
 title: Trisham Patil
 description: AI Systems Engineer | Backend Development | LLM Engineering | MLOps
+url: "https://trishambp.github.io"
+baseurl: ""
 
 theme: minima
 
 author:
   name: Trisham Patil
-  email: trishampatil@gmail.com
-  github: TrishamBP
-  linkedin: trisham-patil
+
+email: trishampatil@gmail.com
+
+github_username: TrishamBP
+linkedin_username: trisham-patil
 
 header_pages:
   - about.md
   - projects.md
   - blog.md
   - resume.md
-  - contact.md
 
 markdown: kramdown
 highlighter: rouge
@@ -22,14 +25,3 @@ highlighter: rouge
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
-  - jekyll-sitemap
-  - jekyll-paginate
-paginate: 5
-paginate_path: "/blog/page:num/"
-exclude:
-  - Gemfile
-  - Gemfile.lock
-  - node_modules
-  - vendor
-url: "https://trishambp.github.io"
-baseurl: ""
