@@ -1,12 +1,35 @@
 title: Trisham Patil
-description: AI Engineering | LLM Systems | RAG | Production ML
+description: AI Systems Engineer | Backend Development | LLM Engineering | MLOps
+
 theme: minima
+
+author:
+  name: Trisham Patil
+  email: trishampatil@gmail.com
+  github: TrishamBP
+  linkedin: trisham-patil
+
+header_pages:
+  - about.md
+  - projects.md
+  - blog.md
+  - resume.md
+  - contact.md
+
 markdown: kramdown
-author: Trisham Patil
-email: trishampatil@gmail.com
-social_links:
-  - name: GitHub
-    url: https://github.com/TrishamBP
-  - name: LinkedIn
-    url: https://www.linkedin.com/in/trisham-patil/
-future: true
+highlighter: rouge
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-paginate
+paginate: 5
+paginate_path: "/blog/page:num/"
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+url: "https://trishambp.github.io"
+baseurl: ""
