@@ -5,13 +5,10 @@ baseurl: ""
 
 theme: minima
 
-author:
-  name: Trisham Patil
-
 email: trishampatil@gmail.com
 
 github_username: TrishamBP
-linkedin_username: trisham-patil
+linkedin_username: trishampatil
 
 header_pages:
   - about.md
