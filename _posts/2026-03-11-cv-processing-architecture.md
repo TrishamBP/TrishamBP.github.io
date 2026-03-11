@@ -1,252 +1,272 @@
 ---
 layout: post
-title: "Designing a Scalable CV Processing Pipeline: From EC2 Workers to Serverless Processing"
+title: "Engineering a Scalable Resume Processing Pipeline: From EC2 Workers to Event-Driven Serverless Architecture"
 date: 2026-03-11
 author: Trisham Patil
 ---
 
-When building large scale document processing systems, the biggest challenge is rarely the machine learning models.
+Large-scale document processing systems rarely fail because of machine learning models.
 
-The real challenge is **system architecture**.
+They fail because of **architecture limitations**.
 
-In one of our systems, users could upload **thousands of CVs at once** for parsing and candidate-job matching.
+When building our resume processing platform, we faced a fundamental challenge:
 
-The system needed to process documents quickly while remaining cost efficient.
+Recruiters could upload **thousands of CVs simultaneously**, and the system had to process them quickly while keeping the API responsive.
 
-At scale, even small inefficiencies can multiply dramatically.
+At the same time, we needed to keep the **cost per CV significantly lower than competing solutions**.
 
-This article explains how we designed a system capable of processing **tens of thousands of CVs per day**, while reducing the cost per CV to a fraction of existing solutions.
+This article explains the **three architecture iterations** that allowed us to build a scalable system capable of processing hundreds of thousands of resumes per day.
 
 ---
 
-# The Problem
-
-The platform allowed recruiters to upload **large batches of resumes for analysis**.
+# Problem Context
 
 Typical usage looked like this:
 
-- Daily Active Users (DAU): 100
-- Files per user: 2,500 PDFs
-- Total daily documents: 250,000 CVs
+- **Daily Active Users (DAU): ~100**
+- **Files per user:** 2,500 PDFs
+- **Potential daily workload:** 250,000 CVs
 
-Each document had to go through multiple processing steps.
+Each document passed through a multi-stage NLP pipeline.
 
-These included:
+The pipeline included four independent algorithms:
 
-- CV parsing
-- Job description parsing
-- Resume-job matching
-- Resume analysis
+1. **CV Parser**
+2. **JD Parser**
+3. **Candidate Matching Engine**
+4. **Resume Analyzer**
 
-All algorithms were built using **CPU-based NLP pipelines**, using tools such as:
+However, these stages were **not completely independent**.
+
+The pipeline had a strict dependency structure:
+
+CV Parser
+↓
+JD Parser
+↓
+Candidate Matching
+↓
+Resume Analyzer
+
+Candidate matching relied on structured information extracted from the CV parser.
+
+This meant processing could not be fully parallel inside a single document pipeline.
+
+The architecture therefore needed to support **parallelism across documents**, not within them.
+
+---
+
+# Architecture Evolution
+
+The system evolved through three major stages:
+
+1. **Distributed Worker Architecture**
+2. **Auto-Scaling Cloud Infrastructure**
+3. **Event-Driven Serverless Processing**
+
+Each iteration solved a different scalability constraint.
+
+---
+
+# End-to-End System Architecture
+
+![End-to-End Architecture](/assets/images/posts/cv-processing-architecture/end-to-end-system-architecture.png)
+
+The diagram above represents the **core system architecture used for large-scale CV processing**.
+
+The system follows a fully asynchronous architecture designed to handle large batch workloads.
+
+---
+
+# Stage 1 — Distributed Worker Architecture
+
+The first version of the system used a **queue-driven worker architecture**.
+
+### API Layer
+
+Users upload large batches of resumes through the frontend.
+
+Typical batch size:
+
+2,500 PDFs
+
+The frontend communicates with a **FastAPI backend running on EC2**.
+
+The backend used:
+
+- **Gunicorn workers**
+- **2 CPU cores per instance**
+- asynchronous request handling
+
+Uploads are immediately stored in **Amazon S3**.
+
+The API returns quickly without waiting for processing.
+
+---
+
+### Task Queueing
+
+Once the files are uploaded, the backend creates processing tasks.
+
+These tasks are pushed into a **RabbitMQ cluster (RMQ)**.
+
+RabbitMQ acts as the **central distributed queue** for processing jobs.
+
+This allows the API to remain responsive even when thousands of files are uploaded simultaneously.
+
+---
+
+### Distributed Processing Workers
+
+The processing layer consisted of **Celery workers running on EC2 instances**.
+
+Each worker consumed tasks from RabbitMQ.
+
+Each task executed the NLP pipeline using:
 
 - SpaCy
 - NLTK
 - rule-based grammar models
-- heuristic scoring models
 
-The challenge was to keep **processing latency under 10 seconds per CV** while allowing users to upload large batches.
+Each algorithm ran on a **single CPU core**, meaning:
 
----
+1 CV = 1 CPU core execution
 
-# Initial Architecture
-
-![Initial Architecture](/assets/images/posts/cv-processing-architecture/initial-architecture.png)
-
-The first version of the system used a traditional distributed worker architecture.
-
-The workflow looked like this:
-
-1. The client uploads CVs via the frontend.
-2. Requests are sent to a **FastAPI backend**.
-3. Uploaded files are stored in **Amazon S3**.
-4. File metadata is pushed into a **RabbitMQ queue**.
-5. **Celery workers** consume tasks from RabbitMQ.
-6. Each worker processes a CV using the NLP pipelines.
-7. Results are stored in **MongoDB**.
-
-Each algorithm ran on a **separate CPU core**.
-
-Python bytecode execution is single-threaded, so **one core handled one CV processing task**.
+Parallelism was achieved by running multiple workers across many machines.
 
 ---
 
-# Throughput Constraints
+### Result Storage
 
-Even with multiple worker machines, scaling was limited.
+Once the pipeline finished processing a CV, the results were stored in a **MongoDB cluster**.
 
-If each user uploaded 2,500 CVs and there were 100 users per day:
+The database stored:
 
-```
-100 × 2500 = 250,000 CVs
-```
+- extracted resume fields
+- parsed job description features
+- matching scores
+- candidate analytics
 
-Processing this workload required a large number of worker nodes.
-
-The limitations were:
-
-- EC2 instances had fixed compute capacity
-- Worker scaling required provisioning new instances
-- Idle workers increased infrastructure cost
-- Large queues increased latency
-
-Although the system worked, it was **not cost optimal at scale**.
+MongoDB was well suited for storing **semi-structured NLP outputs**.
 
 ---
 
-# Modernizing the Architecture
+# Stage 2 — Batch Completion Detection
 
-To improve reliability and scalability, we redesigned the architecture using cloud-native patterns.
+Processing thousands of resumes per batch created another challenge.
 
-![Cloud Architecture](/assets/images/posts/cv-processing-architecture/aws-autoscaling-architecture.png)
+Users needed to know **when all resumes in their batch had completed processing**.
 
-The updated architecture included:
+To solve this, we implemented **batch completion tracking**.
 
-- AWS **Application Load Balancer**
-- containerized backend services
-- **Auto Scaling Groups**
-- distributed task processing
-- managed storage
+Each upload batch received a unique identifier:
 
-The new flow looked like this:
+BatchID
 
-1. Client uploads files
-2. Traffic goes through **Application Load Balancer**
-3. Backend API runs in **containerized services**
-4. Files are uploaded to **Amazon S3**
-5. Processing tasks are queued
-6. Workers consume tasks asynchronously
+Each processed CV updated a counter in the database.
 
-This ensured the API remained **non-blocking and responsive**, even during large uploads.
+When the final document finished processing, the system triggered a **batch completion event**.
 
 ---
 
-# The Cost Problem
+# Stage 3 — Event Driven Notification System
 
-Even with autoscaling, EC2 workers remained expensive.
+Once the entire batch finished processing, a notification event was triggered.
 
-Each worker instance had:
+This event invoked a **notification service built with AWS Lambda and SQS**.
 
-- fixed compute capacity
-- idle time when queues were empty
-- scaling delays during peak demand
+The notification service performed the following steps:
 
-We needed a system that could **scale instantly and process thousands of tasks in parallel**.
+1. Detect batch completion
+2. Trigger asynchronous notification
+3. Notify the client application
 
----
-
-# Moving to Serverless Processing
-
-The solution was to adopt a **serverless architecture**.
-
-![Lambda Architecture](/assets/images/posts/cv-processing-architecture/sqs-lambda-architecture.png)
-
-Instead of using Celery workers, we redesigned the processing pipeline.
-
-The new workflow looked like this:
-
-1. CV uploaded to **Amazon S3**
-2. Message pushed into **Amazon SQS**
-3. **Lambda functions triggered from SQS**
-4. Each Lambda processes **one CV**
-5. Results stored in **MongoDB cluster**
-
-This allowed us to process documents **fully in parallel**.
+The user receives a notification that processing is complete.
 
 ---
 
-# Massive Parallel Processing
+# Result Retrieval
 
-One of the biggest advantages of serverless architecture is concurrency.
+Once the user receives the notification, the frontend retrieves results using the **BatchID**.
 
-AWS Lambda allows large numbers of concurrent executions.
+The system supports two mechanisms:
 
-In our case:
+- polling the API
+- WebSocket updates
 
-- Up to **800 Lambda functions** could run simultaneously
-- Each Lambda processed **one CV**
-- 800 CVs could be processed in about **30 seconds**
-
-Compared to fixed worker infrastructure, this allowed **dramatic throughput improvements**.
+This design ensures the user never waits synchronously for processing.
 
 ---
 
-# Cost Optimization
+# Throughput
 
-One of the biggest wins came from cost reduction.
+With the architecture above, the system supported workloads such as:
 
-Competitor systems charged around:
+100 users × 2,500 CVs
 
-```
+Which equals:
+
+250,000 resumes per day
+
+Parallel processing across distributed worker nodes enabled large-scale batch processing.
+
+---
+
+# Cost Advantage
+
+One of the most important outcomes of the architecture was cost efficiency.
+
+Typical market pricing for resume parsing systems was approximately:
+
 ₹0.75 per CV
-```
 
-With our optimized architecture we were able to deliver:
+Our architecture allowed us to process resumes for approximately:
 
-```
 ₹0.10 per CV
-```
 
-This was achieved through:
+This was achieved by:
 
-- serverless compute
-- parallel execution
-- efficient NLP pipelines
-- reduced infrastructure overhead
-
----
-
-# Accuracy of the System
-
-The parsing and matching algorithms achieved:
-
-- **80–90% accuracy on traditional CV formats**
-- reliable job matching signals
-- fast processing time
-
-For many recruiting use cases, this level of accuracy was sufficient while maintaining high throughput.
+- CPU-based NLP pipelines
+- asynchronous architecture
+- efficient queue-based processing
+- distributed worker scaling
 
 ---
 
-# Final System Characteristics
+# Engineering Lessons
 
-The final system achieved:
+Several important lessons emerged while building this system.
 
-- asynchronous CV uploads
-- large batch processing
-- sub-10-second processing latency
-- massive concurrency
-- significantly reduced cost
+### Asynchronous architectures are essential
 
-More importantly, the architecture could scale automatically based on demand.
+Large batch workloads cannot be handled using synchronous APIs.
 
----
+Queue-based architectures allow the system to scale independently.
 
-# Key Lessons
+### Parallelism must be applied carefully
 
-Building scalable AI systems requires more than good models.
+The NLP pipeline had dependencies between stages.
 
-It requires **good infrastructure design**.
+Instead of parallelizing inside the pipeline, we parallelized **across documents**.
 
-Some of the key lessons from this system were:
+### Event-driven systems improve user experience
 
-- asynchronous architectures are essential for large batch workloads
-- message queues enable reliable distributed processing
-- serverless compute can dramatically simplify scaling
-- architecture decisions often determine cost more than the algorithms themselves
+Users should never wait for long-running processing tasks.
+
+Notification-driven workflows allow systems to remain responsive.
 
 ---
 
 # Final Thoughts
 
-Many engineering discussions focus heavily on machine learning models.
+In large-scale AI systems, the machine learning model is only one piece of the puzzle.
 
-However, real-world AI systems often succeed or fail based on **system design**.
+The real challenge is designing infrastructure that can support:
 
-Optimizing architecture can dramatically improve:
+- massive concurrency
+- asynchronous workflows
+- cost-efficient scaling
 
-- scalability
-- cost efficiency
-- system responsiveness
+By evolving the system architecture from a simple worker model to an event-driven distributed pipeline, we were able to build a platform capable of processing **hundreds of thousands of resumes per day at a fraction of the industry cost**.
 
-For document-heavy applications like CV processing, **cloud-native distributed architectures make a massive difference**.
+In production AI systems, \*_architecture decisions often matter more than the models themselves._
