@@ -1,0 +1,144 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, Helvetica, Arial, sans-serif;
+  color: #1f2937;
+  background: #f8fafc;
+  line-height: 1.6;
+}
+
+.site-shell {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 36px 20px 56px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 18px;
+  justify-content: flex-end;
+  margin-bottom: 34px;
+  font-size: 0.95rem;
+}
+
+.nav-links a {
+  color: #334155;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+}
+
+.nav-links a:hover {
+  color: #0f172a;
+  border-bottom-color: #94a3b8;
+}
+
+.home {
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 28px;
+}
+
+.home-left {
+  flex: 0 0 220px;
+}
+
+.profile-photo {
+  display: block;
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+}
+
+.home-right h1 {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.2;
+  color: #0f172a;
+}
+
+.home-right h2 {
+  margin: 8px 0 18px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #475569;
+}
+
+.home-right p {
+  margin: 0;
+  max-width: 62ch;
+}
+
+.post {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 28px;
+}
+
+.post-header h1 {
+  margin: 0 0 18px;
+  color: #0f172a;
+}
+
+.post-content h2,
+.post-content h3 {
+  color: #0f172a;
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+.post-content p,
+.post-content li {
+  color: #1f2937;
+}
+
+.post-content ul {
+  padding-left: 22px;
+}
+
+.post-content img {
+  margin: 4px 6px 6px 0;
+  vertical-align: middle;
+}
+
+@media (max-width: 780px) {
+  .site-shell {
+    padding-top: 20px;
+  }
+
+  .nav-links {
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+  }
+
+  .home {
+    flex-direction: column;
+    padding: 22px;
+    gap: 20px;
+  }
+
+  .post {
+    padding: 22px;
+  }
+
+  .home-left {
+    flex: none;
+  }
+
+  .profile-photo {
+    width: min(220px, 100%);
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+}
