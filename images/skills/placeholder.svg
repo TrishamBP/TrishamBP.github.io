@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" role="img" aria-label="Skill placeholder logo">
+  <rect width="120" height="120" rx="18" fill="#f3f4f6"/>
+  <rect x="8" y="8" width="104" height="104" rx="14" fill="#ffffff" stroke="#d1d5db"/>
+  <text x="60" y="66" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#111827">SKILL</text>
+</svg>

@@ -2,9 +2,46 @@
 <html lang="en">
   {% include head.html %}
   <body>
-    <main class="site-shell">
-      {% include nav.html %}
-      {{ content }}
-    </main>
+    <button
+      class="dark-mode-toggle"
+      id="dark-mode-toggle"
+      type="button"
+      aria-label="Toggle dark mode"
+      title="Toggle dark mode"
+    >
+      <span class="icon-sun" aria-hidden="true">&#9728;</span>
+      <span class="icon-moon" aria-hidden="true">&#9790;</span>
+    </button>
+    <main class="site-shell">{{ content }}</main>
+    <script>
+      (function () {
+        var root = document.body;
+        var toggle = document.getElementById("dark-mode-toggle");
+        if (!toggle) return;
+
+        var stored = localStorage.getItem("theme");
+        var prefersDark =
+          window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches;
+        var isDark = stored ? stored === "dark" : prefersDark;
+
+        function applyMode(darkEnabled) {
+          root.classList.toggle("dark-mode", darkEnabled);
+          toggle.setAttribute(
+            "aria-label",
+            darkEnabled ? "Switch to light mode" : "Switch to dark mode"
+          );
+        }
+
+        applyMode(isDark);
+
+        toggle.addEventListener("click", function () {
+          isDark = !isDark;
+          localStorage.setItem("theme", isDark ? "dark" : "light");
+          applyMode(isDark);
+        });
+      })();
+    </script>
   </body>
 </html>
+
