@@ -112,7 +112,7 @@ title: Home
 
     <article class="timeline-item">
       <div class="timeline-left">
-        <p class="timeline-year">PhD Research</p>
+        <p class="timeline-year">2021 &mdash; 2022</p>
         <img
           class="timeline-logo"
           src="{{ '/images/universities/cincinnati.svg' | relative_url }}"
@@ -120,13 +120,13 @@ title: Home
         />
       </div>
       <div class="timeline-right">
-        <h3>Computational Fluid Dynamics and Thermodynamics Research</h3>
+        <h3>PhD &ndash; Mechanical Engineering</h3>
         <p class="timeline-university">University of Cincinnati</p>
         <p>
-          Research focused on fluid and thermal modeling of tumor ablation
-          processes in biological tissue, combining computational simulation,
-          numerical modeling, Python-based data analysis, and early machine
-          learning and predictive modeling exposure.
+          Research focused on computational fluid dynamics and thermodynamics
+          applied to tumor ablation modeling, involving heavy numerical
+          simulations, Python-based data analysis, and early exposure to machine
+          learning and predictive modeling.
         </p>
       </div>
     </article>
@@ -291,50 +291,51 @@ title: Home
   <div class="skills-category">
     <h3>Programming Languages</h3>
     <div class="skills-grid">
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/python.svg" alt="Python icon" /><span>Python</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/javascript.svg" alt="JavaScript icon" /><span>JavaScript</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/typescript.svg" alt="TypeScript icon" /><span>TypeScript</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/python.svg' | relative_url }}" alt="Python icon" /><span>Python</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/javascript.svg' | relative_url }}" alt="JavaScript icon" /><span>JavaScript</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/typescript.svg' | relative_url }}" alt="TypeScript icon" /><span>TypeScript</span></div>
     </div>
   </div>
 
   <div class="skills-category">
     <h3>Frontend Development</h3>
     <div class="skills-grid">
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/react.svg" alt="React icon" /><span>React</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/nextdotjs.svg" alt="Next.js icon" /><span>Next.js</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">Gradio</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/react.svg' | relative_url }}" alt="React icon" /><span>React</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/nextdotjs.svg' | relative_url }}" alt="Next.js icon" /><span>Next.js</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/gradio.png' | relative_url }}" alt="Gradio icon" /><span>Gradio</span></div>
     </div>
   </div>
 
   <div class="skills-category">
     <h3>Backend Engineering</h3>
     <div class="skills-grid">
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/nodedotjs.svg" alt="Node.js icon" /><span>Node.js</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/express.svg" alt="Express.js icon" /><span>Express.js</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/nestjs.svg" alt="NestJS icon" /><span>NestJS</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/fastapi.svg" alt="FastAPI icon" /><span>FastAPI</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/celery.svg" alt="Celery icon" /><span>Celery</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/sqlalchemy.svg" alt="SQLAlchemy icon" /><span>SQLAlchemy</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/redis.svg" alt="Redis icon" /><span>Redis</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/rabbitmq.svg" alt="RabbitMQ icon" /><span>RabbitMQ</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/apachekafka.svg" alt="Kafka icon" /><span>Kafka</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/graphql.svg" alt="GraphQL icon" /><span>GraphQL</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">REST APIs</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">gRPC</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">WebSockets</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/nodedotjs.svg' | relative_url }}" alt="Node.js icon" /><span>Node.js</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/express.svg' | relative_url }}" alt="Express.js icon" /><span>Express.js</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/nestjs.svg' | relative_url }}" alt="NestJS icon" /><span>NestJS</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/fastapi.svg' | relative_url }}" alt="FastAPI icon" /><span>FastAPI</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/pydantic.svg' | relative_url }}" alt="Pydantic icon" /><span>Pydantic</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/celery.svg' | relative_url }}" alt="Celery icon" /><span>Celery</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/sqlalchemy.svg' | relative_url }}" alt="SQLAlchemy icon" /><span>SQLAlchemy</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/redis.svg' | relative_url }}" alt="Redis icon" /><span>Redis</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/rabbitmq.svg' | relative_url }}" alt="RabbitMQ icon" /><span>RabbitMQ</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/apachekafka.svg' | relative_url }}" alt="Kafka icon" /><span>Kafka</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/graphql.svg' | relative_url }}" alt="GraphQL icon" /><span>GraphQL</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/restapi.png' | relative_url }}" alt="REST APIs icon" /><span>REST APIs</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/grpc.png' | relative_url }}" alt="gRPC icon" /><span>gRPC</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/websockets.png' | relative_url }}" alt="WebSockets icon" /><span>WebSockets</span></div>
     </div>
   </div>
 
   <div class="skills-category">
     <h3>Databases</h3>
     <div class="skills-grid">
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/mongodb.svg" alt="MongoDB icon" /><span>MongoDB</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/postgresql.svg" alt="PostgreSQL icon" /><span>PostgreSQL</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/amazondynamodb.svg" alt="DynamoDB icon" /><span>DynamoDB</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/apachecassandra.svg" alt="Cassandra icon" /><span>Cassandra</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/scylladb.svg" alt="ScyllaDB icon" /><span>ScyllaDB</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/neo4j.svg" alt="Neo4j icon" /><span>Neo4j</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/duckdb.svg" alt="DuckDB icon" /><span>DuckDB</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/mongodb.svg' | relative_url }}" alt="MongoDB icon" /><span>MongoDB</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/postgresql.svg' | relative_url }}" alt="PostgreSQL icon" /><span>PostgreSQL</span></div>
+      <div class="skills-item no-logo"><span class="skill-badge">DynamoDB</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/apachecassandra.svg' | relative_url }}" alt="Cassandra icon" /><span>Cassandra</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/scylladb.svg' | relative_url }}" alt="ScyllaDB icon" /><span>ScyllaDB</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/neo4j.svg' | relative_url }}" alt="Neo4j icon" /><span>Neo4j</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/duckdb.svg' | relative_url }}" alt="DuckDB icon" /><span>DuckDB</span></div>
     </div>
   </div>
 
@@ -344,10 +345,10 @@ title: Home
       <div class="skills-item no-logo"><span class="skill-badge">ETL / ELT Pipelines</span></div>
       <div class="skills-item no-logo"><span class="skill-badge">Data Ingestion</span></div>
       <div class="skills-item no-logo"><span class="skill-badge">Streaming Processing</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/apacheairflow.svg" alt="Apache Airflow icon" /><span>Apache Airflow</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/apacheairflow.svg' | relative_url }}" alt="Apache Airflow icon" /><span>Apache Airflow</span></div>
       <div class="skills-item no-logo"><span class="skill-badge">Dagster</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/googlebigquery.svg" alt="BigQuery icon" /><span>BigQuery</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/snowflake.svg" alt="Snowflake icon" /><span>Snowflake</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/googlebigquery.svg' | relative_url }}" alt="BigQuery icon" /><span>BigQuery</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/snowflake.svg' | relative_url }}" alt="Snowflake icon" /><span>Snowflake</span></div>
       <div class="skills-item no-logo"><span class="skill-badge">Data Lakes</span></div>
     </div>
   </div>
@@ -355,13 +356,13 @@ title: Home
   <div class="skills-category">
     <h3>Machine Learning</h3>
     <div class="skills-grid">
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/numpy.svg" alt="NumPy icon" /><span>NumPy</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/pandas.svg" alt="Pandas icon" /><span>Pandas</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/scikitlearn.svg" alt="Scikit-Learn icon" /><span>Scikit-Learn</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/tensorflow.svg" alt="TensorFlow icon" /><span>TensorFlow</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/pytorch.svg" alt="PyTorch icon" /><span>PyTorch</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/opencv.svg" alt="OpenCV icon" /><span>OpenCV</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/spacy.svg" alt="SpaCy icon" /><span>SpaCy</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/numpy.svg' | relative_url }}" alt="NumPy icon" /><span>NumPy</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/pandas.svg' | relative_url }}" alt="Pandas icon" /><span>Pandas</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/scikitlearn.svg' | relative_url }}" alt="Scikit-Learn icon" /><span>Scikit-Learn</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/tensorflow.svg' | relative_url }}" alt="TensorFlow icon" /><span>TensorFlow</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/pytorch.svg' | relative_url }}" alt="PyTorch icon" /><span>PyTorch</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/opencv.svg' | relative_url }}" alt="OpenCV icon" /><span>OpenCV</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/spacy.svg' | relative_url }}" alt="SpaCy icon" /><span>SpaCy</span></div>
       <div class="skills-item no-logo"><span class="skill-badge">NLTK</span></div>
     </div>
   </div>
@@ -369,15 +370,15 @@ title: Home
   <div class="skills-category">
     <h3>AI / LLM Systems</h3>
     <div class="skills-grid">
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/huggingface.svg" alt="Transformers icon" /><span>Transformers</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/huggingface.svg" alt="HuggingFace icon" /><span>HuggingFace</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/huggingface.svg' | relative_url }}" alt="Transformers icon" /><span>Transformers</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/huggingface.svg' | relative_url }}" alt="HuggingFace icon" /><span>HuggingFace</span></div>
       <div class="skills-item no-logo"><span class="skill-badge">RAG</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/langchain.svg" alt="LangChain icon" /><span>LangChain</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/openai.svg" alt="LiteLLM icon" /><span>LiteLLM</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/llamaindex.svg" alt="LlamaIndex icon" /><span>LlamaIndex</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/langchain.svg' | relative_url }}" alt="LangChain icon" /><span>LangChain</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/litellm.svg' | relative_url }}" alt="LiteLLM icon" /><span>LiteLLM</span></div>
+      <div class="skills-item no-logo"><span class="skill-badge">LlamaIndex</span></div>
       <div class="skills-item no-logo"><span class="skill-badge">FAISS</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">ChromaDB</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/weaviate.svg" alt="Weaviate icon" /><span>Weaviate</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/chromadb.svg' | relative_url }}" alt="ChromaDB icon" /><span>ChromaDB</span></div>
+      <div class="skills-item no-logo"><span class="skill-badge">Weaviate</span></div>
       <div class="skills-item no-logo"><span class="skill-badge">LoRA</span></div>
       <div class="skills-item no-logo"><span class="skill-badge">QLoRA</span></div>
       <div class="skills-item no-logo"><span class="skill-badge">RLHF</span></div>
@@ -388,19 +389,42 @@ title: Home
   <div class="skills-category">
     <h3>DevOps &amp; Cloud</h3>
     <div class="skills-grid">
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/amazonaws.svg" alt="AWS icon" /><span>AWS</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/googlecloud.svg" alt="GCP icon" /><span>GCP</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/docker.svg" alt="Docker icon" /><span>Docker</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/terraform.svg" alt="Terraform icon" /><span>Terraform</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/githubactions.svg" alt="GitHub Actions icon" /><span>GitHub Actions</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/jenkins.svg" alt="Jenkins icon" /><span>Jenkins</span></div>
+      <div class="skills-item no-logo"><span class="skill-badge">AWS</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/googlecloud.svg' | relative_url }}" alt="GCP icon" /><span>GCP</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/docker.svg' | relative_url }}" alt="Docker icon" /><span>Docker</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/terraform.svg' | relative_url }}" alt="Terraform icon" /><span>Terraform</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/githubactions.svg' | relative_url }}" alt="GitHub Actions icon" /><span>GitHub Actions</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/jenkins.svg' | relative_url }}" alt="Jenkins icon" /><span>Jenkins</span></div>
       <div class="skills-item no-logo"><span class="skill-badge">CI/CD</span></div>
       <div class="skills-item no-logo"><span class="skill-badge">Cloud Run</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/amazonsagemaker.svg" alt="SageMaker icon" /><span>SageMaker</span></div>
-      <div class="skills-item"><img class="skills-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/vercel.svg" alt="Vercel icon" /><span>Vercel</span></div>
+      <div class="skills-item no-logo"><span class="skill-badge">SageMaker</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/vercel.svg' | relative_url }}" alt="Vercel icon" /><span>Vercel</span></div>
     </div>
   </div>
 </section>
+<script>
+  (function () {
+    var skillItems = document.querySelectorAll(".skills-item");
+    skillItems.forEach(function (item) {
+      var img = item.querySelector("img.skills-logo");
+      if (!img) return;
+
+      img.addEventListener("error", function () {
+        img.style.display = "none";
+        var label = item.querySelector("span:not(.skill-badge)");
+        if (label) {
+          label.style.display = "none";
+          if (!item.querySelector(".skill-badge")) {
+            var badge = document.createElement("span");
+            badge.className = "skill-badge";
+            badge.textContent = label.textContent.trim();
+            item.appendChild(badge);
+          }
+        }
+      });
+    });
+  })();
+</script>
 <section class="content-section projects-section" aria-labelledby="projects-heading">
   <h2 id="projects-heading" class="section-title">AI Systems &amp; Projects</h2>
   <div class="projects-shell">
@@ -532,6 +556,7 @@ title: Home
     });
   })();
 </script>
+
 
 
 
