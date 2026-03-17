@@ -174,12 +174,19 @@ body.dark-mode .dark-mode-toggle .icon-moon {
 }
 
 .timeline-logo {
-  width: 56px;
-  height: 56px;
-  object-fit: cover;
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
   border-radius: 12px;
   border: 1px solid #d1d5db;
   background: #ffffff;
+  display: block;
+}
+
+.timeline-logo img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
 }
 
 .timeline-right,
@@ -265,8 +272,14 @@ body.dark-mode .dark-mode-toggle .icon-moon {
 }
 
 .skills-logo {
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.skills-item img {
+  width: 48px;
+  height: 48px;
   object-fit: contain;
 }
 
@@ -579,8 +592,8 @@ body.dark-mode .skill-badge {
   }
 
   .skills-logo {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
   }
 
   .projects-shell {
