@@ -44,11 +44,11 @@ body {
   display: inline;
 }
 
-.dark-mode .dark-mode-toggle .icon-sun {
+body.dark-mode .dark-mode-toggle .icon-sun {
   display: inline;
 }
 
-.dark-mode .dark-mode-toggle .icon-moon {
+body.dark-mode .dark-mode-toggle .icon-moon {
   display: none;
 }
 
@@ -231,6 +231,10 @@ body {
 
 .skills-category {
   margin: 22px 0 28px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 14px;
 }
 
 .skills-category h3 {
@@ -240,48 +244,43 @@ body {
   color: #374151;
 }
 
-.skills-carousel {
-  overflow: hidden;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  background: #ffffff;
-  padding: 12px 0;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-.skills-carousel:hover .skills-track {
-  cursor: default;
-}
-
-.skills-track {
+.skills-grid {
   display: flex;
-  align-items: center;
-  gap: 14px;
-  width: max-content;
-  will-change: transform;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .skills-item {
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 8px;
-  min-width: 110px;
-  padding: 6px 10px;
+  width: 90px;
+  padding: 4px;
   text-align: center;
   color: #374151;
   font-size: 0.85rem;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .skills-logo {
   width: 56px;
   height: 56px;
-  object-fit: cover;
-  border-radius: 12px;
-  border: 1px solid #d1d5db;
-  background: #f9fafb;
+  object-fit: contain;
+}
+
+.skills-item.no-logo {
+  width: auto;
+}
+
+.skill-badge {
+  background: #e2e8f0;
+  color: #1f2937;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.2;
 }
 
 .projects-section {
@@ -458,67 +457,78 @@ body {
   color: #9ca3af;
 }
 
-.dark-mode {
+body.dark-mode {
   background: #0f172a;
-  color: #e5e7eb;
+  color: #ffffff;
 }
 
-.dark-mode .section-title,
-.dark-mode .hero-content h1,
-.dark-mode .timeline-right h3,
-.dark-mode .timeline-content h3,
-.dark-mode .article-title a,
-.dark-mode .project-card h3 {
-  color: #f8fafc;
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode .section-title {
+  color: #ffffff;
 }
 
-.dark-mode .hero-intro,
-.dark-mode .hero-interests,
-.dark-mode .timeline-year,
-.dark-mode .timeline-university,
-.dark-mode .article-date,
-.dark-mode .project-card p,
-.dark-mode .article-preview,
-.dark-mode .skills-item,
-.dark-mode .about-section p {
-  color: #cbd5e1;
+body.dark-mode .hero-intro,
+body.dark-mode .hero-interests,
+body.dark-mode .timeline-year,
+body.dark-mode .timeline-university,
+body.dark-mode .article-date,
+body.dark-mode .project-card p,
+body.dark-mode .article-preview,
+body.dark-mode .skills-item,
+body.dark-mode .about-section p,
+body.dark-mode .timeline-content li,
+body.dark-mode .timeline-content p,
+body.dark-mode .timeline-right p {
+  color: #ffffff;
 }
 
-.dark-mode .timeline-right,
-.dark-mode .timeline-content,
-.dark-mode .skills-carousel,
-.dark-mode .project-card,
-.dark-mode .article-card,
-.dark-mode .article-pagination a,
-.dark-mode .article-pagination span {
-  background: #111827;
+body.dark-mode .skills-category,
+body.dark-mode .timeline-item,
+body.dark-mode .article-card {
+  background-color: #1e293b;
+  color: #ffffff;
+}
+
+body.dark-mode .timeline-right,
+body.dark-mode .timeline-content,
+body.dark-mode .project-card,
+body.dark-mode .article-pagination a,
+body.dark-mode .article-pagination span {
+  background: #1e293b;
   border-color: #374151;
 }
 
-.dark-mode .project-image-placeholder {
+body.dark-mode .project-image-placeholder {
   background: #1f2937;
   border-color: #475569;
-  color: #cbd5e1;
+  color: #ffffff;
 }
 
-.dark-mode .carousel-arrow,
-.dark-mode .dark-mode-toggle {
+body.dark-mode .carousel-arrow,
+body.dark-mode .dark-mode-toggle {
   background: #111827;
   color: #f8fafc;
   border-color: #475569;
 }
 
-.dark-mode .carousel-arrow:hover,
-.dark-mode .dark-mode-toggle:hover {
+body.dark-mode .carousel-arrow:hover,
+body.dark-mode .dark-mode-toggle:hover {
   background: #1f2937;
 }
 
-.dark-mode .article-read-more {
+body.dark-mode .article-read-more {
   color: #93c5fd;
 }
 
-.dark-mode .project-github-link {
+body.dark-mode .project-github-link {
   color: #93c5fd;
+}
+
+body.dark-mode .skill-badge {
+  background: #334155;
+  color: #ffffff;
 }
 
 @media (max-width: 820px) {
@@ -559,14 +569,18 @@ body {
     margin: 0;
   }
 
+  .skills-grid {
+    gap: 14px;
+  }
+
   .skills-item {
-    min-width: 96px;
+    width: 84px;
     font-size: 0.8rem;
   }
 
   .skills-logo {
-    width: 52px;
-    height: 52px;
+    width: 50px;
+    height: 50px;
   }
 
   .projects-shell {
