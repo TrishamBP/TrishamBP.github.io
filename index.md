@@ -565,7 +565,8 @@ title: Home
   </div>
 </section>
 
-<section class="content-section fullstack-section" aria-labelledby="fullstack-heading">
+{% comment %}
+projects, blog, and research sections live on their own pages
   <h2 id="fullstack-heading" class="section-title">Full Stack Projects</h2>
   <p class="research-intro">
     Production-grade platforms built with frontend product focus, backend systems rigor, and reliable data architecture.
@@ -781,6 +782,7 @@ title: Home
   {% endif %}
 </section>
 
+{% endcomment %}
 <script>
   (function () {
     var statsImages = document.querySelectorAll("[data-stats-image]");
@@ -794,4 +796,3 @@ title: Home
     return;
   })();
 </script>
-<script src="{{ '/assets/js/projects-carousel.js' | relative_url }}"></script>
