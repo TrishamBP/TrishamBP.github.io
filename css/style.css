@@ -442,6 +442,19 @@ body.dark-mode .dark-mode-toggle .icon-moon {
   text-decoration: underline;
 }
 
+.research-intro {
+  margin: 0 0 18px;
+  color: #374151;
+  max-width: 75ch;
+}
+
+.article-tags {
+  margin: 0 0 12px;
+  color: #4b5563;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
 .article-pagination {
   margin-top: 18px;
   display: flex;
@@ -535,6 +548,11 @@ body.dark-mode .article-read-more {
   color: #93c5fd;
 }
 
+body.dark-mode .research-intro,
+body.dark-mode .article-tags {
+  color: #e5e7eb;
+}
+
 body.dark-mode .project-github-link {
   color: #93c5fd;
 }
@@ -542,6 +560,27 @@ body.dark-mode .project-github-link {
 body.dark-mode .skill-badge {
   background: #334155;
   color: #ffffff;
+}
+
+.post-content .mermaid-diagram {
+  margin: 1.2rem 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 0.8rem;
+  overflow-x: auto;
+}
+
+.post-content .mermaid-diagram svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+body.dark-mode .post-content .mermaid-diagram {
+  border-color: #334155;
+  background: #0f172a;
 }
 
 @media (max-width: 820px) {

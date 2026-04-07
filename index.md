@@ -120,7 +120,7 @@ title: Home
         />
       </div>
       <div class="timeline-right">
-        <h3>PhD &ndash; Mechanical Engineering</h3>
+        <h3>PhD &ndash; Mechanical Engineering <span style="font-size:0.8em;font-weight:400;color:#6b7280;">(Program not completed &mdash; withdrew in first year)</span></h3>
         <p class="timeline-university">University of Cincinnati</p>
         <p>
           Research focused on computational fluid dynamics and thermodynamics
@@ -302,7 +302,7 @@ title: Home
     <div class="skills-grid">
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/react.svg' | relative_url }}" alt="React icon" /><span>React</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/nextdotjs.svg' | relative_url }}" alt="Next.js icon" /><span>Next.js</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/gradio.png' | relative_url }}" alt="Gradio icon" /><span>Gradio</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/gradio.svg' | relative_url }}" alt="Gradio icon" /><span>Gradio</span></div>
     </div>
   </div>
 
@@ -320,9 +320,9 @@ title: Home
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/rabbitmq.svg' | relative_url }}" alt="RabbitMQ icon" /><span>RabbitMQ</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/apachekafka.svg' | relative_url }}" alt="Kafka icon" /><span>Kafka</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/graphql.svg' | relative_url }}" alt="GraphQL icon" /><span>GraphQL</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/restapi.png' | relative_url }}" alt="REST APIs icon" /><span>REST APIs</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/grpc.png' | relative_url }}" alt="gRPC icon" /><span>gRPC</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/websockets.png' | relative_url }}" alt="WebSockets icon" /><span>WebSockets</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/restapi.svg' | relative_url }}" alt="REST APIs icon" /><span>REST APIs</span></div>
+      <div class="skills-item no-logo"><span class="skill-badge">gRPC</span></div>
+      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/websockets.svg' | relative_url }}" alt="WebSockets icon" /><span>WebSockets</span></div>
     </div>
   </div>
 
@@ -537,6 +537,50 @@ title: Home
   {% endif %}
 </section>
 
+<section class="content-section articles-section" aria-labelledby="research-articles-heading">
+  <h2 id="research-articles-heading" class="section-title">Research Articles</h2>
+  <p class="research-intro">
+    Long-form technical research on multi-task NLP systems, energy intelligence, and production AI architecture.
+  </p>
+
+  {% assign latest_research = site.research | sort: "date" | reverse | slice: 0, 3 %}
+  <div class="articles-grid">
+    {% for post in latest_research %}
+      <article class="article-card">
+        <h3 class="article-title">
+          <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+        </h3>
+        <p class="article-date">
+          Published: {{ post.date | date: "%B %-d, %Y" }}
+        </p>
+        {% if post.tags and post.tags.size > 0 %}
+          <p class="article-tags">{{ post.tags | join: " • " }}</p>
+        {% endif %}
+        <p class="article-preview">
+          {% if post.description %}
+            {{ post.description }}
+          {% else %}
+            {{ post.excerpt | strip_html | normalize_whitespace | truncate: 190 }}
+          {% endif %}
+        </p>
+        <a class="article-read-more" href="{{ post.url | relative_url }}">
+          Read More &rarr;
+        </a>
+      </article>
+    {% endfor %}
+  </div>
+
+  {% if latest_research.size == 0 %}
+    <p>No research articles published yet.</p>
+  {% else %}
+    <p style="margin-top: 14px;">
+      <a class="article-read-more" href="{{ '/research/' | relative_url }}">
+        View all research articles &rarr;
+      </a>
+    </p>
+  {% endif %}
+</section>
+
 <script>
   (function () {
     var arrows = document.querySelectorAll(".carousel-arrow");
@@ -556,7 +600,6 @@ title: Home
     });
   })();
 </script>
-
 
 
 

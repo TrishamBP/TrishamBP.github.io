@@ -32,7 +32,7 @@ Today, I build end-to-end AI-native products that combine robust backend design,
 - **BITS Pilani (WILP), Pilani, India**  
   M.Tech in Artificial Intelligence and Machine Learning, **Nov 2024 - Nov 2026 (Pursuing)**
 - **University of Cincinnati, USA**  
-  PhD (Mechanical Engineering), **Jun 2021 - Jun 2022**
+  PhD in Mechanical Engineering, **Jun 2021 - Jun 2022** *(Program not completed — withdrew in first year)*
 - **Worcester Polytechnic Institute, USA**  
   MS in Mechanical Engineering, **Aug 2019 - May 2021**
 - **Savitribai Phule Pune University, India**  
