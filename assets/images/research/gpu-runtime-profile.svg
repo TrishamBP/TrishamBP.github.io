@@ -1,0 +1,42 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720">
+  <defs>
+    <style>
+      .title { font: 700 34px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .label { font: 600 20px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .small { font: 500 16px 'Segoe UI', Arial, sans-serif; fill: #334155; }
+      .barbg { fill: #e2e8f0; }
+      .bar1 { fill: #2563eb; }
+      .bar2 { fill: #0ea5e9; }
+      .bar3 { fill: #14b8a6; }
+      .bar4 { fill: #f59e0b; }
+      .line { stroke: #334155; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <text x="50" y="60" class="title">Lightning.ai T4 Compute Profile (4-Hour Training Window)</text>
+  <text x="50" y="100" class="small">GPU: NVIDIA T4 16GB | Precision: FP16 | Workflow: preprocessing -> train -> validate -> package</text>
+
+  <rect x="80" y="180" width="1000" height="60" class="barbg" rx="8"/>
+  <rect x="80" y="180" width="180" height="60" class="bar1" rx="8"/>
+  <rect x="260" y="180" width="530" height="60" class="bar2" rx="8"/>
+  <rect x="790" y="180" width="150" height="60" class="bar3" rx="8"/>
+  <rect x="940" y="180" width="140" height="60" class="bar4" rx="8"/>
+
+  <text x="95" y="215" class="small">Data prep</text>
+  <text x="430" y="215" class="small">Classifier training (10 epochs)</text>
+  <text x="810" y="215" class="small">Validation</text>
+  <text x="955" y="215" class="small">Merge + tests</text>
+
+  <line x1="80" y1="280" x2="1080" y2="280" class="line"/>
+  <text x="80" y="310" class="small">0h</text>
+  <text x="330" y="310" class="small">1h</text>
+  <text x="580" y="310" class="small">2h</text>
+  <text x="830" y="310" class="small">3h</text>
+  <text x="1060" y="310" class="small">4h</text>
+
+  <text x="80" y="390" class="label">Resource Constraints</text>
+  <text x="80" y="425" class="small">- T4 VRAM limits enforce batch-size and sequence-length trade-offs</text>
+  <text x="80" y="455" class="small">- FP16 + gradient accumulation used to avoid OOM during classification and multitask packaging</text>
+  <text x="80" y="485" class="small">- DistilBERT chosen over larger encoders for throughput and stable latency in deployment</text>
+  <text x="80" y="515" class="small">- Validation sweeps required for per-label thresholds under heavy class imbalance</text>
+</svg>
