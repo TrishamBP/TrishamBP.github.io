@@ -2,16 +2,51 @@
 <html lang="en">
   {% include head.html %}
   <body>
-    <button
-      class="dark-mode-toggle"
-      id="dark-mode-toggle"
-      type="button"
-      aria-label="Toggle dark mode"
-      title="Toggle dark mode"
-    >
-      <span class="icon-sun" aria-hidden="true">&#9728;</span>
-      <span class="icon-moon" aria-hidden="true">&#9790;</span>
-    </button>
+    <nav class="topnav" id="topnav">
+      <div class="topnav-inner">
+        <a class="topnav-brand" href="{{ '/' | relative_url }}">Trisham Patil</a>
+        <div class="topnav-links" id="topnav-links">
+          <a
+            class="topnav-link{% if page.url == '/' or page.url == '/index.html' %} active{% endif %}"
+            href="{{ '/' | relative_url }}"
+          >Home</a>
+          <a
+            class="topnav-link{% if page.url contains '/projects' %} active{% endif %}"
+            href="{{ '/projects/' | relative_url }}"
+          >Projects</a>
+          <a
+            class="topnav-link{% if page.url contains '/blog' %} active{% endif %}"
+            href="{{ '/blog/' | relative_url }}"
+          >Blogs</a>
+          <a
+            class="topnav-link{% if page.url contains '/research' %} active{% endif %}"
+            href="{{ '/research/' | relative_url }}"
+          >Research Articles</a>
+          <a
+            class="topnav-link{% if page.url contains '/learning-lab' %} active{% endif %}"
+            href="{{ '/learning-lab/' | relative_url }}"
+          >Learning Lab</a>
+        </div>
+        <button
+          class="topnav-hamburger"
+          id="topnav-hamburger"
+          aria-label="Toggle navigation"
+          aria-expanded="false"
+        >
+          <span></span><span></span><span></span>
+        </button>
+        <button
+          class="dark-mode-toggle"
+          id="dark-mode-toggle"
+          type="button"
+          aria-label="Toggle dark mode"
+          title="Toggle dark mode"
+        >
+          <span class="icon-sun" aria-hidden="true">&#9728;</span>
+          <span class="icon-moon" aria-hidden="true">&#9790;</span>
+        </button>
+      </div>
+    </nav>
     <main class="site-shell">{{ content }}</main>
     <script>
       (function () {
@@ -39,6 +74,23 @@
           isDark = !isDark;
           localStorage.setItem("theme", isDark ? "dark" : "light");
           applyMode(isDark);
+        });
+      })();
+    </script>
+    <script>
+      (function () {
+        var btn = document.getElementById("topnav-hamburger");
+        var links = document.getElementById("topnav-links");
+        if (!btn || !links) return;
+        btn.addEventListener("click", function () {
+          var open = links.classList.toggle("open");
+          btn.setAttribute("aria-expanded", open ? "true" : "false");
+        });
+        document.addEventListener("click", function (e) {
+          if (!btn.contains(e.target) && !links.contains(e.target)) {
+            links.classList.remove("open");
+            btn.setAttribute("aria-expanded", "false");
+          }
         });
       })();
     </script>
@@ -134,4 +186,3 @@
     </script>
   </body>
 </html>
-

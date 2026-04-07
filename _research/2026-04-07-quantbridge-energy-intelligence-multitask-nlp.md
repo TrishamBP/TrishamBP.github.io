@@ -1,18 +1,3 @@
----
-layout: post
-title: "A Domain-Specific Multi-Task NLP System for Energy and Financial Intelligence"
-description: "A full technical report covering NER v1, LLM-supervised NER v2, multi-label classification, unified multi-task modeling, and comprehensive empirical results."
-date: 2026-04-07
-author: Trisham Patil
-tags:
-  - AI
-  - NLP
-  - Systems
-  - NER
-  - Multi-Task Learning
-  - Energy Intelligence
----
-
 # Domain-Adaptive Multi-Task NLP for Financial and Geopolitical Intelligence Extraction
 
 **A Systems and Applied Research Paper**
