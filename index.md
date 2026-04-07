@@ -411,16 +411,7 @@ title: Home
 
       img.addEventListener("error", function () {
         img.style.display = "none";
-        var label = item.querySelector("span:not(.skill-badge)");
-        if (label) {
-          label.style.display = "none";
-          if (!item.querySelector(".skill-badge")) {
-            var badge = document.createElement("span");
-            badge.className = "skill-badge";
-            badge.textContent = label.textContent.trim();
-            item.appendChild(badge);
-          }
-        }
+        item.classList.add("no-logo");
       });
     });
   })();
@@ -438,38 +429,7 @@ title: Home
       &#8592;
     </button>
 
-    <div id="projects-carousel-track" class="projects-carousel">
-      <article class="project-card" data-github-project>
-        <div class="project-image-placeholder">GitHub projects will appear here</div>
-        <h3 class="project-repo-name">GitHub projects will appear here</h3>
-        <p class="project-repo-description"></p>
-        <p class="project-repo-meta">
-          <span class="project-language"></span>
-          <span class="project-stars"></span>
-        </p>
-        <a class="project-github-link" href="#" aria-disabled="true">GitHub Link</a>
-      </article>
-      <article class="project-card" data-github-project>
-        <div class="project-image-placeholder">GitHub projects will appear here</div>
-        <h3 class="project-repo-name">GitHub projects will appear here</h3>
-        <p class="project-repo-description"></p>
-        <p class="project-repo-meta">
-          <span class="project-language"></span>
-          <span class="project-stars"></span>
-        </p>
-        <a class="project-github-link" href="#" aria-disabled="true">GitHub Link</a>
-      </article>
-      <article class="project-card" data-github-project>
-        <div class="project-image-placeholder">GitHub projects will appear here</div>
-        <h3 class="project-repo-name">GitHub projects will appear here</h3>
-        <p class="project-repo-description"></p>
-        <p class="project-repo-meta">
-          <span class="project-language"></span>
-          <span class="project-stars"></span>
-        </p>
-        <a class="project-github-link" href="#" aria-disabled="true">GitHub Link</a>
-      </article>
-    </div>
+    <div id="projects-carousel-track" class="projects-carousel"></div>
 
     <button
       class="carousel-arrow"
@@ -583,23 +543,110 @@ title: Home
 
 <script>
   (function () {
+    var projectsSection = document.querySelector(".projects-section");
+    var projectTrack = document.getElementById("projects-carousel-track");
     var arrows = document.querySelectorAll(".carousel-arrow");
-    arrows.forEach(function (arrow) {
-      arrow.addEventListener("click", function () {
-        var targetId = arrow.getAttribute("data-target");
-        var direction = arrow.getAttribute("data-direction");
-        var track = document.getElementById(targetId);
-        if (!track) return;
+    var githubUser = "TrishamBP";
 
-        var step = Math.max(320, Math.floor(track.clientWidth * 0.75));
-        track.scrollBy({
-          left: direction === "left" ? -step : step,
-          behavior: "smooth"
+    function createProjectCard(repo) {
+      var card = document.createElement("article");
+      card.className = "project-card";
+
+      var cover = document.createElement("div");
+      cover.className = "project-image-placeholder";
+      cover.textContent = repo.name;
+
+      var title = document.createElement("h3");
+      title.className = "project-repo-name";
+      title.textContent = repo.name;
+
+      var description = document.createElement("p");
+      description.className = "project-repo-description";
+      description.textContent =
+        repo.description || "Production-ready engineering project.";
+
+      var meta = document.createElement("p");
+      meta.className = "project-repo-meta";
+      var language = document.createElement("span");
+      language.className = "project-language";
+      language.textContent = repo.language || "Codebase";
+      var stars = document.createElement("span");
+      stars.className = "project-stars";
+      stars.textContent = "★ " + repo.stargazers_count;
+      meta.appendChild(language);
+      meta.appendChild(stars);
+
+      var link = document.createElement("a");
+      link.className = "project-github-link";
+      link.href = repo.html_url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = "GitHub Link";
+      link.style.pointerEvents = "auto";
+      link.style.opacity = "1";
+
+      card.appendChild(cover);
+      card.appendChild(title);
+      card.appendChild(description);
+      card.appendChild(meta);
+      card.appendChild(link);
+      return card;
+    }
+
+    function hideProjectsSection() {
+      if (projectsSection) {
+        projectsSection.style.display = "none";
+      }
+    }
+
+    if (!projectTrack) {
+      hideProjectsSection();
+      return;
+    }
+
+    fetch("https://api.github.com/users/" + githubUser + "/repos?per_page=100&sort=updated")
+      .then(function (response) {
+        if (!response.ok) throw new Error("GitHub API failed");
+        return response.json();
+      })
+      .then(function (repos) {
+        var validRepos = repos
+          .filter(function (repo) {
+            return repo && repo.html_url && !repo.fork;
+          })
+          .sort(function (a, b) {
+            return new Date(b.updated_at) - new Date(a.updated_at);
+          })
+          .slice(0, 8);
+
+        if (!validRepos.length) {
+          hideProjectsSection();
+          return;
+        }
+
+        validRepos.forEach(function (repo) {
+          projectTrack.appendChild(createProjectCard(repo));
         });
+
+        arrows.forEach(function (arrow) {
+          arrow.addEventListener("click", function () {
+            var targetId = arrow.getAttribute("data-target");
+            var direction = arrow.getAttribute("data-direction");
+            var track = document.getElementById(targetId);
+            if (!track) return;
+
+            var step = Math.max(320, Math.floor(track.clientWidth * 0.75));
+            track.scrollBy({
+              left: direction === "left" ? -step : step,
+              behavior: "smooth"
+            });
+          });
+        });
+      })
+      .catch(function () {
+        hideProjectsSection();
       });
-    });
   })();
 </script>
-
 
 
