@@ -2,8 +2,18 @@
 layout: post
 title: "Domain-Adaptive Multi-Task NLP for Financial and Geopolitical Intelligence Extraction"
 date: 2026-04-07
-tags: [NLP, NER, Multi-task Learning, Financial AI, DistilBERT, LLM, Weak Supervision]
+author: Trisham Bharat Patil
+meta: QuantBridge Energy Intelligence
+tags:
+  - NLP
+  - NER
+  - Multi-task Learning
+  - Financial AI
+  - DistilBERT
+  - LLM
+  - Weak Supervision
 description: "We present QuantBridge/energy-news-classifier-ner-multitask, a unified architecture performing Named Entity Recognition and multi-label topic classification in a single forward pass over a shared DistilBERT encoder, designed for real-time structured signal extraction from financial and geopolitical news."
+---
 
 ## Abstract
 
