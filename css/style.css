@@ -350,6 +350,15 @@ body.dark-mode .dark-mode-toggle .icon-moon {
   font-style: italic;
 }
 
+.project-cover {
+  width: 100%;
+  height: 150px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  object-fit: cover;
+  background: #f8fafc;
+}
+
 .project-card h3 {
   margin: 0;
   font-size: 1.1rem;
@@ -578,8 +587,151 @@ body.dark-mode .skill-badge {
   margin: 0 auto;
 }
 
+.post-content pre,
+.post-content .highlight pre {
+  display: block;
+  margin: 1rem 0;
+  padding: 14px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: #f8fafc;
+  color: #111827;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  overflow-x: auto;
+}
+
+.post-content code {
+  font-family: Consolas, "Courier New", monospace;
+}
+
+.post-content :not(pre) > code {
+  background: #eef2ff;
+  border: 1px solid #dbe3ff;
+  border-radius: 6px;
+  padding: 1px 5px;
+}
+
+/* Rouge token colors for readable Python-style highlighting */
+.post-content .highlight .k,
+.post-content .highlight .kd,
+.post-content .highlight .kn {
+  color: #7c3aed;
+  font-weight: 600;
+}
+
+.post-content .highlight .nf,
+.post-content .highlight .nc {
+  color: #1d4ed8;
+}
+
+.post-content .highlight .nb,
+.post-content .highlight .bp {
+  color: #0f766e;
+}
+
+.post-content .highlight .s,
+.post-content .highlight .s1,
+.post-content .highlight .s2 {
+  color: #b45309;
+}
+
+.post-content .highlight .mi,
+.post-content .highlight .mf {
+  color: #2563eb;
+}
+
+.post-content .highlight .c,
+.post-content .highlight .c1 {
+  color: #6b7280;
+  font-style: italic;
+}
+
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #d1d5db;
+  margin: 1rem 0;
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+  background: #ffffff;
+}
+
+.post-content th,
+.post-content td {
+  border: 1px solid #d1d5db;
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.post-content th {
+  background: #f3f4f6;
+}
+
 body.dark-mode .post-content .mermaid-diagram {
   border-color: #334155;
+  background: #0f172a;
+}
+
+body.dark-mode .post-content pre,
+body.dark-mode .post-content .highlight pre {
+  border-color: #334155;
+  background: #0f172a;
+  color: #e5e7eb;
+}
+
+body.dark-mode .post-content :not(pre) > code {
+  border-color: #334155;
+  background: #1e293b;
+  color: #e5e7eb;
+}
+
+body.dark-mode .post-content .highlight .k,
+body.dark-mode .post-content .highlight .kd,
+body.dark-mode .post-content .highlight .kn {
+  color: #c4b5fd;
+}
+
+body.dark-mode .post-content .highlight .nf,
+body.dark-mode .post-content .highlight .nc {
+  color: #93c5fd;
+}
+
+body.dark-mode .post-content .highlight .nb,
+body.dark-mode .post-content .highlight .bp {
+  color: #5eead4;
+}
+
+body.dark-mode .post-content .highlight .s,
+body.dark-mode .post-content .highlight .s1,
+body.dark-mode .post-content .highlight .s2 {
+  color: #fcd34d;
+}
+
+body.dark-mode .post-content .highlight .mi,
+body.dark-mode .post-content .highlight .mf {
+  color: #93c5fd;
+}
+
+body.dark-mode .post-content .highlight .c,
+body.dark-mode .post-content .highlight .c1 {
+  color: #94a3b8;
+}
+
+body.dark-mode .post-content table {
+  border-color: #334155;
+  background: #1e293b;
+}
+
+body.dark-mode .post-content th,
+body.dark-mode .post-content td {
+  border-color: #334155;
+}
+
+body.dark-mode .post-content th {
   background: #0f172a;
 }
 

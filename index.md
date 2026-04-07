@@ -321,7 +321,6 @@ title: Home
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/apachekafka.svg' | relative_url }}" alt="Kafka icon" /><span>Kafka</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/graphql.svg' | relative_url }}" alt="GraphQL icon" /><span>GraphQL</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/restapi.svg' | relative_url }}" alt="REST APIs icon" /><span>REST APIs</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">gRPC</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/websockets.svg' | relative_url }}" alt="WebSockets icon" /><span>WebSockets</span></div>
     </div>
   </div>
@@ -331,7 +330,6 @@ title: Home
     <div class="skills-grid">
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/mongodb.svg' | relative_url }}" alt="MongoDB icon" /><span>MongoDB</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/postgresql.svg' | relative_url }}" alt="PostgreSQL icon" /><span>PostgreSQL</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">DynamoDB</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/apachecassandra.svg' | relative_url }}" alt="Cassandra icon" /><span>Cassandra</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/scylladb.svg' | relative_url }}" alt="ScyllaDB icon" /><span>ScyllaDB</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/neo4j.svg' | relative_url }}" alt="Neo4j icon" /><span>Neo4j</span></div>
@@ -342,14 +340,9 @@ title: Home
   <div class="skills-category">
     <h3>Data Engineering</h3>
     <div class="skills-grid">
-      <div class="skills-item no-logo"><span class="skill-badge">ETL / ELT Pipelines</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">Data Ingestion</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">Streaming Processing</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/apacheairflow.svg' | relative_url }}" alt="Apache Airflow icon" /><span>Apache Airflow</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">Dagster</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/googlebigquery.svg' | relative_url }}" alt="BigQuery icon" /><span>BigQuery</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/snowflake.svg' | relative_url }}" alt="Snowflake icon" /><span>Snowflake</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">Data Lakes</span></div>
     </div>
   </div>
 
@@ -363,7 +356,6 @@ title: Home
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/pytorch.svg' | relative_url }}" alt="PyTorch icon" /><span>PyTorch</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/opencv.svg' | relative_url }}" alt="OpenCV icon" /><span>OpenCV</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/spacy.svg' | relative_url }}" alt="SpaCy icon" /><span>SpaCy</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">NLTK</span></div>
     </div>
   </div>
 
@@ -372,32 +364,18 @@ title: Home
     <div class="skills-grid">
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/huggingface.svg' | relative_url }}" alt="Transformers icon" /><span>Transformers</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/huggingface.svg' | relative_url }}" alt="HuggingFace icon" /><span>HuggingFace</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">RAG</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/langchain.svg' | relative_url }}" alt="LangChain icon" /><span>LangChain</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/litellm.svg' | relative_url }}" alt="LiteLLM icon" /><span>LiteLLM</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">LlamaIndex</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">FAISS</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/chromadb.svg' | relative_url }}" alt="ChromaDB icon" /><span>ChromaDB</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">Weaviate</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">LoRA</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">QLoRA</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">RLHF</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">DPO</span></div>
     </div>
   </div>
 
   <div class="skills-category">
     <h3>DevOps &amp; Cloud</h3>
     <div class="skills-grid">
-      <div class="skills-item no-logo"><span class="skill-badge">AWS</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/googlecloud.svg' | relative_url }}" alt="GCP icon" /><span>GCP</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/docker.svg' | relative_url }}" alt="Docker icon" /><span>Docker</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/terraform.svg' | relative_url }}" alt="Terraform icon" /><span>Terraform</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/githubactions.svg' | relative_url }}" alt="GitHub Actions icon" /><span>GitHub Actions</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/jenkins.svg' | relative_url }}" alt="Jenkins icon" /><span>Jenkins</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">CI/CD</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">Cloud Run</span></div>
-      <div class="skills-item no-logo"><span class="skill-badge">SageMaker</span></div>
       <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/vercel.svg' | relative_url }}" alt="Vercel icon" /><span>Vercel</span></div>
     </div>
   </div>
@@ -410,8 +388,7 @@ title: Home
       if (!img) return;
 
       img.addEventListener("error", function () {
-        img.style.display = "none";
-        item.classList.add("no-logo");
+        item.remove();
       });
     });
   })();
@@ -547,14 +524,40 @@ title: Home
     var projectTrack = document.getElementById("projects-carousel-track");
     var arrows = document.querySelectorAll(".carousel-arrow");
     var githubUser = "TrishamBP";
+    var relevanceKeywords = [
+      "ai",
+      "ml",
+      "nlp",
+      "llm",
+      "rag",
+      "agent",
+      "vision",
+      "ocr",
+      "inference",
+      "pipeline",
+      "backend",
+      "fastapi",
+      "pytorch",
+      "transformer",
+      "classification",
+      "ner",
+      "data"
+    ];
 
     function createProjectCard(repo) {
       var card = document.createElement("article");
       card.className = "project-card";
 
-      var cover = document.createElement("div");
-      cover.className = "project-image-placeholder";
-      cover.textContent = repo.name;
+      var cover = document.createElement("img");
+      cover.className = "project-cover";
+      cover.alt = repo.name + " preview image";
+      cover.loading = "lazy";
+      cover.src =
+        "https://opengraph.githubassets.com/1/" +
+        encodeURIComponent(repo.full_name);
+      cover.addEventListener("error", function () {
+        cover.style.display = "none";
+      });
 
       var title = document.createElement("h3");
       title.className = "project-repo-name";
@@ -610,21 +613,32 @@ title: Home
         return response.json();
       })
       .then(function (repos) {
-        var validRepos = repos
+        var relevantRepos = repos
           .filter(function (repo) {
-            return repo && repo.html_url && !repo.fork;
+            if (!repo || !repo.html_url || repo.fork) return false;
+            var text =
+              ((repo.name || "") + " " + (repo.description || "")).toLowerCase();
+            var matches = relevanceKeywords.filter(function (key) {
+              return text.indexOf(key) !== -1;
+            }).length;
+            repo._relevance = matches;
+            return matches > 0;
           })
           .sort(function (a, b) {
+            if (b._relevance !== a._relevance) return b._relevance - a._relevance;
+            if (b.stargazers_count !== a.stargazers_count) {
+              return b.stargazers_count - a.stargazers_count;
+            }
             return new Date(b.updated_at) - new Date(a.updated_at);
           })
-          .slice(0, 8);
+          .slice(0, 6);
 
-        if (!validRepos.length) {
+        if (!relevantRepos.length) {
           hideProjectsSection();
           return;
         }
 
-        validRepos.forEach(function (repo) {
+        relevantRepos.forEach(function (repo) {
           projectTrack.appendChild(createProjectCard(repo));
         });
 
@@ -648,5 +662,3 @@ title: Home
       });
   })();
 </script>
-
-

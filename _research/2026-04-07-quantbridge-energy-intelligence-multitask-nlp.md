@@ -743,6 +743,189 @@ The current system is therefore best interpreted as a strong extraction baseline
 
 ---
 
+## 17. Extended V1 Failure Catalog
+
+This section provides additional concrete failure evidence from baseline V1 behavior.
+
+### 17.1 Energy Commodity Misses
+
+| Input | Expected | V1 Output | Error Class |
+|---|---|---|---|
+| Brent crude fell below $80 | `B-COMMODITY I-COMMODITY` | `O O` | complete miss |
+| WTI settled at $76.40 | `B-COMMODITY` | `O` | acronym miss |
+| European LNG imports surged | `B-COMMODITY` | `O` | domain token miss |
+| Natural gas prices at Henry Hub | `B/I-COMMODITY` + hub semantics | `O O ... B-LOC I-LOC` | type confusion |
+
+### 17.2 Geopolitical and Policy Span Gaps
+
+| Input Fragment | Expected | V1 Behavior |
+|---|---|---|
+| OPEC+ agreed to extend cuts | ORG/regulatory actor | missed due to tokenization and schema limits |
+| G7 nations agreed on price cap | ORG + policy context | G7 frequently missed |
+| SWIFT disconnection event | ORG + event | ORG often missed, event absent |
+| Basel III requirements | policy/institution | full miss |
+
+### 17.3 Infrastructure and Symbolic Entities
+
+| Fragment | Expected | V1 Output |
+|---|---|---|
+| Nord Stream 2 pipeline | infrastructure/organization class | frequently mapped to LOC-like spans |
+| Keystone XL | infrastructure entity | often missed |
+| XOM shares rose | ticker/company | missed |
+| SOFR replaced LIBOR | market/instrument classes | missed |
+
+The dominant mechanism in all four groups is not random error but **taxonomy blindness**: the model lacks representational supervision for domain-specific symbolic entities.
+
+---
+
+## 18. Extended Classification Analysis
+
+### 18.1 Why Multi-Label Learning Is Hard in This Domain
+
+Financial headlines contain densely entangled factors:
+
+1. actor signal (country, regulator, company),
+2. sector signal (energy, technology, shipping),
+3. event signal (sanction, cut, disruption),
+4. macro implication signal (inflation, supply, rates).
+
+Even short texts frequently map to multiple true labels, but with asymmetric confidence. This creates a calibration challenge where:
+
+- ranking may be semantically reasonable,
+- absolute score magnitude remains too low for threshold activation.
+
+### 18.2 Semantic Overlap and Decision Boundary Instability
+
+Common overlapping pairs:
+
+1. `politics` + `trade`
+2. `macro` + `energy`
+3. `business` + `technology`
+4. `risk` + `shipping`
+
+Under low minority-label supervision, the classifier learns broad separators (`macro`, `politics`) and underfits sparse specialist boundaries (`shipping`, `risk`, `stocks`).
+
+### 18.3 Calibration vs Discrimination
+
+Observed behavior indicates discrimination without robust calibration:
+
+- relevant labels may rank above irrelevant labels,
+- yet remain below operational threshold.
+
+This is why threshold-only tuning without rebalancing has limited effect.
+
+---
+
+## 19. Threshold Optimization Procedure
+
+Per-label thresholding is required for production deployment.
+
+### 19.1 Grid Search Strategy
+
+```python
+import numpy as np
+from sklearn.metrics import f1_score
+
+def optimize_thresholds(val_probs, val_labels):
+    n_labels = val_probs.shape[1]
+    thresholds = np.zeros(n_labels, dtype=np.float32)
+    for label_idx in range(n_labels):
+        best_tau = 0.5
+        best_f1 = -1.0
+        for tau in np.linspace(0.1, 0.9, 81):
+            pred = (val_probs[:, label_idx] >= tau).astype(int)
+            score = f1_score(val_labels[:, label_idx], pred, zero_division=0)
+            if score > best_f1:
+                best_f1 = score
+                best_tau = tau
+        thresholds[label_idx] = best_tau
+    return thresholds
+```
+
+### 19.2 Operational Guidance
+
+1. optimize on a temporally recent validation slice,
+2. store thresholds versioned with checkpoint,
+3. monitor per-label activation drift,
+4. retrain or recalibrate when activation collapses.
+
+### 19.3 Why Single Global Threshold Fails
+
+A single threshold assumes uniform score distribution across labels. In practice:
+
+- majority labels produce wider score spread,
+- minority labels compress into low-confidence bands.
+
+Per-label thresholds are therefore not optional for multi-label financial routing.
+
+---
+
+## 20. Extended Prediction-vs-Expected Casebook
+
+### 20.1 Case: Rate + Commodity + Sanctions Coupling
+
+Input:
+`The Federal Reserve held rates steady as Brent crude dropped after sanctions concerns.`
+
+Expected:
+`macro`, `energy`, `politics/risk` (context dependent)
+
+Typical output:
+- NER captures central bank + commodity spans
+- classifier activates `macro`
+- `energy` often under-threshold
+
+Interpretation:
+representation is partially correct, routing is under-calibrated.
+
+### 20.2 Case: Maritime Disruption
+
+Input:
+`Maersk reroutes vessels from Red Sea after missile attacks on tankers.`
+
+Expected:
+`shipping`, `risk`, optionally `politics`
+
+Typical output:
+- NER captures `Maersk`, `Red Sea`, event markers
+- classifier often activates weak `politics` only, no `shipping/risk` at threshold
+
+Interpretation:
+entity extraction and topical classifier are decoupled in confidence behavior.
+
+### 20.3 Case: Equity + Energy Cross-Signal
+
+Input:
+`Energy sector leads S&P 500 gains as oil prices surge after OPEC action.`
+
+Expected:
+`stocks`, `energy`, optionally `macro`
+
+Typical output:
+- NER captures `S&P 500`, `oil`, `OPEC`
+- classifier returns macro/politics-biased scores
+- `stocks` and `energy` remain below threshold
+
+Interpretation:
+the model knows the entities but not the final topic decision boundary sufficiently.
+
+### 20.4 Case: Semiconductor Regulation
+
+Input:
+`TSMC halts advanced chip shipments following export control updates.`
+
+Expected:
+`technology`, `trade/regulation`
+
+Typical output:
+- V2 NER recognizes semiconductor and regulation classes
+- classifier may favor `politics` due policy-language dominance
+
+Interpretation:
+label schema is correct; training balance for `technology/regulation` is insufficient.
+
+---
+
 ## Appendix A: Core Model and Artifact Links
 
 - [QuantBridge/energy-news-classifier-ner-multitask](https://huggingface.co/QuantBridge/energy-news-classifier-ner-multitask)
