@@ -562,6 +562,15 @@ body.dark-mode .dark-mode-toggle .icon-moon {
   background: #f8fafc;
 }
 
+.stats-contribution-chart {
+  margin-top: 12px;
+}
+
+.stats-contribution-chart .stats-image {
+  min-height: 120px;
+  object-fit: cover;
+}
+
 .stats-image {
   display: block;
   width: 100%;
