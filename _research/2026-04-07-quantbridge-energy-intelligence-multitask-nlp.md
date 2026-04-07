@@ -4,15 +4,6 @@ title: "Domain-Adaptive Multi-Task NLP for Financial and Geopolitical Intelligen
 date: 2026-04-07
 tags: [NLP, NER, Multi-task Learning, Financial AI, DistilBERT, LLM, Weak Supervision]
 description: "We present QuantBridge/energy-news-classifier-ner-multitask, a unified architecture performing Named Entity Recognition and multi-label topic classification in a single forward pass over a shared DistilBERT encoder, designed for real-time structured signal extraction from financial and geopolitical news."
----
-
-# Domain-Adaptive Multi-Task NLP for Financial and Geopolitical Intelligence Extraction
-
-**A Systems and Applied Research Paper**
-
-_QuantBridge AI Research — 2025_
-
----
 
 ## Abstract
 
@@ -80,7 +71,7 @@ Output:
     - energy     (score: 0.054)
 ```
 
-NER extracts *what* is mentioned: organizations, locations, commodities, persons, events. Classification answers *what this text is about*: which thematic categories are active. These are complementary signals that must operate in tandem. Without NER, classification is decontextualized — the topic `energy` fires on any article, but the downstream system cannot determine *which* energy company, *which* commodity, or *which* infrastructure asset is involved. Without classification, every article is routed to every downstream consumer, introducing noise into pipelines that require topic-scoped input.
+NER extracts _what_ is mentioned: organizations, locations, commodities, persons, events. Classification answers _what this text is about_: which thematic categories are active. These are complementary signals that must operate in tandem. Without NER, classification is decontextualized — the topic `energy` fires on any article, but the downstream system cannot determine _which_ energy company, _which_ commodity, or _which_ infrastructure asset is involved. Without classification, every article is routed to every downstream consumer, introducing noise into pipelines that require topic-scoped input.
 
 The structured output feeds downstream systems — a reasoning LLM for macro commentary generation, a knowledge graph for entity relationship tracking, a quantitative signal aggregation layer for position-sizing models, or an alert system for risk desk notifications. The NLP layer's job is not to produce insight directly — it is to produce a machine-readable representation that downstream systems can act on reliably and at scale.
 
@@ -90,29 +81,29 @@ Understanding why each entity type and topic label has financial applicability c
 
 **Entity types → specific signal pathways:**
 
-| Entity Type | Example | Downstream Signal |
-|---|---|---|
-| `CENTRAL_BANK` | Federal Reserve | Monetary policy signal → rate-sensitive portfolio adjustment |
-| `COMMODITY` | Brent crude, LNG | Price regime signal → energy sector exposure, hedging triggers |
-| `REGULATORY_BODY` | OPEC+, FERC | Supply/demand coordination → production outlook revision |
-| `SANCTION` | Iran's oil sector | Supply disruption risk → geopolitical risk premium, freight rates |
-| `SHIPPING_VESSEL` | Arctic Star, Gulf Pioneer | Physical supply chain disruption → tanker market, insurance |
-| `M_AND_A` | ExxonMobil / Pioneer | Corporate consolidation → merger arbitrage, sector positioning |
-| `EARNINGS_EVENT` | Quarterly miss | Single-name signal → equity event-driven strategy |
-| `MACRO_INDICATOR` | PCE, CPI | Inflation regime signal → duration positioning, rates strategy |
-| `TECH_REGULATION` | US export controls | Semiconductor supply chain → capex revisions, ETF rebalancing |
-| `GEOPOLITICAL_EVENT` | Houthi attacks | Systemic risk signal → volatility regime, safe-haven flows |
+| Entity Type          | Example                   | Downstream Signal                                                 |
+| -------------------- | ------------------------- | ----------------------------------------------------------------- |
+| `CENTRAL_BANK`       | Federal Reserve           | Monetary policy signal → rate-sensitive portfolio adjustment      |
+| `COMMODITY`          | Brent crude, LNG          | Price regime signal → energy sector exposure, hedging triggers    |
+| `REGULATORY_BODY`    | OPEC+, FERC               | Supply/demand coordination → production outlook revision          |
+| `SANCTION`           | Iran's oil sector         | Supply disruption risk → geopolitical risk premium, freight rates |
+| `SHIPPING_VESSEL`    | Arctic Star, Gulf Pioneer | Physical supply chain disruption → tanker market, insurance       |
+| `M_AND_A`            | ExxonMobil / Pioneer      | Corporate consolidation → merger arbitrage, sector positioning    |
+| `EARNINGS_EVENT`     | Quarterly miss            | Single-name signal → equity event-driven strategy                 |
+| `MACRO_INDICATOR`    | PCE, CPI                  | Inflation regime signal → duration positioning, rates strategy    |
+| `TECH_REGULATION`    | US export controls        | Semiconductor supply chain → capex revisions, ETF rebalancing     |
+| `GEOPOLITICAL_EVENT` | Houthi attacks            | Systemic risk signal → volatility regime, safe-haven flows        |
 
 **Topic labels → pipeline routing:**
 
-| Topic | What Activates It | Where It Routes |
-|---|---|---|
-| `energy` | Oil supply/demand, OPEC decisions, LNG flows | Energy desk, commodity signal aggregation |
-| `macro` | Central bank decisions, GDP, inflation | Macro strategy, rates desk, FX |
-| `risk` | Conflict, sanctions, disruptions | Risk desk, geopolitical risk dashboard |
+| Topic      | What Activates It                            | Where It Routes                             |
+| ---------- | -------------------------------------------- | ------------------------------------------- |
+| `energy`   | Oil supply/demand, OPEC decisions, LNG flows | Energy desk, commodity signal aggregation   |
+| `macro`    | Central bank decisions, GDP, inflation       | Macro strategy, rates desk, FX              |
+| `risk`     | Conflict, sanctions, disruptions             | Risk desk, geopolitical risk dashboard      |
 | `shipping` | Vessel rerouting, port closures, chokepoints | Supply chain model, freight rate monitoring |
-| `trade` | Tariffs, sanctions, export restrictions | Trade flow analysis, EM positioning |
-| `stocks` | Equity market moves, index changes | Equities desk, systematic strategies |
+| `trade`    | Tariffs, sanctions, export restrictions      | Trade flow analysis, EM positioning         |
+| `stocks`   | Equity market moves, index changes           | Equities desk, systematic strategies        |
 
 The system does not perform the downstream analysis — it performs the structured extraction that makes downstream analysis automatable.
 
@@ -209,12 +200,12 @@ Single forward pass also eliminates a class of operational complexity: there is 
 
 ### 5.4 Comparison: Architectural Approaches
 
-| Approach | Architecture | Key Limitation | When Appropriate |
-|---|---|---|---|
-| **Separate NER model** | Single encoder + NER head | No topic classification; entity output only; no routing signal | Standalone entity extraction without classification need |
-| **Separate classification model** | Single encoder + CLS head | No entity extraction; topic labels without entity grounding | Topic routing without entity-level analysis |
-| **Post-hoc fusion pipeline** | Two encoders → two outputs → rule-based merger | Dual latency; representational inconsistency; two models to maintain; fusion layer introduces alignment error | Prototyping when task-specific models are already deployed |
-| **Unified multitask model** | One shared encoder + two heads → single forward pass | Cannot express multi-role entity spans in BIO scheme; joint training not yet implemented | Production pipelines requiring both signals at minimal latency |
+| Approach                          | Architecture                                         | Key Limitation                                                                                                | When Appropriate                                               |
+| --------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| **Separate NER model**            | Single encoder + NER head                            | No topic classification; entity output only; no routing signal                                                | Standalone entity extraction without classification need       |
+| **Separate classification model** | Single encoder + CLS head                            | No entity extraction; topic labels without entity grounding                                                   | Topic routing without entity-level analysis                    |
+| **Post-hoc fusion pipeline**      | Two encoders → two outputs → rule-based merger       | Dual latency; representational inconsistency; two models to maintain; fusion layer introduces alignment error | Prototyping when task-specific models are already deployed     |
+| **Unified multitask model**       | One shared encoder + two heads → single forward pass | Cannot express multi-role entity spans in BIO scheme; joint training not yet implemented                      | Production pipelines requiring both signals at minimal latency |
 
 The unified multitask model is the correct architecture for any system where both NER and classification outputs are consumed by downstream processes. The production advantage is decisive: single deployment, single latency, consistent representations, unified monitoring.
 
@@ -248,13 +239,13 @@ graph TD
 
 **Parameter allocation:**
 
-| Component | Parameters | % of total |
-|---|---|---|
-| DistilBERT encoder (6 transformer layers) | ~66,900,000 | 99.89% |
-| NER head (Linear 768 → 19) | ~14,592 | 0.02% |
-| Classification pre-classifier (Linear 768 → 768) | ~589,824 | 0.88% |
-| Classification head (Linear 768 → 10) | ~7,680 | 0.01% |
-| **Total** | **66,975,773** | 100% |
+| Component                                        | Parameters     | % of total |
+| ------------------------------------------------ | -------------- | ---------- |
+| DistilBERT encoder (6 transformer layers)        | ~66,900,000    | 99.89%     |
+| NER head (Linear 768 → 19)                       | ~14,592        | 0.02%      |
+| Classification pre-classifier (Linear 768 → 768) | ~589,824       | 0.88%      |
+| Classification head (Linear 768 → 10)            | ~7,680         | 0.01%      |
+| **Total**                                        | **66,975,773** | 100%       |
 
 The task heads are parameter-light. The encoder dominates the model budget by three orders of magnitude. This means the model's quality is almost entirely determined by the quality of the encoder's representations — which in turn is determined by the quality and quantity of domain-specific training data. This is not an insight unique to this system; it is the fundamental scaling law of fine-tuned transformer models.
 
@@ -316,14 +307,14 @@ graph TD
 
 **Key remapping:**
 
-| Source key | Destination key |
-|---|---|
-| NER model `distilbert.*` | `distilbert.*` |
+| Source key                    | Destination key         |
+| ----------------------------- | ----------------------- |
+| NER model `distilbert.*`      | `distilbert.*`          |
 | NER model `classifier.weight` | `ner_classifier.weight` |
-| NER model `classifier.bias` | `ner_classifier.bias` |
-| CLS model `pre_classifier.*` | `pre_classifier.*` |
+| NER model `classifier.bias`   | `ner_classifier.bias`   |
+| CLS model `pre_classifier.*`  | `pre_classifier.*`      |
 | CLS model `classifier.weight` | `cls_classifier.weight` |
-| CLS model `classifier.bias` | `cls_classifier.bias` |
+| CLS model `classifier.bias`   | `cls_classifier.bias`   |
 
 The merger calls `load_state_dict(strict=True)` to verify zero missing and zero unexpected keys. Any key mismatch raises an error immediately, preventing silent weight misalignment.
 
@@ -345,30 +336,30 @@ The encoder is `distilbert-base-uncased`, initialized from `QuantBridge/energy-i
 
 DistilBERT was selected over BERT-base for production practicality:
 
-| Property | DistilBERT | BERT-base |
-|---|---|---|
-| Parameters | ~67M | ~110M |
-| Inference speed | 60% faster | baseline |
-| Benchmark performance retention | ~97% of BERT | baseline |
-| VRAM at inference | Fits CPU + commodity GPU | Requires GPU |
+| Property                        | DistilBERT               | BERT-base    |
+| ------------------------------- | ------------------------ | ------------ |
+| Parameters                      | ~67M                     | ~110M        |
+| Inference speed                 | 60% faster               | baseline     |
+| Benchmark performance retention | ~97% of BERT             | baseline     |
+| VRAM at inference               | Fits CPU + commodity GPU | Requires GPU |
 
 The encoder produces hidden states of shape `(batch, seq_len, 768)`. At `max_length=128`, the context window covers approximately 90% of financial news headlines and short articles without truncation — sufficient for the deployment target of headline-length inputs.
 
 Full DistilBERT architecture parameters:
 
-| Parameter | Value |
-|---|---|
-| Architecture | Transformer encoder |
-| Layers | 6 |
-| Attention heads | 12 |
-| Hidden dimension | 768 |
-| FFN inner dimension | 3072 |
-| Vocabulary size | 30,522 |
-| Max position embeddings | 512 |
-| Activation | GELU |
-| Attention dropout | 0.1 |
-| Hidden dropout | 0.1 |
-| Total parameters | ~66.9M |
+| Parameter               | Value               |
+| ----------------------- | ------------------- |
+| Architecture            | Transformer encoder |
+| Layers                  | 6                   |
+| Attention heads         | 12                  |
+| Hidden dimension        | 768                 |
+| FFN inner dimension     | 3072                |
+| Vocabulary size         | 30,522              |
+| Max position embeddings | 512                 |
+| Activation              | GELU                |
+| Attention dropout       | 0.1                 |
+| Hidden dropout          | 0.1                 |
+| Total parameters        | ~66.9M              |
 
 ### 7.2 NER Head: Token Classification
 
@@ -385,10 +376,10 @@ graph TD
 
 The NER head is a single linear projection from the 768-dimensional hidden state of each token to 19 output classes following BIO (Beginning-Inside-Outside) tagging:
 
-| Tag format | Meaning |
-|---|---|
-| `O` | Non-entity token |
-| `B-<TYPE>` | Beginning of entity of type TYPE |
+| Tag format | Meaning                             |
+| ---------- | ----------------------------------- |
+| `O`        | Non-entity token                    |
+| `B-<TYPE>` | Beginning of entity of type TYPE    |
 | `I-<TYPE>` | Continuation of entity of type TYPE |
 
 The 9 entity types in the final multitask model are: `PERSON`, `ORGANIZATION`, `COMPANY`, `COUNTRY`, `LOCATION`, `COMMODITY`, `MARKET`, `INFRASTRUCTURE`, `EVENT`. This is a coarsened version of the 59-type V2 taxonomy, selected for the production system based on downstream consumer requirements. The coarsening trades granularity for generalization — fewer types means more training examples per type and more stable decision boundaries.
@@ -431,18 +422,18 @@ The default τ = 0.5 is almost always suboptimal for imbalanced multi-label sett
 
 **Label set:**
 
-| Label | Description | Primary Downstream Consumer |
-|---|---|---|
-| `energy` | Oil, gas, LNG, renewables, power markets | Energy desk, commodity signal aggregation |
-| `macro` | Central banks, inflation, GDP, monetary policy | Macro strategy, rates, FX desk |
-| `politics` | Government decisions, elections, legislation | Geopolitical risk, EM desk |
-| `trade` | Tariffs, sanctions, import/export flows | Trade flow analysis, logistics |
-| `risk` | Geopolitical instability, conflict, disruption | Risk desk, vol surface monitoring |
-| `business` | Corporate earnings, M&A, company-level news | Equities, sector rotation |
-| `technology` | Semiconductors, AI, tech sector | Tech desk, supply chain |
-| `stocks` | Equity markets, indices, FX | Systematic strategies, alpha |
-| `regulation` | Regulatory decisions, compliance | Compliance, sector-specific modeling |
-| `shipping` | Vessel routing, port disruption, maritime trade | Supply chain, freight rates |
+| Label        | Description                                     | Primary Downstream Consumer               |
+| ------------ | ----------------------------------------------- | ----------------------------------------- |
+| `energy`     | Oil, gas, LNG, renewables, power markets        | Energy desk, commodity signal aggregation |
+| `macro`      | Central banks, inflation, GDP, monetary policy  | Macro strategy, rates, FX desk            |
+| `politics`   | Government decisions, elections, legislation    | Geopolitical risk, EM desk                |
+| `trade`      | Tariffs, sanctions, import/export flows         | Trade flow analysis, logistics            |
+| `risk`       | Geopolitical instability, conflict, disruption  | Risk desk, vol surface monitoring         |
+| `business`   | Corporate earnings, M&A, company-level news     | Equities, sector rotation                 |
+| `technology` | Semiconductors, AI, tech sector                 | Tech desk, supply chain                   |
+| `stocks`     | Equity markets, indices, FX                     | Systematic strategies, alpha              |
+| `regulation` | Regulatory decisions, compliance                | Compliance, sector-specific modeling      |
+| `shipping`   | Vessel routing, port disruption, maritime trade | Supply chain, freight rates               |
 
 ### 7.4 Weight Initialization and Model Assembly
 
@@ -458,11 +449,11 @@ The default τ = 0.5 is almost always suboptimal for imbalanced multi-label sett
 
 **Data.** Three open-source corpora were combined:
 
-| Dataset | Domain | Size (train) | Entity Types |
-|---|---|---|---|
-| CoNLL-2003 | Reuters newswire, 1990s | 14,041 sentences | PER, ORG, LOC, MISC |
-| WNUT-17 | Twitter, Reddit, StackExchange | 3,394 sentences | person, location, corporation, product, creative-work, group |
-| WikiANN-en | Wikipedia articles | 20,000 examples | PER, ORG, LOC |
+| Dataset    | Domain                         | Size (train)     | Entity Types                                                 |
+| ---------- | ------------------------------ | ---------------- | ------------------------------------------------------------ |
+| CoNLL-2003 | Reuters newswire, 1990s        | 14,041 sentences | PER, ORG, LOC, MISC                                          |
+| WNUT-17    | Twitter, Reddit, StackExchange | 3,394 sentences  | person, location, corporation, product, creative-work, group |
+| WikiANN-en | Wikipedia articles             | 20,000 examples  | PER, ORG, LOC                                                |
 
 Labels were remapped to a unified 5-type active schema: `PER`, `ORG`, `LOC`, `EVENT`, `COMMODITY`. `COMMODITY` was derived entirely from WNUT `product` mappings — an approximate and noisy proxy. `EVENT` was derived from WNUT `creative-work` noise (movie titles, product names). The combined training set comprised ~37,435 examples.
 
@@ -530,15 +521,15 @@ graph TD
 
 V1 demonstrated a clean 100% pass rate on standard CoNLL-style entities (persons, organizations, locations from Western news). Its failure on domain entities was total:
 
-| Category | Test Cases | Pass Rate |
-|---|---|---|
-| Standard NER (CoNLL-style) | 4 | 100% |
-| Energy Commodities | 5 | 0% |
-| Geopolitical Organizations | 4 | 25% |
-| Financial Instruments | 4 | 25% |
-| Infrastructure | 3 | 33% |
-| Edge Cases | 5 | 60% |
-| **Total** | **25** | **40%** |
+| Category                   | Test Cases | Pass Rate |
+| -------------------------- | ---------- | --------- |
+| Standard NER (CoNLL-style) | 4          | 100%      |
+| Energy Commodities         | 5          | 0%        |
+| Geopolitical Organizations | 4          | 25%       |
+| Financial Instruments      | 4          | 25%       |
+| Infrastructure             | 3          | 33%       |
+| Edge Cases                 | 5          | 60%       |
+| **Total**                  | **25**     | **40%**   |
 
 **Failure mode distribution:**
 
@@ -550,15 +541,15 @@ Entity partially recognized              2    13%
 
 Representative failures:
 
-| Input | Expected | V1 Output |
-|---|---|---|
-| `Brent crude` | B-COMMODITY I-COMMODITY | O O |
-| `WTI` | B-COMMODITY | O |
-| `OPEC+` | B-ORG | O (tokenizer splits "OPEC+") |
-| `Nord Stream 2` | B-ORG I-ORG I-ORG | B-LOC I-LOC O |
-| `Henry Hub` | B-COMMODITY I-COMMODITY | B-LOC I-LOC |
-| `Basel III` | B-ORG I-ORG | O O |
-| `SOFR` | B-COMMODITY | O |
+| Input           | Expected                | V1 Output                    |
+| --------------- | ----------------------- | ---------------------------- |
+| `Brent crude`   | B-COMMODITY I-COMMODITY | O O                          |
+| `WTI`           | B-COMMODITY             | O                            |
+| `OPEC+`         | B-ORG                   | O (tokenizer splits "OPEC+") |
+| `Nord Stream 2` | B-ORG I-ORG I-ORG       | B-LOC I-LOC O                |
+| `Henry Hub`     | B-COMMODITY I-COMMODITY | B-LOC I-LOC                  |
+| `Basel III`     | B-ORG I-ORG             | O O                          |
+| `SOFR`          | B-COMMODITY             | O                            |
 
 **Root causes:**
 
@@ -576,15 +567,15 @@ V1's metrics on the generic validation corpus (0.81 F1) were deceptive. They mea
 
 V2 addressed this by expanding the taxonomy to 59 entity types, covering:
 
-| Domain | New Types (examples) |
-|---|---|
+| Domain                 | New Types (examples)                                                               |
+| ---------------------- | ---------------------------------------------------------------------------------- |
 | Financial institutions | `CENTRAL_BANK`, `HEDGE_FUND`, `RATING_AGENCY`, `EXCHANGE`, `FINANCIAL_INSTITUTION` |
-| Energy-specific | `ENERGY_COMPANY`, `TRADING_HUB`, `PIPELINE`, `REFINERY`, `GRID` |
-| Corporate events | `M_AND_A`, `IPO`, `EARNINGS_EVENT`, `CORPORATE_ACTION` |
-| Risk & regulation | `SANCTION`, `TECH_REGULATION`, `DISRUPTION`, `GEOPOLITICAL_EVENT` |
-| Technology | `AI_MODEL`, `SEMICONDUCTOR`, `TECH_COMPANY` |
-| Logistics | `SHIPPING_VESSEL`, `REGION` |
-| Macro | `MACRO_INDICATOR`, `MONETARY_POLICY` |
+| Energy-specific        | `ENERGY_COMPANY`, `TRADING_HUB`, `PIPELINE`, `REFINERY`, `GRID`                    |
+| Corporate events       | `M_AND_A`, `IPO`, `EARNINGS_EVENT`, `CORPORATE_ACTION`                             |
+| Risk & regulation      | `SANCTION`, `TECH_REGULATION`, `DISRUPTION`, `GEOPOLITICAL_EVENT`                  |
+| Technology             | `AI_MODEL`, `SEMICONDUCTOR`, `TECH_COMPANY`                                        |
+| Logistics              | `SHIPPING_VESSEL`, `REGION`                                                        |
+| Macro                  | `MACRO_INDICATOR`, `MONETARY_POLICY`                                               |
 
 The organizational principle: **entities that serve different downstream use cases must be distinct types.** A `CENTRAL_BANK` mention triggers monetary policy analysis. A `HEDGE_FUND` mention triggers flow analysis. A generic `FINANCIAL_INSTITUTION` triggers neither with specificity. The taxonomy is downstream-consumer-driven, not ontologically derived.
 
@@ -644,12 +635,12 @@ This handles subword tokenization edge cases (`OPEC+`, `Nord Stream 2`, `U.S.`) 
 
 **Dataset composition:**
 
-| Source | Volume | Notes |
-|---|---|---|
-| GDELT + trafilatura | Variable | Boolean energy/geopolitics query filter |
-| RSS (Reuters/Bloomberg/OilPrice) | ~400–600 chars/article | High precision, lower volume |
-| HuggingFace Hub (Reuters pretraining) | ~97K qualifying articles | Dominant source by volume |
-| **Final split** | 9,200 train / 1,150 val / 1,150 test | 80/10/10 |
+| Source                                | Volume                               | Notes                                   |
+| ------------------------------------- | ------------------------------------ | --------------------------------------- |
+| GDELT + trafilatura                   | Variable                             | Boolean energy/geopolitics query filter |
+| RSS (Reuters/Bloomberg/OilPrice)      | ~400–600 chars/article               | High precision, lower volume            |
+| HuggingFace Hub (Reuters pretraining) | ~97K qualifying articles             | Dominant source by volume               |
+| **Final split**                       | 9,200 train / 1,150 val / 1,150 test | 80/10/10                                |
 
 **Known risks of LLM labeling:**
 
@@ -717,6 +708,7 @@ The RTX 3050's 4GB VRAM budget forced a tight memory envelope. DistilBERT at `ma
 - FP16 mixed precision — halves tensor storage footprint with negligible precision loss on NER tasks
 
 FP16 mixed precision with PyTorch/HuggingFace `Trainer` uses the following runtime pattern:
+
 ```
 Forward pass: FP16 tensors (half-precision activations)
 Loss computation: FP32 (full precision for numerical stability)
@@ -751,21 +743,21 @@ For V1 on the RTX 3050, gradient checkpointing was the difference between fittin
 
 ### 10.4 Full Training Configuration Summary
 
-| Parameter | V1 (RTX 3050) | V2 NER (T4) | CLS Head (T4) |
-|---|---|---|---|
-| GPU | RTX 3050 4GB | T4 16GB | T4 16GB |
-| Batch size (device) | 8 | 16 | 32 |
-| Gradient accumulation | 2× (eff. 16) | 1× | 1× |
-| Max sequence length | 128 | 512 | 128 |
-| FP16 | Yes | Yes | Yes |
-| Gradient checkpointing | Yes | No | No |
-| Warmup steps | 500 | 10% of total | 500 |
-| Learning rate | 2e-5 | 2e-5 | 2e-5 |
-| Weight decay | 0.01 | 0.01 | 0.01 |
-| Grad clip norm | 1.0 | 1.0 | 1.0 |
-| Epochs | 3 | 5 | 10 |
-| Optimizer | AdamW | AdamW | AdamW |
-| Best model selection | F1 on val | F1 on val | micro-F1 on val |
+| Parameter              | V1 (RTX 3050) | V2 NER (T4)  | CLS Head (T4)   |
+| ---------------------- | ------------- | ------------ | --------------- |
+| GPU                    | RTX 3050 4GB  | T4 16GB      | T4 16GB         |
+| Batch size (device)    | 8             | 16           | 32              |
+| Gradient accumulation  | 2× (eff. 16)  | 1×           | 1×              |
+| Max sequence length    | 128           | 512          | 128             |
+| FP16                   | Yes           | Yes          | Yes             |
+| Gradient checkpointing | Yes           | No           | No              |
+| Warmup steps           | 500           | 10% of total | 500             |
+| Learning rate          | 2e-5          | 2e-5         | 2e-5            |
+| Weight decay           | 0.01          | 0.01         | 0.01            |
+| Grad clip norm         | 1.0           | 1.0          | 1.0             |
+| Epochs                 | 3             | 5            | 10              |
+| Optimizer              | AdamW         | AdamW        | AdamW           |
+| Best model selection   | F1 on val     | F1 on val    | micro-F1 on val |
 
 ### 10.5 Memory Budget Analysis
 
@@ -789,32 +781,32 @@ The T4 provides comfortable headroom for V2 training without gradient checkpoint
 
 ### 11.1 V1 Hyperparameters
 
-| Hyperparameter | Value | Rationale |
-|---|---|---|
-| Optimizer | AdamW | Standard for transformers |
-| Learning rate | 2e-5 | Conservative fine-tuning rate |
-| Warmup steps | 500 | Prevents early training instability |
-| Weight decay | 0.01 | L2 regularization |
-| Max grad norm | 1.0 | Gradient clipping |
-| Epochs | 3 | Balanced convergence vs. overfitting |
-| Batch size (per device) | 8 | RTX 3050 4GB VRAM budget |
-| Gradient accumulation steps | 2 | Effective batch = 16 |
-| FP16 | Yes (CUDA) | Halves memory footprint |
-| Gradient checkpointing | Yes | Trades compute for memory |
-| Max sequence length | 128 | VRAM-constrained |
+| Hyperparameter              | Value      | Rationale                            |
+| --------------------------- | ---------- | ------------------------------------ |
+| Optimizer                   | AdamW      | Standard for transformers            |
+| Learning rate               | 2e-5       | Conservative fine-tuning rate        |
+| Warmup steps                | 500        | Prevents early training instability  |
+| Weight decay                | 0.01       | L2 regularization                    |
+| Max grad norm               | 1.0        | Gradient clipping                    |
+| Epochs                      | 3          | Balanced convergence vs. overfitting |
+| Batch size (per device)     | 8          | RTX 3050 4GB VRAM budget             |
+| Gradient accumulation steps | 2          | Effective batch = 16                 |
+| FP16                        | Yes (CUDA) | Halves memory footprint              |
+| Gradient checkpointing      | Yes        | Trades compute for memory            |
+| Max sequence length         | 128        | VRAM-constrained                     |
 
 ### 11.2 V2 Hyperparameters
 
-| Hyperparameter | V1 | V2 |
-|---|---|---|
-| Base model | `distilbert-base-uncased` | `distilbert-base-uncased` |
-| Max sequence length | 256 tokens | 512 tokens |
-| Learning rate | 2e-5 | 2e-5 |
-| Optimizer | AdamW | AdamW |
-| Weight decay | 0.01 | 0.01 |
-| Warmup ratio | 10% | 10% |
-| Epochs | 5 | 5 |
-| Precision | FP16 | FP16 |
+| Hyperparameter      | V1                        | V2                        |
+| ------------------- | ------------------------- | ------------------------- |
+| Base model          | `distilbert-base-uncased` | `distilbert-base-uncased` |
+| Max sequence length | 256 tokens                | 512 tokens                |
+| Learning rate       | 2e-5                      | 2e-5                      |
+| Optimizer           | AdamW                     | AdamW                     |
+| Weight decay        | 0.01                      | 0.01                      |
+| Warmup ratio        | 10%                       | 10%                       |
+| Epochs              | 5                         | 5                         |
+| Precision           | FP16                      | FP16                      |
 
 **Sequence length increase (256 → 512):** V1 truncated many financial news articles. Earnings call excerpts, regulatory filings, and long-form geopolitical analyses frequently exceed 256 tokens. V2 uses the full 512-token DistilBERT capacity. The cost is slightly higher memory usage during training; inference speed is unaffected for short inputs.
 
@@ -840,18 +832,18 @@ training_args = TrainingArguments(
 
 ### 11.3 Classification Head Training
 
-| Parameter | Value | Rationale |
-|---|---|---|
-| Base model | `QuantBridge/energy-intelligence-multitask-custom-ner` | Domain-adapted encoder |
-| Epochs | 10 | Sufficient for convergence on headline-length text |
-| Train batch size | 32 | T4 GPU (16GB VRAM) at seq_len=128 |
-| Learning rate | 2e-5 | Standard fine-tuning rate |
-| Warmup steps | 500 | ~6% of total steps |
-| Weight decay | 0.01 | L2 regularization |
-| Max grad norm | 1.0 | Gradient clipping |
-| Loss | BCEWithLogitsLoss | Multi-label independent binary prediction |
-| Best checkpoint | micro-F1 on validation | |
-| Precision | fp16 on GPU | |
+| Parameter        | Value                                                  | Rationale                                          |
+| ---------------- | ------------------------------------------------------ | -------------------------------------------------- |
+| Base model       | `QuantBridge/energy-intelligence-multitask-custom-ner` | Domain-adapted encoder                             |
+| Epochs           | 10                                                     | Sufficient for convergence on headline-length text |
+| Train batch size | 32                                                     | T4 GPU (16GB VRAM) at seq_len=128                  |
+| Learning rate    | 2e-5                                                   | Standard fine-tuning rate                          |
+| Warmup steps     | 500                                                    | ~6% of total steps                                 |
+| Weight decay     | 0.01                                                   | L2 regularization                                  |
+| Max grad norm    | 1.0                                                    | Gradient clipping                                  |
+| Loss             | BCEWithLogitsLoss                                      | Multi-label independent binary prediction          |
+| Best checkpoint  | micro-F1 on validation                                 |                                                    |
+| Precision        | fp16 on GPU                                            |                                                    |
 
 ### 11.4 Loss Behavior Under Label Imbalance
 
@@ -911,31 +903,31 @@ Classification results are reported on 40 real-world financial and energy news h
 
 Evaluated on the held-out test set (~1,150 records):
 
-| Entity Type | Precision | Recall | F1 | Support |
-|---|---|---|---|---|
-| `CENTRAL_BANK` | 0.963 | 0.951 | 0.957 | 84 |
-| `COUNTRY` | 0.941 | 0.933 | 0.937 | 312 |
-| `ENERGY_COMPANY` | 0.924 | 0.918 | 0.921 | 287 |
-| `COMMODITY` | 0.918 | 0.906 | 0.912 | 341 |
-| `REGULATORY_BODY` | 0.911 | 0.897 | 0.904 | 198 |
-| `TRADING_HUB` | 0.903 | 0.889 | 0.896 | 143 |
-| `SANCTION` | 0.887 | 0.864 | 0.875 | 176 |
-| `REGION` | 0.884 | 0.861 | 0.872 | 224 |
-| `EXECUTIVE` | 0.876 | 0.841 | 0.858 | 119 |
-| `FINANCIAL_INSTITUTION` | 0.871 | 0.847 | 0.859 | 201 |
-| `SEMICONDUCTOR` | 0.863 | 0.831 | 0.847 | 89 |
-| `SHIPPING_VESSEL` | 0.858 | 0.812 | 0.834 | 67 |
-| `M_AND_A` | 0.841 | 0.803 | 0.822 | 134 |
-| `EARNINGS_EVENT` | 0.827 | 0.791 | 0.809 | 112 |
-| `GEOPOLITICAL_EVENT` | 0.813 | 0.774 | 0.793 | 147 |
-| `TECH_REGULATION` | 0.801 | 0.763 | 0.782 | 94 |
-| `AI_MODEL` | 0.779 | 0.741 | 0.759 | 78 |
-| `DISRUPTION` | 0.762 | 0.718 | 0.739 | 103 |
-| `CORPORATE_ACTION` | 0.748 | 0.711 | 0.729 | 121 |
-| `MACRO_INDICATOR` | 0.719 | 0.682 | 0.700 | 86 |
-| **Overall** | **0.873** | **0.846** | **0.859** | — |
+| Entity Type             | Precision | Recall    | F1        | Support |
+| ----------------------- | --------- | --------- | --------- | ------- |
+| `CENTRAL_BANK`          | 0.963     | 0.951     | 0.957     | 84      |
+| `COUNTRY`               | 0.941     | 0.933     | 0.937     | 312     |
+| `ENERGY_COMPANY`        | 0.924     | 0.918     | 0.921     | 287     |
+| `COMMODITY`             | 0.918     | 0.906     | 0.912     | 341     |
+| `REGULATORY_BODY`       | 0.911     | 0.897     | 0.904     | 198     |
+| `TRADING_HUB`           | 0.903     | 0.889     | 0.896     | 143     |
+| `SANCTION`              | 0.887     | 0.864     | 0.875     | 176     |
+| `REGION`                | 0.884     | 0.861     | 0.872     | 224     |
+| `EXECUTIVE`             | 0.876     | 0.841     | 0.858     | 119     |
+| `FINANCIAL_INSTITUTION` | 0.871     | 0.847     | 0.859     | 201     |
+| `SEMICONDUCTOR`         | 0.863     | 0.831     | 0.847     | 89      |
+| `SHIPPING_VESSEL`       | 0.858     | 0.812     | 0.834     | 67      |
+| `M_AND_A`               | 0.841     | 0.803     | 0.822     | 134     |
+| `EARNINGS_EVENT`        | 0.827     | 0.791     | 0.809     | 112     |
+| `GEOPOLITICAL_EVENT`    | 0.813     | 0.774     | 0.793     | 147     |
+| `TECH_REGULATION`       | 0.801     | 0.763     | 0.782     | 94      |
+| `AI_MODEL`              | 0.779     | 0.741     | 0.759     | 78      |
+| `DISRUPTION`            | 0.762     | 0.718     | 0.739     | 103     |
+| `CORPORATE_ACTION`      | 0.748     | 0.711     | 0.729     | 121     |
+| `MACRO_INDICATOR`       | 0.719     | 0.682     | 0.700     | 86      |
+| **Overall**             | **0.873** | **0.846** | **0.859** | —       |
 
-*Note: Only the 20 most populated entity types shown. Low-frequency types (< 50 test examples) have unreliable F1 estimates.*
+_Note: Only the 20 most populated entity types shown. Low-frequency types (< 50 test examples) have unreliable F1 estimates._
 
 **Financial signal interpretation of key entity F1 scores:**
 
@@ -951,18 +943,18 @@ Evaluated on the held-out test set (~1,150 records):
 
 Both models evaluated on the same test subset, with V2's finer taxonomy remapped to the 9 original V1 entity types for fair comparison:
 
-| Entity Type | V1 F1 | V2 F1 | Delta |
-|---|---|---|---|
-| `COMMODITY` | 0.891 | 0.912 | +2.1 |
-| `COUNTRY` | 0.882 | 0.937 | +5.5 |
-| `COMPANY` (→ ENERGY_COMPANY) | 0.863 | 0.921 | +5.8 |
-| `ORGANIZATION` (→ REGULATORY_BODY) | 0.827 | 0.904 | +7.7 |
-| `LOCATION` (→ REGION) | 0.841 | 0.872 | +3.1 |
-| `MARKET` (→ TRADING_HUB) | 0.801 | 0.896 | +9.5 |
-| `INFRASTRUCTURE` | 0.773 | 0.818 | +4.5 |
-| `PERSON` (→ EXECUTIVE) | 0.812 | 0.858 | +4.6 |
-| `EVENT` (→ GEOPOLITICAL_EVENT) | 0.744 | 0.793 | +4.9 |
-| **Overall** | **0.826** | **0.879** | **+5.3** |
+| Entity Type                        | V1 F1     | V2 F1     | Delta    |
+| ---------------------------------- | --------- | --------- | -------- |
+| `COMMODITY`                        | 0.891     | 0.912     | +2.1     |
+| `COUNTRY`                          | 0.882     | 0.937     | +5.5     |
+| `COMPANY` (→ ENERGY_COMPANY)       | 0.863     | 0.921     | +5.8     |
+| `ORGANIZATION` (→ REGULATORY_BODY) | 0.827     | 0.904     | +7.7     |
+| `LOCATION` (→ REGION)              | 0.841     | 0.872     | +3.1     |
+| `MARKET` (→ TRADING_HUB)           | 0.801     | 0.896     | +9.5     |
+| `INFRASTRUCTURE`                   | 0.773     | 0.818     | +4.5     |
+| `PERSON` (→ EXECUTIVE)             | 0.812     | 0.858     | +4.6     |
+| `EVENT` (→ GEOPOLITICAL_EVENT)     | 0.744     | 0.793     | +4.9     |
+| **Overall**                        | **0.826** | **0.879** | **+5.3** |
 
 All shared entity types improved. The most significant gain is `MARKET → TRADING_HUB` (+9.5 F1 points). V1 conflated market references with location references; the finer V2 taxonomy forced cleaner training examples, which paradoxically produced better boundaries even on entities that remap to the same coarse V1 category. This is the clearest evidence that **label granularity improves boundary learning** even for the coarser representation.
 
@@ -1020,24 +1012,24 @@ V1 completely missed all three vessel names — the model had no `SHIPPING_VESSE
 
 Aggregate statistics from inference on 40 real-world financial headlines:
 
-| Metric | Value |
-|---|---|
-| Total entity spans extracted | 86 |
-| Average entities per headline | 2.15 |
-| Entity types that fired | 7 / 9 |
+| Metric                         | Value                  |
+| ------------------------------ | ---------------------- |
+| Total entity spans extracted   | 86                     |
+| Average entities per headline  | 2.15                   |
+| Entity types that fired        | 7 / 9                  |
 | Entity types that did not fire | PERSON, INFRASTRUCTURE |
 
 Entity type frequency breakdown:
 
-| Entity Type | Count | % of total | Notable examples |
-|---|---|---|---|
-| COMMODITY | 20 | 23.3% | oil, crude, LNG, natural gas, methane, aluminum, hydrogen |
-| COUNTRY | 19 | 22.1% | Saudi Arabia, Russia, China, Iran, Venezuela, Poland |
-| ORGANIZATION | 15 | 17.4% | OPEC+, Federal Reserve, IMF, G7, FERC, IAEA |
-| COMPANY | 15 | 17.4% | ExxonMobil, Gazprom, Maersk, Shell, BP, Equinor |
-| LOCATION | 14 | 16.3% | Strait of Hormuz, Red Sea, Panama Canal, Gulf of Mexico |
-| EVENT | 2 | 2.3% | Hurricane Ida, Houthi attacks |
-| MARKET | 1 | 1.2% | S&P 500 |
+| Entity Type  | Count | % of total | Notable examples                                          |
+| ------------ | ----- | ---------- | --------------------------------------------------------- |
+| COMMODITY    | 20    | 23.3%      | oil, crude, LNG, natural gas, methane, aluminum, hydrogen |
+| COUNTRY      | 19    | 22.1%      | Saudi Arabia, Russia, China, Iran, Venezuela, Poland      |
+| ORGANIZATION | 15    | 17.4%      | OPEC+, Federal Reserve, IMF, G7, FERC, IAEA               |
+| COMPANY      | 15    | 17.4%      | ExxonMobil, Gazprom, Maersk, Shell, BP, Equinor           |
+| LOCATION     | 14    | 16.3%      | Strait of Hormuz, Red Sea, Panama Canal, Gulf of Mexico   |
+| EVENT        | 2     | 2.3%       | Hurricane Ida, Houthi attacks                             |
+| MARKET       | 1     | 1.2%       | S&P 500                                                   |
 
 `COMMODITY` is the strongest-performing type — 20 extractions spanning pure energy commodities and adjacent tradeable goods. This demonstrates successful domain adaptation: generic NER systems would produce zero output for this category.
 
@@ -1051,17 +1043,17 @@ Entity type frequency breakdown:
 
 Average sigmoid scores across 40 test headlines, grouped by the intended domain of each headline:
 
-| Domain Group | energy | politics | trade | stocks | regulation | shipping | macro | business | technology | risk |
-|---|---|---|---|---|---|---|---|---|---|---|
-| ENERGY | 0.09 | 0.28 | 0.07 | 0.02 | 0.02 | 0.05 | **0.38** | 0.26 | 0.17 | 0.02 |
-| GEOPOLITICAL | 0.06 | 0.30 | 0.04 | 0.01 | 0.01 | 0.03 | 0.30 | 0.19 | 0.12 | 0.01 |
-| SHIPPING | 0.07 | 0.31 | 0.04 | 0.01 | 0.01 | 0.05 | 0.28 | 0.23 | 0.14 | 0.01 |
-| TRADE | 0.06 | 0.30 | 0.05 | 0.01 | 0.01 | 0.04 | 0.31 | 0.23 | 0.17 | 0.01 |
-| MACRO | 0.07 | 0.30 | 0.06 | 0.02 | 0.02 | 0.04 | **0.36** | 0.22 | 0.17 | 0.02 |
-| CORPORATE | 0.09 | 0.33 | 0.05 | 0.02 | 0.02 | 0.04 | **0.37** | 0.23 | 0.16 | 0.02 |
-| REGULATION | 0.04 | 0.26 | 0.03 | 0.01 | 0.01 | 0.02 | 0.32 | 0.26 | 0.18 | 0.01 |
-| TECHNOLOGY | 0.07 | **0.37** | 0.04 | 0.01 | 0.01 | 0.04 | 0.28 | 0.17 | 0.14 | 0.01 |
-| RISK | 0.08 | 0.32 | 0.04 | 0.01 | 0.01 | 0.04 | **0.37** | 0.19 | 0.14 | 0.01 |
+| Domain Group | energy | politics | trade | stocks | regulation | shipping | macro    | business | technology | risk |
+| ------------ | ------ | -------- | ----- | ------ | ---------- | -------- | -------- | -------- | ---------- | ---- |
+| ENERGY       | 0.09   | 0.28     | 0.07  | 0.02   | 0.02       | 0.05     | **0.38** | 0.26     | 0.17       | 0.02 |
+| GEOPOLITICAL | 0.06   | 0.30     | 0.04  | 0.01   | 0.01       | 0.03     | 0.30     | 0.19     | 0.12       | 0.01 |
+| SHIPPING     | 0.07   | 0.31     | 0.04  | 0.01   | 0.01       | 0.05     | 0.28     | 0.23     | 0.14       | 0.01 |
+| TRADE        | 0.06   | 0.30     | 0.05  | 0.01   | 0.01       | 0.04     | 0.31     | 0.23     | 0.17       | 0.01 |
+| MACRO        | 0.07   | 0.30     | 0.06  | 0.02   | 0.02       | 0.04     | **0.36** | 0.22     | 0.17       | 0.02 |
+| CORPORATE    | 0.09   | 0.33     | 0.05  | 0.02   | 0.02       | 0.04     | **0.37** | 0.23     | 0.16       | 0.02 |
+| REGULATION   | 0.04   | 0.26     | 0.03  | 0.01   | 0.01       | 0.02     | 0.32     | 0.26     | 0.18       | 0.01 |
+| TECHNOLOGY   | 0.07   | **0.37** | 0.04  | 0.01   | 0.01       | 0.04     | 0.28     | 0.17     | 0.14       | 0.01 |
+| RISK         | 0.08   | 0.32     | 0.04  | 0.01   | 0.01       | 0.04     | **0.37** | 0.19     | 0.14       | 0.01 |
 
 **Threshold sensitivity:**
 
@@ -1084,18 +1076,18 @@ stocks:      0/40 headlines
 
 Average sigmoid scores across all 40 headlines:
 
-| Label | Avg score | Rank |
-|---|---|---|
-| macro | 0.323 | 1st |
-| politics | 0.307 | 2nd |
-| business | 0.219 | 3rd |
-| technology | 0.155 | 4th |
-| energy | 0.070 | 5th |
-| trade | 0.046 | 6th |
-| shipping | 0.038 | 7th |
-| stocks | 0.015 | 8th |
-| regulation | 0.013 | 9th |
-| risk | 0.013 | 10th |
+| Label      | Avg score | Rank |
+| ---------- | --------- | ---- |
+| macro      | 0.323     | 1st  |
+| politics   | 0.307     | 2nd  |
+| business   | 0.219     | 3rd  |
+| technology | 0.155     | 4th  |
+| energy     | 0.070     | 5th  |
+| trade      | 0.046     | 6th  |
+| shipping   | 0.038     | 7th  |
+| stocks     | 0.015     | 8th  |
+| regulation | 0.013     | 9th  |
+| risk       | 0.013     | 10th |
 
 The gap between `business` (0.219) and `energy` (0.070) is a 3× difference in average confidence — despite energy being the central domain of the system.
 
@@ -1224,6 +1216,7 @@ The system converts a raw text input into a structured, machine-readable signal 
 ```
 
 The structured output is directly queryable. A downstream system can:
+
 - Filter for all headlines where `COUNTRY == "Russia"` and `active_topics` contains `"energy"`
 - Alert when `SANCTION` entities are extracted with score > 0.85
 - Aggregate `COMMODITY` extractions over time to build a commodity mention frequency series
@@ -1255,11 +1248,11 @@ The following describes how specific entity and topic combinations generate acti
 
 At `max_length=128`, the system processes:
 
-| Hardware | Single-thread throughput | Batched throughput (batch=32) |
-|---|---|---|
-| CPU (single core) | ~50–100 headlines/sec | ~200–400 headlines/sec |
-| NVIDIA T4 (GPU) | N/A | ~2,000–4,000 headlines/sec |
-| NVIDIA A100 (GPU) | N/A | ~8,000–15,000 headlines/sec |
+| Hardware          | Single-thread throughput | Batched throughput (batch=32) |
+| ----------------- | ------------------------ | ----------------------------- |
+| CPU (single core) | ~50–100 headlines/sec    | ~200–400 headlines/sec        |
+| NVIDIA T4 (GPU)   | N/A                      | ~2,000–4,000 headlines/sec    |
+| NVIDIA A100 (GPU) | N/A                      | ~8,000–15,000 headlines/sec   |
 
 For a real-time financial news pipeline processing 10,000–50,000 headlines per day, CPU inference is more than sufficient. For intraday event detection requiring sub-second latency windows, T4 batched inference provides ample headroom.
 
@@ -1268,6 +1261,7 @@ The single forward pass design is critical here. A two-model pipeline (separate 
 ### 16.4 Downstream Integration Patterns
 
 **Pattern 1: Event-Driven Signal Generation**
+
 ```
 [News stream] → [NER + Classification] → [Event router]
                                               ↓
@@ -1277,6 +1271,7 @@ The single forward pass design is critical here. A two-model pipeline (separate 
 ```
 
 **Pattern 2: Real-Time Risk Monitoring**
+
 ```
 [News stream] → [NER + Classification] → [SANCTION/DISRUPTION filter]
                                               ↓
@@ -1285,6 +1280,7 @@ The single forward pass design is critical here. A two-model pipeline (separate 
 ```
 
 **Pattern 3: Macro Intelligence Briefing**
+
 ```
 [News stream] → [NER + Classification] → [CENTRAL_BANK + macro filter]
                                               ↓
@@ -1295,6 +1291,7 @@ The single forward pass design is critical here. A two-model pipeline (separate 
 ```
 
 **Pattern 4: Knowledge Graph Population**
+
 ```
 [News stream] → [NER + Classification] → [Entity relationship extractor]
                                               ↓
@@ -1307,13 +1304,13 @@ The single forward pass design is critical here. A two-model pipeline (separate 
 
 ### 16.5 Comparison to Alternative Approaches
 
-| Approach | Latency | Cost | Entity Granularity | Topic Coverage | Production Suitability |
-|---|---|---|---|---|---|
-| **Manual analyst tagging** | Hours | Very high (FTE) | Human-level | Human-level | Not scalable |
-| **LLM inference (GPT-4o) at query time** | 1–3 sec/input | ~$0.01–0.05/input | Excellent | Excellent | Too slow/expensive at scale |
-| **General-purpose NER (spaCy/OntoNotes)** | <5ms | Near-zero | Poor (no domain entities) | None | Usable but blind to domain |
-| **QuantBridge multitask model** | 10–20ms | Near-zero | Strong (9 types, NER F1=0.859) | Partial (5 of 10 labels reliable) | Production-ready for NER; classification needs data improvement |
-| **Full V2 (59-type) NER only** | 10–20ms | Near-zero | Excellent (59 types, F1=0.859) | None | Production-ready for entity extraction |
+| Approach                                  | Latency       | Cost              | Entity Granularity             | Topic Coverage                    | Production Suitability                                          |
+| ----------------------------------------- | ------------- | ----------------- | ------------------------------ | --------------------------------- | --------------------------------------------------------------- |
+| **Manual analyst tagging**                | Hours         | Very high (FTE)   | Human-level                    | Human-level                       | Not scalable                                                    |
+| **LLM inference (GPT-4o) at query time**  | 1–3 sec/input | ~$0.01–0.05/input | Excellent                      | Excellent                         | Too slow/expensive at scale                                     |
+| **General-purpose NER (spaCy/OntoNotes)** | <5ms          | Near-zero         | Poor (no domain entities)      | None                              | Usable but blind to domain                                      |
+| **QuantBridge multitask model**           | 10–20ms       | Near-zero         | Strong (9 types, NER F1=0.859) | Partial (5 of 10 labels reliable) | Production-ready for NER; classification needs data improvement |
+| **Full V2 (59-type) NER only**            | 10–20ms       | Near-zero         | Excellent (59 types, F1=0.859) | None                              | Production-ready for entity extraction                          |
 
 The multitask model occupies the correct cost/latency/quality tradeoff for a real-time financial intelligence pipeline. GPT-4o at inference time provides higher quality but at a cost structure that makes it impractical for high-volume automated pipelines. The multitask model's limitations are in classification coverage — a data problem, not an architecture problem — and are fixable without architectural change.
 
@@ -1520,6 +1517,6 @@ Input: US Treasury imposed new sanctions on three Iranian tankers in the Strait 
 
 ---
 
-*Model: `QuantBridge/energy-news-classifier-ner-multitask` — Apache 2.0 License*
-*Data pipeline: `QuantBridge/custom_ner_data_generation` — Apache 2.0 License*
-*Hardware: NVIDIA RTX 3050 (4GB VRAM) for V1 baseline; NVIDIA T4 (16GB VRAM) for V2 NER and classification training*
+_Model: `QuantBridge/energy-news-classifier-ner-multitask` — Apache 2.0 License_
+_Data pipeline: `QuantBridge/custom_ner_data_generation` — Apache 2.0 License_
+_Hardware: NVIDIA RTX 3050 (4GB VRAM) for V1 baseline; NVIDIA T4 (16GB VRAM) for V2 NER and classification training_

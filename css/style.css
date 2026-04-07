@@ -1324,6 +1324,10 @@ body.dark-mode .post-content tbody tr:nth-child(even) {
     font-size: 0.8rem;
     border-radius: 8px;
   }
+
+  .resume-viewer {
+    min-height: 82vh;
+  }
 }
 
 /* ===== TOP NAV ===== */
@@ -1537,7 +1541,7 @@ body.dark-mode .lab-tag-bar {
 /* ===== RESUME ===== */
 
 .resume-actions {
-  margin-bottom: 14px;
+  margin-bottom: 18px;
 }
 
 .resume-viewer-shell {
@@ -1546,11 +1550,12 @@ body.dark-mode .lab-tag-bar {
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 8px 26px rgba(15, 23, 42, 0.08);
 }
 
 .resume-viewer {
   width: 100%;
-  min-height: 78vh;
+  min-height: 90vh;
   border: 0;
   display: block;
 }
@@ -1558,6 +1563,7 @@ body.dark-mode .lab-tag-bar {
 body.dark-mode .resume-viewer-shell {
   background: #1e293b;
   border-color: #374151;
+  box-shadow: none;
 }
 
 /* ===== TOPNAV MOBILE ===== */
