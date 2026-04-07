@@ -42,6 +42,96 @@
         });
       })();
     </script>
+    <script>
+      (function () {
+        function escapeHtml(value) {
+          return value
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+        }
+
+        function toDiagramContainers() {
+          var blocks = document.querySelectorAll("pre code.language-mermaid");
+          blocks.forEach(function (code) {
+            var source = (code.textContent || "").trim();
+            if (!source) return;
+
+            var container = document.createElement("div");
+            container.className = "mermaid-diagram";
+            container.setAttribute("data-mermaid-source", source);
+
+            var pre = code.parentElement;
+            if (pre && pre.parentElement) {
+              pre.parentElement.replaceChild(container, pre);
+            }
+          });
+        }
+
+        function loadMermaidScript() {
+          if (window.mermaid) return Promise.resolve();
+          return new Promise(function (resolve, reject) {
+            var script = document.createElement("script");
+            script.src =
+              "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js";
+            script.async = true;
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+          });
+        }
+
+        async function renderMermaid() {
+          toDiagramContainers();
+
+          var diagrams = document.querySelectorAll(".mermaid-diagram");
+          if (!diagrams.length) return;
+
+          try {
+            await loadMermaidScript();
+          } catch (error) {
+            return;
+          }
+
+          var isDark = document.body.classList.contains("dark-mode");
+          window.mermaid.initialize({
+            startOnLoad: false,
+            securityLevel: "loose",
+            theme: isDark ? "dark" : "default"
+          });
+
+          for (var index = 0; index < diagrams.length; index += 1) {
+            var diagram = diagrams[index];
+            var source = diagram.getAttribute("data-mermaid-source") || "";
+            var renderId =
+              "mermaid-" + index + "-" + (isDark ? "dark" : "light");
+
+            try {
+              var rendered = await window.mermaid.render(renderId, source);
+              diagram.innerHTML = rendered.svg;
+            } catch (error) {
+              diagram.innerHTML =
+                "<pre><code>" + escapeHtml(source) + "</code></pre>";
+            }
+          }
+        }
+
+        function renderLater() {
+          window.setTimeout(renderMermaid, 30);
+        }
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", renderMermaid);
+        } else {
+          renderMermaid();
+        }
+
+        var toggle = document.getElementById("dark-mode-toggle");
+        if (toggle) {
+          toggle.addEventListener("click", renderLater);
+        }
+      })();
+    </script>
   </body>
 </html>
 
