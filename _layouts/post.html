@@ -11,6 +11,19 @@ layout: default
   <article class="post-content">
   {{ content }}
   </article>
+  <script>
+    (function () {
+      var post = document.querySelector(".post-content");
+      if (!post) return;
+      var firstHeading = post.querySelector("h1");
+      if (!firstHeading) return;
+      var pageTitle = {{ page.title | jsonify }};
+      var headingText = (firstHeading.textContent || "").trim();
+      if (headingText && pageTitle && headingText.toLowerCase() === String(pageTitle).trim().toLowerCase()) {
+        firstHeading.remove();
+      }
+    })();
+  </script>
 
   <!-- mathjax -->
   {% if page.mathjax %}

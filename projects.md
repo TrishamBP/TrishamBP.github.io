@@ -121,13 +121,30 @@ permalink: /projects/
     Curated GitHub projects focused on production AI systems, backend architecture, applied machine learning, and research-to-deployment workflows.
   </p>
 
-  <h3 class="projects-subtitle">Core AI / Backend Projects</h3>
-  <div class="projects-shell" data-github-user="TrishamBP" data-project-group="core">
+  <h3 class="projects-subtitle">AI and Backend Projects</h3>
+
+  <h4 class="projects-category-title">Advanced AI / LLM / NLP</h4>
+  <div class="projects-grid-shell" data-github-user="TrishamBP" data-project-group="advanced_ai_nlp">
     <p class="projects-status">Loading curated GitHub projects...</p>
   </div>
 
-  <h3 class="projects-subtitle">Additional Systems / Backend</h3>
-  <div class="projects-grid-shell" data-github-user="TrishamBP" data-project-group="additional">
+  <h4 class="projects-category-title">Computer Vision / Deep Learning</h4>
+  <div class="projects-grid-shell" data-github-user="TrishamBP" data-project-group="cv_deeplearning">
+    <p class="projects-status">Loading curated GitHub projects...</p>
+  </div>
+
+  <h4 class="projects-category-title">Applied AI Systems</h4>
+  <div class="projects-grid-shell" data-github-user="TrishamBP" data-project-group="applied_ai_systems">
+    <p class="projects-status">Loading curated GitHub projects...</p>
+  </div>
+
+  <h4 class="projects-category-title">Backend / Systems</h4>
+  <div class="projects-grid-shell" data-github-user="TrishamBP" data-project-group="backend_systems">
+    <p class="projects-status">Loading curated GitHub projects...</p>
+  </div>
+
+  <h3 class="projects-subtitle">Additional AI &amp; Systems Projects</h3>
+  <div class="projects-grid-shell" data-github-user="TrishamBP" data-project-group="additional_ai_systems">
     <p class="projects-status">Loading curated GitHub projects...</p>
   </div>
 
@@ -136,9 +153,11 @@ permalink: /projects/
     <p class="projects-status">Loading curated GitHub projects...</p>
   </div>
 
-  <p class="research-intro projects-note">
-    I have also worked on multiple smaller projects in numerical methods, optimization, classical machine learning, and deep learning foundations.
-  </p>
+  <div class="projects-note-block" aria-label="Project depth note">
+    <p class="research-intro projects-note">
+      Across my project portfolio, I have consistently worked on numerical methods, optimization-driven systems, classical machine learning pipelines, and deep learning fundamentals. This experimentation mindset has helped me move from solver-level engineering and mathematical modeling to modern LLM, retrieval, and multi-task AI systems while maintaining strong rigor in implementation, evaluation, and system design tradeoffs.
+    </p>
+  </div>
 </section>
 
 <script src="{{ '/assets/js/projects-carousel.js' | relative_url }}"></script>
