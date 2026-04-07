@@ -102,46 +102,54 @@ title: Home
   <h2 id="about-me-heading" class="section-title">About Me</h2>
   <h3 class="about-journey-title">My Journey</h3>
   <p>
-    I grew up in a middle-class family in India where life was practical,
-    structured, and mostly offline. Technology was never the center of our
-    home, and I did not grow up with early access to computers. My first plan
-    was medicine, but I eventually entered mechanical engineering in a tier-3
-    college in my hometown. The environment was traditional and theory-heavy,
-    with little exposure to modern software tools, so I had to learn how to
-    build momentum in a system that was not designed for industry readiness.
+    I did not start in computer science. I grew up in a practical, non-technical
+    environment, studied mechanical engineering, and learned early how to work
+    through constraints instead of waiting for ideal conditions. My first years
+    were shaped by rigorous math, physical modeling, and systems thinking rather
+    than software tooling. That foundation still defines how I approach AI
+    today: as an engineering discipline that must be measurable, reliable, and
+    useful under real operating conditions.
   </p>
   <p>
-    The turning point came when I left for my master's at Worcester Polytechnic
-    Institute. In thermofluids and computational modeling courses, I began using
-    Python and MATLAB for numerical simulation, data analysis, and visualization.
-    Writing code to solve real engineering problems changed how I thought about
-    work: programming was no longer abstract, it was a direct way to model
-    reality, test assumptions, and make decisions from data.
+    The turning point came during graduate work, where simulation and
+    computational analysis pushed me into programming through Python and MATLAB.
+    What began as scientific computing expanded into data workflows: ingestion,
+    cleaning, transformation, validation, and feature construction. I moved from
+    solving isolated equations to designing repeatable data pipelines, including
+    time-series processing and schema decisions that could survive changing
+    product requirements instead of breaking every quarter.
   </p>
   <p>
-    During my graduate and early research years, I moved deeper into modeling,
-    optimization, and predictive methods. My work in thermal and biomedical
-    simulation exposed me to regression and machine learning workflows before the
-    current LLM wave. At the same time, I self-studied software foundations:
-    JavaScript, backend architecture, databases, and system design. That phase
-    was less about credentials and more about deliberate repetition, building
-    projects, and learning how production systems fail.
+    From there, I transitioned deliberately into model development and ML
+    engineering. I trained classical ML and deep learning systems, then moved
+    into transformer fine-tuning for NER, classification, and domain-adapted NLP
+    tasks. I built dataset pipelines myself, including scraping, curation,
+    weak-supervision loops, and LLM-assisted labeling to scale annotation
+    quality. As model complexity increased, I started working directly with
+    training trade-offs at the systems layer: sequence length vs batch size,
+    memory limits on NVIDIA T4-class GPUs, fp16 mixed precision, and gradient
+    accumulation to keep training stable and efficient.
   </p>
   <p>
-    In 2022, I transitioned fully into software engineering and later into AI
-    systems. Today I work at the intersection of backend engineering and applied
-    ML: Node.js services, API-first architectures, distributed processing, and
-    NLP pipelines for entity extraction, classification, and retrieval workflows.
-    A major part of my current work is domain-specific multi-task NLP systems
-    where NER and classification are designed together to produce structured
-    signals usable in real production decisions across finance and geopolitics.
+    Today I work end to end across AI systems, backend infrastructure, and
+    deployment. On the data side, I design ETL/ELT workflows with orchestration
+    patterns used in tools like Airflow and Dagster, and I work with warehouse
+    and lake-oriented stacks such as BigQuery and Snowflake. On the modeling
+    side, I build and evaluate multi-stage pipelines, including multi-task
+    architectures that combine entity extraction and classification in one
+    production flow. On the serving side, I ship these systems through FastAPI
+    and Node.js microservices, queue-backed execution with Celery and RabbitMQ,
+    and cloud deployments on AWS/GCP with Docker and CI/CD.
   </p>
   <p>
-    I think of my career as an iterative build process. I did not start with an
-    ideal roadmap, but I learned to convert constraints into leverage, close
-    gaps quickly, and keep shipping. The direction ahead is clear to me:
-    engineer dependable AI systems that combine research depth with production
-    discipline, and keep getting better through focused, compounding work.
+    The systems I care most about are the ones that close the loop from raw data
+    to production decisions: recruiter AI with RAG, multilingual CV parsing,
+    domain-specific NLP for finance and geopolitical signals, and agentic
+    orchestration where retrieval, inference, and API actions must work
+    together. My long-term direction is clear: build full-stack AI systems where
+    data engineering, model training, GPU-aware optimization, and backend
+    reliability are treated as one integrated engineering problem, not separate
+    silos.
   </p>
 </section>
 
