@@ -50,6 +50,41 @@ title: Home
       </a>
       <a
         class="social-link"
+        href="https://huggingface.co/QuantBridge"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Hugging Face"
+      >
+        <img
+          class="social-link-logo"
+          src="{{ '/images/skills/huggingface.svg' | relative_url }}"
+          alt="Hugging Face"
+        />
+      </a>
+      <a
+        class="social-link"
+        href="https://leetcode.com/u/TrishamBP/"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="LeetCode"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path
+            d="M14.2 3.2a1 1 0 0 1 1.4 0l5.1 5.1a1 1 0 1 1-1.4 1.4L14.2 4.6a1 1 0 0 1 0-1.4Z"
+          ></path>
+          <path
+            d="M12.2 6.8a1 1 0 0 1 1.4 0l5 5a1 1 0 0 1 0 1.4l-5 5a1 1 0 0 1-1.4-1.4l4.3-4.3-4.3-4.3a1 1 0 0 1 0-1.4Z"
+          ></path>
+          <path
+            d="M4 12a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1Z"
+          ></path>
+          <path
+            d="M8.5 3.6a1 1 0 0 1 .7 1.2l-1.6 6a1 1 0 0 1-1.9-.5l1.6-6a1 1 0 0 1 1.2-.7Z"
+          ></path>
+        </svg>
+      </a>
+      <a
+        class="social-link"
         href="mailto:trishampatil@gmail.com"
         aria-label="Email"
       >
@@ -243,6 +278,32 @@ title: Home
             enterprise licensing deal.
           </li>
         </ul>
+        <div class="experience-highlight">
+          <img
+            class="experience-highlight-image"
+            src="{{ '/assets/images/fullstack/flipped-ai.jpg' | relative_url }}"
+            alt="Flipped.ai platform preview"
+          />
+          <div class="experience-highlight-content">
+            <h4>Flipped.ai Platform Spotlight</h4>
+            <p>
+              Built core backend and AI orchestration flows for Flipped.ai's recruiting platform,
+              including candidate extraction pipelines, recruiter workflow APIs, and production AI
+              integration patterns across asynchronous services.
+            </p>
+            <p>
+              Stack emphasis: Node.js, Express.js, FastAPI services, PostgreSQL/MongoDB persistence,
+              and queue-driven workers for resilient document and inference workloads.
+            </p>
+            <a
+              class="article-read-more"
+              href="https://flipped.ai/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Visit Flipped.ai &rarr;</a
+            >
+          </div>
+        </div>
       </div>
     </article>
 
@@ -393,38 +454,38 @@ title: Home
     });
   })();
 </script>
-<section class="content-section projects-section" aria-labelledby="projects-heading">
-  <h2 id="projects-heading" class="section-title">AI Systems &amp; Projects</h2>
-  <div class="projects-shell"></div>
-</section>
-
-<section class="content-section stats-section" aria-labelledby="stats-profiles-heading">
-  <h2 id="stats-profiles-heading" class="section-title">Stats &amp; Profiles</h2>
+<section class="content-section stats-section" aria-labelledby="stats-heading">
+  <h2 id="stats-heading" class="section-title">Stats</h2>
   <p class="research-intro">
-    Snapshot of engineering activity, model work, and problem-solving consistency across core technical platforms.
+    Engineering and model activity snapshots.
   </p>
 
   <div class="stats-grid">
     <article class="stats-card" aria-labelledby="github-stats-heading">
       <h3 id="github-stats-heading">GitHub</h3>
-      <p class="stats-links">
-        <a href="https://github.com/TrishamBP" target="_blank" rel="noopener noreferrer">github.com/TrishamBP</a>
-      </p>
+      <div class="stats-brand">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path
+            d="M12 0a12 12 0 0 0-3.79 23.39c.6.1.82-.25.82-.57v-2c-3.34.73-4.04-1.42-4.04-1.42-.55-1.38-1.33-1.74-1.33-1.74-1.08-.74.08-.73.08-.73 1.2.08 1.83 1.2 1.83 1.2 1.06 1.79 2.8 1.27 3.48.97.1-.76.42-1.28.76-1.57-2.67-.3-5.47-1.32-5.47-5.86 0-1.3.47-2.36 1.22-3.2-.12-.3-.53-1.52.12-3.16 0 0 1-.32 3.3 1.22a11.4 11.4 0 0 1 6 0c2.3-1.54 3.3-1.22 3.3-1.22.66 1.64.25 2.86.12 3.16.76.84 1.22 1.9 1.22 3.2 0 4.56-2.8 5.56-5.48 5.86.43.37.82 1.1.82 2.23v3.3c0 .32.22.68.83.57A12 12 0 0 0 12 0Z"
+          ></path>
+        </svg>
+        <span>Engineering Activity</span>
+      </div>
       <div class="stats-media-grid">
         <div class="stats-media-item">
           <img
             class="stats-image"
             data-stats-image
-            alt="GitHub contribution graph"
-            src="https://ghchart.rshah.org/TrishamBP"
+            alt="GitHub stats card"
+            src="https://github-readme-stats.vercel.app/api?username=TrishamBP&show_icons=true&hide_border=true&include_all_commits=true&count_private=true"
           />
         </div>
         <div class="stats-media-item">
           <img
             class="stats-image"
             data-stats-image
-            alt="GitHub stats card"
-            src="https://github-readme-stats.vercel.app/api?username=TrishamBP&show_icons=true&hide_border=true&include_all_commits=true&count_private=true&rank_icon=github"
+            alt="GitHub streak stats"
+            src="https://github-readme-streak-stats.herokuapp.com/?user=TrishamBP&hide_border=true"
           />
         </div>
       </div>
@@ -432,44 +493,150 @@ title: Home
 
     <article class="stats-card" aria-labelledby="huggingface-heading">
       <h3 id="huggingface-heading">Hugging Face Models</h3>
-      <p class="stats-links">
-        <a href="https://huggingface.co/QuantBridge" target="_blank" rel="noopener noreferrer">huggingface.co/QuantBridge</a>
-      </p>
-      <ul class="hf-model-list">
-        <li>
-          <a href="https://huggingface.co/QuantBridge/distilbert-energy-intelligence-multitask-custom-ner" target="_blank" rel="noopener noreferrer">
-            distilbert-energy-intelligence-multitask-custom-ner
-          </a>
-          <p>Domain-adapted token classification model for financial and energy NER.</p>
-          <span class="stats-pill">24 downloads</span>
-        </li>
-        <li>
-          <a href="https://huggingface.co/QuantBridge/energy-intelligence-multitask-custom-ner" target="_blank" rel="noopener noreferrer">
-            energy-intelligence-multitask-custom-ner
-          </a>
-          <p>Expanded taxonomy NER model with stronger sector-specific coverage.</p>
-          <span class="stats-pill">19 downloads</span>
-        </li>
-        <li>
-          <a href="https://huggingface.co/QuantBridge/energy-news-classifier-ner-multitask" target="_blank" rel="noopener noreferrer">
-            energy-news-classifier-ner-multitask
-          </a>
-          <p>Final multitask system combining entity extraction and multi-label classification.</p>
-        </li>
-      </ul>
-    </article>
-
-    <article class="stats-card" aria-labelledby="leetcode-heading">
-      <h3 id="leetcode-heading">LeetCode</h3>
-      <p class="stats-links">
-        <a href="https://leetcode.com/u/TrishamBP/" target="_blank" rel="noopener noreferrer">leetcode.com/u/TrishamBP/</a>
-      </p>
-      <div class="leetcode-card">
-        <p><strong>Username:</strong> TrishamBP</p>
-        <p>Active DSA and problem-solving profile used to maintain algorithmic fluency.</p>
+      <div class="stats-brand">
+        <img
+          class="stats-brand-logo"
+          src="{{ '/images/skills/huggingface.svg' | relative_url }}"
+          alt="Hugging Face logo"
+        />
+        <span>Model Activity</span>
+      </div>
+      <div class="hf-model-cards">
+        <a class="hf-model-card" href="https://huggingface.co/QuantBridge/energy-news-classifier-ner-multitask" target="_blank" rel="noopener noreferrer">
+          <h4>QuantBridge/energy-news-classifier-ner-multitask</h4>
+          <p>Token Classification | 67M | Updated recently</p>
+        </a>
+        <a class="hf-model-card" href="https://huggingface.co/QuantBridge/energy-intelligence-multitask-custom-ner" target="_blank" rel="noopener noreferrer">
+          <h4>QuantBridge/energy-intelligence-multitask-custom-ner</h4>
+          <p>Token Classification | 66.4M | Updated 5 days ago | Downloads: 19</p>
+        </a>
+        <a class="hf-model-card" href="https://huggingface.co/QuantBridge/distilbert-energy-intelligence-multitask" target="_blank" rel="noopener noreferrer">
+          <h4>QuantBridge/distilbert-energy-intelligence-multitask</h4>
+          <p>Token Classification | 66.5M | Updated 5 days ago | Downloads: 24</p>
+        </a>
+        <a class="hf-model-card" href="https://huggingface.co/QuantBridge/energy-news-classifier" target="_blank" rel="noopener noreferrer">
+          <h4>QuantBridge/energy-news-classifier</h4>
+          <p>Text Classification | Updated 6 days ago</p>
+        </a>
       </div>
     </article>
   </div>
+</section>
+
+<section class="content-section fullstack-section" aria-labelledby="fullstack-heading">
+  <h2 id="fullstack-heading" class="section-title">Full Stack Projects</h2>
+  <p class="research-intro">
+    Production-grade platforms built with frontend product focus, backend systems rigor, and reliable data architecture.
+  </p>
+
+  <div class="fullstack-grid">
+    <article class="fullstack-card">
+      <img
+        class="fullstack-image"
+        src="{{ '/assets/images/fullstack/dhoklahouse.jpg' | relative_url }}"
+        alt="Dhokla House website preview"
+      />
+      <div class="fullstack-content">
+        <h3>Dhokla House</h3>
+        <div class="fullstack-tags">
+          <span>React.js</span>
+          <span>Node.js</span>
+          <span>Express.js</span>
+          <span>PostgreSQL</span>
+          <span>MongoDB</span>
+        </div>
+        <h4>Overview</h4>
+        <p>
+          Dhokla House is a production food-ordering and brand platform focused on menu discovery,
+          order intent capture, and conversion-optimized customer journeys.
+        </p>
+        <h4>Frontend</h4>
+        <p>
+          Built with React.js using modular UI components and responsive layouts to keep browsing,
+          add-to-cart, and checkout interactions fast and predictable across mobile and desktop.
+        </p>
+        <h4>Backend</h4>
+        <p>
+          Node.js + Express.js APIs handle product/menu retrieval, customer interaction flows,
+          and transactional order endpoints with clean route separation and service-layer logic.
+        </p>
+        <h4>Data Layer</h4>
+        <p>
+          PostgreSQL supports structured order lifecycle and reporting use cases, while MongoDB
+          is used for flexible content and interaction metadata where schema evolution is frequent.
+        </p>
+        <h4>Engineering Decisions</h4>
+        <p>
+          The stack balances rapid UI iteration with backend reliability: React for composability,
+          Express for operational simplicity, and hybrid persistence to separate transactional and
+          flexible document workloads.
+        </p>
+        <a
+          class="article-read-more"
+          href="https://dhoklahouse.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Visit Site &rarr;</a
+        >
+      </div>
+    </article>
+
+    <article class="fullstack-card">
+      <img
+        class="fullstack-image"
+        src="{{ '/assets/images/fullstack/apnidukaan.jpg' | relative_url }}"
+        alt="Apni Dukaan website preview"
+      />
+      <div class="fullstack-content">
+        <h3>Apni Dukaan</h3>
+        <div class="fullstack-tags">
+          <span>React.js</span>
+          <span>Node.js</span>
+          <span>Express.js</span>
+          <span>PostgreSQL</span>
+          <span>MongoDB</span>
+        </div>
+        <h4>Overview</h4>
+        <p>
+          Apni Dukaan is an e-commerce platform focused on catalog exploration, customer checkout,
+          and operational order management in a production environment.
+        </p>
+        <h4>Frontend</h4>
+        <p>
+          React.js drives the storefront experience with reusable catalog, product-detail,
+          and checkout components designed to reduce friction in purchase flows.
+        </p>
+        <h4>Backend</h4>
+        <p>
+          Express APIs provide product, cart, and order endpoints with clear separation between
+          read-heavy catalog routes and transactional checkout/order update routes.
+        </p>
+        <h4>Data & Scalability</h4>
+        <p>
+          PostgreSQL is aligned with consistency-sensitive order transactions and reporting, while
+          MongoDB supports flexible product metadata and content extensions. This split supports
+          incremental scaling as catalog and interaction volume grow.
+        </p>
+        <h4>Engineering Decisions</h4>
+        <p>
+          Architecture prioritizes maintainability and latency control: compact service boundaries,
+          predictable API contracts, and stack choices optimized for full-stack iteration speed.
+        </p>
+        <a
+          class="article-read-more"
+          href="https://apnidukaan.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Visit Site &rarr;</a
+        >
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="content-section projects-section" aria-labelledby="projects-heading">
+  <h2 id="projects-heading" class="section-title">AI Systems &amp; Projects</h2>
+  <div class="projects-shell"></div>
 </section>
 
 <section class="content-section articles-section" aria-labelledby="articles-heading">
