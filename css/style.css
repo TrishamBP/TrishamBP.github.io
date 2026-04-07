@@ -404,6 +404,109 @@ body.dark-mode .dark-mode-toggle .icon-moon {
   margin-top: 44px;
 }
 
+.stats-section {
+  margin-top: 44px;
+}
+
+.stats-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.stats-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+
+.stats-card h3 {
+  margin: 0 0 8px;
+  font-size: 1.18rem;
+  color: #111827;
+}
+
+.stats-links {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+}
+
+.stats-links a {
+  color: #1d4ed8;
+  text-decoration: none;
+}
+
+.stats-links a:hover {
+  text-decoration: underline;
+}
+
+.stats-media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.stats-media-item {
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f8fafc;
+}
+
+.stats-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.hf-model-list {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.hf-model-list li {
+  margin-bottom: 12px;
+}
+
+.hf-model-list li:last-child {
+  margin-bottom: 0;
+}
+
+.hf-model-list a {
+  color: #111827;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.hf-model-list a:hover {
+  text-decoration: underline;
+}
+
+.hf-model-list p {
+  margin: 6px 0 8px;
+  color: #4b5563;
+}
+
+.stats-pill {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid #cbd5e1;
+  background: #eef2ff;
+  color: #1e3a8a;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.leetcode-card p {
+  margin: 0 0 8px;
+  color: #374151;
+}
+
+.leetcode-card p:last-child {
+  margin-bottom: 0;
+}
+
 .articles-grid {
   display: grid;
   gap: 16px;
@@ -521,7 +624,8 @@ body.dark-mode .timeline-right p {
 
 body.dark-mode .skills-category,
 body.dark-mode .timeline-item,
-body.dark-mode .article-card {
+body.dark-mode .article-card,
+body.dark-mode .stats-card {
   background-color: #1e293b;
   color: #ffffff;
 }
@@ -555,6 +659,30 @@ body.dark-mode .dark-mode-toggle:hover {
 
 body.dark-mode .article-read-more {
   color: #93c5fd;
+}
+
+body.dark-mode .stats-links a {
+  color: #93c5fd;
+}
+
+body.dark-mode .hf-model-list p,
+body.dark-mode .leetcode-card p {
+  color: #e5e7eb;
+}
+
+body.dark-mode .hf-model-list a {
+  color: #ffffff;
+}
+
+body.dark-mode .stats-media-item {
+  border-color: #334155;
+  background: #0f172a;
+}
+
+body.dark-mode .stats-pill {
+  border-color: #334155;
+  background: #0f172a;
+  color: #bfdbfe;
 }
 
 body.dark-mode .research-intro,

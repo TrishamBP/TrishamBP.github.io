@@ -398,6 +398,80 @@ title: Home
   <div class="projects-shell"></div>
 </section>
 
+<section class="content-section stats-section" aria-labelledby="stats-profiles-heading">
+  <h2 id="stats-profiles-heading" class="section-title">Stats &amp; Profiles</h2>
+  <p class="research-intro">
+    Snapshot of engineering activity, model work, and problem-solving consistency across core technical platforms.
+  </p>
+
+  <div class="stats-grid">
+    <article class="stats-card" aria-labelledby="github-stats-heading">
+      <h3 id="github-stats-heading">GitHub</h3>
+      <p class="stats-links">
+        <a href="https://github.com/TrishamBP" target="_blank" rel="noopener noreferrer">github.com/TrishamBP</a>
+      </p>
+      <div class="stats-media-grid">
+        <div class="stats-media-item">
+          <img
+            class="stats-image"
+            data-stats-image
+            alt="GitHub contribution graph"
+            src="https://ghchart.rshah.org/TrishamBP"
+          />
+        </div>
+        <div class="stats-media-item">
+          <img
+            class="stats-image"
+            data-stats-image
+            alt="GitHub stats card"
+            src="https://github-readme-stats.vercel.app/api?username=TrishamBP&show_icons=true&hide_border=true&include_all_commits=true&count_private=true&rank_icon=github"
+          />
+        </div>
+      </div>
+    </article>
+
+    <article class="stats-card" aria-labelledby="huggingface-heading">
+      <h3 id="huggingface-heading">Hugging Face Models</h3>
+      <p class="stats-links">
+        <a href="https://huggingface.co/QuantBridge" target="_blank" rel="noopener noreferrer">huggingface.co/QuantBridge</a>
+      </p>
+      <ul class="hf-model-list">
+        <li>
+          <a href="https://huggingface.co/QuantBridge/distilbert-energy-intelligence-multitask-custom-ner" target="_blank" rel="noopener noreferrer">
+            distilbert-energy-intelligence-multitask-custom-ner
+          </a>
+          <p>Domain-adapted token classification model for financial and energy NER.</p>
+          <span class="stats-pill">24 downloads</span>
+        </li>
+        <li>
+          <a href="https://huggingface.co/QuantBridge/energy-intelligence-multitask-custom-ner" target="_blank" rel="noopener noreferrer">
+            energy-intelligence-multitask-custom-ner
+          </a>
+          <p>Expanded taxonomy NER model with stronger sector-specific coverage.</p>
+          <span class="stats-pill">19 downloads</span>
+        </li>
+        <li>
+          <a href="https://huggingface.co/QuantBridge/energy-news-classifier-ner-multitask" target="_blank" rel="noopener noreferrer">
+            energy-news-classifier-ner-multitask
+          </a>
+          <p>Final multitask system combining entity extraction and multi-label classification.</p>
+        </li>
+      </ul>
+    </article>
+
+    <article class="stats-card" aria-labelledby="leetcode-heading">
+      <h3 id="leetcode-heading">LeetCode</h3>
+      <p class="stats-links">
+        <a href="https://leetcode.com/u/TrishamBP/" target="_blank" rel="noopener noreferrer">leetcode.com/u/TrishamBP/</a>
+      </p>
+      <div class="leetcode-card">
+        <p><strong>Username:</strong> TrishamBP</p>
+        <p>Active DSA and problem-solving profile used to maintain algorithmic fluency.</p>
+      </div>
+    </article>
+  </div>
+</section>
+
 <section class="content-section articles-section" aria-labelledby="articles-heading">
   <h2 id="articles-heading" class="section-title">Technical Articles &amp; Blog</h2>
 
@@ -498,6 +572,14 @@ title: Home
 
 <script>
   (function () {
+    var statsImages = document.querySelectorAll("[data-stats-image]");
+    statsImages.forEach(function (img) {
+      img.addEventListener("error", function () {
+        var wrapper = img.closest(".stats-media-item");
+        if (wrapper) wrapper.remove();
+      });
+    });
+
     return;
   })();
 </script>
