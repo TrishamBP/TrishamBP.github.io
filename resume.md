@@ -22,7 +22,7 @@ permalink: /resume/
   <div class="resume-viewer-shell">
     <iframe
       class="resume-viewer"
-      src="{{ '/public/resume/Trisham_Patil_Resume.pdf' | relative_url }}"
+      src="{{ '/public/resume/Trisham_Patil_Resume.pdf#view=FitH&zoom=page-width' | relative_url }}"
       title="Trisham Patil Resume PDF"
       loading="lazy"
     ></iframe>
