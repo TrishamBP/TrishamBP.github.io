@@ -141,6 +141,13 @@ body.dark-mode .dark-mode-toggle .icon-moon {
   max-width: 78ch;
 }
 
+.about-journey-title {
+  margin: 0 0 10px;
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: #374151;
+}
+
 .timeline {
   position: relative;
   margin-top: 18px;
@@ -312,6 +319,12 @@ body.dark-mode .dark-mode-toggle .icon-moon {
   gap: 12px;
 }
 
+.projects-status {
+  margin: 0;
+  color: #4b5563;
+  font-style: italic;
+}
+
 .projects-carousel {
   flex: 1;
   display: flex;
@@ -378,8 +391,62 @@ body.dark-mode .dark-mode-toggle .icon-moon {
 
 .project-repo-meta {
   display: flex;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 10px;
   min-height: 22px;
+  margin-top: 8px;
+  color: #4b5563;
+  font-size: 0.9rem;
+}
+
+.project-stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.project-updated {
+  color: #6b7280;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.project-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: #f8fafc;
+  color: #374151;
+  font-size: 0.8rem;
+  line-height: 1.2;
+}
+
+.project-cta {
+  margin-top: auto;
+  align-self: flex-start;
+  padding: 7px 12px;
+  border-radius: 8px;
+  border: 1px solid #2563eb;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.project-cta:hover {
+  background: #1d4ed8;
+  color: #ffffff;
+  border-color: #1d4ed8;
 }
 
 .project-github-link {
@@ -715,6 +782,7 @@ body.dark-mode .hero-intro,
 body.dark-mode .hero-interests,
 body.dark-mode .timeline-year,
 body.dark-mode .timeline-university,
+body.dark-mode .about-journey-title,
 body.dark-mode .article-date,
 body.dark-mode .project-card p,
 body.dark-mode .article-preview,
@@ -748,6 +816,32 @@ body.dark-mode .article-pagination span {
 body.dark-mode .project-image-placeholder {
   background: #1f2937;
   border-color: #475569;
+  color: #ffffff;
+}
+
+body.dark-mode .projects-status,
+body.dark-mode .project-updated {
+  color: #e5e7eb;
+}
+
+body.dark-mode .project-stars {
+  color: #f8fafc;
+}
+
+body.dark-mode .project-tag {
+  border-color: #475569;
+  background: #0f172a;
+  color: #e5e7eb;
+}
+
+body.dark-mode .project-cta {
+  border-color: #60a5fa;
+  background: #1e3a8a;
+  color: #dbeafe;
+}
+
+body.dark-mode .project-cta:hover {
+  background: #2563eb;
   color: #ffffff;
 }
 
