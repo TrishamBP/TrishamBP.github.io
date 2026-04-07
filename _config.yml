@@ -26,4 +26,4 @@ paginate_path: "/page:num/"
 collections:
   research:
     output: true
-    permalink: /research/:name/
+    permalink: /research-articles/:name/
