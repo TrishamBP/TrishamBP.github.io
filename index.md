@@ -100,22 +100,48 @@ title: Home
 
 <section class="content-section about-section" aria-labelledby="about-me-heading">
   <h2 id="about-me-heading" class="section-title">About Me</h2>
+  <h3 class="about-journey-title">My Journey</h3>
   <p>
-    I am an AI and backend engineer focused on building AI-native systems, ML
-    pipelines, and scalable backend infrastructure. My path into software began
-    after a Mechanical Engineering degree from the University of Pune (2019),
-    and deepened during graduate studies at Worcester Polytechnic Institute,
-    where computational coursework introduced me to Python-driven simulation,
-    numerical analysis, and data processing.
+    I grew up in a middle-class family in India where life was practical,
+    structured, and mostly offline. Technology was never the center of our
+    home, and I did not grow up with early access to computers. My first plan
+    was medicine, but I eventually entered mechanical engineering in a tier-3
+    college in my hometown. The environment was traditional and theory-heavy,
+    with little exposure to modern software tools, so I had to learn how to
+    build momentum in a system that was not designed for industry readiness.
   </p>
   <p>
-    During PhD research in computational fluid dynamics and thermal modeling, I
-    gained early exposure to machine learning and predictive modeling, which
-    led me to transition fully into software engineering in 2022. Since then, I
-    have worked across backend systems and AI engineering, with a strong focus
-    on LLM applications, RAG pipelines, and production-ready AI infrastructure;
-    I am currently pursuing an MTech in Artificial Intelligence and Machine
-    Learning at BITS Pilani to strengthen my research and theoretical foundation.
+    The turning point came when I left for my master's at Worcester Polytechnic
+    Institute. In thermofluids and computational modeling courses, I began using
+    Python and MATLAB for numerical simulation, data analysis, and visualization.
+    Writing code to solve real engineering problems changed how I thought about
+    work: programming was no longer abstract, it was a direct way to model
+    reality, test assumptions, and make decisions from data.
+  </p>
+  <p>
+    During my graduate and early research years, I moved deeper into modeling,
+    optimization, and predictive methods. My work in thermal and biomedical
+    simulation exposed me to regression and machine learning workflows before the
+    current LLM wave. At the same time, I self-studied software foundations:
+    JavaScript, backend architecture, databases, and system design. That phase
+    was less about credentials and more about deliberate repetition, building
+    projects, and learning how production systems fail.
+  </p>
+  <p>
+    In 2022, I transitioned fully into software engineering and later into AI
+    systems. Today I work at the intersection of backend engineering and applied
+    ML: Node.js services, API-first architectures, distributed processing, and
+    NLP pipelines for entity extraction, classification, and retrieval workflows.
+    A major part of my current work is domain-specific multi-task NLP systems
+    where NER and classification are designed together to produce structured
+    signals usable in real production decisions across finance and geopolitics.
+  </p>
+  <p>
+    I think of my career as an iterative build process. I did not start with an
+    ideal roadmap, but I learned to convert constraints into leverage, close
+    gaps quickly, and keep shipping. The direction ahead is clear to me:
+    engineer dependable AI systems that combine research depth with production
+    discipline, and keep getting better through focused, compounding work.
   </p>
 </section>
 
@@ -644,7 +670,9 @@ title: Home
 
 <section class="content-section projects-section" aria-labelledby="projects-heading">
   <h2 id="projects-heading" class="section-title">AI Systems &amp; Projects</h2>
-  <div class="projects-shell"></div>
+  <div class="projects-shell" data-github-user="TrishamBP">
+    <p class="projects-status">Loading real GitHub projects...</p>
+  </div>
 </section>
 
 <section class="content-section articles-section" aria-labelledby="articles-heading">
@@ -758,3 +786,4 @@ title: Home
     return;
   })();
 </script>
+<script src="{{ '/assets/js/projects-carousel.js' | relative_url }}"></script>
