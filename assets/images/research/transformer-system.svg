@@ -1,0 +1,45 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720">
+  <defs>
+    <style>
+      .title { font: 700 34px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .label { font: 600 20px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .small { font: 500 16px 'Segoe UI', Arial, sans-serif; fill: #334155; }
+      .box { fill: #ffffff; stroke: #1e293b; stroke-width: 2; rx: 12; }
+      .arrow { stroke: #1d4ed8; stroke-width: 3; marker-end: url(#m); }
+    </style>
+    <marker id="m" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#1d4ed8"/>
+    </marker>
+  </defs>
+
+  <text x="50" y="60" class="title">Transformer Encoder for Domain NER + Classification</text>
+
+  <rect x="70" y="130" width="220" height="120" class="box"/>
+  <text x="95" y="175" class="label">Tokenization</text>
+  <text x="95" y="205" class="small">WordPiece, max_length=128/512</text>
+
+  <rect x="360" y="130" width="260" height="120" class="box"/>
+  <text x="390" y="175" class="label">Embedding + Positional</text>
+  <text x="390" y="205" class="small">Hidden size = 768</text>
+
+  <rect x="700" y="100" width="370" height="190" class="box"/>
+  <text x="730" y="145" class="label">DistilBERT Encoder (6 Layers)</text>
+  <text x="730" y="175" class="small">12 attention heads</text>
+  <text x="730" y="200" class="small">FFN dim = 3072</text>
+  <text x="730" y="225" class="small">~67M parameters</text>
+
+  <rect x="700" y="360" width="200" height="150" class="box"/>
+  <text x="730" y="410" class="label">NER Head</text>
+  <text x="730" y="440" class="small">Token logits</text>
+  <text x="730" y="465" class="small">BIO decode</text>
+
+  <rect x="950" y="360" width="200" height="150" class="box"/>
+  <text x="980" y="410" class="label">CLS Head</text>
+  <text x="980" y="440" class="small">Sigmoid multi-label</text>
+  <text x="980" y="465" class="small">Per-label thresholds</text>
+
+  <line x1="290" y1="190" x2="360" y2="190" class="arrow"/>
+  <line x1="620" y1="190" x2="700" y2="190" class="arrow"/>
+  <line x1="885" y1="290" x2="800" y2="360" class="arrow"/>
+  <line x1="930" y1="290" x2="1040" y2="360" class="arrow"/>
+</svg>

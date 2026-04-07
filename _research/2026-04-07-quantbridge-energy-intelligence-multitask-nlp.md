@@ -23,6 +23,8 @@ The final system demonstrates production viability for high-throughput structure
 
 ---
 
+![Hugging Face Logo](/images/skills/huggingface.svg)
+
 ## 1. Introduction
 
 Financial and geopolitical decision systems require structured machine-readable signals, not raw narrative text. A practical intelligence pipeline must answer at least two questions per document:
@@ -127,6 +129,8 @@ flowchart LR
   C3 --> F
   F --> Y["Structured output JSON"]
 ```
+
+![Transformer System Diagram](/assets/images/research/transformer-system.svg)
 
 ### 4.2 NER Subgraph
 
@@ -292,6 +296,8 @@ Runtime decomposition (observed):
 | Validation and threshold analysis | 25-35 min |
 | Checkpoint merge + packaging + smoke tests | 20-30 min |
 | **Total** | **~4 hours** |
+
+![GPU Runtime Profile](/assets/images/research/gpu-runtime-profile.svg)
 
 ### 7.1 V1 NER Training
 
@@ -642,7 +648,7 @@ The model outputs should be treated as a structured signal layer for downstream 
 from transformers import AutoTokenizer, AutoModel
 import torch
 
-# Replace with your exact multitask model class loader in your repo.
+# Use your production multitask model class loader.
 MODEL_ID = "QuantBridge/energy-news-classifier-ner-multitask"
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
@@ -933,32 +939,16 @@ label schema is correct; training balance for `technology/regulation` is insuffi
 - [QuantBridge/distilbert-energy-intelligence-multitask](https://huggingface.co/QuantBridge/distilbert-energy-intelligence-multitask)
 - [QuantBridge/energy-news-classifier](https://huggingface.co/QuantBridge/energy-news-classifier)
 
-## Appendix B: Representative Repository Structure
+## Appendix B: Hugging Face Deployment Notes
 
-```text
-custom_ner_classification_multitask/
-  src/
-    data/
-      loader.py
-      preprocessing.py
-      tokenization.py
-    model/
-      classifier.py
-      collator.py
-    training/
-      metrics.py
-      trainer_args.py
-      train.py
-  scripts/
-    build_multitask_model.py
-    push_multitask_to_hub.py
-  energy_intelligence_multitask/
-    configuration_energy_multitask.py
-    modeling_energy_multitask.py
-    model.safetensors
-  demo_multitask.py
-  gpu_train_classification.py
-```
+1. Publish tokenizer, config, and model weights as a single immutable version.
+2. Store threshold vectors and label maps with the same artifact version.
+3. Use model card sections for:
+   - training data scope,
+   - evaluation protocol,
+   - known failure classes,
+   - intended use constraints.
+4. Pin inference to explicit model revision hash in production services.
 
 ## Appendix C: Reproducibility Checklist
 
