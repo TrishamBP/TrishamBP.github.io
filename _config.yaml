@@ -14,6 +14,7 @@ header_pages:
   - about.md
   - projects.md
   - blog.md
+  - research.md
   - resume.md
 
 markdown: kramdown

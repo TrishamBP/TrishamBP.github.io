@@ -22,7 +22,7 @@ includelink: true
           Published: {{ post.date | date: "%B %-d, %Y" }}
         </p>
         {% if post.tags and post.tags.size > 0 %}
-          <p class="article-tags">Tags: {{ post.tags | join: " • " }}</p>
+          <p class="article-tags">Tags: {{ post.tags | join: " | " }}</p>
         {% endif %}
         <p class="article-preview">
           {% if post.description %}
