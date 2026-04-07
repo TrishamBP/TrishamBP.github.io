@@ -14,7 +14,8 @@ permalink: /projects/
     <article class="fullstack-card">
       <img
         class="fullstack-image"
-        src="{{ '/assets/images/fullstack/dhoklahouse.jpg' | relative_url }}"
+        src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fdhoklahouse.com?w=1400"
+        onerror="this.onerror=null;this.src='{{ '/assets/images/fullstack/dhoklahouse.jpg' | relative_url }}';"
         alt="Dhokla House website preview"
       />
       <div class="fullstack-content">
@@ -65,7 +66,8 @@ permalink: /projects/
     <article class="fullstack-card">
       <img
         class="fullstack-image"
-        src="{{ '/assets/images/fullstack/apnidukaan.jpg' | relative_url }}"
+        src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fapnidukaan.com?w=1400"
+        onerror="this.onerror=null;this.src='{{ '/assets/images/fullstack/apnidukaan.jpg' | relative_url }}';"
         alt="Apni Dukaan website preview"
       />
       <div class="fullstack-content">

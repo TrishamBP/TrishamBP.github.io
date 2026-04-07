@@ -14,6 +14,21 @@
     applied: "/assets/images/research/gpu-runtime-profile.svg"
   };
 
+  function repoOpenGraphImage(repoName) {
+    return "https://opengraph.githubassets.com/1/" + githubUser + "/" + repoName;
+  }
+
+  function projectLocalFallback(repoName, fallbackType) {
+    var name = (repoName || "").toLowerCase();
+    if (/yolo|football|vision|image|face/.test(name)) return "/assets/sportspredict.jpeg";
+    if (/translation|lstm|rnn|bigram|language|autocomplete|hmm|viterbi|autocorrect/.test(name)) return "/assets/rnn/charseq.jpeg";
+    if (/ner|multitask|classification|transformer|llm|fine[-_]?tuning|autoresearch/.test(name)) return "/assets/images/research/transformer-system.svg";
+    if (/rag|transcriber|marketing|insight/.test(name)) return "/assets/images/research/gpu-runtime-profile.svg";
+    if (/data|socket|django|nestjs|backend|blog/.test(name)) return "/assets/images/posts/cv-processing-architecture/end-to-end-system-architecture.png";
+    if (/equation|solver|genetic|math/.test(name)) return "/assets/objectdiscovery.jpeg";
+    return fallbackImages[fallbackType] || fallbackImages.nlp;
+  }
+
   var categoryConfig = {
     advanced_ai_nlp: [
       { name: "custom_ner_classification_training", highlights: ["Multitask learning", "NER + classification"] },
@@ -229,8 +244,7 @@
   }
 
   function resolveReadmeImage(repo, readme, fallbackType) {
-    var fallback = fallbackImages[fallbackType] || fallbackImages.nlp;
-    if (!readme) return fallback;
+    if (!readme) return repoOpenGraphImage(repo.name);
     var lines = readme.split(/\r?\n/);
 
     for (var i = 0; i < lines.length; i += 1) {
@@ -248,7 +262,7 @@
       var cleaned = raw.replace(/^\.\/+/, "").replace(/^\/+/, "");
       return "https://raw.githubusercontent.com/" + githubUser + "/" + repo.name + "/" + (repo.default_branch || "main") + "/" + cleaned;
     }
-    return fallback;
+    return repoOpenGraphImage(repo.name);
   }
 
   function createCard(project, mode) {
@@ -262,7 +276,7 @@
     image.loading = "lazy";
     image.decoding = "async";
     image.addEventListener("error", function () {
-      image.src = fallbackImages[project.fallbackType] || fallbackImages.nlp;
+      image.src = project.localFallback || fallbackImages[project.fallbackType] || fallbackImages.nlp;
     });
     card.appendChild(image);
 
@@ -369,6 +383,7 @@
     var readme = await fetchReadme(githubUser, repo.name);
     var source = [repo.name, repo.description || "", readme].join(" ");
     var fallbackType = forcedCategory || detectCategory(source);
+    var localFallback = projectLocalFallback(repo.name, fallbackType);
 
     return {
       name: repo.name,
@@ -381,6 +396,7 @@
       built: configItem && configItem.built ? configItem.built : "",
       purpose: configItem && configItem.purpose ? configItem.purpose : "",
       image: resolveReadmeImage(repo, readme, fallbackType),
+      localFallback: localFallback,
       fallbackType: fallbackType
     };
   }
