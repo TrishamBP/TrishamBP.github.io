@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Research Articles
-permalink: /research/
+permalink: /research-articles/
 includelink: true
 ---
 
@@ -37,6 +37,6 @@ includelink: true
   </div>
 
   {% if research_posts.size == 0 %}
-    <p>No research articles published yet.</p>
+    <p>Research articles are being prepared for publication.</p>
   {% endif %}
 </section>

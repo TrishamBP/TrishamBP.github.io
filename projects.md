@@ -116,10 +116,29 @@ permalink: /projects/
 </section>
 
 <section class="content-section projects-section" aria-labelledby="projects-heading">
-  <h2 id="projects-heading" class="section-title">AI Systems &amp; Projects</h2>
-  <div class="projects-shell" data-github-user="TrishamBP">
-    <p class="projects-status">Loading real GitHub projects...</p>
+  <h2 id="projects-heading" class="section-title">Backend &amp; AI Engineering</h2>
+  <p class="research-intro">
+    Curated GitHub projects focused on production AI systems, backend architecture, applied machine learning, and research-to-deployment workflows.
+  </p>
+
+  <h3 class="projects-subtitle">Core AI / Backend Projects</h3>
+  <div class="projects-shell" data-github-user="TrishamBP" data-project-group="core">
+    <p class="projects-status">Loading curated GitHub projects...</p>
   </div>
+
+  <h3 class="projects-subtitle">Additional Systems / Backend</h3>
+  <div class="projects-grid-shell" data-github-user="TrishamBP" data-project-group="additional">
+    <p class="projects-status">Loading curated GitHub projects...</p>
+  </div>
+
+  <h3 class="projects-subtitle">Masters Projects (2021-2022)</h3>
+  <div class="projects-grid-shell" data-github-user="TrishamBP" data-project-group="masters">
+    <p class="projects-status">Loading curated GitHub projects...</p>
+  </div>
+
+  <p class="research-intro projects-note">
+    I have also worked on multiple smaller projects in numerical methods, optimization, classical machine learning, and deep learning foundations.
+  </p>
 </section>
 
 <script src="{{ '/assets/js/projects-carousel.js' | relative_url }}"></script>

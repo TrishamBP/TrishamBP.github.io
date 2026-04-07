@@ -678,9 +678,9 @@ projects, blog, and research sections live on their own pages
 </section>
 
 <section class="content-section projects-section" aria-labelledby="projects-heading">
-  <h2 id="projects-heading" class="section-title">AI Systems &amp; Projects</h2>
-  <div class="projects-shell" data-github-user="TrishamBP">
-    <p class="projects-status">Loading real GitHub projects...</p>
+  <h2 id="projects-heading" class="section-title">Backend &amp; AI Engineering</h2>
+  <div class="projects-shell" data-github-user="TrishamBP" data-project-group="core">
+    <p class="projects-status">Loading curated GitHub projects...</p>
   </div>
 </section>
 
@@ -775,7 +775,7 @@ projects, blog, and research sections live on their own pages
     <p>No research articles published yet.</p>
   {% else %}
     <p style="margin-top: 14px;">
-      <a class="article-read-more" href="{{ '/research/' | relative_url }}">
+      <a class="article-read-more" href="{{ '/research-articles/' | relative_url }}">
         View all research articles &rarr;
       </a>
     </p>
