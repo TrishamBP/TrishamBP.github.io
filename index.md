@@ -489,6 +489,14 @@ title: Home
           />
         </div>
       </div>
+      <div class="stats-media-item stats-contribution-chart">
+        <img
+          class="stats-image"
+          data-stats-image
+          alt="GitHub contribution chart"
+          src="https://ghchart.rshah.org/TrishamBP"
+        />
+      </div>
     </article>
 
     <article class="stats-card" aria-labelledby="huggingface-heading">
