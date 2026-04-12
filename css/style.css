@@ -1091,6 +1091,19 @@ body.dark-mode .skill-badge {
   margin: 2rem 0;
 }
 
+.post-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.6rem auto;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+body.dark-mode .post-content img {
+  border-color: #334155;
+}
+
 .post-content pre,
 .post-content .highlight pre {
   display: block;
