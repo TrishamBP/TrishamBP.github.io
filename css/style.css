@@ -1639,16 +1639,16 @@ body.dark-mode .resume-viewer-shell {
   border-right: 1px solid #e5e7eb;
   background: #f8fafc;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  overflow: hidden;
+  padding: 12px;
 }
 
 .lab-paper-image {
   width: 100%;
-  height: 100%;
-  object-fit: contain;
+  height: auto;
   display: block;
+  object-fit: contain;
 }
 
 /* ── Fallback placeholder (shown when no image or image fails) ── */
