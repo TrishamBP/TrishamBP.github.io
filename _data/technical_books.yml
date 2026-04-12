@@ -41,7 +41,7 @@
 - id: ai-modern-approach
   title: "Artificial Intelligence: A Modern Approach"
   author: "Stuart Russell & Peter Norvig"
-  image: "/assets/technical_books/ArtificialIntelligence.jpeg"
+  image: "/assets/technical_books/artificial_intelligence.jpg"
   tags:
     - Search Algorithms
     - Adversarial Search
