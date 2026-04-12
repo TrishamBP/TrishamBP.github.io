@@ -185,6 +185,126 @@ permalink: /learning-lab/
               it taught me how to <em>engineer ML systems</em> that hold up under scale.
             </p>
 
+          {% elsif book.id == "ai-modern-approach" %}
+
+            <p class="lab-card-description">
+              This book built my foundation in how intelligent systems reason, plan, and act — long before
+              the era of neural networks and large language models. It covers the full landscape of classical
+              AI: uninformed and heuristic search (BFS, DFS, A*), adversarial game-tree search, constraint
+              satisfaction problems, propositional and first-order logic, and automated planning systems.
+              What stood out most was the formal treatment of <em>agents</em> — how they perceive their
+              environment through sensors, select actions through a decision function, and optimise towards
+              goals under uncertainty. This framework is not just historical; it directly informs modern
+              Agentic AI design, where the same loop of observation, reasoning, and action is implemented
+              by LLM-driven systems.
+            </p>
+            <p class="lab-card-description">
+              The probabilistic sections of the book were equally formative. Bayesian networks, hidden
+              Markov models, and decision-theoretic reasoning gave me a rigorous vocabulary for thinking
+              about uncertainty — one that translates directly into how modern ML systems handle ambiguous
+              or incomplete information. The coverage of planning under uncertainty, including Markov
+              Decision Processes, connected naturally to reinforcement learning and helped me see the
+              conceptual continuity between symbolic AI planning and neural policy learning.
+            </p>
+            <p class="lab-card-description">
+              Reading this book changed how I think about intelligence as an engineering problem. Before
+              LLMs, intelligence was modelled through structured reasoning, logical inference, and
+              goal-directed behaviour — and those design principles have not become obsolete. They have
+              been absorbed into the architecture of modern agent frameworks, tool-calling systems, and
+              planning pipelines. This book gave me the vocabulary to understand not just what modern AI
+              systems do, but why they are designed the way they are.
+            </p>
+
+          {% elsif book.id == "math-ml" %}
+
+            <p class="lab-card-description">
+              This book made the mathematical foundations behind machine learning and deep learning
+              intuitive, structured, and genuinely useful. Rather than treating mathematics as background
+              formalism, it positions it as the core language in which models are written. The coverage
+              spans linear algebra — vector spaces, linear maps, matrix decompositions, eigenvalues,
+              singular value decomposition — through to multivariate calculus and its applications to
+              gradient-based optimisation, and closes with a rigorous treatment of probability and
+              statistics from first principles.
+            </p>
+            <p class="lab-card-description">
+              What changed for me was realising that neural networks are, at their core, compositions of
+              parametrised matrix transformations with pointwise nonlinearities, and that concepts like
+              embeddings, attention, and principal component analysis are not separate techniques but
+              different facets of the same underlying linear algebra. Once the geometry of high-dimensional
+              spaces clicked — how projections work, what eigendecomposition means, why the SVD is
+              everywhere — the entire architecture of modern deep learning became easier to reason about
+              from first principles rather than by memorising formulas.
+            </p>
+            <p class="lab-card-description">
+              The sections on optimisation were particularly durable. Understanding gradient descent as
+              steepest descent in parameter space, the role of the Hessian in curvature, and why
+              convexity matters for convergence guarantees made training dynamics legible in a way that
+              no implementation tutorial could. This book sits at the intersection of theory and practice —
+              it does not just explain what the math is, but why it is the right way to think about
+              learning systems.
+            </p>
+
+          {% elsif book.id == "probability-statistics" %}
+
+            <p class="lab-card-description">
+              This book built my understanding of probability and statistical reasoning from first
+              principles — not as a set of formulas to apply, but as a coherent framework for reasoning
+              under uncertainty. It works through sample spaces, probability axioms, conditional
+              probability, and Bayes' theorem with the kind of rigour that forces you to understand what
+              you are actually computing, rather than following a recipe. The treatment of random
+              variables, expectation, variance, and common distributions is thorough and carefully
+              motivated, always connecting the abstract definition to what it means in practice.
+            </p>
+            <p class="lab-card-description">
+              The statistical inference sections were where the book paid off most directly. Estimation
+              theory — method of moments, maximum likelihood estimation, Bayesian estimation — gave me
+              a principled way to think about how models extract parameters from data and what
+              assumptions underlie those estimates. Understanding hypothesis testing, confidence
+              intervals, and significance not as black-box procedures but as direct applications of
+              probability theory removed a persistent conceptual fog that had previously made
+              statistical results feel arbitrary.
+            </p>
+            <p class="lab-card-description">
+              The broader shift this book produced was a change in how I interpret model behaviour.
+              Distributions, uncertainty, and calibration stopped being abstract concerns and became
+              concrete things I could reason about: why a model might be overconfident, what it means
+              for a prediction interval to be valid, how prior beliefs interact with observed evidence
+              in a Bayesian update. These ideas surface everywhere in machine learning — loss function
+              design, regularisation, probabilistic classifiers, generative models — and this book gave
+              me the mathematical foundation to engage with them honestly.
+            </p>
+
+          {% elsif book.id == "rl-introduction" %}
+
+            <p class="lab-card-description">
+              This book provides the definitive treatment of reinforcement learning — how agents learn
+              to make decisions through direct interaction with an environment, without labelled
+              supervision, by optimising for long-term cumulative reward. It builds from first principles:
+              the Markov Decision Process formalism, value functions, the Bellman equations, and the
+              distinction between policy evaluation and policy improvement. Every concept is introduced
+              with both mathematical precision and clear intuition, making it possible to follow the
+              derivations while never losing sight of what the agent is actually doing.
+            </p>
+            <p class="lab-card-description">
+              The core algorithmic contributions — dynamic programming, Monte Carlo methods, and
+              temporal-difference learning — are developed in sequence, each overcoming a limitation
+              of the last. Understanding Q-learning and SARSA as model-free TD methods, and seeing
+              how they connect to the broader framework of value-function approximation, gave me a
+              solid conceptual basis for the deep RL systems that followed. What stood out was how
+              learning is framed as sequential decision-making under uncertainty: the agent must
+              balance exploration (gathering information) against exploitation (using what it knows)
+              at every step.
+            </p>
+            <p class="lab-card-description">
+              This book directly bridges classical AI planning and modern intelligent systems. The
+              planning methods, actor-critic architectures, and function approximation ideas it
+              develops are the conceptual ancestors of PPO, RLHF, and the alignment techniques used
+              to train frontier language models. Reading this book changed how I think about the
+              relationship between optimisation objectives and agent behaviour — a perspective that
+              is increasingly essential as AI systems are deployed in real-world environments where
+              the reward signal is complex, delayed, or imperfectly specified.
+            </p>
+
           {% endif %}
 
           {% if book.tags and book.tags.size > 0 %}

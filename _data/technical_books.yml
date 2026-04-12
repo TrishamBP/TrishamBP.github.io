@@ -37,3 +37,59 @@
     - Multi-Head Models
     - Regularisation
     - MLOps
+
+- id: ai-modern-approach
+  title: "Artificial Intelligence: A Modern Approach"
+  author: "Stuart Russell & Peter Norvig"
+  image: "/assets/technical_books/ArtificialIntelligence.jpeg"
+  tags:
+    - Search Algorithms
+    - Adversarial Search
+    - Constraint Satisfaction
+    - Planning
+    - Logical Inference
+    - Agent Design
+    - Classical AI
+    - Agentic AI
+
+- id: math-ml
+  title: "Mathematics for Machine Learning"
+  author: "Marc Peter Deisenroth, A. Aldo Faisal, Cheng Soon Ong"
+  image: "/assets/technical_books/math_ml.jpg"
+  tags:
+    - Linear Algebra
+    - Vector Spaces
+    - Eigenvalues
+    - Matrix Operations
+    - Probability
+    - Optimisation
+    - Calculus
+    - Dimensionality Reduction
+
+- id: probability-statistics
+  title: "Probability and Statistics"
+  author: "Morris H. DeGroot & Mark J. Schervish"
+  image: "/assets/technical_books/statistics.jpg"
+  tags:
+    - Probability
+    - Distributions
+    - Statistical Inference
+    - Expectation
+    - Variance
+    - Hypothesis Testing
+    - Bayesian Reasoning
+    - Uncertainty
+
+- id: rl-introduction
+  title: "Reinforcement Learning: An Introduction (2nd Edition)"
+  author: "Richard S. Sutton & Andrew G. Barto"
+  image: "/assets/technical_books/rl.jpg"
+  tags:
+    - Reinforcement Learning
+    - Value Functions
+    - Policy Learning
+    - Q-Learning
+    - Temporal Difference
+    - Planning
+    - Sequential Decision-Making
+    - Reward Optimisation
