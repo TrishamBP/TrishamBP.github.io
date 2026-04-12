@@ -1,0 +1,41 @@
+---
+layout: default
+---
+
+<section class="content-section lab-paper-detail-section" aria-labelledby="paper-detail-heading">
+
+  <nav class="lab-breadcrumb" aria-label="Breadcrumb">
+    <a href="{{ '/learning-lab/' | relative_url }}" class="lab-breadcrumb-link">&larr; Learning Lab</a>
+  </nav>
+
+  <header class="lab-paper-detail-header">
+    <h1 id="paper-detail-heading" class="lab-paper-detail-title">{{ page.title }}</h1>
+
+    {% if page.authors %}
+      <p class="lab-paper-detail-authors">{{ page.authors }}</p>
+    {% endif %}
+
+    {% if page.tags and page.tags.size > 0 %}
+      <div class="lab-tag-pills lab-paper-detail-tags">
+        {% for tag in page.tags %}
+          <span class="lab-tag-pill">{{ tag }}</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </header>
+
+  <div class="lab-paper-detail-body post-content">
+    {% if content and content != "" %}
+      {{ content }}
+    {% else %}
+      <div class="lab-coming-soon">
+        <p class="lab-coming-soon-label">Content coming soon</p>
+        <p class="lab-coming-soon-note">
+          A deep-dive breakdown of this paper — covering the core ideas, architecture decisions,
+          experimental results, and what it means for real-world AI systems — is in progress.
+        </p>
+      </div>
+    {% endif %}
+  </div>
+
+</section>

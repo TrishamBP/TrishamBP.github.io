@@ -23,3 +23,6 @@ collections:
   research:
     output: true
     permalink: /research-articles/:name/
+  learning_papers:
+    output: true
+    permalink: /learning-lab/:name/
