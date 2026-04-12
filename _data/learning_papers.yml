@@ -1,0 +1,83 @@
+# Learning Lab — Research Papers
+# Order in this file = render order on the page (first = top).
+# To add a paper: append a new entry. The listing page updates automatically.
+#
+# Fields:
+#   id          — matches the _learning_papers/ collection filename slug
+#   title       — full paper title
+#   authors     — author list as a single string
+#   year        — publication year (integer)
+#   venue       — conference or journal name
+#   description — one-paragraph summary (plain text)
+#   highlights  — array of key insight strings (plain text)
+#   tags        — array of topic keywords
+#   image       — path to cover/figure image (optional; leave blank to show placeholder)
+#   paper_link  — URL to the original PDF (optional)
+#   read_link   — URL to the internal breakdown page
+
+- id: attention-is-all-you-need
+  title: "Attention Is All You Need"
+  authors: "Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, L., Polosukhin, I."
+  year: 2017
+  venue: "NeurIPS 2017"
+  description: "Proposes the Transformer — a sequence model built entirely on self-attention, replacing recurrence and convolution. The architecture achieves state-of-the-art machine translation quality while training dramatically faster in parallel. It became the architectural foundation for every modern large language model."
+  highlights:
+    - "Multi-head self-attention allows the model to jointly attend to information from different representation subspaces at each position"
+    - "Positional encoding injects sequence-order information without recurrence, enabling full parallelism across the sequence"
+    - "Encoder-decoder architecture with cross-attention generalises cleanly to any sequence-to-sequence task"
+    - "Achieves 28.4 BLEU on WMT 2014 English-to-German, surpassing all prior single models and ensembles"
+  tags:
+    - Transformer
+    - Self-Attention
+    - Multi-Head Attention
+    - NLP
+    - Sequence Modeling
+    - Architecture
+    - Deep Learning
+  image: "/assets/research/attention.png"
+  paper_link: "https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf"
+  read_link: "/learning-lab/attention-is-all-you-need/"
+
+- id: bert
+  title: "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding"
+  authors: "Devlin, J., Chang, M.-W., Lee, K., Toutanova, K."
+  year: 2018
+  venue: "NAACL 2019"
+  description: "Introduces BERT — a deeply bidirectional pre-training approach that reads the full sentence context in both directions simultaneously. Unlike prior left-to-right language models, BERT uses Masked Language Modelling and Next Sentence Prediction during pre-training, producing contextual representations that fine-tune to state-of-the-art performance across 11 NLP tasks with minimal task-specific architecture changes."
+  highlights:
+    - "Masked Language Modelling (MLM) forces the model to predict masked tokens using full bidirectional context — a fundamentally different training signal from autoregressive LMs"
+    - "Next Sentence Prediction (NSP) pre-trains explicit sentence-level relationship understanding"
+    - "Fine-tuning requires only a single task-specific output layer added on top of a frozen or lightly updated encoder"
+    - "BERT-Large achieves a GLUE score of 80.5, outperforming the prior state-of-the-art by over 7 absolute points"
+  tags:
+    - BERT
+    - Pre-training
+    - Bidirectional
+    - Masked Language Model
+    - NLP
+    - Transfer Learning
+    - Transformers
+    - Fine-tuning
+  read_link: "/learning-lab/bert-pretraining-deep-bidirectional-transformers/"
+
+- id: rag
+  title: "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks"
+  authors: "Lewis, P., Perez, E., Piktus, A., Petroni, F., Karpukhin, V., Goyal, N., Küttler, H., Lewis, M., Yih, W., Rocktäschel, T., Riedel, S., Kiela, D."
+  year: 2020
+  venue: "NeurIPS 2020"
+  description: "Introduces RAG — a general-purpose framework that couples a parametric memory (a pre-trained seq2seq model) with a non-parametric memory (a dense retrieval index). The retriever pulls relevant document passages at inference time; the generator conditions on them to produce grounded, factually accurate outputs. RAG is the direct architectural ancestor of every modern retrieval-augmented LLM pipeline."
+  highlights:
+    - "Dense Passage Retrieval (DPR) encodes queries and documents into a shared embedding space, enabling fast maximum-inner-product search at scale"
+    - "The generator marginalises over top-k retrieved passages, producing outputs that blend retrieved evidence with parametric knowledge"
+    - "Non-parametric memory is updateable at inference time without retraining — a critical production advantage over purely parametric models"
+    - "Outperforms parametric baselines on Open-Domain QA, Jeopardy question generation, and fact verification benchmarks"
+  tags:
+    - RAG
+    - Retrieval-Augmented Generation
+    - Dense Retrieval
+    - DPR
+    - Knowledge-Intensive NLP
+    - Generative Models
+    - LLM
+    - Production AI
+  read_link: "/learning-lab/retrieval-augmented-generation/"

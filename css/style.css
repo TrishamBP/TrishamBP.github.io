@@ -1634,7 +1634,24 @@ body.dark-mode .resume-viewer-shell {
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* ── Research paper placeholder image panel ── */
+/* ── Research paper image wrapper (contains img or placeholder) ── */
+.lab-paper-card .lab-card-image-wrap {
+  border-right: 1px solid #e5e7eb;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.lab-paper-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* ── Fallback placeholder (shown when no image or image fails) ── */
 .lab-paper-placeholder {
   background: linear-gradient(160deg, #eff6ff 0%, #dbeafe 100%);
   display: flex;
@@ -1642,9 +1659,10 @@ body.dark-mode .resume-viewer-shell {
   align-items: center;
   justify-content: center;
   gap: 10px;
+  width: 100%;
+  height: 100%;
   min-height: 200px;
   padding: 16px;
-  border-right: 1px solid #e5e7eb;
 }
 
 .lab-paper-icon {
@@ -1754,10 +1772,71 @@ body.dark-mode .resume-viewer-shell {
   line-height: 1.3;
 }
 
-/* ── CTA ── */
-.lab-card-cta {
+/* ── Actions row (primary CTA + secondary link) ── */
+.lab-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
   margin-top: 4px;
+}
+
+.lab-card-cta {
   align-self: flex-start;
+}
+
+/* ── Secondary paper link ── */
+.lab-paper-link {
+  font-size: 0.88rem;
+  color: #6b7280;
+  text-decoration: none;
+  opacity: 0.85;
+  transition: color 0.2s ease, opacity 0.2s ease;
+  white-space: nowrap;
+}
+
+.lab-paper-link:hover {
+  color: #374151;
+  opacity: 1;
+  text-decoration: underline;
+}
+
+/* ── Pagination ── */
+.lab-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 24px;
+}
+
+.lab-page-btn {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 50%;
+  border: 1px solid #d1d5db;
+  background: transparent;
+  color: #374151;
+  font-size: 0.88rem;
+  font-family: inherit;
+  cursor: pointer;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.lab-page-btn:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.lab-page-btn.active {
+  background: #111827;
+  color: #ffffff;
+  border-color: #111827;
 }
 
 /* ── Breadcrumb on detail pages ── */
@@ -1830,9 +1909,37 @@ body.dark-mode .lab-card {
   border-color: #374151;
 }
 
-body.dark-mode .lab-paper-placeholder {
-  background: linear-gradient(160deg, #1e3a8a 0%, #1e293b 100%);
+body.dark-mode .lab-paper-card .lab-card-image-wrap {
+  background: #0f172a;
   border-right-color: #374151;
+}
+
+body.dark-mode .lab-paper-placeholder {
+  background: linear-gradient(160deg, #1e3a8a 0%, #0f172a 100%);
+}
+
+body.dark-mode .lab-paper-link {
+  color: #94a3b8;
+}
+
+body.dark-mode .lab-paper-link:hover {
+  color: #cbd5e1;
+}
+
+body.dark-mode .lab-page-btn {
+  border-color: #475569;
+  color: #e5e7eb;
+}
+
+body.dark-mode .lab-page-btn:hover {
+  background: #1e293b;
+  border-color: #64748b;
+}
+
+body.dark-mode .lab-page-btn.active {
+  background: #f1f5f9;
+  color: #0f172a;
+  border-color: #f1f5f9;
 }
 
 body.dark-mode .lab-paper-year {
@@ -1899,18 +2006,23 @@ body.dark-mode .lab-coming-soon-note {
     grid-template-columns: 1fr;
   }
 
-  .lab-paper-placeholder {
-    min-height: 120px;
+  .lab-paper-card .lab-card-image-wrap {
     border-right: none;
     border-bottom: 1px solid #e5e7eb;
+    min-height: 120px;
+  }
+
+  body.dark-mode .lab-paper-card .lab-card-image-wrap {
+    border-right: none;
+    border-bottom-color: #374151;
+  }
+
+  .lab-paper-placeholder {
+    min-height: 120px;
     flex-direction: row;
     gap: 14px;
     justify-content: flex-start;
     padding: 14px 18px;
-  }
-
-  body.dark-mode .lab-paper-placeholder {
-    border-bottom-color: #374151;
   }
 
   .lab-paper-icon {

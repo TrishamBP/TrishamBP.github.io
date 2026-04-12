@@ -1,0 +1,39 @@
+# Learning Lab — Technical Books
+# Order in this file = render order on the page.
+# Descriptions are rendered from the template (learning-lab.md) keyed by `id`.
+# To add a book: append an entry here and add a matching {% elsif book.id == "..." %} block
+# in learning-lab.md.
+
+- id: time-series
+  title: "Time Series Forecasting in Python"
+  author: "Marco Peixeiro"
+  image: "/assets/technical_books/Time Series Forecasting in Python.jpg"
+  tags:
+    - Random Walk
+    - Stationarity
+    - Trend & Seasonality
+    - AR / MA
+    - ARIMA
+    - SARIMAX
+    - RNN
+    - LSTM
+    - GRU
+    - Time Series
+    - Python
+
+- id: hands-on-ml
+  title: "Hands-On Machine Learning with Scikit-Learn, Keras & TensorFlow"
+  author: "Aurélien Géron"
+  image: "/assets/technical_books/Hands-On_Machine_Learning_with_Scikit-Learn-Keras-and-TensorFlow-2nd-Edition-Aurelien-Geron.jpg"
+  tags:
+    - Supervised Learning
+    - Unsupervised Learning
+    - Neural Networks
+    - TensorFlow
+    - Keras
+    - Scikit-Learn
+    - Distributed Training
+    - Parallel Training
+    - Multi-Head Models
+    - Regularisation
+    - MLOps
