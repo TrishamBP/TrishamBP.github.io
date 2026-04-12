@@ -38,12 +38,7 @@ permalink: /learning-lab/
               class="lab-paper-image"
               src="{{ paper.image | relative_url }}"
               alt="{{ paper.title }}"
-              onerror="this.style.display='none';this.nextElementSibling.removeAttribute('hidden')"
             />
-            <div class="lab-paper-placeholder" aria-hidden="true" hidden>
-              <span class="lab-paper-icon">&#128196;</span>
-              {% if paper.year %}<span class="lab-paper-year">{{ paper.year }}</span>{% endif %}
-            </div>
           {% else %}
             <div class="lab-paper-placeholder" aria-hidden="true">
               <span class="lab-paper-icon">&#128196;</span>
