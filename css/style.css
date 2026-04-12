@@ -11,6 +11,32 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* ===== GLOBAL TYPOGRAPHY — JUSTIFIED TEXT ===== */
+
+p {
+  text-align: justify;
+  text-justify: inter-word;
+  text-align-last: left;  /* last line stays left — prevents ugly full-width stretch */
+  line-height: 1.7;
+}
+
+/*
+ * Short, single-line metadata elements — keep left-aligned.
+ * Justified text has no visual effect on single lines, but this
+ * makes intent explicit and prevents regressions if content wraps.
+ */
+.article-date,
+.article-tags,
+.lab-card-meta,
+.lab-card-venue,
+.timeline-university,
+.project-updated,
+.projects-status,
+.hero-intro,
+.hero-interests {
+  text-align: left;
+}
+
 .site-shell {
   width: min(980px, 100%);
   margin: 0 auto;
