@@ -41,7 +41,7 @@ permalink: /blog/
 
 <script>
   (function () {
-    var POSTS_PER_PAGE = 10;
+    var POSTS_PER_PAGE = 5;
     var container = document.getElementById("blog-posts-list");
     var paginationEl = document.getElementById("blog-pagination");
 
