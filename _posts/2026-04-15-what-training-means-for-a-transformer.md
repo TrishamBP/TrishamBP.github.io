@@ -162,7 +162,9 @@ After 500 steps, the training run is complete. The model has seen every sentence
 
 ## Quick Reference
 
-![Summary table: Batch, Step, Epoch, Training Run, Training Loss, and Validation Metric — definitions, when each occurs, and example values](/assets/blogs/main.png)
+<div style="background-color:#1a1a2e; padding:1.5rem; border-radius:8px; display:inline-block; width:100%;">
+  <img src="/assets/blogs/main.png" alt="Summary table: Batch, Step, Epoch, Training Run, Training Loss, and Validation Metric — definitions, when each occurs, and example values" style="display:block; width:100%;" />
+</div>
 
 ---
 
