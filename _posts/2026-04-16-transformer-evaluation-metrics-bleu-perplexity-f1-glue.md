@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "How Transformer Models Are Evaluated: BLEU, Perplexity, F1, GLUE, and SuperGLUE Explained"
-date: 2026-04-15
+date: 2026-04-16
 author: Trisham Patil
 mathjax: true
 ---
@@ -105,7 +105,7 @@ An important nuance: accuracy only cares about the final decision (the argmax of
 BERT is an encoder-only Transformer — it produces rich contextual representations of the input but does not generate text. To use it for classification, you prepend a special `[CLS]` token to the input, run everything through the encoder, and then take the final hidden state of just that `[CLS]` position. That single vector gets fed through a small classification head (a linear layer + softmax) to produce a probability distribution over classes.
 
 <div style="background-color:#000; padding:1.5rem; border-radius:8px; display:inline-block; width:100%;">
-  <img src="/assets/blogs/BERT.png" alt="BERT classification architecture — CLS token prepended, passed through 12 encoder layers, final CLS hidden state fed to linear classification head" style="display:block; width:100%;" />
+  <img src="/assets/blogs/bert.png" alt="BERT classification architecture — CLS token prepended, passed through 12 encoder layers, final CLS hidden state fed to linear classification head" style="display:block; width:100%;" />
 </div>
 
 The reason accuracy is the natural metric for BERT is architectural. Unlike GPT (which generates token by token and is evaluated with perplexity or BLEU), BERT's encoder produces a fixed representation that gets squeezed through a classification head to answer a single question: which class does this input belong to?
@@ -162,7 +162,7 @@ As models like BERT continued to improve, GLUE became less challenging — model
 GLUE contains 9 different NLU tasks. The model is fine-tuned separately on each one, scored on each, and the scores are averaged into a single GLUE number.
 
 <div style="background-color:#000; padding:1.5rem; border-radius:8px; display:inline-block; width:100%;">
-  <img src="/assets/blogs/GLUEEU.png" alt="GLUE benchmark tasks table — showing all 9 tasks including CoLA, SST-2, MRPC, STS-B, QQP, MNLI, QNLI, RTE, WNLI with their metrics and dataset sizes" style="display:block; width:100%;" />
+  <img src="/assets/blogs/gleu.png" alt="GLUE benchmark tasks table — showing all 9 tasks including CoLA, SST-2, MRPC, STS-B, QQP, MNLI, QNLI, RTE, WNLI with their metrics and dataset sizes" style="display:block; width:100%;" />
 </div>
 
 A few things to notice. GLUE uses different metrics per task depending on what makes sense:
@@ -194,7 +194,7 @@ Models that followed BERT — T5, DeBERTa — are often evaluated on SuperGLUE t
 This is a genuinely subtle question. During pretraining, you have no labeled data — BERT is just reading Wikipedia and BookCorpus with random words masked out. So what can you actually track?
 
 <div style="background-color:#000; padding:1.5rem; border-radius:8px; display:inline-block; width:100%;">
-  <img src="/assets/blogs/pretrain.png" alt="BERT pretraining monitoring — MLM loss curve decreasing and MLM accuracy increasing over training steps, with checkpoint fine-tuning on downstream tasks to validate representation quality" style="display:block; width:100%;" />
+  <img src="/assets/blogs/pre.png" alt="BERT pretraining monitoring — MLM loss curve decreasing and MLM accuracy increasing over training steps, with checkpoint fine-tuning on downstream tasks to validate representation quality" style="display:block; width:100%;" />
 </div>
 
 During pretraining, the primary signals are:
