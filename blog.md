@@ -16,15 +16,11 @@ permalink: /blog/
         <h2 class="article-title">
           <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
         </h2>
-        <p class="article-date">
-          Published: {{ post.date | date: "%B %Y" }}
-        </p>
+        <p class="article-date">Published: {{ post.date | date: "%B %Y" }}</p>
         {% if post.tags and post.tags.size > 0 %}
           <p class="article-tags">{{ post.tags | join: " &middot; " }}</p>
         {% endif %}
-        <p class="article-preview">
-          {{ post.excerpt | strip_html | normalize_whitespace | truncate: 190 }}
-        </p>
+        <p class="article-preview">{{ post.excerpt | strip_html | normalize_whitespace | truncate: 190 }}</p>
         <a class="article-read-more" href="{{ post.url | relative_url }}"
           >Read More &rarr;</a
         >
