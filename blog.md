@@ -17,7 +17,7 @@ permalink: /blog/
           <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
         </h2>
         <p class="article-date">
-          Published: {{ post.date | date: "%B %-d, %Y" }}
+          Published: {{ post.date | date: "%B %Y" }}
         </p>
         {% if post.tags and post.tags.size > 0 %}
           <p class="article-tags">{{ post.tags | join: " &middot; " }}</p>
