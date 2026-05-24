@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Context Engineering for AI Agents: Lessons from Production Legal Draft Generation"
-date: 2026-05-25
+date: 2026-05-24
 author: Trisham Patil
 ---
 
