@@ -821,7 +821,7 @@ Nodes, chaining, prompts, guardrails, and memory are not separate “AI features
 
 # Deployment Architecture
 
-Production deployment follows a simple rule from our engineering guidebook: **get the request path and worker path correct before adding agent complexity**. The API accepts work; workers execute graphs. Agents never run inside the FastAPI request lifecycle.
+Production deployment follows a simple rule: **get the request path and worker path correct before adding agent complexity**. The API accepts work; workers execute graphs. Agents never run inside the FastAPI request lifecycle.
 
 ```text
 Next.js (frontend)
@@ -1033,7 +1033,7 @@ On every protected route:
 
 # Security Architecture
 
-Security is layered: identity, network, data, upload, LLM, and queue/worker boundaries. The guidebook’s checklist maps directly to this system — below is how we enforce it on AWS.
+Security is layered: identity, network, data, upload, LLM, and queue/worker boundaries. Below is how we enforce that on AWS.
 
 ---
 
@@ -1411,8 +1411,6 @@ For industry use, that is the difference between:
 
 This is where the architecture stopped being theoretical. Most of the important design decisions in this system came from production failures, not from greenfield planning. The patterns that look obvious in hindsight only became obvious after we saw how long-running AI workflows actually break under real document volume, real retries, and real human pauses.
 
-The challenges below came directly from the engineering guide for this platform in [guide.pdf](C:/Users/Trisham/Downloads/guide.pdf), but I have rewritten them here in a blog format focused on the underlying systems lessons.
-
 ### Challenge: Lambda 15-Minute Timeout vs. 11-Node Pipeline
 
 The full pipeline could take anywhere from **8 to 25 minutes** end to end depending on document count. That immediately clashes with Lambda's hard **15-minute ceiling**. In larger cases, extraction alone could consume most of that budget.
@@ -1438,7 +1436,7 @@ The production fix was a **multi-layer JSON repair guardrail**:
 - attempt parse recovery across several truncation points,
 - retry only if repair fails.
 
-According to the guidebook, this recovered roughly **90% of truncated outputs**, and with node retries the effective failure rate dropped from about **15% to below 0.5%**.
+In practice, this recovered roughly **90% of truncated outputs**, and with node retries the effective failure rate dropped from about **15% to below 0.5%**.
 
 The broader lesson is simple: in production, do not treat LLM JSON as guaranteed JSON. Treat it as **possibly damaged structured output** that needs validation and repair before it earns the right to enter pipeline state.
 
@@ -1502,13 +1500,13 @@ The production answer was not "go fully sequential." It was **bounded concurrenc
 - use boto3 retry behavior with exponential backoff,
 - accumulate failed files explicitly instead of losing them silently.
 
-That number matters because it reflects observed service behavior, not a round number chosen in advance. The guidebook notes that higher concurrency looked faster until throttling erased the gains, while lower concurrency was unnecessarily slow.
+That number matters because it reflects observed service behavior, not a round number chosen in advance. Higher concurrency looked faster until throttling erased the gains, while lower concurrency was unnecessarily slow.
 
 This is a recurring pattern in cloud AI systems: the fastest configuration in theory is often slower in practice once service limits and retries are accounted for.
 
 ### Challenge: Opus Draft Generation Read Timeout
 
-Final draft generation is a different class of call from extraction or structured analysis. The Opus step produces long-form legal writing with heavy context, and in the guidebook it regularly took **90 to 180 seconds**, sometimes longer.
+Final draft generation is a different class of call from extraction or structured analysis. The Opus step produces long-form legal writing with heavy context, and it regularly took **90 to 180 seconds**, sometimes longer.
 
 The default boto3 read timeout of **60 seconds** was therefore a hidden failure trap. The model could be doing exactly the right work, generating a valid draft, and the client would still sever the connection mid-stream.
 
@@ -1586,8 +1584,6 @@ Architecture only matters if it improves the end artifact. In this system, the e
 
 The right question is not "did the model produce something plausible?" The right question is: **did the system produce a draft that reduces lawyer effort without introducing legal or factual risk?**
 
-This section is adapted from the draft-quality evaluation guidance in [guide.pdf](C:/Users/Trisham/Downloads/guide.pdf), but rewritten here to fit the engineering narrative of the post.
-
 ### Why Draft Quality Measurement Matters
 
 The AI draft is not the final legal output. It is a starting point for human review. That means a superficially impressive draft can still be a failure if it forces a lawyer to spend more time fixing it than they would spend writing from scratch.
@@ -1604,7 +1600,7 @@ In other words, draft quality is really a **time-saved and trust-preserved** met
 
 ### Evaluation Framework
 
-The guidebook evaluates draft quality along two axes: **automated verification on every draft** and **periodic human review with the legal team**.
+We evaluated draft quality along two axes: **automated verification on every draft** and **periodic human review with the legal team**.
 
 The automated layer runs inside the pipeline itself. After draft generation, a verification node scores the result against seven criteria:
 
@@ -1639,7 +1635,7 @@ This is the baseline most teams try first:
 - add user direction,
 - ask a strong model to generate the whole draft.
 
-The guidebook reports roughly:
+The rough results were:
 
 | Metric | Result |
 |--------|--------|
@@ -1687,7 +1683,7 @@ The current system separates draft preparation into distinct stages:
 5. final draft generation from structured context,
 6. verification.
 
-The guidebook metrics were strongest here:
+The strongest metrics came from this architecture:
 
 | Metric | Result |
 |--------|--------|
@@ -1704,7 +1700,7 @@ That distinction matters in production. The draft node should spend its intellig
 
 ### Accuracy Metrics Deep-Dive
 
-The guidebook breaks quality into more precise measures. That is useful because "quality" becomes mushy fast unless it is decomposed.
+It helps to break quality into more precise measures, because "quality" becomes mushy fast unless it is decomposed.
 
 #### Factual Accuracy (Hallucination Rate)
 
@@ -1781,7 +1777,7 @@ The verification loop works like this:
 4. If it fails and retries remain, the identified issues are fed back into regeneration.
 5. If retries are exhausted, the best draft is accepted with explicit notes.
 
-The guidebook reports:
+In practice:
 
 | Score range | Frequency | Action |
 |-------------|-----------|--------|
@@ -1819,7 +1815,7 @@ This is a broader design lesson too: when the output is high stakes, evaluation 
 
 ### Draft Quality Over Time (Learning Curve)
 
-The quality curve in the guidebook is refreshingly realistic. Improvement did not come from one magic prompt. It came in steps as the system gained better intermediate structure.
+The quality curve was refreshingly realistic. Improvement did not come from one magic prompt. It came in steps as the system gained better intermediate structure.
 
 Reported progression:
 
@@ -1873,7 +1869,7 @@ That is a useful reminder that quality improvements often come more from better 
 
 This is where the evaluation becomes commercially meaningful.
 
-The guidebook summarizes the quality/cost frontier like this:
+The quality/cost frontier looked like this:
 
 | Method | Quality | Cost | Quality per dollar |
 |--------|---------|------|--------------------|
@@ -1893,7 +1889,7 @@ That changes the decision:
 - a **6.8/10** draft is useful but still needs significant editing,
 - an **8.4/10** draft can reduce editing to a light review and targeted corrections.
 
-The guidebook frames the ROI in practical terms: if the better draft saves roughly **2 hours** of lawyer time on a case, the AI cost difference between `$5` and `$10` is trivial relative to professional review cost.
+In practical terms, if the better draft saves roughly **2 hours** of lawyer time on a case, the AI cost difference between `$5` and `$10` is trivial relative to professional review cost.
 
 That is why the most expensive AI architecture still won. It produced the first draft lawyers were willing to trust consistently. In enterprise systems, **trustworthy labor reduction** beats nominal model thrift.
 
@@ -1918,13 +1914,11 @@ By the time we reached this stage, the interesting question was no longer "can t
 
 That is a very different problem.
 
-The material in this section comes from the Lambda production guidance in [guide.pdf](C:/Users/Trisham/Downloads/guide.pdf), but I have rewritten it here to focus on the engineering patterns rather than the internal handbook format.
-
 ### The Production Challenge
 
 Running an AI agent locally is easy. You load some files, call a model, inspect the result, maybe retry a few times, and move on. That is a useful prototyping loop, but it hides nearly every production constraint that matters.
 
-The guidebook captures that shift well:
+That shift is easiest to see in a simple contrast:
 
 | Local / tutorial mindset | Production reality |
 |--------------------------|-------------------|
@@ -1947,7 +1941,7 @@ Lambda worked well here not because it is fashionable, but because it matched th
 - long idle gaps during HITL pauses,
 - explicit queue-driven orchestration.
 
-The guidebook frames the advantages clearly:
+The advantages were straightforward:
 
 - **pay per invocation** instead of running idle workers,
 - **per-node timeout boundaries** that fit individual LLM steps,
@@ -1999,7 +1993,7 @@ The design answer is idempotency guards around state mutation so that re-deliver
 
 Not all retries are equal.
 
-The guidebook uses a useful principle: **cheap nodes retry aggressively, expensive nodes retry conservatively, non-critical nodes may not retry at all**.
+The guiding principle was: **cheap nodes retry aggressively, expensive nodes retry conservatively, non-critical nodes may not retry at all**.
 
 That is exactly right for production AI systems. A failed low-cost extraction pass is a very different economic event from a failed Opus draft call. Retry policy should reflect that difference directly.
 
@@ -2033,7 +2027,7 @@ This is where "observability" stops being a slogan. In agent systems, it is how 
 
 ### Production Deployment Checklist
 
-The guidebook closes the Lambda section with a practical checklist. The exact entries are less important than the pattern they represent: productionization is a stack of small operational decisions that each remove one class of failure.
+The exact checklist matters less than the pattern it represents: productionization is a stack of small operational decisions that each remove one class of failure.
 
 | Concern | Implementation pattern | Why it matters |
 |---------|------------------------|----------------|
@@ -2052,11 +2046,11 @@ The recurring theme is that reliability comes from deliberate constraints, not f
 
 A lot of architecture conversations stay abstract until someone asks the only question that really matters operationally: what happens under expected load?
 
-This section answers that with concrete planning assumptions from [guide.pdf](C:/Users/Trisham/Downloads/guide.pdf). More importantly, it shows how to think about capacity in an agent pipeline where the unit of work is not just "one request," but "one workflow with multiple model calls, storage writes, queue hops, and possible retries."
+This section uses concrete planning assumptions. More importantly, it shows how to think about capacity in an agent pipeline where the unit of work is not just "one request," but "one workflow with multiple model calls, storage writes, queue hops, and possible retries."
 
 ### Workload Profile
 
-The guidebook capacity model assumes roughly:
+The capacity model assumes roughly:
 
 - **100 daily active users**
 - up to **200 files per case**
@@ -2070,7 +2064,7 @@ That profile is useful because it is not "internet scale" in the generic sense. 
 
 The key mental shift is that user count does not map directly to agent throughput. Case triggers do.
 
-At the planning point in the guidebook:
+At the planning point:
 
 - **20 cases/day x 11 nodes** means about **220 Lambda node invocations per day**,
 - **200 files x 20 cases** means roughly **4,000 extraction calls/day** just for the first phase,
@@ -2080,7 +2074,7 @@ That is exactly why the queue-driven design matters. It decouples user interacti
 
 ### Component Capacity at This Scale
 
-The most revealing part of the guidebook is that many AWS components were not close to their limits at this scale.
+The most revealing part is that many AWS components were not close to their limits at this scale.
 
 At around 100 DAU:
 
@@ -2094,7 +2088,7 @@ That is a healthy architecture signal. It means the system is bottlenecked by th
 
 ### Bottleneck Analysis
 
-The guidebook identifies the likely bottlenecks clearly:
+The likely bottlenecks were clear:
 
 1. **Lambda concurrency** if too many workflows need active node execution at once.
 2. **Bedrock TPM / concurrency limits** during extraction or analysis bursts.
@@ -2110,7 +2104,7 @@ This is a good production lesson in itself. Teams often spend time "optimizing" 
 
 ### Daily Cost at 100 DAU
 
-The guidebook's example cost model for a heavy case, around **200 files**, looks roughly like this:
+For a heavy case, around **200 files**, the cost model looked roughly like this:
 
 - **Haiku extraction:** about **$2.00**
 - **Sonnet analysis:** about **$4.50**
@@ -2129,7 +2123,7 @@ The big takeaway is the same one we saw in the cost-optimization section: **mode
 
 ### Scaling from 100 to 1000 DAU
 
-One of the most encouraging parts of the guidebook is that scaling from **100 to 1000 DAU** did not require a re-architecture. Most of the changes were operational:
+One of the most encouraging findings was that scaling from **100 to 1000 DAU** did not require a re-architecture. Most of the changes were operational:
 
 - raise Lambda concurrency,
 - add more ECS API tasks,
@@ -2139,7 +2133,7 @@ One of the most encouraging parts of the guidebook is that scaling from **100 to
 
 That is what good architecture should buy you: growth by configuration and quota change, not growth by redesign.
 
-The guidebook does note one future hard boundary: eventually **Opus throughput** becomes the limiting factor because each final draft consumes a relatively long premium model window. That is the right kind of bottleneck to hit last.
+One future hard boundary does remain: eventually **Opus throughput** becomes the limiting factor because each final draft consumes a relatively long premium model window. That is the right kind of bottleneck to hit last.
 
 ### 200 Files Per Case — Extraction Scaling
 
@@ -2149,7 +2143,7 @@ With **200 files** and bounded parallel extraction:
 
 - run about **10 files at a time**,
 - process the workload in batches,
-- finish the extraction phase in about **60 seconds** under the guidebook assumptions,
+- finish the extraction phase in about **60 seconds** under these assumptions,
 - record failed files explicitly instead of treating them as catastrophic pipeline failure.
 
 That is a great illustration of the broader design style in this system:
