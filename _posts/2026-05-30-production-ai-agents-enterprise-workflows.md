@@ -3,6 +3,7 @@ layout: post
 title: "How I Productionised AI Agents for Long-Running Enterprise Workflows"
 date: 2026-05-30
 author: Trisham Patil
+excerpt: "A production walkthrough of how I turned a long-running legal drafting agent into a durable system with LangGraph, Lambda, SQS, DynamoDB, HITL checkpoints, and model-specific reliability guardrails."
 ---
 
 ![Production AI agent architecture for long-running enterprise workflows — LangGraph routing, Lambda-per-node execution, SQS self-chaining, DynamoDB state persistence, and HITL gates](/assets/images/posts/production-ai-agents/top_header.png)
@@ -23,7 +24,7 @@ The **API layer stays thin** on purpose. **FastAPI** handles auth, tenancy, work
 
 > **Design invariant:** The LLM is a step executor. The workflow engine is durable storage + a message queue.
 
-![Production system architecture — Next.js frontend, FastAPI API, S3 uploads, DynamoDB state, SQS queues, Lambda workers, Bedrock, Pinecone, and mem0](/assets/images/posts/production-ai-agents/tech_stack.png)
+![Production system architecture for enterprise AI agents — Next.js frontend, FastAPI API, direct S3 uploads, DynamoDB state, SQS queues, Lambda workers, Bedrock, Pinecone, and mem0](/assets/images/posts/production-ai-agents/sys_architecture.png)
 
 The diagram above is the production control plane we operate today. The sections below walk through each layer and the end-to-end request flow — still at the **system** level, before the agent graph internals.
 
@@ -1822,13 +1823,42 @@ The quality curve in the guidebook is refreshingly realistic. Improvement did no
 
 Reported progression:
 
-| Period | Average score | Main change |
-|--------|---------------|-------------|
-| **Week 1-2** | **5.8** | generic prompts, no RAG, no verification |
-| **Week 3-4** | **6.9** | entity resolution added |
-| **Week 5-6** | **7.4** | RAG added |
-| **Week 7-8** | **8.1** | verification loop added |
-| **Week 9+** | **8.4** | stabilization and prompt tuning |
+<table style="width: auto; display: inline-table;">
+  <thead>
+    <tr>
+      <th>Period</th>
+      <th>Average score</th>
+      <th>Main change</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Week 1-2</strong></td>
+      <td><strong>5.8</strong></td>
+      <td>generic prompts, no RAG, no verification</td>
+    </tr>
+    <tr>
+      <td><strong>Week 3-4</strong></td>
+      <td><strong>6.9</strong></td>
+      <td>entity resolution added</td>
+    </tr>
+    <tr>
+      <td><strong>Week 5-6</strong></td>
+      <td><strong>7.4</strong></td>
+      <td>RAG added</td>
+    </tr>
+    <tr>
+      <td><strong>Week 7-8</strong></td>
+      <td><strong>8.1</strong></td>
+      <td>verification loop added</td>
+    </tr>
+    <tr>
+      <td><strong>Week 9+</strong></td>
+      <td><strong>8.4</strong></td>
+      <td>stabilization and prompt tuning</td>
+    </tr>
+  </tbody>
+</table>
 
 What moved the score most:
 
