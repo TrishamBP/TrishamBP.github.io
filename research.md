@@ -5,8 +5,65 @@ permalink: /research-articles/
 includelink: true
 ---
 
-<section class="content-section articles-section" aria-labelledby="research-heading">
-  <h1 id="research-heading" class="section-title">Research Articles</h1>
+<!-- ===================== RESEARCH PAPERS SECTION ===================== -->
+<section class="content-section papers-section" aria-labelledby="papers-heading">
+  <h1 id="papers-heading" class="section-title">Research Papers</h1>
+  <p class="research-intro">
+    Peer-reviewed publications, technical whitepapers, and production engineering research focused 
+    on AI systems, agentic workflows, large language models, distributed inference, memory architectures, 
+    and autonomous systems.
+  </p>
+
+  {% assign research_papers = site.papers | sort: "date" | reverse %}
+  <div class="articles-grid">
+    {% for paper in research_papers %}
+      <article class="article-card">
+        <h2 class="article-title">{{ paper.title }}</h2>
+        
+        <p class="article-date">
+          {% if paper.authors %}
+            {{ paper.authors }}
+            {% if paper.author_email %}
+              &lt;<a href="mailto:{{ paper.author_email }}">{{ paper.author_email }}</a>&gt;
+            {% endif %}
+          {% endif %}
+        </p>
+        
+        <p class="article-date">
+          Published: {{ paper.date | date: "%B %-d, %Y" }}
+          {% if paper.venue %} | {{ paper.venue }}{% endif %}
+        </p>
+        
+        {% if paper.keywords and paper.keywords.size > 0 %}
+          <p class="article-tags">{{ paper.keywords | join: " | " }}</p>
+        {% endif %}
+        
+        <p class="article-preview">
+          {% if paper.abstract_short %}
+            {{ paper.abstract_short }}
+          {% else %}
+            {{ paper.abstract | strip_html | normalize_whitespace | truncate: 300 }}
+          {% endif %}
+        </p>
+        
+        <a 
+          class="article-read-more" 
+          href="{{ paper.pdf | relative_url }}" 
+          target="_blank" 
+          rel="noopener noreferrer"
+        >Read Paper &rarr;</a>
+      </article>
+    {% endfor %}
+  </div>
+
+  {% if research_papers.size == 0 %}
+    <p class="research-intro">Research papers will be published here.</p>
+  {% endif %}
+</section>
+
+<!-- ===================== RESEARCH ARTICLES SECTION ===================== -->
+<section class="content-section articles-section" aria-labelledby="research-articles-heading" style="margin-top: 56px;">
+  <h2 id="research-articles-heading" class="section-title">Research Articles</h2>
   <p class="research-intro">
     Research-first writeups on AI systems, domain-specific NLP, model architecture, and production lessons from real deployments.
   </p>
