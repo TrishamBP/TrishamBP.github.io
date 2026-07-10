@@ -26,3 +26,9 @@ collections:
   learning_papers:
     output: true
     permalink: /learning-lab/:name/
+  papers:
+    output: false
+    sort_by: date
+  implementations:
+    output: true
+    permalink: /engineering/:name/
