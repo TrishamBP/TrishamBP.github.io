@@ -30,7 +30,7 @@ permalink: /learning-lab/
 
   <div class="lab-feed" id="papers-feed" aria-label="Research papers feed">
     {% for paper in site.data.learning_papers %}
-      <article class="lab-card lab-paper-card" aria-label="{{ paper.title }}">
+      <article class="lab-card lab-paper-card paper-explainer-item" data-index="{{ forloop.index0 }}" aria-label="{{ paper.title }}">
 
         <div class="lab-card-image-wrap">
           {% if paper.image %}
@@ -98,7 +98,16 @@ permalink: /learning-lab/
     <p class="research-intro">Research paper breakdowns are being prepared.</p>
   {% endif %}
 
-  <nav class="lab-pagination" id="papers-pagination" aria-label="Research papers pagination"></nav>
+  <div class="load-more-container" id="papers-load-more-container" style="display: none;">
+    <button 
+      class="load-more-btn" 
+      id="papers-load-more-btn"
+      aria-label="Load more paper explainers"
+    >
+      Load More Paper Explainers
+    </button>
+    <p class="load-more-status" id="papers-load-more-status" aria-live="polite"></p>
+  </div>
 </section>
 
 <!-- ===================== SECTION 2: TECHNICAL BOOKS ===================== -->
@@ -323,63 +332,44 @@ permalink: /learning-lab/
   <nav class="lab-pagination" id="books-pagination" aria-label="Technical books pagination"></nav>
 </section>
 
-<!-- ===================== PAGINATION SCRIPT ===================== -->
+<!-- ===================== LOAD MORE SCRIPT ===================== -->
 <script>
-(function () {
-  /**
-   * initPagination — client-side pagination for a vertical card feed.
-   *
-   * @param {string} feedId       — id of the element containing .lab-card children
-   * @param {string} paginationId — id of the <nav> element to render page buttons into
-   * @param {number} perPage      — maximum cards to show per page
-   */
-  function initPagination(feedId, paginationId, perPage) {
-    var feed       = document.getElementById(feedId);
-    var pagNav     = document.getElementById(paginationId);
-    if (!feed || !pagNav) return;
-
-    var cards      = Array.from(feed.querySelectorAll('.lab-card'));
-    var total      = cards.length;
-    var totalPages = Math.ceil(total / perPage);
-    var current    = 1;
-
-    /* No pagination needed for a single page */
-    if (totalPages <= 1) return;
-
-    function showPage(page) {
-      current = page;
-      cards.forEach(function (card, i) {
-        var start = (page - 1) * perPage;
-        var end   = page * perPage;
-        card.style.display = (i >= start && i < end) ? '' : 'none';
+(function() {
+  var ITEMS_PER_PAGE = 5;
+  
+  // Research Papers / Paper Explainers Load More
+  var papersContainer = document.getElementById('papers-feed');
+  var papersLoadMoreBtn = document.getElementById('papers-load-more-btn');
+  var papersLoadMoreContainer = document.getElementById('papers-load-more-container');
+  var papersStatusEl = document.getElementById('papers-load-more-status');
+  
+  if (papersContainer && papersLoadMoreBtn) {
+    var paperItems = Array.from(papersContainer.querySelectorAll('.paper-explainer-item'));
+    var totalPapers = paperItems.length;
+    var visiblePapersCount = ITEMS_PER_PAGE;
+    
+    function updatePapersDisplay() {
+      paperItems.forEach(function(item, index) {
+        item.style.display = index < visiblePapersCount ? '' : 'none';
       });
-      renderButtons();
-      /* Scroll feed into view when changing pages */
-      feed.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    function renderButtons() {
-      pagNav.innerHTML = '';
-      for (var p = 1; p <= totalPages; p++) {
-        var btn = document.createElement('button');
-        btn.className   = 'lab-page-btn' + (p === current ? ' active' : '');
-        btn.textContent = p;
-        btn.setAttribute('aria-label', 'Page ' + p);
-        btn.setAttribute('aria-current', p === current ? 'page' : 'false');
-        /* IIFE to capture loop variable */
-        (function (page) {
-          btn.addEventListener('click', function () { showPage(page); });
-        }(p));
-        pagNav.appendChild(btn);
+      
+      var remaining = totalPapers - visiblePapersCount;
+      if (remaining > 0) {
+        papersLoadMoreContainer.style.display = 'block';
+        papersStatusEl.textContent = 'Showing ' + visiblePapersCount + ' of ' + totalPapers + ' paper explainers';
+      } else {
+        papersLoadMoreContainer.style.display = 'none';
       }
     }
-
-    showPage(1);
+    
+    papersLoadMoreBtn.addEventListener('click', function() {
+      visiblePapersCount += ITEMS_PER_PAGE;
+      updatePapersDisplay();
+    });
+    
+    if (totalPapers > ITEMS_PER_PAGE) {
+      updatePapersDisplay();
+    }
   }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    initPagination('papers-feed', 'papers-pagination', 5);
-    initPagination('books-feed',  'books-pagination',  5);
-  });
-}());
+})();
 </script>

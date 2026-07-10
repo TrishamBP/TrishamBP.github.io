@@ -1,165 +1,113 @@
 ---
 layout: default
-title: Projects
+title: Production Projects
 permalink: /projects/
 ---
 
-<section class="content-section fullstack-section" aria-labelledby="fullstack-heading">
-  <h1 id="fullstack-heading" class="section-title">Full Stack Projects</h1>
+<section class="content-section production-projects-section" aria-labelledby="projects-heading">
+  <h1 id="projects-heading" class="section-title">Production Projects</h1>
   <p class="research-intro">
-    Production-grade platforms built with frontend product focus, backend systems rigor, and reliable data architecture.
+    Production-grade AI, backend, data engineering, and full-stack systems built for real users 
+    with a strong focus on scalability, reliability, maintainability, and engineering quality.
   </p>
 
-  <div class="fullstack-grid">
-    <article class="fullstack-card">
-      <img
-        class="fullstack-image"
-        src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fdhoklahouse.com?w=1400"
-        onerror="this.onerror=null;this.src='{{ '/assets/images/fullstack/dhoklahouse.jpg' | relative_url }}';"
-        alt="Dhokla House website preview"
-      />
-      <div class="fullstack-content">
-        <h3>Dhokla House</h3>
-        <div class="fullstack-tags">
+  <div class="production-projects-grid">
+    
+    <!-- Dhokla House -->
+    <article class="production-project-card" data-order="1" data-category="Full Stack">
+      <div class="production-project-image-wrap">
+        <img
+          class="production-project-image"
+          src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fdhoklahouse.com?w=800"
+          onerror="this.onerror=null;this.src='{{ '/assets/images/fullstack/dhoklahouse.jpg' | relative_url }}';"
+          alt="Dhokla House website preview"
+        />
+      </div>
+      
+      <div class="production-project-content">
+        <h3 class="production-project-title">Dhokla House</h3>
+        
+        <div class="production-project-tags">
           <span>React.js</span>
           <span>Node.js</span>
           <span>Express.js</span>
           <span>PostgreSQL</span>
           <span>MongoDB</span>
         </div>
-        <h4>Overview</h4>
-        <p>
-          Dhokla House is a production food-ordering and brand platform focused on menu discovery,
-          order intent capture, and conversion-optimized customer journeys.
+        
+        <p class="production-project-overview">
+          Production food-ordering and brand platform focused on menu discovery, order intent capture, 
+          and conversion-optimized customer journeys.
         </p>
-        <h4>Frontend</h4>
-        <p>
-          Built with React.js using modular UI components and responsive layouts to keep browsing,
-          add-to-cart, and checkout interactions fast and predictable across mobile and desktop.
-        </p>
-        <h4>Backend</h4>
-        <p>
-          Node.js + Express.js APIs handle product/menu retrieval, customer interaction flows,
-          and transactional order endpoints with clean route separation and service-layer logic.
-        </p>
-        <h4>Data Layer</h4>
-        <p>
-          PostgreSQL supports structured order lifecycle and reporting use cases, while MongoDB
-          is used for flexible content and interaction metadata where schema evolution is frequent.
-        </p>
-        <h4>Engineering Decisions</h4>
-        <p>
-          The stack balances rapid UI iteration with backend reliability: React for composability,
-          Express for operational simplicity, and hybrid persistence to separate transactional and
-          flexible document workloads.
-        </p>
-        <a
-          class="article-read-more"
-          href="https://dhoklahouse.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          >Visit Site &rarr;</a
-        >
+        
+        <div class="production-project-highlights">
+          <h4>Engineering Highlights</h4>
+          <ul>
+            <li>Modular React.js UI components with responsive layouts</li>
+            <li>Node.js + Express.js APIs with clean route separation</li>
+            <li>Hybrid persistence: PostgreSQL for transactions, MongoDB for flexible content</li>
+            <li>Optimized for rapid UI iteration and backend reliability</li>
+          </ul>
+        </div>
+        
+        <div class="production-project-actions">
+          <a
+            class="project-cta"
+            href="https://dhoklahouse.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >Visit Project</a>
+        </div>
       </div>
     </article>
 
-    <article class="fullstack-card">
-      <img
-        class="fullstack-image"
-        src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fapnidukaan.com?w=1400"
-        onerror="this.onerror=null;this.src='{{ '/assets/images/fullstack/apnidukaan.jpg' | relative_url }}';"
-        alt="Apni Dukaan website preview"
-      />
-      <div class="fullstack-content">
-        <h3>Apni Dukaan</h3>
-        <div class="fullstack-tags">
+    <!-- Apni Dukaan -->
+    <article class="production-project-card" data-order="2" data-category="Full Stack">
+      <div class="production-project-image-wrap">
+        <img
+          class="production-project-image"
+          src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fapnidukaan.com?w=800"
+          onerror="this.onerror=null;this.src='{{ '/assets/images/fullstack/apnidukaan.jpg' | relative_url }}';"
+          alt="Apni Dukaan website preview"
+        />
+      </div>
+      
+      <div class="production-project-content">
+        <h3 class="production-project-title">Apni Dukaan</h3>
+        
+        <div class="production-project-tags">
           <span>React.js</span>
           <span>Node.js</span>
           <span>Express.js</span>
           <span>PostgreSQL</span>
           <span>MongoDB</span>
         </div>
-        <h4>Overview</h4>
-        <p>
-          Apni Dukaan is an e-commerce platform focused on catalog exploration, customer checkout,
-          and operational order management in a production environment.
+        
+        <p class="production-project-overview">
+          E-commerce platform focused on catalog exploration, customer checkout, and operational 
+          order management in a production environment.
         </p>
-        <h4>Frontend</h4>
-        <p>
-          React.js drives the storefront experience with reusable catalog, product-detail,
-          and checkout components designed to reduce friction in purchase flows.
-        </p>
-        <h4>Backend</h4>
-        <p>
-          Express APIs provide product, cart, and order endpoints with clear separation between
-          read-heavy catalog routes and transactional checkout/order update routes.
-        </p>
-        <h4>Data &amp; Scalability</h4>
-        <p>
-          PostgreSQL is aligned with consistency-sensitive order transactions and reporting, while
-          MongoDB supports flexible product metadata and content extensions. This split supports
-          incremental scaling as catalog and interaction volume grow.
-        </p>
-        <h4>Engineering Decisions</h4>
-        <p>
-          Architecture prioritizes maintainability and latency control: compact service boundaries,
-          predictable API contracts, and stack choices optimized for full-stack iteration speed.
-        </p>
-        <a
-          class="article-read-more"
-          href="https://apnidukaan.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          >Visit Site &rarr;</a
-        >
+        
+        <div class="production-project-highlights">
+          <h4>Engineering Highlights</h4>
+          <ul>
+            <li>Reusable catalog and checkout components for friction-free purchase flows</li>
+            <li>Clear separation between read-heavy catalog and transactional checkout routes</li>
+            <li>PostgreSQL for order transactions, MongoDB for product metadata</li>
+            <li>Maintainability and latency control through compact service boundaries</li>
+          </ul>
+        </div>
+        
+        <div class="production-project-actions">
+          <a
+            class="project-cta"
+            href="https://apnidukaan.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >Visit Project</a>
+        </div>
       </div>
     </article>
+
   </div>
 </section>
-
-<section class="content-section projects-section" aria-labelledby="projects-heading">
-  <h2 id="projects-heading" class="section-title">Backend &amp; AI Engineering</h2>
-  <p class="research-intro">
-    Curated GitHub projects focused on production AI systems, backend architecture, applied machine learning, and research-to-deployment workflows.
-  </p>
-
-  <h3 class="projects-subtitle">AI and Backend Projects</h3>
-
-  <h4 class="projects-category-title">Advanced AI / LLM / NLP</h4>
-  <div class="projects-grid-shell" data-github-user="TrishamBP" data-project-group="advanced_ai_nlp">
-    <p class="projects-status">Loading curated GitHub projects...</p>
-  </div>
-
-  <h4 class="projects-category-title">Computer Vision / Deep Learning</h4>
-  <div class="projects-grid-shell" data-github-user="TrishamBP" data-project-group="cv_deeplearning">
-    <p class="projects-status">Loading curated GitHub projects...</p>
-  </div>
-
-  <h4 class="projects-category-title">Applied AI Systems</h4>
-  <div class="projects-grid-shell" data-github-user="TrishamBP" data-project-group="applied_ai_systems">
-    <p class="projects-status">Loading curated GitHub projects...</p>
-  </div>
-
-  <h4 class="projects-category-title">Backend / Systems</h4>
-  <div class="projects-grid-shell" data-github-user="TrishamBP" data-project-group="backend_systems">
-    <p class="projects-status">Loading curated GitHub projects...</p>
-  </div>
-
-  <h3 class="projects-subtitle">Additional AI &amp; Systems Projects</h3>
-  <div class="projects-grid-shell" data-github-user="TrishamBP" data-project-group="additional_ai_systems">
-    <p class="projects-status">Loading curated GitHub projects...</p>
-  </div>
-
-  <h3 class="projects-subtitle">Masters Projects (2021-2022)</h3>
-  <div class="projects-grid-shell" data-github-user="TrishamBP" data-project-group="masters">
-    <p class="projects-status">Loading curated GitHub projects...</p>
-  </div>
-
-  <div class="projects-note-block" aria-label="Project depth note">
-    <p class="research-intro projects-note">
-      Across my project portfolio, I have consistently worked on numerical methods, optimization-driven systems, classical machine learning pipelines, and deep learning fundamentals. This experimentation mindset has helped me move from solver-level engineering and mathematical modeling to modern LLM, retrieval, and multi-task AI systems while maintaining strong rigor in implementation, evaluation, and system design tradeoffs.
-    </p>
-  </div>
-</section>
-
-<script src="{{ '/assets/js/projects-carousel.js' | relative_url }}"></script>
