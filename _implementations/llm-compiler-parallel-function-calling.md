@@ -15,7 +15,7 @@ tags: ["AI Agents", "Tool Use", "Parallel Execution", "DAG Planning", "LLM Orche
 image: "/assets/research/llm-compiler.png"
 paper_link: "https://arxiv.org/abs/2312.04511"
 date: 2024-06-01
-order: 0
+order: 2
 featured: true
 ---
 

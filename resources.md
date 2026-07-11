@@ -40,8 +40,32 @@ permalink: /resources/
   <article class="resource-category">
     <h3>GitHub Repositories</h3>
     <p class="research-intro">
-      Open-source implementations, frameworks, and libraries that demonstrate best practices in
-      production AI systems.
+      Explore a curated collection of open-source implementations, engineering patterns, and reusable
+      <strong>Agent Skills</strong>.
+    </p>
+    <p class="research-intro">
+      The <strong>Agent Skills</strong> repository contains production-focused skills for modern AI engineering, including:
+    </p>
+    <ul class="research-intro">
+      <li>Backend Engineering</li>
+      <li>Frontend Development</li>
+      <li>Data Engineering</li>
+      <li>Agentic AI</li>
+      <li>LLM Engineering</li>
+      <li>DevOps & CI/CD</li>
+      <li>System Design</li>
+      <li>Research Paper Writing</li>
+      <li>Software Engineering Best Practices</li>
+    </ul>
+    <p class="research-intro">
+      These skills are designed to be reusable across modern AI coding platforms such as
+      <strong>Claude Code</strong>, <strong>OpenAI Codex</strong>, <strong>Gemini CLI</strong>,
+      <strong>Cursor</strong>, <strong>Windsurf</strong>, <strong>Cline</strong>,
+      <strong>Roo Code</strong>, <strong>GitHub Copilot</strong>, and other agentic development
+      environments. They can also be integrated as plugins or customized to support production AI workflows.
+    </p>
+    <p class="research-intro" style="margin-top: 1rem;">
+      <a href="https://github.com/TrishamBP/agent-skills" target="_blank" rel="noopener noreferrer"><strong>Explore the Agent Skills Repository &rarr;</strong></a>
     </p>
   </article>
 

@@ -5,7 +5,11 @@ layout: default
 <section class="content-section lab-paper-detail-section" aria-labelledby="paper-detail-heading">
 
   <nav class="lab-breadcrumb" aria-label="Breadcrumb">
-    <a href="{{ '/learning-lab/' | relative_url }}" class="lab-breadcrumb-link">&larr; Learning Lab</a>
+    {% if page.collection == "implementations" %}
+      <a href="{{ '/engineering/' | relative_url }}" class="lab-breadcrumb-link">&larr; Engineering Implementations</a>
+    {% else %}
+      <a href="{{ '/learning-lab/' | relative_url }}" class="lab-breadcrumb-link">&larr; Learning Lab</a>
+    {% endif %}
   </nav>
 
   <header class="lab-paper-detail-header">
