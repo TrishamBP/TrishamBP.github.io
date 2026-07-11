@@ -14,7 +14,7 @@ tags: ["BERT", "Pre-training", "Bidirectional", "Masked Language Model", "NLP", 
 image: "/assets/blogs/bert/main.png"
 paper_link: "https://arxiv.org/pdf/1810.04805"
 date: 2018-10-11
-order: 2
+order: 4
 featured: true
 ---
 
