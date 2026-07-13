@@ -16,6 +16,33 @@ includelink: true
 
   {% assign research_papers = site.papers | sort: "date" | reverse %}
   <div class="articles-grid">
+    <!-- New Technical Report: Multi-Head Latent Attention -->
+    <article class="article-card">
+      <h2 class="article-title">From Multi-Head to Multi-Head Latent Attention: An Engineering Analysis of Attention Mechanisms for Large Language Model Inference</h2>
+      
+      <p class="article-date">
+        Trisham Patil
+        &lt;<a href="mailto:trishampatil@gmail.com">trishampatil@gmail.com</a>&gt;
+      </p>
+      
+      <p class="article-date">
+        Published: July 2026 | Technical Report
+      </p>
+      
+      <p class="article-tags">Attention Mechanisms | Transformer Architecture | LLM Inference | KV Cache | Multi-Head Attention | Multi-Query Attention | Grouped Query Attention | Multi-Head Latent Attention | GPU Architecture | Memory Bandwidth</p>
+      
+      <p class="article-preview">
+        Modern large language models have become increasingly constrained by memory bandwidth rather than compute during autoregressive inference. This technical report presents a systems-level engineering analysis of the evolution of attention mechanisms—from Multi-Head Attention (MHA) through Multi-Query Attention (MQA), Grouped Query Attention (GQA), and Multi-Head Latent Attention (MLA)—covering their mathematical foundations, KV cache optimization, GPU memory behavior, and inference trade-offs in modern LLM serving systems.
+      </p>
+      
+      <a 
+        class="article-read-more" 
+        href="{{ '/assets/papers/2026/Attention%20-%20Technical%20Report.pdf' | relative_url }}" 
+        target="_blank" 
+        rel="noopener noreferrer"
+      >View Technical Report &rarr;</a>
+    </article>
+
     {% for paper in research_papers %}
       <article class="article-card">
         <h2 class="article-title">{{ paper.title }}</h2>
