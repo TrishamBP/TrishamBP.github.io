@@ -31,8 +31,6 @@ tags:
 }
 </style>
 
-# Deciphering Agent-to-Agent Communication using Google's A2A Protocol
-
 ![Deciphering Agent-to-Agent Communication using Google's A2A Protocol — AI agents discovering, connecting, and collaborating securely through a standardized protocol](/assets/images/blogs/a2a/a2a.png)
 
 ---
