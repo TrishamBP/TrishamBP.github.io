@@ -275,11 +275,24 @@ body.dark-mode .dark-mode-toggle .icon-moon {
   margin-top: 44px;
 }
 
+/* Skills infographic images reuse the timeline grid so the stack occupies
+   the same content column as the Education/Experience cards — matching their
+   left/right edges, max-width, and responsive breakpoints. The decorative
+   timeline rule and per-item bottom padding are removed for this instance. */
+.skills-timeline::before {
+  display: none;
+}
+
+.skills-timeline .timeline-item {
+  padding-bottom: 0;
+}
+
 /* Seamless vertical stack of Skills infographic images.
    Images render block-level with zero spacing so consecutive
    images touch edge-to-edge and read as one continuous graphic. */
 .skills-stack {
   display: block;
+  min-width: 0;
   font-size: 0;
   line-height: 0;
 }
