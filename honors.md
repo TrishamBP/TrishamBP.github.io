@@ -13,67 +13,54 @@ permalink: /honors/
 
   <div class="honors-intro">
     <h2 class="section-title">Categories</h2>
-    
+
     <article class="honors-category">
       <h3>Hackathon Wins</h3>
       <p class="research-intro">
-        Awards and recognitions from technical hackathons and rapid development competitions.
+        Achievements from technical hackathons and rapid development competitions.
       </p>
     </article>
 
     <article class="honors-category">
-      <h3>Competition Rankings</h3>
+      <h3>Professional Certifications of Distinction</h3>
       <p class="research-intro">
-        Competitive programming, machine learning competitions, and technical challenges.
+        Professional recognitions and certifications earned through engineering work.
       </p>
+
+      <div class="award-card">
+        <div class="award-media">
+          <img
+            src="{{ '/assets/trophy.png' | relative_url }}"
+            alt="CloudAngles Technology Champion award trophy presented to Trisham Bharat Patil"
+            loading="lazy"
+          />
+        </div>
+        <div class="award-body">
+          <h4 class="award-title">Technology Champion — CloudAngles</h4>
+          <p class="award-lead">
+            Recognized for consistently driving technology adoption, research, and engineering
+            improvements across client projects.
+          </p>
+          <p class="research-intro">
+            This recognition reflects my continued effort to introduce and evaluate new technologies,
+            encourage better engineering approaches, and stay current with emerging tools and research.
+            I brought new ideas into client projects, improved how solutions were designed and
+            implemented, and helped deliver production-ready systems ahead of deadlines.
+          </p>
+          <ul class="award-tags">
+            <li>Technology Adoption</li>
+            <li>Research</li>
+            <li>Engineering</li>
+          </ul>
+        </div>
+      </div>
     </article>
 
     <article class="honors-category">
-      <h3>Research Awards</h3>
+      <h3>Open Source Recognition</h3>
       <p class="research-intro">
-        Academic recognitions, research grants, and scholarly achievements.
+        Contributions to open-source projects, repositories, and community acknowledgments.
       </p>
     </article>
-
-    <article class="honors-category">
-      <h3>Scholarships</h3>
-      <p class="research-intro">
-        Merit-based scholarships and educational funding recognitions.
-      </p>
-    </article>
-
-    <article class="honors-category">
-      <h3>Certifications of Distinction</h3>
-      <p class="research-intro">
-        Professional certifications and specialized technical credentials.
-      </p>
-    </article>
-
-    <article class="honors-category">
-      <h3>Conference Presentations</h3>
-      <p class="research-intro">
-        Papers presented, talks delivered, and participation in academic conferences.
-      </p>
-    </article>
-
-    <article class="honors-category">
-      <h3>Open-Source Recognitions</h3>
-      <p class="research-intro">
-        Contributions to open-source projects and community acknowledgments.
-      </p>
-    </article>
-
-    <article class="honors-category">
-      <h3>Speaking Engagements</h3>
-      <p class="research-intro">
-        Technical talks, workshops, and invited presentations at industry and academic events.
-      </p>
-    </article>
-  </div>
-
-  <div class="honors-placeholder">
-    <p class="research-intro">
-      <strong>Coming Soon:</strong> Detailed honors and achievements will be added here.
-    </p>
   </div>
 </section>

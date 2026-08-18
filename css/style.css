@@ -901,14 +901,54 @@ body.dark-mode .dark-mode-toggle .icon-moon {
 
 .linkedin-cell {
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.linkedin-cell iframe {
-  display: block;
+.linkedin-embed {
+  position: relative;
   width: 100%;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   background: #ffffff;
+  overflow: hidden;
+}
+
+.linkedin-embed iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Loading placeholder sits behind the iframe until it fires `load`. */
+.linkedin-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.85rem;
+  z-index: 0;
+}
+
+.linkedin-embed:not(.is-loading) .linkedin-loading {
+  display: none;
+}
+
+.linkedin-fallback {
+  font-size: 0.82rem;
+  color: #1d4ed8;
+  text-decoration: none;
+}
+
+.linkedin-fallback:hover {
+  text-decoration: underline;
 }
 
 .linkedin-pagination {
@@ -980,8 +1020,12 @@ body.dark-mode .project-image-placeholder {
   color: #ffffff;
 }
 
-body.dark-mode .linkedin-cell iframe {
+body.dark-mode .linkedin-embed {
   border-color: #374151;
+}
+
+body.dark-mode .linkedin-loading {
+  color: #9ca3af;
 }
 
 body.dark-mode .projects-status,
@@ -2404,6 +2448,103 @@ body.dark-mode .honors-category h3 {
 body.dark-mode .honors-placeholder {
   background: #0f172a;
   border-color: #374151;
+}
+
+/* ===== AWARD / RECOGNITION CARD ===== */
+
+.award-card {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 24px;
+  align-items: center;
+  padding: 20px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+}
+
+.award-media {
+  min-width: 0;
+}
+
+.award-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 220px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.award-body {
+  min-width: 0;
+}
+
+.award-title {
+  margin: 0 0 6px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.award-lead {
+  margin: 0 0 12px;
+  color: #374151;
+  font-weight: 500;
+}
+
+.award-body .research-intro {
+  margin: 0 0 14px;
+}
+
+.award-tags {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.award-tags li {
+  font-size: 0.78rem;
+  color: #4b5563;
+  padding: 3px 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  background: #ffffff;
+}
+
+@media (max-width: 620px) {
+  .award-card {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: left;
+  }
+
+  .award-media img {
+    max-width: 200px;
+  }
+}
+
+body.dark-mode .award-card {
+  background: #0f172a;
+  border-color: #374151;
+}
+
+body.dark-mode .award-title {
+  color: #f9fafb;
+}
+
+body.dark-mode .award-lead {
+  color: #e5e7eb;
+}
+
+body.dark-mode .award-tags li {
+  background: #1e293b;
+  border-color: #374151;
+  color: #cbd5e1;
 }
 
 /* ===== LOAD MORE PAGINATION ===== */

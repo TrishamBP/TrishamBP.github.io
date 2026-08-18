@@ -19,7 +19,7 @@ permalink: /resources/
     </p>
   </div>
 
-  <h2 class="section-title">Categories</h2>
+  <h2 class="section-title">LinkedIn Posts</h2>
 
   <div class="linkedin-posts" id="linkedin-posts" aria-live="polite">
     <div class="linkedin-grid" id="linkedin-grid"></div>
@@ -29,6 +29,7 @@ permalink: /resources/
   <script>
     (function () {
       // Centralized post data — to add a post, append one entry here.
+      // `height` is the LinkedIn-recommended embed height for that post.
       var LINKEDIN_POSTS = [
         { urn: "urn:li:share:7494713074709487616", height: 230 },
         { urn: "urn:li:share:7494711628232478721", height: 264 },
@@ -56,8 +57,21 @@ permalink: /resources/
         var slice = LINKEDIN_POSTS.slice(start, start + PER_PAGE);
         grid.innerHTML = "";
         slice.forEach(function (post) {
+          var postUrl = "https://www.linkedin.com/feed/update/" + post.urn + "/";
+
           var cell = document.createElement("div");
           cell.className = "linkedin-cell";
+
+          // Embed wrapper reserves the post's height and holds a loading state
+          // behind the iframe, so the area is never a blank collapsed void.
+          var embed = document.createElement("div");
+          embed.className = "linkedin-embed is-loading";
+          embed.style.minHeight = post.height + "px";
+
+          var loading = document.createElement("div");
+          loading.className = "linkedin-loading";
+          loading.textContent = "Loading LinkedIn post…";
+          embed.appendChild(loading);
 
           var iframe = document.createElement("iframe");
           iframe.src = "https://www.linkedin.com/embed/feed/update/" + post.urn + "?collapsed=1";
@@ -67,8 +81,22 @@ permalink: /resources/
           iframe.setAttribute("allowfullscreen", "");
           iframe.setAttribute("loading", "lazy");
           iframe.title = "Embedded LinkedIn post";
+          iframe.addEventListener("load", function () {
+            embed.classList.remove("is-loading");
+          });
+          embed.appendChild(iframe);
+          cell.appendChild(embed);
 
-          cell.appendChild(iframe);
+          // Always-present fallback: if a browser blocks the embed
+          // (e.g. third-party cookies disabled), this exact-URL link still works.
+          var fallback = document.createElement("a");
+          fallback.className = "linkedin-fallback";
+          fallback.href = postUrl;
+          fallback.target = "_blank";
+          fallback.rel = "noopener noreferrer";
+          fallback.textContent = "View this post on LinkedIn →";
+          cell.appendChild(fallback);
+
           grid.appendChild(cell);
         });
       }
