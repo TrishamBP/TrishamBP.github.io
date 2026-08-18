@@ -7,36 +7,32 @@ includelink: true
 
 ## About Me
 
-I am **Trisham Bharat Patil**, an **AI Software Engineer** focused on building production-grade AI systems, backend platforms, and full-stack applications. I work at the intersection of applied machine learning and software engineering, where ideas must be both technically strong and operationally reliable.
+I am **Trisham Bharat Patil**, an engineer whose career has converged from mechanical engineering into software and AI. I build production-grade AI systems, backend platforms, and full-stack applications, and I work at the intersection of applied machine learning, software engineering, and the physics-driven modeling I was originally trained in.
 
 My core focus areas are:
 - LLM systems and RAG pipelines
 - AI-powered backend architecture and APIs
 - Data pipelines, model integration, and deployment at scale
-- Turning research concepts into practical products for real users
+- Applying AI and computation to physical, simulation-heavy engineering problems
 
-## My Journey: Mechanical Engineering to AI Software Engineering
+## My Journey: Mechanical Engineering to AI for Physical Systems
 
-My journey into software did not begin in computer science.
+I started as a mechanical engineer. Before I wrote production code, I was trained in mathematics, physics, thermodynamics, and fluid mechanics, and in reasoning about problems from first principles. That background taught me how physical systems behave, how they are constrained, and how to model them with numerical methods and computation. Mechanical engineering was never something I left behind; it is the foundation the rest of my work is built on.
 
-I completed my Bachelor's in Mechanical Engineering in 2019 with very limited programming exposure. During my Master's in the US, I started using Python for simulation, numerical analysis, and scientific computing. That gradually moved me from solving engineering equations manually to building code-first workflows.
+Software grew out of that foundation rather than replacing it. During my Master's, simulation and scientific computing moved me from solving engineering equations by hand into code, first in MATLAB and then increasingly in Python for numerical simulation and data analysis. What began as computational engineering gradually became broader software engineering, as I moved from one-off scripts to repeatable data pipelines and backend systems built to be reliable and to scale.
 
-While doing PhD research in computational fluid dynamics, I was introduced to machine learning and predictive modeling. That experience changed my direction toward AI and software engineering.
+That same trajectory carried me into machine learning and AI. Working with computation and data made the transition natural: from data pipelines and model training into NLP, deep learning, transformers, and LLMs. I became interested not just in using models but in engineering the systems around them, including RAG, agentic orchestration, inference serving, GPU-aware optimization, and the backend infrastructure that keeps production AI reliable.
 
-In 2022, I moved back to India and transitioned fully into software engineering. I started with backend development (Node.js/Express + databases), then expanded into full-stack systems, and eventually specialized in AI engineering with LLMs, RAG, NLP pipelines, and scalable inference systems.
+The more deeply I worked across software and AI, the clearer it became that my mechanical engineering background was not a detour, but the other half of the problem. AI, software engineering, physics, and mechanical engineering are complementary disciplines, and having worked across all of them lets me treat them as one integrated engineering challenge.
 
-Today, I build end-to-end AI-native products that combine robust backend design, modern ML tooling, and cloud deployment best practices.
+My long-term direction sits at the intersection of AI and physical engineering: building intelligent systems that can reason about, simulate, optimize, and control complex physical systems, through methods like physics-informed neural networks, scientific machine learning, and digital twins, applied to domains such as autonomous systems, robotics, satellites, spacecraft, and rocket propulsion.
 
 ## Education
 
-- **BITS Pilani (WILP), Pilani, India**  
-  M.Tech in Artificial Intelligence and Machine Learning, **Nov 2024 - Nov 2026 (Pursuing)**
-- **University of Cincinnati, USA**  
-  PhD in Mechanical Engineering, **Jun 2021 - Jun 2022** *(Program not completed — withdrew in first year)*
 - **Worcester Polytechnic Institute, USA**  
-  MS in Mechanical Engineering, **Aug 2019 - May 2021**
-- **Savitribai Phule Pune University, India**  
-  BE in Mechanical Engineering, **Aug 2015 - May 2019**
+  MS in Mechanical Engineering, **Aug 2019 - May 2021** — thermofluids, computational fluid dynamics, numerical simulation, fluid mechanics, and scientific computing in Python.
+- **University of Pune, India**  
+  BE in Mechanical Engineering, **Aug 2015 - May 2019** — final-year project designing a fixed-wing drone capable of safe gliding during power loss, covering aerodynamic wing design, airflow modeling, structural design, and stability analysis.
 
 ## Work Experience
 
