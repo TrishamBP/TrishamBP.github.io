@@ -19,19 +19,6 @@ tags:
   - AI Engineering
 ---
 
-<style>
-/* Per-post typography override: Aptos font stack for this article only */
-.post-content {
-  font-family: "Aptos", "Aptos Display", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
-}
-.post-content h1,
-.post-content h2,
-.post-content h3,
-.post-content h4 {
-  font-family: "Aptos Display", "Aptos", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
-}
-</style>
-
 # DSPy: Program, Don't Prompt
 
 ![DSPy and Prompt Engineering — programmatic prompt optimization for production LLM systems using Signatures, Modules, Metrics, and optimizers](/assets/images/blogs/dspy/dspy.png)

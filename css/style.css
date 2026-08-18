@@ -1079,6 +1079,29 @@ body.dark-mode .skill-badge {
   margin: 0 auto;
 }
 
+/* ===== BLOG / POST TYPOGRAPHY — APTOS FONT FAMILY =====
+   Applies the Aptos font family to all posts (layout: post): the post
+   title, meta line, body copy, lists, blockquotes, tables, and headings.
+   FONT FAMILY ONLY — font sizes, weights, line-heights, letter-spacing,
+   margins, spacing, colors, and code-block typography are left untouched.
+   Code blocks (pre/code) keep their monospace stack via their own rules. */
+.post-content,
+.post-header h1,
+.post-header .meta {
+  font-family: "Aptos", "Aptos Display", "Segoe UI", -apple-system,
+    BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+}
+
+.post-content h1,
+.post-content h2,
+.post-content h3,
+.post-content h4,
+.post-content h5,
+.post-content h6 {
+  font-family: "Aptos Display", "Aptos", "Segoe UI", -apple-system,
+    BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+}
+
 .post-content {
   max-width: 90ch;
   margin: 0 auto;
