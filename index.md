@@ -102,54 +102,58 @@ title: Home
   <h2 id="about-me-heading" class="section-title">About Me</h2>
   <h3 class="about-journey-title">My Journey</h3>
   <p>
-    I did not start in computer science. I grew up in a practical, non-technical
-    environment, studied mechanical engineering, and learned early how to work
-    through constraints instead of waiting for ideal conditions. My first years
-    were shaped by rigorous math, physical modeling, and systems thinking rather
-    than software tooling. That foundation still defines how I approach AI
-    today: as an engineering discipline that must be measurable, reliable, and
-    useful under real operating conditions.
+    I started as a mechanical engineer. Long before I wrote production code,
+    I was trained in mathematics, physics, thermodynamics, and fluid mechanics,
+    and in the habit of reasoning about problems from first principles. That
+    background taught me how physical systems actually behave: how they are
+    constrained, how they fail, and how to model them with numerical methods and
+    computation. It also gave me a systems-thinking instinct that still shapes
+    everything I build today. Mechanical engineering was never something I left
+    behind; it is the foundation the rest of my work is built on.
   </p>
   <p>
-    The turning point came during graduate work, where simulation and
-    computational analysis pushed me into programming through Python and MATLAB.
-    What began as scientific computing expanded into data workflows: ingestion,
-    cleaning, transformation, validation, and feature construction. I moved from
-    solving isolated equations to designing repeatable data pipelines, including
-    time-series processing and schema decisions that could survive changing
-    product requirements instead of breaking every quarter.
+    Software did not replace that foundation, it grew out of it. During graduate
+    work in thermofluids and computational fluid dynamics, simulation and
+    scientific computing pushed me from solving equations by hand into writing
+    code, first in MATLAB and then increasingly in Python for numerical
+    simulation and data analysis. What began as computational engineering
+    gradually became broader software engineering: I moved from one-off scripts
+    to repeatable data pipelines, backend services, and systems designed to be
+    reliable and to scale. Software turned out to be the most powerful tool I had
+    for building and scaling engineering systems.
   </p>
   <p>
-    From there, I transitioned deliberately into model development and ML
-    engineering. I trained classical ML and deep learning systems, then moved
-    into transformer fine-tuning for NER, classification, and domain-adapted NLP
-    tasks. I built dataset pipelines myself, including scraping, curation,
-    weak-supervision loops, and LLM-assisted labeling to scale annotation
-    quality. As model complexity increased, I started working directly with
-    training trade-offs at the systems layer: sequence length vs batch size,
-    memory limits on NVIDIA T4-class GPUs, fp16 mixed precision, and gradient
-    accumulation to keep training stable and efficient.
+    That same trajectory carried me into machine learning and AI. Working with
+    computation and data made the transition natural: from data pipelines and
+    model training into NLP, deep learning, transformers, and LLMs. I became
+    interested not just in using models but in engineering the systems around
+    them, including RAG and retrieval, agentic orchestration, inference serving,
+    GPU-aware optimization, and the backend infrastructure that keeps production
+    AI reliable. I approach AI the way I was trained to approach any engineering
+    problem: as something that must be measurable, constrained, and
+    reproducible.
   </p>
   <p>
-    Today I work end to end across AI systems, backend infrastructure, and
-    deployment. On the data side, I design ETL/ELT workflows with orchestration
-    patterns used in tools like Airflow and Dagster, and I work with warehouse
-    and lake-oriented stacks such as BigQuery and Snowflake. On the modeling
-    side, I build and evaluate multi-stage pipelines, including multi-task
-    architectures that combine entity extraction and classification in one
-    production flow. On the serving side, I ship these systems through FastAPI
-    and Node.js microservices, queue-backed execution with Celery and RabbitMQ,
-    and cloud deployments on AWS/GCP with Docker and CI/CD.
+    The more deeply I worked across software and AI, the clearer it became that
+    my mechanical engineering background was not a detour. It was the other half
+    of the problem. AI, software engineering, physics, and mechanical
+    engineering are not separate career paths competing for my attention; they
+    are complementary disciplines. Modeling a physical system, writing the code
+    to simulate it, and training a model to reason about it are the same problem
+    viewed from different angles, and having worked on all of them lets me treat
+    them as one integrated engineering challenge.
   </p>
   <p>
-    The systems I care most about are the ones that close the loop from raw data
-    to production decisions: recruiter AI with RAG, multilingual CV parsing,
-    domain-specific NLP for finance and geopolitical signals, and agentic
-    orchestration where retrieval, inference, and API actions must work
-    together. My long-term direction is clear: build full-stack AI systems where
-    data engineering, model training, GPU-aware optimization, and backend
-    reliability are treated as one integrated engineering problem, not separate
-    silos.
+    My long-term direction sits at the intersection of AI and physical
+    engineering: building intelligent systems that can reason about, simulate,
+    optimize, and control complex physical systems. Concretely, that means work
+    like physics-informed neural networks, scientific machine learning, and
+    digital twins, and applying those methods to domains where physics,
+    computation, and engineering all matter at once, from autonomous systems and
+    robotics to satellites, spacecraft, and rocket propulsion. I want to build AI
+    systems that interact with the physical world and help solve hard engineering
+    problems, combining mechanical engineering, software engineering, and AI into
+    a single way of working.
   </p>
 </section>
 
@@ -157,49 +161,6 @@ title: Home
   <h2 id="education-heading" class="section-title">Education</h2>
 
   <div class="timeline">
-    <article class="timeline-item">
-      <div class="timeline-left">
-        <p class="timeline-year">2024 &mdash; Present</p>
-        <img
-          class="timeline-logo"
-          src="{{ '/images/universities/bits.svg' | relative_url }}"
-          alt="BITS Pilani logo"
-        />
-      </div>
-      <div class="timeline-right">
-        <h3>Master of Technology (MTech) in Artificial Intelligence and Machine Learning</h3>
-        <p class="timeline-university">BITS Pilani</p>
-        <p>
-          Focuses on theoretical foundations of AI including machine learning,
-          neural networks, NLP, computer vision, distributed ML systems, and
-          MLOps. The program strengthens the research and mathematical
-          foundation required for advanced AI systems such as LLM pipelines and
-          large-scale machine learning infrastructure.
-        </p>
-      </div>
-    </article>
-
-    <article class="timeline-item">
-      <div class="timeline-left">
-        <p class="timeline-year">2021 &mdash; 2022</p>
-        <img
-          class="timeline-logo"
-          src="{{ '/images/universities/cincinnati.svg' | relative_url }}"
-          alt="University of Cincinnati logo"
-        />
-      </div>
-      <div class="timeline-right">
-        <h3>PhD &ndash; Mechanical Engineering <span style="font-size:0.8em;font-weight:400;color:#6b7280;">(Program not completed &mdash; withdrew in first year)</span></h3>
-        <p class="timeline-university">University of Cincinnati</p>
-        <p>
-          Research focused on computational fluid dynamics and thermodynamics
-          applied to tumor ablation modeling, involving heavy numerical
-          simulations, Python-based data analysis, and early exposure to machine
-          learning and predictive modeling.
-        </p>
-      </div>
-    </article>
-
     <article class="timeline-item">
       <div class="timeline-left">
         <p class="timeline-year">2019 &mdash; 2021</p>
@@ -383,111 +344,14 @@ title: Home
 <section class="content-section skills-section" aria-labelledby="skills-heading">
   <h2 id="skills-heading" class="section-title">Skills &amp; Technologies</h2>
 
-  <div class="skills-category">
-    <h3>Programming Languages</h3>
-    <div class="skills-grid">
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/python.svg' | relative_url }}" alt="Python icon" /><span>Python</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/javascript.svg' | relative_url }}" alt="JavaScript icon" /><span>JavaScript</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/typescript.svg' | relative_url }}" alt="TypeScript icon" /><span>TypeScript</span></div>
-    </div>
-  </div>
-
-  <div class="skills-category">
-    <h3>Frontend Development</h3>
-    <div class="skills-grid">
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/react.svg' | relative_url }}" alt="React icon" /><span>React</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/nextdotjs.svg' | relative_url }}" alt="Next.js icon" /><span>Next.js</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/gradio.svg' | relative_url }}" alt="Gradio icon" /><span>Gradio</span></div>
-    </div>
-  </div>
-
-  <div class="skills-category">
-    <h3>Backend Engineering</h3>
-    <div class="skills-grid">
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/nodedotjs.svg' | relative_url }}" alt="Node.js icon" /><span>Node.js</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/express.svg' | relative_url }}" alt="Express.js icon" /><span>Express.js</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/nestjs.svg' | relative_url }}" alt="NestJS icon" /><span>NestJS</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/fastapi.svg' | relative_url }}" alt="FastAPI icon" /><span>FastAPI</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/pydantic.svg' | relative_url }}" alt="Pydantic icon" /><span>Pydantic</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/celery.svg' | relative_url }}" alt="Celery icon" /><span>Celery</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/sqlalchemy.svg' | relative_url }}" alt="SQLAlchemy icon" /><span>SQLAlchemy</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/redis.svg' | relative_url }}" alt="Redis icon" /><span>Redis</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/rabbitmq.svg' | relative_url }}" alt="RabbitMQ icon" /><span>RabbitMQ</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/apachekafka.svg' | relative_url }}" alt="Kafka icon" /><span>Kafka</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/graphql.svg' | relative_url }}" alt="GraphQL icon" /><span>GraphQL</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/restapi.svg' | relative_url }}" alt="REST APIs icon" /><span>REST APIs</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/websockets.svg' | relative_url }}" alt="WebSockets icon" /><span>WebSockets</span></div>
-    </div>
-  </div>
-
-  <div class="skills-category">
-    <h3>Databases</h3>
-    <div class="skills-grid">
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/mongodb.svg' | relative_url }}" alt="MongoDB icon" /><span>MongoDB</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/postgresql.svg' | relative_url }}" alt="PostgreSQL icon" /><span>PostgreSQL</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/apachecassandra.svg' | relative_url }}" alt="Cassandra icon" /><span>Cassandra</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/scylladb.svg' | relative_url }}" alt="ScyllaDB icon" /><span>ScyllaDB</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/neo4j.svg' | relative_url }}" alt="Neo4j icon" /><span>Neo4j</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/duckdb.svg' | relative_url }}" alt="DuckDB icon" /><span>DuckDB</span></div>
-    </div>
-  </div>
-
-  <div class="skills-category">
-    <h3>Data Engineering</h3>
-    <div class="skills-grid">
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/apacheairflow.svg' | relative_url }}" alt="Apache Airflow icon" /><span>Apache Airflow</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/googlebigquery.svg' | relative_url }}" alt="BigQuery icon" /><span>BigQuery</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/snowflake.svg' | relative_url }}" alt="Snowflake icon" /><span>Snowflake</span></div>
-    </div>
-  </div>
-
-  <div class="skills-category">
-    <h3>Machine Learning</h3>
-    <div class="skills-grid">
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/numpy.svg' | relative_url }}" alt="NumPy icon" /><span>NumPy</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/pandas.svg' | relative_url }}" alt="Pandas icon" /><span>Pandas</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/scikitlearn.svg' | relative_url }}" alt="Scikit-Learn icon" /><span>Scikit-Learn</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/tensorflow.svg' | relative_url }}" alt="TensorFlow icon" /><span>TensorFlow</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/pytorch.svg' | relative_url }}" alt="PyTorch icon" /><span>PyTorch</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/opencv.svg' | relative_url }}" alt="OpenCV icon" /><span>OpenCV</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/spacy.svg' | relative_url }}" alt="SpaCy icon" /><span>SpaCy</span></div>
-    </div>
-  </div>
-
-  <div class="skills-category">
-    <h3>AI / LLM Systems</h3>
-    <div class="skills-grid">
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/huggingface.svg' | relative_url }}" alt="Transformers icon" /><span>Transformers</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/huggingface.svg' | relative_url }}" alt="HuggingFace icon" /><span>HuggingFace</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/langchain.svg' | relative_url }}" alt="LangChain icon" /><span>LangChain</span></div>
-    </div>
-  </div>
-
-  <div class="skills-category">
-    <h3>DevOps &amp; Cloud</h3>
-    <div class="skills-grid">
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/googlecloud.svg' | relative_url }}" alt="GCP icon" /><span>GCP</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/docker.svg' | relative_url }}" alt="Docker icon" /><span>Docker</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/terraform.svg' | relative_url }}" alt="Terraform icon" /><span>Terraform</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/githubactions.svg' | relative_url }}" alt="GitHub Actions icon" /><span>GitHub Actions</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/jenkins.svg' | relative_url }}" alt="Jenkins icon" /><span>Jenkins</span></div>
-      <div class="skills-item"><img class="skills-logo" src="{{ '/images/skills/vercel.svg' | relative_url }}" alt="Vercel icon" /><span>Vercel</span></div>
-    </div>
+  <div class="skills-stack">
+    <img src="{{ '/assets/skills/skills_1.png' | relative_url }}" alt="Languages, core runtimes, data engineering, and backend infrastructure skills" />
+    <img src="{{ '/assets/skills/skills_2.png' | relative_url }}" alt="Databases, ORMs, and development tools skills" />
+    <img src="{{ '/assets/skills/skills_3.png' | relative_url }}" alt="Machine learning and AI/LLM systems skills" />
+    <img src="{{ '/assets/skills/skills_4.png' | relative_url }}" alt="DevOps, cloud, and infrastructure skills" />
+    <img src="{{ '/assets/skills/skills_5.png' | relative_url }}" alt="Additional engineering skills and technologies" />
   </div>
 </section>
-<script>
-  (function () {
-    var skillItems = document.querySelectorAll(".skills-item");
-    skillItems.forEach(function (item) {
-      var img = item.querySelector("img.skills-logo");
-      if (!img) return;
-
-      img.addEventListener("error", function () {
-        item.remove();
-      });
-    });
-  })();
-</script>
 <section class="content-section stats-section" aria-labelledby="stats-heading">
   <h2 id="stats-heading" class="section-title">Stats</h2>
   <p class="research-intro">

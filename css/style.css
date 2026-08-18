@@ -275,6 +275,24 @@ body.dark-mode .dark-mode-toggle .icon-moon {
   margin-top: 44px;
 }
 
+/* Seamless vertical stack of Skills infographic images.
+   Images render block-level with zero spacing so consecutive
+   images touch edge-to-edge and read as one continuous graphic. */
+.skills-stack {
+  display: block;
+  font-size: 0;
+  line-height: 0;
+}
+
+.skills-stack img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
 .skills-category {
   margin: 22px 0 28px;
   border: 1px solid #e5e7eb;
