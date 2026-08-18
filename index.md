@@ -344,12 +344,17 @@ title: Home
 <section class="content-section skills-section" aria-labelledby="skills-heading">
   <h2 id="skills-heading" class="section-title">Skills &amp; Technologies</h2>
 
-  <div class="skills-stack">
-    <img src="{{ '/assets/skills/skills_1.png' | relative_url }}" alt="Languages, core runtimes, data engineering, and backend infrastructure skills" />
-    <img src="{{ '/assets/skills/skills_2.png' | relative_url }}" alt="Databases, ORMs, and development tools skills" />
-    <img src="{{ '/assets/skills/skills_3.png' | relative_url }}" alt="Machine learning and AI/LLM systems skills" />
-    <img src="{{ '/assets/skills/skills_4.png' | relative_url }}" alt="DevOps, cloud, and infrastructure skills" />
-    <img src="{{ '/assets/skills/skills_5.png' | relative_url }}" alt="Additional engineering skills and technologies" />
+  <div class="timeline skills-timeline">
+    <div class="timeline-item">
+      <div class="timeline-left" aria-hidden="true"></div>
+      <div class="skills-stack">
+        <img src="{{ '/assets/skills/skills_1.png' | relative_url }}" alt="Languages, core runtimes, data engineering, and backend infrastructure skills" />
+        <img src="{{ '/assets/skills/skills_2.png' | relative_url }}" alt="Databases, ORMs, and development tools skills" />
+        <img src="{{ '/assets/skills/skills_3.png' | relative_url }}" alt="Machine learning and AI/LLM systems skills" />
+        <img src="{{ '/assets/skills/skills_4.png' | relative_url }}" alt="DevOps, cloud, and infrastructure skills" />
+        <img src="{{ '/assets/skills/skills_5.png' | relative_url }}" alt="Additional engineering skills and technologies" />
+      </div>
+    </div>
   </div>
 </section>
 <section class="content-section stats-section" aria-labelledby="stats-heading">
