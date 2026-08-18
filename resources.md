@@ -46,10 +46,6 @@ permalink: /resources/
       ];
 
       var PER_PAGE = 3;
-      // Cap the embed height so a post whose iframe is blocked (e.g. a browser
-      // that blocks third-party cookies) shows a bounded, tidy box + fallback
-      // link rather than a tall blank void. Shorter posts keep their own height.
-      var MAX_EMBED_HEIGHT = 440;
       var totalPages = Math.max(1, Math.ceil(LINKEDIN_POSTS.length / PER_PAGE));
       var currentPage = 1;
 
@@ -62,47 +58,21 @@ permalink: /resources/
         grid.innerHTML = "";
         slice.forEach(function (post) {
           var postUrl = "https://www.linkedin.com/feed/update/" + post.urn + "/";
-          var embedHeight = Math.min(post.height, MAX_EMBED_HEIGHT);
 
-          var cell = document.createElement("div");
-          cell.className = "linkedin-cell";
+          // Equal-size static card that links to the real post. Always visible
+          // in every browser (no third-party iframe/cookie dependency).
+          var card = document.createElement("a");
+          card.className = "linkedin-cell";
+          card.href = postUrl;
+          card.target = "_blank";
+          card.rel = "noopener noreferrer";
+          card.innerHTML =
+            '<span class="lc-badge" aria-hidden="true">in</span>' +
+            '<strong class="lc-title">LinkedIn Post</strong>' +
+            '<span class="lc-author">Trisham Patil</span>' +
+            '<span class="lc-cta">View this post on LinkedIn →</span>';
 
-          // Embed wrapper reserves a bounded height and holds a loading state
-          // behind the iframe, so the area is never a blank collapsed void.
-          var embed = document.createElement("div");
-          embed.className = "linkedin-embed is-loading";
-          embed.style.height = embedHeight + "px";
-
-          var loading = document.createElement("div");
-          loading.className = "linkedin-loading";
-          loading.textContent = "Loading LinkedIn post…";
-          embed.appendChild(loading);
-
-          var iframe = document.createElement("iframe");
-          iframe.src = "https://www.linkedin.com/embed/feed/update/" + post.urn + "?collapsed=1";
-          iframe.height = embedHeight;
-          iframe.width = "100%";
-          iframe.frameBorder = "0";
-          iframe.setAttribute("allowfullscreen", "");
-          iframe.setAttribute("loading", "lazy");
-          iframe.title = "Embedded LinkedIn post";
-          iframe.addEventListener("load", function () {
-            embed.classList.remove("is-loading");
-          });
-          embed.appendChild(iframe);
-          cell.appendChild(embed);
-
-          // Always-present fallback: if a browser blocks the embed
-          // (e.g. third-party cookies disabled), this exact-URL link still works.
-          var fallback = document.createElement("a");
-          fallback.className = "linkedin-fallback";
-          fallback.href = postUrl;
-          fallback.target = "_blank";
-          fallback.rel = "noopener noreferrer";
-          fallback.textContent = "View this post on LinkedIn →";
-          cell.appendChild(fallback);
-
-          grid.appendChild(cell);
+          grid.appendChild(card);
         });
       }
 

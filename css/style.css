@@ -894,61 +894,66 @@ body.dark-mode .dark-mode-toggle .icon-moon {
 
 .linkedin-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
-  align-items: start;
+  align-items: stretch;
 }
 
+/* Each cell is an equal-size static card that links to the real post. */
 .linkedin-cell {
   min-width: 0;
+  min-height: 200px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-}
-
-.linkedin-embed {
-  position: relative;
-  width: 100%;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  background: #ffffff;
-  overflow: hidden;
-}
-
-.linkedin-embed iframe {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  position: relative;
-  z-index: 1;
-}
-
-/* Loading placeholder sits behind the iframe until it fires `load`. */
-.linkedin-loading {
-  position: absolute;
-  inset: 0;
-  display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12px;
+  gap: 10px;
+  padding: 24px 20px;
   text-align: center;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #ffffff;
+  text-decoration: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.linkedin-cell:hover {
+  border-color: #0a66c2;
+  box-shadow: 0 4px 14px rgba(10, 102, 194, 0.12);
+  transform: translateY(-2px);
+}
+
+.linkedin-cell .lc-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: #0a66c2;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.linkedin-cell .lc-title {
+  color: #111827;
+  font-size: 1.05rem;
+}
+
+.linkedin-cell .lc-author {
   color: #6b7280;
   font-size: 0.85rem;
-  z-index: 0;
 }
 
-.linkedin-embed:not(.is-loading) .linkedin-loading {
-  display: none;
-}
-
-.linkedin-fallback {
-  font-size: 0.82rem;
+.linkedin-cell .lc-cta {
+  margin-top: 4px;
   color: #1d4ed8;
-  text-decoration: none;
+  font-size: 0.9rem;
 }
 
-.linkedin-fallback:hover {
+.linkedin-cell:hover .lc-cta {
   text-decoration: underline;
 }
 
@@ -1021,11 +1026,16 @@ body.dark-mode .project-image-placeholder {
   color: #ffffff;
 }
 
-body.dark-mode .linkedin-embed {
+body.dark-mode .linkedin-cell {
   border-color: #374151;
+  background: #1e293b;
 }
 
-body.dark-mode .linkedin-loading {
+body.dark-mode .linkedin-cell .lc-title {
+  color: #f9fafb;
+}
+
+body.dark-mode .linkedin-cell .lc-author {
   color: #9ca3af;
 }
 
