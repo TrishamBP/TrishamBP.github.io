@@ -19,19 +19,6 @@ tags:
   - Responsible AI
 ---
 
-<style>
-/* Per-post typography override: Aptos font stack for this article only */
-.post-content {
-  font-family: "Aptos", "Aptos Display", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
-}
-.post-content h1,
-.post-content h2,
-.post-content h3,
-.post-content h4 {
-  font-family: "Aptos Display", "Aptos", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
-}
-</style>
-
 # AI Security in Production: Lessons from Securing a Highly Sensitive AI Platform
 
 ![AI Security in Production — securing AI agents and LLM systems with trust boundaries, guardrails, observability, and defense in depth](/assets/images/blogs/ai-secuirty/ai_sec.png)

@@ -18,19 +18,6 @@ tags:
   - Production AI
 ---
 
-<style>
-/* Per-post typography override: Aptos font stack for this article only */
-.post-content {
-  font-family: "Aptos", "Aptos Display", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
-}
-.post-content h1,
-.post-content h2,
-.post-content h3,
-.post-content h4 {
-  font-family: "Aptos Display", "Aptos", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
-}
-</style>
-
 ![Deciphering Agent-to-Agent Communication using Google's A2A Protocol — AI agents discovering, connecting, and collaborating securely through a standardized protocol](/assets/images/blogs/a2a/a2a.png)
 
 ---
