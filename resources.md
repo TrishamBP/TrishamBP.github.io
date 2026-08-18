@@ -46,6 +46,10 @@ permalink: /resources/
       ];
 
       var PER_PAGE = 3;
+      // Cap the embed height so a post whose iframe is blocked (e.g. a browser
+      // that blocks third-party cookies) shows a bounded, tidy box + fallback
+      // link rather than a tall blank void. Shorter posts keep their own height.
+      var MAX_EMBED_HEIGHT = 440;
       var totalPages = Math.max(1, Math.ceil(LINKEDIN_POSTS.length / PER_PAGE));
       var currentPage = 1;
 
@@ -58,15 +62,16 @@ permalink: /resources/
         grid.innerHTML = "";
         slice.forEach(function (post) {
           var postUrl = "https://www.linkedin.com/feed/update/" + post.urn + "/";
+          var embedHeight = Math.min(post.height, MAX_EMBED_HEIGHT);
 
           var cell = document.createElement("div");
           cell.className = "linkedin-cell";
 
-          // Embed wrapper reserves the post's height and holds a loading state
+          // Embed wrapper reserves a bounded height and holds a loading state
           // behind the iframe, so the area is never a blank collapsed void.
           var embed = document.createElement("div");
           embed.className = "linkedin-embed is-loading";
-          embed.style.minHeight = post.height + "px";
+          embed.style.height = embedHeight + "px";
 
           var loading = document.createElement("div");
           loading.className = "linkedin-loading";
@@ -75,7 +80,7 @@ permalink: /resources/
 
           var iframe = document.createElement("iframe");
           iframe.src = "https://www.linkedin.com/embed/feed/update/" + post.urn + "?collapsed=1";
-          iframe.height = post.height;
+          iframe.height = embedHeight;
           iframe.width = "100%";
           iframe.frameBorder = "0";
           iframe.setAttribute("allowfullscreen", "");
