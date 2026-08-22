@@ -1557,6 +1557,79 @@ body.dark-mode .post-content tbody tr:nth-child(even) {
   }
 }
 
+/* ===== POST ANCHOR NAVIGATION + TABLE OF CONTENTS =====
+   Additive, reusable helpers for in-page anchor navigation on posts.
+   Enables smooth scrolling to same-page section anchors and offsets
+   headings so the sticky top nav (56px) never covers a linked heading. */
+html {
+  scroll-behavior: smooth;
+}
+
+.post-content h1,
+.post-content h2,
+.post-content h3,
+.post-content h4 {
+  scroll-margin-top: 80px;
+}
+
+.post-toc {
+  margin: 1.8rem 0 2.2rem;
+  padding: 20px 24px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.post-toc .post-toc-title {
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6b7280;
+}
+
+.post-toc ol {
+  margin: 0;
+  padding-left: 1.25rem;
+  columns: 2;
+  column-gap: 2.6rem;
+}
+
+.post-toc li {
+  margin: 0.3rem 0;
+  break-inside: avoid;
+  line-height: 1.45;
+}
+
+.post-toc a {
+  color: #1d4ed8;
+  text-decoration: none;
+}
+
+.post-toc a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 680px) {
+  .post-toc ol {
+    columns: 1;
+  }
+}
+
+body.dark-mode .post-toc {
+  border-color: #334155;
+  background: #0f172a;
+}
+
+body.dark-mode .post-toc .post-toc-title {
+  color: #94a3b8;
+}
+
+body.dark-mode .post-toc a {
+  color: #93c5fd;
+}
+
 /* ===== TOP NAV ===== */
 
 .topnav {
