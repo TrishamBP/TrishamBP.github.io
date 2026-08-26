@@ -19,16 +19,20 @@ permalink: /engineering/
   </div>
 </section>
 
-<!-- ===================== LATEST / FEATURED ===================== -->
-<section class="content-section engineering-latest-section" aria-labelledby="latest-heading">
-  <h2 id="latest-heading" class="section-title lab-section-heading">Latest Engineering Implementations</h2>
-
-  {% assign latest = site.implementations | sort: "date" | reverse %}
-  <div class="lab-feed" aria-label="Latest engineering implementations">
-    {% for impl in latest limit: 3 %}
-      {% include impl-card.html impl=impl index=forloop.index0 %}
-    {% endfor %}
-  </div>
+<!-- ===================== INTRO / PHILOSOPHY ===================== -->
+<section class="content-section engineering-intro-section" aria-labelledby="intro-heading">
+  <h2 id="intro-heading" class="section-title lab-section-heading">Engineering Across Systems</h2>
+  <p class="research-intro eng-lede">
+    This is where research becomes engineering. I work through papers in depth — not summaries,
+    but the architecture decisions, the data flow, the trade-offs, and the reasons a system is
+    built the way it is. Each entry pairs the original idea with <em>my understanding</em> of it:
+    what actually matters, what is often missed, and how it holds up when you have to build it.
+  </p>
+  <p class="research-intro eng-lede">
+    The goal is not coverage but depth — reconstructing each system from first principles across
+    the full stack, from attention mechanics and model architectures to inference engines, agents,
+    and production reliability.
+  </p>
 </section>
 
 <!-- ===================== ENGINEERING DOMAINS ===================== -->
