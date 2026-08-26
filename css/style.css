@@ -2816,9 +2816,24 @@ body.dark-mode .load-more-status {
 }
 
 /* ── Section spacing between landing blocks ── */
-.engineering-latest-section,
+.engineering-intro-section,
 .engineering-domains-section {
   margin-top: 48px;
+}
+
+/* ── Intro / philosophy lede ── */
+.eng-lede {
+  max-width: 74ch;
+  font-size: 1.02rem;
+  color: #374151;
+}
+
+.eng-lede + .eng-lede {
+  margin-top: 14px;
+}
+
+body.dark-mode .eng-lede {
+  color: #cbd5e1;
 }
 
 /* ── Domain card grid ── */
