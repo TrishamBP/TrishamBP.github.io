@@ -14,6 +14,8 @@ highlights:
 tags: ["AI Agents", "Tool Use", "Parallel Execution", "DAG Planning", "LLM Orchestration", "Function Calling", "Production Systems", "Compiler Theory"]
 image: "/assets/research/llm-compiler.png"
 paper_link: "https://arxiv.org/abs/2312.04511"
+category: ai-agents
+subcategory: agent-infrastructure
 date: 2024-06-01
 order: 2
 featured: true

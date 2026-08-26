@@ -1,0 +1,69 @@
+{% comment %}
+  Reusable Engineering Implementation card.
+  Usage: {% include impl-card.html impl=impl %}
+  Optional: index (for data-index), subcategory data attr is added automatically.
+{% endcomment %}
+<article
+  class="lab-card lab-paper-card implementation-item"
+  {% if include.index %}data-index="{{ include.index }}"{% endif %}
+  data-subcategory="{{ include.impl.subcategory }}"
+  aria-label="{{ include.impl.title }}"
+>
+  <div class="lab-card-image-wrap">
+    {% if include.impl.image %}
+      <img
+        class="lab-paper-image"
+        src="{{ include.impl.image | relative_url }}"
+        alt="{{ include.impl.title }}"
+        loading="lazy"
+      />
+    {% else %}
+      <div class="lab-paper-placeholder" aria-hidden="true">
+        <span class="lab-paper-icon">&#128196;</span>
+        {% if include.impl.year %}<span class="lab-paper-year">{{ include.impl.year }}</span>{% endif %}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="lab-card-content">
+    <h3 class="lab-card-title">{{ include.impl.title }}</h3>
+
+    {% if include.impl.authors %}
+      <p class="lab-card-meta">{{ include.impl.authors }}</p>
+    {% endif %}
+
+    {% if include.impl.venue %}
+      <p class="lab-card-venue">{{ include.impl.venue }}</p>
+    {% endif %}
+
+    <p class="lab-card-description">{{ include.impl.description }}</p>
+
+    {% if include.impl.highlights and include.impl.highlights.size > 0 %}
+      <ul class="lab-card-highlights">
+        {% for h in include.impl.highlights %}
+          <li>{{ h }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if include.impl.tags and include.impl.tags.size > 0 %}
+      <div class="lab-tag-pills">
+        {% for tag in include.impl.tags %}
+          <span class="lab-tag-pill">{{ tag }}</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="lab-card-actions">
+      <a class="article-read-more lab-card-cta" href="{{ include.impl.url | relative_url }}">Read Implementation &rarr;</a>
+      {% if include.impl.paper_link %}
+        <a
+          class="lab-paper-link"
+          href="{{ include.impl.paper_link }}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >View Original Paper &#8599;</a>
+      {% endif %}
+    </div>
+  </div>
+</article>

@@ -2784,3 +2784,230 @@ body.dark-mode .load-more-btn:hover {
 body.dark-mode .load-more-status {
   color: #9ca3af;
 }
+
+/* ===================================================================
+   ENGINEERING IMPLEMENTATIONS — LANDING, DOMAINS & CATEGORY PAGES
+   =================================================================== */
+
+/* ── Hero stats row ── */
+.eng-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin-top: 18px;
+}
+
+.eng-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #4b5563;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.eng-stat strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+/* ── Section spacing between landing blocks ── */
+.engineering-latest-section,
+.engineering-domains-section {
+  margin-top: 48px;
+}
+
+/* ── Domain card grid ── */
+.eng-domain-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.eng-domain-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 22px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #ffffff;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease,
+    background-color 0.3s ease;
+}
+
+.eng-domain-card:hover {
+  border-color: #9ca3af;
+  box-shadow: 0 4px 14px rgba(17, 24, 39, 0.06);
+  transform: translateY(-2px);
+}
+
+.eng-domain-title {
+  margin: 0;
+  font-size: 1.12rem;
+  font-weight: 600;
+  color: #111827;
+  line-height: 1.35;
+}
+
+.eng-domain-desc {
+  margin: 0;
+  color: #4b5563;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.eng-domain-keywords {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.8rem;
+  letter-spacing: 0.01em;
+  text-align: left;
+}
+
+.eng-domain-count {
+  margin-top: auto;
+  padding-top: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #1d4ed8;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.eng-domain-arrow {
+  transition: transform 0.2s ease;
+}
+
+.eng-domain-card:hover .eng-domain-arrow {
+  transform: translateX(3px);
+}
+
+/* ── Category page breadcrumb (multi-segment) ── */
+.eng-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.eng-breadcrumb-sep {
+  color: #9ca3af;
+}
+
+.eng-breadcrumb-current {
+  color: #6b7280;
+  font-size: 0.92rem;
+}
+
+/* ── Subcategory filter bar ── */
+.eng-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0 24px;
+}
+
+.eng-filter-pill {
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #374151;
+  font-family: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.eng-filter-pill:hover {
+  border-color: #9ca3af;
+  background: #f3f4f6;
+}
+
+.eng-filter-pill.active {
+  background: #111827;
+  color: #ffffff;
+  border-color: #111827;
+}
+
+.eng-no-results,
+.eng-empty {
+  color: #6b7280;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .eng-domain-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===================================================================
+   DARK MODE — ENGINEERING IMPLEMENTATIONS
+   =================================================================== */
+
+body.dark-mode .eng-stat {
+  background: #1e293b;
+  border-color: #374151;
+  color: #cbd5e1;
+}
+
+body.dark-mode .eng-stat strong {
+  color: #ffffff;
+}
+
+body.dark-mode .eng-domain-card {
+  background: #1e293b;
+  border-color: #374151;
+}
+
+body.dark-mode .eng-domain-card:hover {
+  border-color: #64748b;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+body.dark-mode .eng-domain-title {
+  color: #ffffff;
+}
+
+body.dark-mode .eng-domain-desc {
+  color: #cbd5e1;
+}
+
+body.dark-mode .eng-domain-keywords,
+body.dark-mode .eng-breadcrumb-current,
+body.dark-mode .eng-no-results,
+body.dark-mode .eng-empty {
+  color: #94a3b8;
+}
+
+body.dark-mode .eng-domain-count {
+  color: #93c5fd;
+}
+
+body.dark-mode .eng-filter-pill {
+  background: #1e293b;
+  border-color: #475569;
+  color: #e5e7eb;
+}
+
+body.dark-mode .eng-filter-pill:hover {
+  background: #0f172a;
+  border-color: #64748b;
+}
+
+body.dark-mode .eng-filter-pill.active {
+  background: #f1f5f9;
+  color: #0f172a;
+  border-color: #f1f5f9;
+}

@@ -1,0 +1,150 @@
+# ─────────────────────────────────────────────────────────────
+# Engineering Implementations — Website Taxonomy (source of truth)
+#
+# This drives the /engineering/ landing grid, the per-category
+# pages, subcategory filters, and the dynamic implementation counts.
+#
+# To add a new implementation: create the file in _implementations/
+# and set `category:` (and optionally `subcategory:`) to an id below.
+# It will appear on the matching category page automatically.
+# ─────────────────────────────────────────────────────────────
+
+- id: transformers-attention
+  title: "Transformers & Attention"
+  description: "Self-attention mechanisms, KV caching, context handling, and the transformer optimizations that power every modern LLM."
+  keywords: ["Attention", "KV Cache", "Context", "Architectures"]
+  subcategories:
+    - id: attention-mechanisms
+      title: "Attention Mechanisms"
+    - id: kv-cache
+      title: "KV Cache"
+    - id: context-compression
+      title: "Context Compression"
+    - id: transformer-optimizations
+      title: "Transformer Optimizations"
+
+- id: ai-agents
+  title: "AI Agents"
+  description: "Agent fundamentals, multi-agent systems, agent memory, harnesses, and the MCP tooling layer behind autonomous LLM agents."
+  keywords: ["Agents", "Multi-Agent", "MCP", "Harness"]
+  subcategories:
+    - id: agent-fundamentals
+      title: "Agent Fundamentals"
+    - id: multi-agent-systems
+      title: "Multi-Agent Systems"
+    - id: agent-memory
+      title: "Agent Memory"
+    - id: agent-infrastructure
+      title: "Agent Infrastructure"
+    - id: mcp
+      title: "MCP"
+
+- id: inference-serving
+  title: "LLM Inference & Serving"
+  description: "High-performance LLM serving, scheduling, KV cache management, quantization, attention backends, and GPU optimization."
+  keywords: ["KV Cache", "Scheduling", "Quantization", "CUDA"]
+  subcategories:
+    - id: serving-systems
+      title: "Serving Systems"
+    - id: prefill-decode
+      title: "Prefill & Decode"
+    - id: kv-cache
+      title: "KV Cache"
+    - id: batching-scheduling
+      title: "Batching & Scheduling"
+    - id: attention-backends
+      title: "Attention Backends"
+    - id: quantization
+      title: "Quantization"
+    - id: speculative-decoding
+      title: "Speculative Decoding"
+    - id: production-serving
+      title: "Production Serving"
+
+- id: training-alignment
+  title: "LLM Training & Alignment"
+  description: "Pretraining, fine-tuning, reinforcement learning for LLMs, preference optimization, and reasoning-focused training."
+  keywords: ["Pretraining", "Fine-Tuning", "RLHF", "DPO"]
+  subcategories:
+    - id: pretraining
+      title: "Pretraining"
+    - id: fine-tuning
+      title: "Fine-Tuning"
+    - id: rl-for-llms
+      title: "RL for LLMs"
+    - id: preference-optimization
+      title: "Preference Optimization"
+    - id: reasoning-training
+      title: "Reasoning Training"
+
+- id: reasoning-prompting
+  title: "Reasoning & Prompting"
+  description: "Chain-of-thought, prompting techniques, reasoning architectures, and test-time compute for stronger LLM reasoning."
+  keywords: ["Chain-of-Thought", "Prompting", "Test-Time Compute"]
+  subcategories:
+    - id: chain-of-thought
+      title: "Chain-of-Thought"
+    - id: prompting-techniques
+      title: "Prompting Techniques"
+    - id: reasoning-architectures
+      title: "Reasoning Architectures"
+    - id: test-time-compute
+      title: "Test-Time Compute"
+
+- id: memory-context
+  title: "Memory & Context Systems"
+  description: "Agent memory, context compression, long-context architectures, and memory-efficient inference."
+  keywords: ["Agent Memory", "Context Compression", "Long Context"]
+  subcategories:
+    - id: agent-memory
+      title: "Agent Memory"
+    - id: context-compression
+      title: "Context Compression"
+    - id: long-context
+      title: "Long Context"
+    - id: memory-optimization
+      title: "Memory Optimization"
+
+- id: rag-knowledge
+  title: "RAG & Knowledge Systems"
+  description: "Retrieval, indexing, knowledge management, and retrieval optimization for grounded, up-to-date LLM systems."
+  keywords: ["Retrieval", "Indexing", "Knowledge"]
+  subcategories:
+    - id: retrieval
+      title: "Retrieval"
+    - id: indexing
+      title: "Indexing"
+    - id: knowledge-management
+      title: "Knowledge Management"
+    - id: retrieval-optimization
+      title: "Retrieval Optimization"
+
+- id: guardrails-security-observability
+  title: "Guardrails, Security & Observability"
+  description: "Guardrails, AI/LLM security, evaluation, monitoring, and observability for safe, reliable production AI."
+  keywords: ["Guardrails", "Security", "Evaluation", "Monitoring"]
+  subcategories:
+    - id: guardrails
+      title: "Guardrails"
+    - id: ai-security
+      title: "AI / LLM Security"
+    - id: evaluation
+      title: "Evaluation"
+    - id: monitoring
+      title: "Monitoring"
+    - id: observability
+      title: "Observability"
+
+- id: models-architectures
+  title: "Models & Architectures"
+  description: "LLM architectures, mixture-of-experts, small language models, and emerging alternatives to the standard transformer."
+  keywords: ["LLM Architectures", "MoE", "SLMs"]
+  subcategories:
+    - id: llm-architectures
+      title: "LLM Architectures"
+    - id: mixture-of-experts
+      title: "Mixture of Experts"
+    - id: small-language-models
+      title: "Small Language Models"
+    - id: emerging-architectures
+      title: "Emerging Architectures"

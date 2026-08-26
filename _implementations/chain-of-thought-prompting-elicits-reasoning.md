@@ -14,6 +14,8 @@ highlights:
 tags: ["Chain-of-Thought", "Prompting", "Reasoning", "Emergent Abilities", "Few-Shot Learning", "LLM Engineering", "AI Agents", "Foundational"]
 image: "/assets/research/chain-of-thought.png"
 paper_link: "https://arxiv.org/abs/2201.11903"
+category: reasoning-prompting
+subcategory: chain-of-thought
 date: 2022-01-28
 order: 1
 featured: true

@@ -14,6 +14,8 @@ highlights:
 tags: ["AI Agents", "Memory Systems", "Working Memory", "ReAct", "Tool Use", "Agent Architecture", "State Management", "Production Systems"]
 image: "/assets/research/react-memory.png"
 paper_link: "https://arxiv.org/abs/2210.03629"
+category: ai-agents
+subcategory: agent-fundamentals
 date: 2023-01-01
 order: 0
 featured: true
