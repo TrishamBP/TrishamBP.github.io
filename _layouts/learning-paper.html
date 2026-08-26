@@ -6,7 +6,12 @@ layout: default
 
   <nav class="lab-breadcrumb" aria-label="Breadcrumb">
     {% if page.collection == "implementations" %}
-      <a href="{{ '/engineering/' | relative_url }}" class="lab-breadcrumb-link">&larr; Engineering Implementations</a>
+      {%- assign impl_cat = site.data.engineering_categories | where: "id", page.category | first -%}
+      <a href="{{ '/engineering/' | relative_url }}" class="lab-breadcrumb-link">Engineering Implementations</a>
+      {% if impl_cat %}
+        <span class="eng-breadcrumb-sep" aria-hidden="true">/</span>
+        <a href="{{ '/engineering/' | append: impl_cat.id | append: '/' | relative_url }}" class="lab-breadcrumb-link">{{ impl_cat.title }}</a>
+      {% endif %}
     {% else %}
       <a href="{{ '/learning-lab/' | relative_url }}" class="lab-breadcrumb-link">&larr; Learning Lab</a>
     {% endif %}

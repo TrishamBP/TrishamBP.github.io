@@ -13,6 +13,8 @@ highlights:
 tags: ["BERT", "Pre-training", "Bidirectional", "Masked Language Model", "NLP", "Transfer Learning", "Transformers", "Fine-tuning"]
 image: "/assets/blogs/bert/main.png"
 paper_link: "https://arxiv.org/pdf/1810.04805"
+category: training-alignment
+subcategory: pretraining
 date: 2018-10-11
 order: 4
 featured: true

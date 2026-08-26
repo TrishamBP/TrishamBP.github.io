@@ -13,6 +13,8 @@ highlights:
 tags: ["Transformer", "Self-Attention", "NLP", "Sequence Modeling", "Architecture", "Deep Learning"]
 image: "/assets/research/attention.png"
 paper_link: "https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf"
+category: transformers-attention
+subcategory: attention-mechanisms
 date: 2017-06-12
 order: 3
 featured: true

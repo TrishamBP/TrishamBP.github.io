@@ -1,0 +1,139 @@
+---
+layout: default
+---
+{% comment %}
+  Engineering Implementation category page.
+  A page using this layout must set `category:` (a category id from
+  _data/engineering_categories.yml). Implementations are pulled from
+  the collection by matching `category`, so pages never hardcode cards.
+{% endcomment %}
+
+{%- assign cat = site.data.engineering_categories | where: "id", page.category | first -%}
+{%- assign items = site.implementations | where: "category", page.category | sort: "order" -%}
+
+<section class="content-section engineering-category-section" aria-labelledby="category-heading">
+
+  <nav class="lab-breadcrumb eng-breadcrumb" aria-label="Breadcrumb">
+    <a href="{{ '/engineering/' | relative_url }}" class="lab-breadcrumb-link">Engineering Implementations</a>
+    <span class="eng-breadcrumb-sep" aria-hidden="true">/</span>
+    <span class="eng-breadcrumb-current">{{ cat.title }}</span>
+  </nav>
+
+  <h1 id="category-heading" class="section-title">{{ cat.title }}</h1>
+  <p class="research-intro">{{ cat.description }}</p>
+
+  {%- comment -%} Build the set of subcategories that actually have implementations {%- endcomment -%}
+  {%- assign used_subs = items | map: "subcategory" | uniq -%}
+
+  {% if used_subs.size > 1 %}
+    <div class="eng-filter-bar" id="eng-filter-bar" role="tablist" aria-label="Filter by subtopic">
+      <button class="eng-filter-pill active" data-filter="all" type="button">All</button>
+      {% for sub in cat.subcategories %}
+        {% if used_subs contains sub.id %}
+          <button class="eng-filter-pill" data-filter="{{ sub.id }}" type="button">{{ sub.title }}</button>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="lab-feed" id="implementations-feed" aria-label="{{ cat.title }} implementations">
+    {% for impl in items %}
+      {% include impl-card.html impl=impl index=forloop.index0 %}
+    {% endfor %}
+  </div>
+
+  {% if items.size == 0 %}
+    <p class="research-intro eng-empty">Implementations for this domain are being prepared.</p>
+  {% endif %}
+
+  <p class="eng-no-results" id="eng-no-results" hidden>No implementations match this subtopic yet.</p>
+
+  <nav class="lab-pagination" id="eng-pagination" aria-label="{{ cat.title }} pagination"></nav>
+</section>
+
+<script>
+(function () {
+  var ITEMS_PER_PAGE = 6;
+  var feed = document.getElementById('implementations-feed');
+  var pagination = document.getElementById('eng-pagination');
+  var filterBar = document.getElementById('eng-filter-bar');
+  var noResults = document.getElementById('eng-no-results');
+  if (!feed) return;
+
+  var allItems = Array.prototype.slice.call(feed.querySelectorAll('.implementation-item'));
+  var activeFilter = 'all';
+  var currentPage = 1;
+
+  function filtered() {
+    if (activeFilter === 'all') return allItems;
+    return allItems.filter(function (el) {
+      return el.getAttribute('data-subcategory') === activeFilter;
+    });
+  }
+
+  function render() {
+    var list = filtered();
+    var totalPages = Math.max(1, Math.ceil(list.length / ITEMS_PER_PAGE));
+    if (currentPage > totalPages) currentPage = totalPages;
+
+    // Hide everything, then reveal the current page slice of the filtered list.
+    allItems.forEach(function (el) { el.style.display = 'none'; });
+    var start = (currentPage - 1) * ITEMS_PER_PAGE;
+    list.slice(start, start + ITEMS_PER_PAGE).forEach(function (el) {
+      el.style.display = '';
+    });
+
+    if (noResults) noResults.hidden = list.length !== 0;
+    renderPagination(totalPages);
+  }
+
+  function renderPagination(totalPages) {
+    if (!pagination) return;
+    pagination.innerHTML = '';
+    if (totalPages <= 1) return;
+
+    function pageButton(label, page, opts) {
+      opts = opts || {};
+      var btn = document.createElement('button');
+      btn.className = 'lab-page-btn' + (opts.active ? ' active' : '');
+      btn.type = 'button';
+      btn.textContent = label;
+      if (opts.disabled) {
+        btn.disabled = true;
+      } else {
+        btn.addEventListener('click', function () {
+          currentPage = page;
+          render();
+          feed.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
+      return btn;
+    }
+
+    pagination.appendChild(
+      pageButton('←', currentPage - 1, { disabled: currentPage === 1 })
+    );
+    for (var p = 1; p <= totalPages; p++) {
+      pagination.appendChild(pageButton(String(p), p, { active: p === currentPage }));
+    }
+    pagination.appendChild(
+      pageButton('→', currentPage + 1, { disabled: currentPage === totalPages })
+    );
+  }
+
+  if (filterBar) {
+    filterBar.addEventListener('click', function (e) {
+      var btn = e.target.closest('.eng-filter-pill');
+      if (!btn) return;
+      activeFilter = btn.getAttribute('data-filter');
+      currentPage = 1;
+      filterBar.querySelectorAll('.eng-filter-pill').forEach(function (b) {
+        b.classList.toggle('active', b === btn);
+      });
+      render();
+    });
+  }
+
+  render();
+})();
+</script>
