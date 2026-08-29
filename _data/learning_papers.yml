@@ -15,6 +15,29 @@
 #   paper_link  — URL to the original PDF (optional)
 #   read_link   — URL to the internal breakdown page
 
+- id: grpo-deepseekmath-group-relative-policy-optimization
+  title: "GRPO: Group Relative Policy Optimization in DeepSeekMath"
+  authors: "Shao, Z., Wang, P., Zhu, Q., Xu, R., Song, J., Bi, X., Zhang, H., Zhang, M., Li, Y. K., Wu, Y., Guo, D."
+  year: 2024
+  venue: "arXiv 2402.03300"
+  description: "A technical dissection of Group Relative Policy Optimization (GRPO), the reinforcement learning algorithm introduced in DeepSeekMath. Covers why the paper replaced PPO's value model with a group-relative baseline, how the advantage is estimated from sampled outputs, the GRPO objective, outcome vs. process supervision, and iterative RL — with an engineering interpretation of why it works."
+  highlights:
+    - "GRPO removes PPO's separate value/critic model, cutting the memory and compute overhead of RL for large language models"
+    - "The baseline is estimated from a group of sampled outputs per question rather than a learned value function"
+    - "Group-relative reward normalization turns each sampled group into its own baseline, producing the advantage directly"
+    - "Supports both outcome supervision and process supervision, and extends to iterative RL as the reward model is refreshed"
+  tags:
+    - GRPO
+    - Reinforcement Learning
+    - PPO
+    - Policy Optimization
+    - LLM
+    - Mathematical Reasoning
+    - DeepSeekMath
+    - RLHF
+  paper_link: "https://arxiv.org/abs/2402.03300"
+  read_link: "/learning-lab/grpo-deepseekmath-group-relative-policy-optimization/"
+
 - id: bert
   title: "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding"
   authors: "Devlin, J., Chang, M.-W., Lee, K., Toutanova, K."
