@@ -1,0 +1,59 @@
+---
+layout: default
+---
+
+<section class="content-section lab-paper-detail-section" aria-labelledby="project-detail-heading">
+
+  <nav class="lab-breadcrumb" aria-label="Breadcrumb">
+    <a href="{{ '/projects/' | relative_url }}" class="lab-breadcrumb-link">&larr; Production Projects</a>
+  </nav>
+
+  <header class="lab-paper-detail-header">
+    <h1 id="project-detail-heading" class="lab-paper-detail-title">{{ page.title }}</h1>
+
+    {% if page.authors %}
+      <p class="lab-paper-detail-authors">{{ page.authors }}</p>
+    {% endif %}
+
+    {% if page.venue %}
+      <p class="lab-card-venue">{{ page.venue }}</p>
+    {% endif %}
+
+    {% if page.tags and page.tags.size > 0 %}
+      <div class="lab-tag-pills lab-paper-detail-tags">
+        {% for tag in page.tags %}
+          <span class="lab-tag-pill">{{ tag }}</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </header>
+
+  <div class="lab-paper-detail-body post-content">
+    {{ content }}
+  </div>
+
+</section>
+
+{% if page.mathjax %}
+<!-- MathJax (loaded only on pages that opt in via `mathjax: true`).
+     kramdown converts $$...$$ display blocks into <script type="math/tex">,
+     which MathJax v2 processes natively; tex2jax handles inline $...$ that
+     remain as text. pre/code/script are skipped so Mermaid + code blocks are safe. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: { equationNumbers: { autoNumber: 'none' } },
+    "HTML-CSS": { linebreaks: { automatic: true }, scale: 96 }
+  });
+</script>
+<script
+  type="text/javascript"
+  async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_CHTML"
+></script>
+{% endif %}

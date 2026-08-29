@@ -12,7 +12,54 @@ permalink: /projects/
   </p>
 
   <div class="production-projects-grid">
-    
+
+    <!-- Flipped.ai -->
+    <article class="production-project-card" data-order="0" data-category="AI Systems">
+      <div class="production-project-image-wrap">
+        <img
+          class="production-project-image"
+          src="{{ '/assets/images/fullstack/flipped-ai.jpg' | relative_url }}"
+          alt="Flipped.ai production AI systems case study preview"
+        />
+      </div>
+
+      <div class="production-project-content">
+        <h3 class="production-project-title">Flipped.ai — Production AI Systems</h3>
+
+        <div class="production-project-tags">
+          <span>RAG</span>
+          <span>vLLM</span>
+          <span>Document Intelligence</span>
+          <span>Arabic OCR</span>
+          <span>FastAPI</span>
+          <span>GPU Inference</span>
+        </div>
+
+        <p class="production-project-overview">
+          An engineering case study of the production AI behind an AI-native recruitment platform:
+          document intelligence, multilingual/Arabic OCR, hybrid RAG retrieval, semantic candidate
+          matching, and open-weight LLM serving with vLLM behind async, distributed microservices.
+        </p>
+
+        <div class="production-project-highlights">
+          <h4>Engineering Highlights</h4>
+          <ul>
+            <li>Document-intelligence pipeline for messy, multilingual CVs; custom Arabic OCR/extraction (~80% &rarr; 95%+ parsing accuracy)</li>
+            <li>Hybrid retrieval (BM25 + dense) with reranking and MMR for semantic candidate matching</li>
+            <li>Open-weight LLM serving with vLLM — continuous batching, PagedAttention, KV-cache management</li>
+            <li>Async FastAPI + Celery/RabbitMQ/Lambda microservices with ATS integrations (Zoho Recruit, Greenhouse)</li>
+          </ul>
+        </div>
+
+        <div class="production-project-actions">
+          <a
+            class="project-cta"
+            href="{{ '/projects/flipped-ai-production-ai-systems/' | relative_url }}"
+          >Read Case Study</a>
+        </div>
+      </div>
+    </article>
+
     <!-- Dhokla House -->
     <article class="production-project-card" data-order="1" data-category="Full Stack">
       <div class="production-project-image-wrap">
