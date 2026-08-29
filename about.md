@@ -37,11 +37,18 @@ My long-term direction sits at the intersection of AI and physical engineering: 
 ## Work Experience
 
 ### Cloudangles, Hyderabad, India
-**Full Stack Engineer (Backend & AI Systems Engineering)**  
+**Senior Innovation Engineer & Researcher / Forward-Deployed Engineer**  
 **Feb 2026 - Present**
 
-- Building AI-native product modules with a backend-first approach.
-- Working on production AI systems with focus on reliability, maintainability, and performance.
+Part of the innovation team building AI-native systems and data infrastructure. As a Forward-Deployed Engineer, I embed directly with enterprise clients — translating real business and analyst workflows into agentic AI systems, owning delivery end-to-end from requirements to production, and shipping across multiple domains: Legal, Finance, HR, and Energy (next project).
+
+#### AI-Powered Legal Document Intelligence — People Case Management Automation (Centrica UK)
+
+- Led end-to-end delivery as a Forward-Deployed & Senior Innovation Engineer for an AI-powered Legal Document Intelligence platform for Centrica UK, owning stakeholder requirements, data engineering, React/Next.js frontend and admin portal, FastAPI backend, agentic AI workflows, AWS architecture, and production deployment.
+- Architected and deployed a cloud-native, event-driven AI platform using FastAPI, Next.js/React, AWS ECS Fargate, Lambda, SQS, S3, ECR, EventBridge, Docker, and Terraform; transformed complex HR/Legal workflows into human-in-the-loop agentic pipelines designed around real analyst decision paths, and led architecture/security reviews through pre-production.
+- Engineered the RAG and memory systems for large, growing case histories, progressing from naive to advanced and agentic RAG through structured evaluation of accuracy, latency, and cost; implemented semantic memory compression and vectorized long-term memory to control context growth while enabling agents to retain important case knowledge across increasing workloads.
+- Owned AI evaluation and security hardening, developing custom evaluation pipelines and iterative prompt/retrieval optimization, evaluating multiple LLMs on synthetic datasets, and conducting pre-penetration security testing with the Strix security agent; identified and remediated vulnerabilities before formal enterprise penetration testing.
+- Delivered across multiple enterprise domains — Legal, Finance, and HR — with an Energy-sector platform as the next project.
 
 ### Gaius Networks / Flipped.ai / ParseTalent.ai, Remote (US)
 **Senior Software Engineer**  

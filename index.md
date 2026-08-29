@@ -217,13 +217,56 @@ title: Home
         />
       </div>
       <div class="timeline-content">
-        <h3>Full Stack Engineer (Backend &amp; AI Systems)</h3>
+        <h3>Senior Innovation Engineer &amp; Researcher / Forward-Deployed Engineer</h3>
         <p class="timeline-university">CloudAngles</p>
         <p>
-          Working in the innovation team to build AI-native systems and data
-          infrastructure, with focus on backend engineering, AI pipelines, data
-          engineering workflows, and large-scale AI system integration.
+          Part of the innovation team building AI-native systems and data
+          infrastructure &mdash; backend engineering, AI pipelines, data
+          engineering workflows, and large-scale AI system integration. As a
+          Forward-Deployed Engineer I work directly with enterprise clients:
+          sitting with their teams, translating real business and analyst
+          workflows into agentic AI systems, owning delivery end-to-end from
+          requirements to production, and shipping across multiple domains
+          &mdash; Legal, Finance, HR, and Energy (next up).
         </p>
+        <ul>
+          <li>
+            Led end-to-end delivery as a Forward-Deployed &amp; Senior
+            Innovation Engineer for an AI-powered Legal Document Intelligence
+            platform (People Case Management Automation) for Centrica UK,
+            owning stakeholder requirements, data engineering, the
+            React/Next.js frontend and admin portal, the FastAPI backend,
+            agentic AI workflows, AWS architecture, and production deployment.
+          </li>
+          <li>
+            Architected and deployed a cloud-native, event-driven AI platform
+            using FastAPI, Next.js/React, AWS ECS Fargate, Lambda, SQS, S3,
+            ECR, EventBridge, Docker, and Terraform; transformed complex
+            HR/Legal workflows into human-in-the-loop agentic pipelines
+            designed around real analyst decision paths, and led
+            architecture/security reviews through pre-production.
+          </li>
+          <li>
+            Engineered the RAG and memory systems for large, growing case
+            histories &mdash; progressing from naive to advanced to agentic RAG
+            through structured evaluation of accuracy, latency, and cost;
+            implemented semantic memory compression and vectorized long-term
+            memory to control context growth while letting agents retain
+            important case knowledge across increasing workloads.
+          </li>
+          <li>
+            Owned AI evaluation and security hardening: built custom evaluation
+            pipelines with iterative prompt/retrieval optimization, evaluated
+            multiple LLMs on synthetic datasets, and ran pre-penetration
+            security testing with the Strix security agent &mdash; identifying
+            and remediating vulnerabilities before formal enterprise
+            penetration testing.
+          </li>
+          <li>
+            Work across multiple enterprise domains &mdash; Legal, Finance, and
+            HR &mdash; with an Energy-sector platform as the next project.
+          </li>
+        </ul>
       </div>
     </article>
 
