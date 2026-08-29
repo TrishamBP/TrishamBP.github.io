@@ -12,6 +12,7 @@ highlights:
   - "Supports both outcome supervision and process supervision, and extends to iterative RL as the reward model is refreshed"
 tags: ["GRPO", "Reinforcement Learning", "PPO", "Policy Optimization", "LLM", "Mathematical Reasoning", "DeepSeekMath", "RLHF"]
 paper_link: "https://arxiv.org/abs/2402.03300"
+image: "/assets/blogs/grpo/main.png"
 category: training-alignment
 subcategory: rl-for-llms
 date: 2024-02-06
