@@ -53,6 +53,8 @@ tags:
 
 # Reinforcement Learning for LLMs: RLHF, Reward Models, Reasoning RL, and Agentic RL
 
+![Reinforcement learning for LLMs pipeline — pretraining and SFT feed into human preferences and a reward model, an RL algorithm updates the policy, and a continuous feedback loop drives reasoning and agentic RL across tools and the real world](/assets/blogs/rl_main.png)
+
 Most explanations of RL for language models read like a glossary: PPO is this, DPO is that, GRPO is the other thing. You finish knowing the definitions and still not understanding *why any of them exist*.
 
 This post takes the opposite approach. I want to trace a single thread — **how the learning signal changes as we move from human preferences, to verifiable correctness, to reasoning, to agents** — and show that each algorithm is a response to a specific engineering pressure created by the one before it. Human preference is hard to optimize directly, so we build a reward model. A reward model plus PPO is heavy, so DPO removes it. PPO's critic is expensive, so GRPO drops it. Learned rewards get hacked, so we reach for verifiable ones. Reasoning adds intermediate steps, so reward moves inside the trajectory. Agents add environments, so reward becomes sparse and delayed.
