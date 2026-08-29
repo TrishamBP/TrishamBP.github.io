@@ -23,6 +23,9 @@ image: "/assets/research/attention.png"
 paper_link: "https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf"
 read_link: "/learning-lab/attention-is-all-you-need/"
 date: 2017-06-12
+category: transformers-attention
+subcategory: attention-mechanisms
+order: 0
 ---
 
 ![Transformer architecture diagram](/assets/research/attention/transformer.png)

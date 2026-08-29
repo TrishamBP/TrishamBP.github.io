@@ -24,6 +24,9 @@ tags:
 image: "/assets/blogs/bert/main.png"
 paper_link: "https://arxiv.org/pdf/1810.04805"
 date: 2018-10-11
+category: models-architectures
+subcategory: llm-architectures
+order: 1
 ---
 
 ![BERT overview — pre-training and fine-tuning framework](/assets/blogs/bert/main.png)
