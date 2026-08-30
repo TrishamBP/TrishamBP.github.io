@@ -26,6 +26,7 @@
             class="topnav-link{% if page.url contains '/engineering' %} active{% endif %}"
             href="{{ '/engineering/' | relative_url }}"
           >Engineering Implementations</a>
+          {%- comment %} Resources and Newsletter hidden from nav (pages still exist)
           <a
             class="topnav-link{% if page.url contains '/resources' %} active{% endif %}"
             href="{{ '/resources/' | relative_url }}"
@@ -34,6 +35,7 @@
             class="topnav-link{% if page.url contains '/newsletter' %} active{% endif %}"
             href="{{ '/newsletter/' | relative_url }}"
           >Newsletter</a>
+          {% endcomment -%}
           <a
             class="topnav-link{% if page.url contains '/honors' %} active{% endif %}"
             href="{{ '/honors/' | relative_url }}"
