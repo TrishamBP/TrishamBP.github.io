@@ -263,8 +263,21 @@ title: Home
             penetration testing.
           </li>
           <li>
-            Work across multiple enterprise domains &mdash; Legal, Finance, and
-            HR &mdash; with an Energy-sector platform as the next project.
+            Designed and architected <strong>Centrica Spark</strong>, an
+            internal multi-agent AI innovation platform that helps employees
+            turn raw ideas into researched, feasibility-assessed
+            recommendations &mdash; using DSPy, context engineering, ReAct-style
+            reasoning and autonomous planning, and long-running stateful agents
+            on AWS AgentCore, orchestrated across research, analysis, risk, and
+            recommendation stages.
+          </li>
+          <li>
+            Designing <strong>Project Blueprint</strong>, an AI-enabled
+            residential digital twin as the next (Energy-sector) project:
+            a LiDAR-and-CAD point-cloud pipeline feeding an interactive Three.js
+            twin of UK homes and their HVAC, heat-pump, and ventilation systems,
+            with an agentic AI layer designed to reason over spatial and energy
+            data for energy-aware optimization.
           </li>
         </ul>
       </div>
