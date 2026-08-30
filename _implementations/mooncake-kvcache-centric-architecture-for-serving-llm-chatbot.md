@@ -45,7 +45,7 @@ The SLOs are what make this concrete. A request in MOONCAKE is logically divided
 
 In the paper's evaluation, the **TTFT threshold is 30 seconds**, and the **TBT thresholds are 100 ms, 200 ms, and 300 ms** depending on the scenario. **[Paper]** A request that satisfies **both** its respective TTFT and TBT thresholds is counted as an **effective request**, and the proportion of effective requests among all requests is the **effective request capacity** — the metric the whole system is optimized against. **[Paper]**
 
-## The Problem MOONCAKE Solves and the Architecture It Introduces
+## I. The Problem MOONCAKE Solves and the Architecture It Introduces
 
 **MOONCAKE is the serving platform developed by Moonshot AI for Kimi, and it uses a KVCache-centric disaggregated architecture.** **[Paper]** The rest of this section explains its serving objective, why disaggregation is needed, the disaggregated KVCache it engineers, its three resource pools, how it schedules around the KVCache, and the resource-utilization argument that ties it all together.
 
@@ -156,7 +156,7 @@ Scheduling the KVCache is central to LLM serving in MOONCAKE, because the system
 
 The net effect of this split is that each resource does what it is best at: the GPUs stay focused on computation, while the pooled CPU/DRAM/SSD/network carry the **distributed KVCache storage and movement**. **[Paper]** That is what buys **higher effective throughput within the SLOs** — the payoff the rest of this article backs up with numbers. **[Interpretation]**
 
-## Preliminary and Problem Definition
+## II. How a Request Actually Runs: Prefill and Decoding
 
 Each LLM inference request is logically divided into two stages: the **Prefill stage** and the **Decoding stage**. **[Paper]**
 
@@ -167,7 +167,7 @@ Each LLM inference request is logically divided into two stages: the **Prefill s
 - Running both the Prefill and Decoding stages on the **same node can be inefficient**, because the Prefill stage is **compute-bound** while the Decoding stage is **memory-bandwidth-bound**. **[Paper]**
 - MOONCAKE therefore **logically and physically separates these stages into different resource pools**, orchestrated by the **Conductor**. **[Paper]**
 
-## KVCache Reuse
+## III. KVCache Reuse
 
 To meet stringent SLOs, a commonly adopted solution is to **cache previously generated KVCache and reuse it when a new request contains a matching prefix**. **[Paper]**
 
@@ -205,7 +205,7 @@ At a high level, these equations mean: **[Interpretation]**
 - Attention is then performed over the complete K/V sequence.
 - The resulting K/V state becomes the KVCache for the request.
 
-## Prefill Computation Cost
+## IV. Prefill Computation Cost
 
 The computation cost of the Prefill stage, as a function of input length $n$, is: **[Paper]**
 
@@ -227,13 +227,13 @@ $$
 
 For LLaMA3-70B on 8×A800 with a prefix length of 8192, this yields a minimum required $B$ of about **6 GB/s** (rising to ~19 GB/s on 8×H800). **[Paper]** A fully utilized **100 Gbps NIC per A800 HGX node is enough** to meet the criterion — which is the whole argument for building a *global* KVCache rather than caching only in local HBM. **[Paper]** The criterion is also easier to satisfy for larger $d$ (larger models), so the strategy scales up well. **[Paper]**
 
-## Engineering Motivation
+## V. Engineering Motivation
 
 The two equations above collapse into the design in one line. The FLOPs equation says recomputing a shared prefix is pure wasted work that grows with prefix length, and the $B/G$ inequality says that — for a large model on a 100 Gbps-class network — **loading** that prefix from cache is cheaper than **recomputing** it. **[Derived]** So MOONCAKE spends storage and bandwidth to skip prefill compute (KVCache reuse), and because the compute-bound prefill stage and the memory-bandwidth-bound decoding stage would otherwise contend on a shared node, it runs them in **separate pools** — with continuous batching keeping the decoding GPUs saturated. **[Interpretation]**
 
 That single trade — **more storage for less computation** — is the thesis the entire system is engineered to exploit. **[Interpretation]**
 
-## The Request Workflow (Four Steps)
+## VI. The Request Workflow (Four Steps)
 
 Once a request is tokenized, the **Conductor** (the global scheduler) selects a pair of prefill and decoding instances and runs four steps: **[Paper]**
 
@@ -250,7 +250,7 @@ graph LR
 3. **KVCache Transfer.** MOONCAKE Store streams the KVCache asynchronously — overlapped with the incremental-prefill step, **layer by layer** — to the destination decoding node's CPU memory, hiding the transfer behind compute. **[Paper]**
 4. **Decoding.** Once the KVCache is in the decoding node's CPU memory, the request joins the continuous batching process. The decoding instance is pre-selected by Conductor based on its current load, so it does not violate the TBT SLO. **[Paper]**
 
-## MOONCAKE Store: A Distributed Global KVCache
+## VII. MOONCAKE Store: A Distributed Global KVCache
 
 Central to MOONCAKE is **MOONCAKE Store**, a distributed global cache of KVCache pooled from **CPU, DRAM, SSD and RDMA** resources across the GPU cluster. **[Paper]** The point is that restricting caching to local HBM/DRAM caps you at only up to ~50% of the theoretical cache hit rate — a global cache is what unlocks the rest. **[Paper]**
 
@@ -260,7 +260,7 @@ Central to MOONCAKE is **MOONCAKE Store**, a distributed global cache of KVCache
 
 **Transfer engine.** A high-performance, zero-copy transfer system built to exploit **multiple RDMA NICs per machine**. It uses **topology-aware path selection** (a per-server topology matrix classifies NICs into preferred/secondary lists so transfers stay on the local NUMA/PCIe path where possible), splits each request into **16 KB slices** across all NICs, and manages connections with **endpoint pooling** evicted by the **SIEVE** algorithm. On failure it re-routes to an alternative reachable NIC. The network is RoCEv2, with 100/200 Gbps NICs on A800 and 200/400 Gbps on H800, up to 8×400 Gbps aggregate. **[Paper]**
 
-## Chunked Pipeline Parallelism for Long Context
+## VIII. Chunked Pipeline Parallelism for Long Context
 
 Context lengths have grown from 8k to 128k and beyond, and for such requests the input can be 10–100× larger than the output — so the TTFT of long prefill dominates and needs more than one node. **[Paper]** The two conventional options both have costs: **Tensor Parallelism (TP)** across nodes needs two expensive RDMA all-reduces per layer (lowering MFU), and **Sequence Parallelism (SP)** requires frequent cross-node communication that competes with KVCache transfer for network. **[Paper]**
 
@@ -271,7 +271,7 @@ MOONCAKE instead uses **Chunked Pipeline Parallelism (CPP)**: group every $X$ no
 
 The paper notes this pipeline-acceleration idea is established in *training* systems, but MOONCAKE is, to their knowledge, the **first to apply it in the inference stage**. **[Paper]**
 
-## Scheduling: How It Happens
+## IX. Scheduling: How It Happens
 
 Scheduling in MOONCAKE has two coupled parts — **prefill global scheduling** (where to run each request) and **cache load balancing** (how to distribute the reusable cache so scheduling stays effective). Both are driven by the Conductor. **[Paper]**
 
@@ -346,9 +346,9 @@ To validate the strategy, the paper builds a MOONCAKE cluster of **16 × (8×A80
 
 The KVCache-centric algorithms clearly outperform random and load-balancing scheduling, and by incorporating cache load balancing, the **global cache-aware algorithm reduces the average TTFT by an additional 14%** compared to the local cache-aware algorithm. **[Paper]**
 
-## Section 5 — Evaluation
+## X. Does It Actually Work? The Evaluation
 
-The evaluation is trying to answer three things, in my own framing: **does the whole design actually raise how many requests you can serve inside the SLOs**, **where do the savings physically come from** (compute vs. cache vs. network), and **how do you have to configure the cluster** to get those savings. **[Interpretation]** Everything below is measured against that, not against raw latency in isolation. **[Paper]**
+When I read the results, I kept three questions in mind: **does the whole design actually raise how many requests you can serve inside the SLOs**, **where do the savings physically come from** (compute vs. cache vs. network), and **how do you have to configure the cluster** to get those savings. **[Interpretation]** Everything below is measured against that, not against raw latency in isolation. **[Paper]**
 
 ### Evaluation Setup
 
@@ -444,9 +444,9 @@ This breakdown splits each request into five parts — **scheduling/queuing, lay
 
 Because the two pools are separate, you have to choose how many nodes go to each. Adding **more prefill nodes lowers TTFT but raises TBT** (fewer decoding nodes to keep up), and shifting the other way does the reverse. **[Paper]** Effective request capacity peaks at a roughly **1:1** P/D split. **[Paper]** The operational advice the paper gives is pragmatic: **fix the P/D ratio, monitor it, and only re-split when the workload changes significantly**, rather than trying to retune it continuously. **[Paper]**
 
-### Overall Evaluation Takeaway
+### What the Results Add Up To
 
-Reading Section 5 as a whole, no single trick carries the result — it is the **combination**: **[Interpretation]**
+Reading these experiments as a whole, no single trick carries the result — it is the **combination**: **[Interpretation]**
 
 - **P/D disaggregation** so each stage is tuned to its own SLO,
 - a **global KVCache** (MOONCAKE Store) that reaches hit rates no single node could,
@@ -457,14 +457,14 @@ Reading Section 5 as a whole, no single trick carries the result — it is the *
 
 Put together, the system does exactly what its subtitle promises — it **trades more storage and network bandwidth for less repeated GPU compute** — and the evaluation shows that trade paying off as more effective requests within the SLOs. **[Interpretation]**
 
-## Engineering Trade-offs & Limitations
+## XI. Engineering Trade-offs & Limitations
 
 - **Storage traded for computation.** The whole premise is spending DRAM/SSD/network to avoid recompute — it only pays off when cache hit rates and bandwidth clear the $B/G$ bar; below ~100 Gbps, performance is compromised. **[Paper]**
 - **Prediction-dependent scheduling.** Conductor relies on a regression model of prefill time and heuristic hotspot migration; the paper notes the load-balancing threshold is currently tuned manually. **[Paper]**
 - **Rejection instead of elastic scaling.** With GPUs in short supply, MOONCAKE protects SLOs by rejecting overflow requests (HTTP 429) rather than scaling out. **[Paper]**
 - **Disaggregation needs the network.** P/D separation only works because a highly optimized RDMA transfer engine hides the KVCache movement; the authors argue this is what makes disaggregation preferable to chunked prefill under stringent SLOs. **[Paper]**
 
-## Section 6 — Related Work
+## XII. Where MOONCAKE Sits (Related Work)
 
 To place MOONCAKE, it helps to see which line of serving research it extends and which it deliberately departs from. **[Interpretation]**
 
@@ -476,6 +476,6 @@ To place MOONCAKE, it helps to see which line of serving research it extends and
 
 What distinguishes MOONCAKE from all of these is that it is **KVCache-centric at cluster scale**: it does not just reuse a prefix inside one node's memory, it pools CPU/DRAM/SSD/RDMA across the whole cluster into a **global** cache and makes **scheduling, replication, and transfer** all revolve around where that cache lives. **[Paper]** The paper also notes its approach is **orthogonal** to methods that shrink or restructure the KVCache itself — **KVCache compression** and **KVCache-friendly attention** — meaning those could be layered on top of MOONCAKE rather than competing with it. **[Paper]**
 
-## Final Personal Engineering Takeaway
+## XIII. My Engineering Takeaway
 
 MOONCAKE as a base layer above the GPU is excellent: it optimizes the serving infrastructure around the GPU by separating Prefill and Decoding, using otherwise underutilized resources for KVCache, and moving the cache efficiently across nodes. If we then add higher-level inference optimizations such as SGLang and other serving-level techniques on top of this foundation, we can potentially get much better inference performance without simply spending more compute.
