@@ -15,7 +15,7 @@ paper_link: "https://www.usenix.org/conference/fast25/presentation/qin"
 category: inference-serving
 subcategory: serving-systems
 date: 2025-02-25
-order: 0
+order: 1
 image: "/assets/blogs/mooncake/main.png"
 mathjax: true
 ---

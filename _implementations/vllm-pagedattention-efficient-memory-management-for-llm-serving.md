@@ -15,7 +15,7 @@ paper_link: "https://arxiv.org/abs/2309.06180"
 category: inference-serving
 subcategory: serving-systems
 date: 2023-10-23
-order: 1
+order: 3
 image: "/assets/blogs/vllm/fig1.png"
 mathjax: true
 ---

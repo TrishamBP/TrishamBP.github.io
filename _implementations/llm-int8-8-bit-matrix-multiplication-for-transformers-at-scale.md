@@ -15,7 +15,7 @@ paper_link: "https://arxiv.org/abs/2208.07339"
 category: inference-serving
 subcategory: quantization
 date: 2022-08-15
-order: 0
+order: 4
 mathjax: true
 ---
 
