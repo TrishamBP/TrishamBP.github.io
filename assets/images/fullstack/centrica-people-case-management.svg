@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" role="img" aria-label="People Case Management — AI legal document intelligence platform for Centrica UK">
+  <defs>
+    <linearGradient id="pcmBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1f3a"/>
+      <stop offset="1" stop-color="#0a1120"/>
+    </linearGradient>
+    <linearGradient id="pcmAccent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0072CE"/>
+      <stop offset="1" stop-color="#38bdf8"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#pcmBg)"/>
+  <!-- subtle grid -->
+  <g stroke="#1e3a5f" stroke-width="1" opacity="0.5">
+    <path d="M0 100 H800 M0 200 H800 M0 300 H800"/>
+    <path d="M160 0 V400 M320 0 V400 M480 0 V400 M640 0 V400"/>
+  </g>
+  <!-- document -->
+  <g transform="translate(70 96)">
+    <rect x="0" y="0" width="150" height="200" rx="10" fill="#0f2947" stroke="#38bdf8" stroke-width="2"/>
+    <g fill="#7dd3fc" opacity="0.9">
+      <rect x="22" y="30" width="106" height="8" rx="4"/>
+      <rect x="22" y="52" width="86" height="8" rx="4"/>
+      <rect x="22" y="74" width="106" height="8" rx="4"/>
+      <rect x="22" y="112" width="66" height="8" rx="4"/>
+      <rect x="22" y="134" width="106" height="8" rx="4"/>
+      <rect x="22" y="156" width="80" height="8" rx="4"/>
+    </g>
+  </g>
+  <!-- pipeline nodes (LangGraph) -->
+  <g>
+    <line x1="220" y1="196" x2="300" y2="150" stroke="url(#pcmAccent)" stroke-width="2.5"/>
+    <line x1="220" y1="196" x2="300" y2="250" stroke="url(#pcmAccent)" stroke-width="2.5"/>
+    <line x1="360" y1="150" x2="470" y2="120" stroke="url(#pcmAccent)" stroke-width="2.5"/>
+    <line x1="360" y1="150" x2="470" y2="200" stroke="url(#pcmAccent)" stroke-width="2.5"/>
+    <line x1="360" y1="250" x2="470" y2="200" stroke="url(#pcmAccent)" stroke-width="2.5"/>
+    <line x1="360" y1="250" x2="470" y2="290" stroke="url(#pcmAccent)" stroke-width="2.5"/>
+    <line x1="530" y1="120" x2="640" y2="160" stroke="url(#pcmAccent)" stroke-width="2.5"/>
+    <line x1="530" y1="200" x2="640" y2="160" stroke="url(#pcmAccent)" stroke-width="2.5"/>
+    <line x1="530" y1="290" x2="640" y2="240" stroke="url(#pcmAccent)" stroke-width="2.5"/>
+  </g>
+  <g fill="#0f2947" stroke="url(#pcmAccent)" stroke-width="2.5">
+    <circle cx="330" cy="150" r="30"/>
+    <circle cx="330" cy="250" r="30"/>
+    <circle cx="500" cy="120" r="30"/>
+    <circle cx="500" cy="200" r="30"/>
+    <circle cx="500" cy="290" r="30"/>
+    <circle cx="670" cy="160" r="34" fill="#0072CE" stroke="#7dd3fc"/>
+    <circle cx="670" cy="240" r="34" fill="#0072CE" stroke="#7dd3fc"/>
+  </g>
+  <g fill="#e0f2fe" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700">
+    <text x="322" y="159">E</text>
+    <text x="320" y="259">C</text>
+    <text x="490" y="129">R</text>
+    <text x="492" y="209">D</text>
+    <text x="490" y="299">M</text>
+  </g>
+  <g fill="#f8fafc" font-family="Segoe UI, Arial, sans-serif">
+    <text x="70" y="345" font-size="30" font-weight="700">People Case Management</text>
+    <text x="70" y="375" font-size="17" fill="#7dd3fc">Agentic Legal Document Intelligence · Centrica UK</text>
+  </g>
+</svg>

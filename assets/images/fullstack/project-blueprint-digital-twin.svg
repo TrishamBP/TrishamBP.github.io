@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" role="img" aria-label="Project Blueprint — AI-enabled residential digital twin from LiDAR point clouds and HVAC data">
+  <defs>
+    <linearGradient id="twinBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#04201f"/>
+      <stop offset="1" stop-color="#04121a"/>
+    </linearGradient>
+    <linearGradient id="twinEdge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2dd4bf"/>
+      <stop offset="1" stop-color="#22d3ee"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#twinBg)"/>
+  <g stroke="#0d3b3a" stroke-width="1" opacity="0.5">
+    <path d="M0 100 H800 M0 200 H800 M0 300 H800"/>
+    <path d="M200 0 V400 M400 0 V400 M600 0 V400"/>
+  </g>
+  <!-- point cloud scatter (left) -->
+  <g fill="#2dd4bf" opacity="0.75">
+    <circle cx="70" cy="120" r="2.5"/><circle cx="95" cy="140" r="2"/><circle cx="120" cy="110" r="2.5"/>
+    <circle cx="140" cy="160" r="2"/><circle cx="80" cy="180" r="2.5"/><circle cx="110" cy="200" r="2"/>
+    <circle cx="150" cy="130" r="2"/><circle cx="60" cy="220" r="2.5"/><circle cx="130" cy="240" r="2"/>
+    <circle cx="100" cy="250" r="2.5"/><circle cx="160" cy="210" r="2"/><circle cx="85" cy="110" r="2"/>
+    <circle cx="175" cy="180" r="2.5"/><circle cx="145" cy="215" r="2"/><circle cx="115" cy="165" r="2"/>
+  </g>
+  <!-- arrow -->
+  <path d="M190 190 H250" stroke="url(#twinEdge)" stroke-width="3" marker-end="url(#arw)"/>
+  <defs>
+    <marker id="arw" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+      <path d="M0 0 L6 3 L0 6 Z" fill="#22d3ee"/>
+    </marker>
+  </defs>
+  <!-- wireframe house / digital twin (center) -->
+  <g stroke="url(#twinEdge)" stroke-width="2.5" fill="none">
+    <!-- front face -->
+    <path d="M300 300 L300 200 L390 140 L480 200 L480 300 Z"/>
+    <!-- depth -->
+    <path d="M480 300 L540 265 L540 165 L450 105 L390 140"/>
+    <path d="M480 200 L540 165"/>
+    <path d="M300 200 L360 165 L450 105"/>
+    <path d="M300 300 L360 265 L540 265"/>
+    <path d="M360 265 L360 165"/>
+  </g>
+  <!-- HVAC / heat pump node -->
+  <g>
+    <rect x="330" y="235" width="42" height="42" rx="6" fill="#04201f" stroke="#f472b6" stroke-width="2.5"/>
+    <path d="M338 256 h26 M351 243 v26" stroke="#f472b6" stroke-width="2.5"/>
+  </g>
+  <!-- arrow to agent -->
+  <path d="M560 210 H610" stroke="url(#twinEdge)" stroke-width="3" marker-end="url(#arw)"/>
+  <!-- agent node -->
+  <g>
+    <circle cx="680" cy="210" r="52" fill="#062e2c" stroke="#2dd4bf" stroke-width="2.5"/>
+    <text x="680" y="205" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="700" fill="#99f6e4" text-anchor="middle">AI</text>
+    <text x="680" y="228" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#5eead4" text-anchor="middle">agents</text>
+  </g>
+  <g fill="#ecfeff" font-family="Segoe UI, Arial, sans-serif">
+    <text x="60" y="350" font-size="29" font-weight="700">Project Blueprint</text>
+    <text x="60" y="378" font-size="15" fill="#5eead4">LiDAR → Digital Twin → Agentic Energy Optimization</text>
+  </g>
+</svg>
