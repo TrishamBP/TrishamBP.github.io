@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" role="img" aria-label="Evaluation and monitoring for production LLM agents — LLM-as-judge, metrics, trajectory evaluation, tracing and observability">
+  <defs>
+    <linearGradient id="emBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0c1512"/>
+      <stop offset="1" stop-color="#111f1a"/>
+    </linearGradient>
+    <linearGradient id="emAcc" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#34d399"/>
+      <stop offset="1" stop-color="#22d3ee"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#emBg)"/>
+  <rect x="6" y="6" width="788" height="388" rx="18" fill="none" stroke="#1e352c" stroke-width="1.5"/>
+
+  <!-- gauge / score dial -->
+  <g transform="translate(180 200)">
+    <circle cx="0" cy="0" r="86" fill="none" stroke="#1e352c" stroke-width="14"/>
+    <path d="M -60.8 60.8 A 86 86 0 1 1 60.8 60.8" fill="none" stroke="url(#emAcc)" stroke-width="14" stroke-linecap="round"/>
+    <text x="0" y="-2" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="800" fill="#f0fdf4">4.6</text>
+    <text x="0" y="26" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#6ee7b7">judge score</text>
+  </g>
+
+  <!-- trace spans / bars -->
+  <g transform="translate(340 120)" font-family="Segoe UI, Arial, sans-serif">
+    <rect x="0" y="0" width="360" height="20" rx="5" fill="#0e2019" stroke="#2b4a3d" stroke-width="1"/>
+    <rect x="0" y="0" width="300" height="20" rx="5" fill="#34d399" opacity="0.85"/>
+    <text x="8" y="15" font-size="11" fill="#052e21" font-weight="700">trace</text>
+
+    <rect x="30" y="30" width="150" height="16" rx="4" fill="#22d3ee" opacity="0.8"/>
+    <text x="36" y="43" font-size="10" fill="#042f2e" font-weight="700">llm.generate</text>
+
+    <rect x="60" y="52" width="120" height="16" rx="4" fill="#818cf8" opacity="0.8"/>
+    <text x="66" y="65" font-size="10" fill="#1e1b4b" font-weight="700">tool.search</text>
+
+    <rect x="200" y="52" width="90" height="16" rx="4" fill="#f59e0b" opacity="0.85"/>
+    <text x="206" y="65" font-size="10" fill="#451a03" font-weight="700">guardrail</text>
+  </g>
+
+  <text x="520" y="316" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="800" fill="#f0fdf4">Evaluation &amp; Monitoring</text>
+  <text x="520" y="348" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#8aa79b">LLM-as-Judge · metrics · trajectory eval · tracing · observability</text>
+</svg>
