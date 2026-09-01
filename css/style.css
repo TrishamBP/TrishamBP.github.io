@@ -275,86 +275,82 @@ body.dark-mode .dark-mode-toggle .icon-moon {
   margin-top: 44px;
 }
 
-/* Skills infographic images reuse the timeline grid so the stack occupies
-   the same content column as the Education/Experience cards — matching their
-   left/right edges, max-width, and responsive breakpoints. The decorative
-   timeline rule and per-item bottom padding are removed for this instance. */
-.skills-timeline::before {
-  display: none;
-}
-
-.skills-timeline .timeline-item {
-  padding-bottom: 0;
-}
-
-/* Seamless vertical stack of Skills infographic images.
-   Images render block-level with zero spacing so consecutive
-   images touch edge-to-edge and read as one continuous graphic. */
-.skills-stack {
-  display: block;
-  min-width: 0;
-  font-size: 0;
-  line-height: 0;
-}
-
-.skills-stack img {
-  display: block;
-  width: 100%;
-  height: auto;
-  margin: 0;
-  padding: 0;
-  border: 0;
+/* Structured "skill matrix": stacked category cards, each with a colored
+   heading and a dense, responsive grid of compact icon+label chips. */
+.skills-matrix {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .skills-category {
-  margin: 22px 0 28px;
+  --skills-accent: #3b82f6;
+  margin: 0;
   border: 1px solid #e5e7eb;
+  border-left: 3px solid var(--skills-accent);
   border-radius: 12px;
   background: #ffffff;
-  padding: 14px;
+  padding: 16px 18px;
 }
 
 .skills-category h3 {
-  margin: 0 0 10px;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--skills-accent);
 }
+
+.skills-cat-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  flex: none;
+}
+
+/* Category accent colors mirror the original infographic palette. */
+.skills-category--blue { --skills-accent: #3b82f6; }
+.skills-category--green { --skills-accent: #22c55e; }
+.skills-category--purple { --skills-accent: #a855f7; }
+.skills-category--amber { --skills-accent: #f59e0b; }
+.skills-category--teal { --skills-accent: #14b8a6; }
 
 .skills-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 8px;
 }
 
+/* Compact chip: small icon + label, sized to content so ~5-6 fit per row
+   where labels are short, wrapping naturally on narrower viewports. */
 .skills-item {
-  display: flex;
-  flex-direction: column;
+  display: inline-flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 8px;
-  width: 90px;
-  padding: 4px;
-  text-align: center;
+  gap: 7px;
+  padding: 6px 11px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #f9fafb;
   color: #374151;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  line-height: 1.25;
   white-space: normal;
 }
 
+.skills-item img,
 .skills-logo {
-  width: 48px;
-  height: 48px;
+  width: 18px;
+  height: 18px;
   object-fit: contain;
-}
-
-.skills-item img {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
+  flex: none;
 }
 
 .skills-item.no-logo {
-  width: auto;
+  color: #4b5563;
 }
 
 .skill-badge {
@@ -1026,6 +1022,23 @@ body.dark-mode .project-image-placeholder {
   color: #ffffff;
 }
 
+/* Dark technical cards + compact chips for the skill matrix. */
+body.dark-mode .skills-category {
+  background-color: #0f172a;
+  border-color: #1f2937;
+  border-left-color: var(--skills-accent);
+}
+
+body.dark-mode .skills-item {
+  background: #111827;
+  border-color: #334155;
+  color: #e5e7eb;
+}
+
+body.dark-mode .skills-item.no-logo {
+  color: #cbd5e1;
+}
+
 body.dark-mode .linkedin-cell {
   border-color: #374151;
   background: #1e293b;
@@ -1454,17 +1467,18 @@ body.dark-mode .post-content tbody tr:nth-child(even) {
   }
 
   .skills-grid {
-    gap: 14px;
+    gap: 6px;
   }
 
   .skills-item {
-    width: 84px;
-    font-size: 0.8rem;
+    padding: 5px 9px;
+    font-size: 0.76rem;
   }
 
+  .skills-item img,
   .skills-logo {
-    width: 48px;
-    height: 48px;
+    width: 16px;
+    height: 16px;
   }
 
   .projects-shell {

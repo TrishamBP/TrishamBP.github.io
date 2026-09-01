@@ -400,17 +400,235 @@ title: Home
 <section class="content-section skills-section" aria-labelledby="skills-heading">
   <h2 id="skills-heading" class="section-title">Skills &amp; Technologies</h2>
 
-  <div class="timeline skills-timeline">
-    <div class="timeline-item">
-      <div class="timeline-left" aria-hidden="true"></div>
-      <div class="skills-stack">
-        <img src="{{ '/assets/skills/skills_1.png' | relative_url }}" alt="Languages, core runtimes, data engineering, and backend infrastructure skills" />
-        <img src="{{ '/assets/skills/skills_2.png' | relative_url }}" alt="Databases, ORMs, and development tools skills" />
-        <img src="{{ '/assets/skills/skills_3.png' | relative_url }}" alt="Machine learning and AI/LLM systems skills" />
-        <img src="{{ '/assets/skills/skills_4.png' | relative_url }}" alt="DevOps, cloud, and infrastructure skills" />
-        <img src="{{ '/assets/skills/skills_5.png' | relative_url }}" alt="Additional engineering skills and technologies" />
+  {% assign sk = '/images/skills' %}
+  <div class="skills-matrix">
+
+    <div class="skills-category skills-category--blue">
+      <h3>Languages</h3>
+      <div class="skills-grid">
+        <span class="skills-item"><img src="{{ sk | append: '/python.svg' | relative_url }}" alt="Python" />Python</span>
+        <span class="skills-item"><img src="{{ sk | append: '/typescript.svg' | relative_url }}" alt="TypeScript" />TypeScript</span>
+        <span class="skills-item"><img src="{{ sk | append: '/javascript.svg' | relative_url }}" alt="JavaScript" />JavaScript</span>
+        <span class="skills-item"><img src="{{ sk | append: '/nodedotjs.svg' | relative_url }}" alt="Node.js" />Node.js (Async I/O)</span>
+        <span class="skills-item"><img src="{{ sk | append: '/cplusplus.svg' | relative_url }}" alt="C++" />C++</span>
+        <span class="skills-item"><img src="{{ sk | append: '/bash.svg' | relative_url }}" alt="Bash" />Bash</span>
+        <span class="skills-item no-logo">MATLAB</span>
+        <span class="skills-item"><img src="{{ sk | append: '/nvidia.svg' | relative_url }}" alt="CUDA" />CUDA</span>
       </div>
     </div>
+
+    <div class="skills-category skills-category--green">
+      <h3><img class="skills-cat-icon" src="{{ sk | append: '/data-pipeline.svg' | relative_url }}" alt="Data pipeline icon" aria-hidden="true" />Data Engineering</h3>
+      <div class="skills-grid">
+        <span class="skills-item"><img src="{{ sk | append: '/data-pipeline.svg' | relative_url }}" alt="Data pipeline" />High-Throughput ELT/ETL Pipelines</span>
+        <span class="skills-item no-logo">Streaming &amp; Batch Data Ingestion</span>
+        <span class="skills-item no-logo">Schema Evolution (DLT)</span>
+        <span class="skills-item"><img src="{{ sk | append: '/apachekafka.svg' | relative_url }}" alt="Apache Kafka" />Apache Kafka</span>
+        <span class="skills-item"><img src="{{ sk | append: '/duckdb.svg' | relative_url }}" alt="DuckDB" />DuckDB</span>
+        <span class="skills-item"><img src="{{ sk | append: '/googlebigquery.svg' | relative_url }}" alt="Google BigQuery" />BigQuery</span>
+        <span class="skills-item no-logo">Analytical Warehousing</span>
+        <span class="skills-item"><img src="{{ sk | append: '/apacheparquet.svg' | relative_url }}" alt="Apache Parquet" />Parquet File Format</span>
+        <span class="skills-item no-logo">Feature Engineering</span>
+      </div>
+    </div>
+
+    <div class="skills-category skills-category--purple">
+      <h3>Backend &amp; Distributed Infrastructure</h3>
+      <div class="skills-grid">
+        <span class="skills-item no-logo">Async I/O</span>
+        <span class="skills-item no-logo">Event Driven Design</span>
+        <span class="skills-item"><img src="{{ sk | append: '/restapi.svg' | relative_url }}" alt="REST" />REST</span>
+        <span class="skills-item no-logo">HTTP + SSE</span>
+        <span class="skills-item no-logo">STDIO</span>
+        <span class="skills-item"><img src="{{ sk | append: '/express.svg' | relative_url }}" alt="Express.js" />Express.JS</span>
+        <span class="skills-item no-logo">Koa.JS</span>
+        <span class="skills-item no-logo">Hapi</span>
+        <span class="skills-item"><img src="{{ sk | append: '/nestjs.svg' | relative_url }}" alt="NestJS" />NestJS</span>
+        <span class="skills-item"><img src="{{ sk | append: '/flask.svg' | relative_url }}" alt="Flask" />Flask</span>
+        <span class="skills-item"><img src="{{ sk | append: '/fastapi.svg' | relative_url }}" alt="FastAPI" />FastAPI</span>
+        <span class="skills-item"><img src="{{ sk | append: '/redis.svg' | relative_url }}" alt="Redis" />Redis</span>
+        <span class="skills-item no-logo">Valkey</span>
+        <span class="skills-item"><img src="{{ sk | append: '/aws.svg' | relative_url }}" alt="AWS" />AWS SQS</span>
+        <span class="skills-item"><img src="{{ sk | append: '/aws.svg' | relative_url }}" alt="AWS" />AWS ElastiCache</span>
+        <span class="skills-item"><img src="{{ sk | append: '/rabbitmq.svg' | relative_url }}" alt="RabbitMQ" />RabbitMQ</span>
+        <span class="skills-item"><img src="{{ sk | append: '/celery.svg' | relative_url }}" alt="Celery" />Celery</span>
+        <span class="skills-item no-logo">API Security (throttling / rate limiting)</span>
+        <span class="skills-item"><img src="{{ sk | append: '/aws.svg' | relative_url }}" alt="AWS" />AWS IAM</span>
+        <span class="skills-item"><img src="{{ sk | append: '/azure.svg' | relative_url }}" alt="Microsoft Azure" />Azure AD</span>
+      </div>
+    </div>
+
+    <div class="skills-category skills-category--amber">
+      <h3>Databases, ORMs &amp; Development Tools</h3>
+      <div class="skills-grid">
+        <span class="skills-item"><img src="{{ sk | append: '/threejs.svg' | relative_url }}" alt="Three.js" />Three.js</span>
+        <span class="skills-item"><img src="{{ sk | append: '/mongodb.svg' | relative_url }}" alt="MongoDB" />Mongoose ORM</span>
+        <span class="skills-item"><img src="{{ sk | append: '/sqlalchemy.svg' | relative_url }}" alt="SQLAlchemy" />SQLAlchemy ORM</span>
+        <span class="skills-item"><img src="{{ sk | append: '/pydantic.svg' | relative_url }}" alt="Pydantic" />Pydantic</span>
+        <span class="skills-item"><img src="{{ sk | append: '/firebase.svg' | relative_url }}" alt="Firebase" />Firebase</span>
+      </div>
+    </div>
+
+    <div class="skills-category skills-category--blue">
+      <h3>Cloud Infrastructure &amp; DevOps</h3>
+      <div class="skills-grid">
+        <span class="skills-item"><img src="{{ sk | append: '/terraform.svg' | relative_url }}" alt="Terraform" />Infrastructure as Code (Terraform)</span>
+        <span class="skills-item"><img src="{{ sk | append: '/aws.svg' | relative_url }}" alt="AWS" />AWS (EC2, ECS Fargate, Lambda, SQS, RDS, Bedrock, SageMaker)</span>
+        <span class="skills-item"><img src="{{ sk | append: '/googlecloud.svg' | relative_url }}" alt="Google Cloud" />GCP (Cloud Run, GCS)</span>
+        <span class="skills-item"><img src="{{ sk | append: '/docker.svg' | relative_url }}" alt="Docker" />Docker</span>
+        <span class="skills-item"><img src="{{ sk | append: '/kubernetes.svg' | relative_url }}" alt="Kubernetes" />Kubernetes (k8s)</span>
+        <span class="skills-item"><img src="{{ sk | append: '/githubactions.svg' | relative_url }}" alt="GitHub Actions" />CI/CD Pipelines (GitHub Actions)</span>
+      </div>
+    </div>
+
+    <div class="skills-category skills-category--teal">
+      <h3>Observability</h3>
+      <div class="skills-grid">
+        <span class="skills-item"><img src="{{ sk | append: '/prometheus.svg' | relative_url }}" alt="Prometheus" />Prometheus</span>
+        <span class="skills-item"><img src="{{ sk | append: '/grafana.svg' | relative_url }}" alt="Grafana" />Grafana</span>
+        <span class="skills-item"><img src="{{ sk | append: '/jaeger.svg' | relative_url }}" alt="Jaeger" />Jaeger (Distributed Tracing)</span>
+        <span class="skills-item"><img src="{{ sk | append: '/langchain.svg' | relative_url }}" alt="LangSmith" />LangSmith (LLM Tracing)</span>
+        <span class="skills-item no-logo">DeepEval</span>
+        <span class="skills-item"><img src="{{ sk | append: '/pytest.svg' | relative_url }}" alt="Pytest" />Pytest</span>
+        <span class="skills-item"><img src="{{ sk | append: '/jest.svg' | relative_url }}" alt="Jest" />Jest</span>
+        <span class="skills-item"><img src="{{ sk | append: '/puppeteer.svg' | relative_url }}" alt="Puppeteer" />Puppeteer E2E</span>
+      </div>
+    </div>
+
+    <div class="skills-category skills-category--green">
+      <h3>Machine Learning &amp; MLOps</h3>
+      <div class="skills-grid">
+        <span class="skills-item"><img src="{{ sk | append: '/scikitlearn.svg' | relative_url }}" alt="scikit-learn" />Linear Regression</span>
+        <span class="skills-item"><img src="{{ sk | append: '/scikitlearn.svg' | relative_url }}" alt="scikit-learn" />Logistic Classification</span>
+        <span class="skills-item"><img src="{{ sk | append: '/scikitlearn.svg' | relative_url }}" alt="scikit-learn" />Random Forests</span>
+        <span class="skills-item no-logo">Gradient Boosting (XGBoost)</span>
+        <span class="skills-item"><img src="{{ sk | append: '/scikitlearn.svg' | relative_url }}" alt="scikit-learn" />KNN Classification</span>
+        <span class="skills-item no-logo">Ensemble Methods</span>
+        <span class="skills-item no-logo">Clustering Algorithms</span>
+        <span class="skills-item no-logo">ARIMA / SARIMAX</span>
+        <span class="skills-item no-logo">Prophet Forecasting</span>
+        <span class="skills-item no-logo">RNN Forecasting</span>
+        <span class="skills-item no-logo">Continuous Monitoring</span>
+        <span class="skills-item no-logo">Drift Detection</span>
+        <span class="skills-item no-logo">Model Retraining</span>
+        <span class="skills-item no-logo">Performance Tracking</span>
+      </div>
+    </div>
+
+    <div class="skills-category skills-category--purple">
+      <h3>Deep Learning</h3>
+      <div class="skills-grid">
+        <span class="skills-item"><img src="{{ sk | append: '/pytorch.svg' | relative_url }}" alt="PyTorch" />PyTorch</span>
+        <span class="skills-item"><img src="{{ sk | append: '/tensorflow.svg' | relative_url }}" alt="TensorFlow" />TensorFlow</span>
+        <span class="skills-item no-logo">JAX</span>
+        <span class="skills-item no-logo">Transformer Models (BERT, T5, BART)</span>
+        <span class="skills-item no-logo">Attention (MHA, GQA, MLA)</span>
+        <span class="skills-item no-logo">Horovod</span>
+        <span class="skills-item"><img src="{{ sk | append: '/nvidia.svg' | relative_url }}" alt="CUDA" />CUDA</span>
+        <span class="skills-item"><img src="{{ sk | append: '/nvidia.svg' | relative_url }}" alt="cuDNN" />cuDNN</span>
+        <span class="skills-item no-logo">Mixed Precision (FP16 / BF16)</span>
+        <span class="skills-item no-logo">RNNs, LSTMs, GRUs</span>
+        <span class="skills-item no-logo">Generative Models (Diffusion, VAEs, GANs)</span>
+        <span class="skills-item no-logo">Gradient Optimizers (AdamW, SGD)</span>
+        <span class="skills-item"><img src="{{ sk | append: '/onnx.svg' | relative_url }}" alt="ONNX" />ONNX</span>
+      </div>
+    </div>
+
+    <div class="skills-category skills-category--blue">
+      <h3>LLM Engineering</h3>
+      <div class="skills-grid">
+        <span class="skills-item"><img src="{{ sk | append: '/huggingface.svg' | relative_url }}" alt="Hugging Face" />Hugging Face Transformers</span>
+        <span class="skills-item no-logo">SFT</span>
+        <span class="skills-item no-logo">DPO</span>
+        <span class="skills-item no-logo">GRPO</span>
+        <span class="skills-item no-logo">RLHF</span>
+        <span class="skills-item no-logo">PEFT</span>
+        <span class="skills-item no-logo">LoRA / QLoRA</span>
+        <span class="skills-item no-logo">Quantization</span>
+        <span class="skills-item no-logo">RAG</span>
+        <span class="skills-item no-logo">LLM Evaluation</span>
+        <span class="skills-item"><img src="{{ sk | append: '/vllm.svg' | relative_url }}" alt="vLLM" />vLLM</span>
+        <span class="skills-item"><img src="{{ sk | append: '/nvidia.svg' | relative_url }}" alt="TensorRT-LLM" />TensorRT-LLM</span>
+        <span class="skills-item no-logo">Distributed Training</span>
+        <span class="skills-item no-logo">FSDP</span>
+        <span class="skills-item no-logo">DeepSpeed</span>
+        <span class="skills-item"><img src="{{ sk | append: '/nvidia.svg' | relative_url }}" alt="NCCL" />NCCL</span>
+        <span class="skills-item no-logo">Triton</span>
+        <span class="skills-item no-logo">Inference Optimization</span>
+      </div>
+    </div>
+
+    <div class="skills-category skills-category--purple">
+      <h3>AI Systems &amp; Inference</h3>
+      <div class="skills-grid">
+        <span class="skills-item"><img src="{{ sk | append: '/cplusplus.svg' | relative_url }}" alt="C++" />C++</span>
+        <span class="skills-item"><img src="{{ sk | append: '/nvidia.svg' | relative_url }}" alt="CUDA" />CUDA</span>
+        <span class="skills-item"><img src="{{ sk | append: '/amd.svg' | relative_url }}" alt="ROCm" />ROCm</span>
+        <span class="skills-item"><img src="{{ sk | append: '/nvidia.svg' | relative_url }}" alt="Triton Inference Server" />Triton Inference Server</span>
+        <span class="skills-item"><img src="{{ sk | append: '/nvidia.svg' | relative_url }}" alt="TensorRT" />TensorRT</span>
+        <span class="skills-item"><img src="{{ sk | append: '/nvidia.svg' | relative_url }}" alt="TensorRT-LLM" />TensorRT-LLM</span>
+        <span class="skills-item"><img src="{{ sk | append: '/kubernetes.svg' | relative_url }}" alt="Kubernetes" />Kubernetes</span>
+        <span class="skills-item"><img src="{{ sk | append: '/docker.svg' | relative_url }}" alt="Docker" />Docker</span>
+        <span class="skills-item no-logo">GPU Scheduling</span>
+        <span class="skills-item no-logo">Distributed Computing</span>
+        <span class="skills-item no-logo">Profiling</span>
+        <span class="skills-item no-logo">Mixed Precision</span>
+      </div>
+    </div>
+
+    <div class="skills-category skills-category--teal">
+      <h3>AI Engineering &amp; Agentic AI</h3>
+      <div class="skills-grid">
+        <span class="skills-item"><img src="{{ sk | append: '/langchain.svg' | relative_url }}" alt="LangChain" />LangChain</span>
+        <span class="skills-item no-logo">LCEL</span>
+        <span class="skills-item"><img src="{{ sk | append: '/langgraph.svg' | relative_url }}" alt="LangGraph" />LangGraph</span>
+        <span class="skills-item no-logo">LangFuse</span>
+        <span class="skills-item"><img src="{{ sk | append: '/langchain.svg' | relative_url }}" alt="LangSmith" />LangSmith</span>
+        <span class="skills-item"><img src="{{ sk | append: '/crewai.svg' | relative_url }}" alt="CrewAI" />CrewAI</span>
+        <span class="skills-item no-logo">Google A2A</span>
+        <span class="skills-item"><img src="{{ sk | append: '/openai.svg' | relative_url }}" alt="OpenAI" />OpenAI Agents SDK</span>
+        <span class="skills-item"><img src="{{ sk | append: '/microsoft.svg' | relative_url }}" alt="Microsoft" />Microsoft AutoGen</span>
+        <span class="skills-item no-logo">GraphRAG</span>
+        <span class="skills-item no-logo">Agentic RAG</span>
+        <span class="skills-item no-logo">Mem0 AI</span>
+        <span class="skills-item no-logo">MCP</span>
+        <span class="skills-item no-logo">OpenClaw</span>
+        <span class="skills-item no-logo">NemoClaw</span>
+        <span class="skills-item"><img src="{{ sk | append: '/bash.svg' | relative_url }}" alt="Shell" />Open Shell</span>
+        <span class="skills-item no-logo">Hermes Agent</span>
+        <span class="skills-item no-logo">DeepAgents</span>
+        <span class="skills-item no-logo">Claude Managed Agents</span>
+        <span class="skills-item"><img src="{{ sk | append: '/nvidia.svg' | relative_url }}" alt="NVIDIA" />NVIDIA NeMo Guardrails</span>
+        <span class="skills-item no-logo">Guardrails AI</span>
+        <span class="skills-item"><img src="{{ sk | append: '/aws.svg' | relative_url }}" alt="AWS" />AWS Bedrock Guardrails</span>
+        <span class="skills-item no-logo">Pinecone</span>
+        <span class="skills-item no-logo">Weaviate</span>
+        <span class="skills-item"><img src="{{ sk | append: '/amazons3.svg' | relative_url }}" alt="Amazon S3" />S3 Vectors</span>
+        <span class="skills-item"><img src="{{ sk | append: '/qdrant.svg' | relative_url }}" alt="Qdrant" />Qdrant</span>
+        <span class="skills-item"><img src="{{ sk | append: '/postgresql.svg' | relative_url }}" alt="PostgreSQL" />PGVector</span>
+        <span class="skills-item"><img src="{{ sk | append: '/elasticsearch.svg' | relative_url }}" alt="Elasticsearch" />AWS Elasticsearch</span>
+        <span class="skills-item no-logo">DSPy</span>
+        <span class="skills-item no-logo">Prompt Engineering</span>
+        <span class="skills-item no-logo">Context Engineering</span>
+        <span class="skills-item no-logo">Loop Engineering</span>
+        <span class="skills-item no-logo">Graph Engineering</span>
+      </div>
+    </div>
+
+    <div class="skills-category skills-category--blue">
+      <h3>Mechanical Engineering</h3>
+      <div class="skills-grid">
+        <span class="skills-item"><img src="{{ sk | append: '/ansys.svg' | relative_url }}" alt="ANSYS" />ANSYS Mechanical</span>
+        <span class="skills-item"><img src="{{ sk | append: '/ansys.svg' | relative_url }}" alt="ANSYS" />ANSYS Fluent</span>
+        <span class="skills-item"><img src="{{ sk | append: '/dassault.svg' | relative_url }}" alt="Dassault Systèmes" />SolidWorks</span>
+        <span class="skills-item"><img src="{{ sk | append: '/dassault.svg' | relative_url }}" alt="Dassault Systèmes" />CATIA</span>
+        <span class="skills-item"><img src="{{ sk | append: '/autocad.svg' | relative_url }}" alt="AutoCAD" />AutoCAD</span>
+        <span class="skills-item no-logo">OpenFOAM</span>
+        <span class="skills-item"><img src="{{ sk | append: '/nvidia.svg' | relative_url }}" alt="NVIDIA" />NVIDIA OpenUSD</span>
+        <span class="skills-item"><img src="{{ sk | append: '/nvidia.svg' | relative_url }}" alt="NVIDIA" />NVIDIA Physics NeMo</span>
+      </div>
+    </div>
+
   </div>
 </section>
 <section class="content-section stats-section" aria-labelledby="stats-heading">
