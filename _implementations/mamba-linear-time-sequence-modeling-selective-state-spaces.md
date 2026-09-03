@@ -20,6 +20,8 @@ order: 1
 mathjax: true
 ---
 
+![Mamba SSM: state space models for selective sequence modeling — linear time, long context, GPU-efficient parallel scan, input-aware selection, constant-memory state](/assets/blogs/mamba/mamba_main.png)
+
 There are three things worth getting straight before you read Mamba's CUDA kernel, and two of them are terminology problems dressed up as technical ones.
 
 First, *why* anyone wants a state space model — which requires understanding what attention costs, and why earlier attempts to escape that cost didn't land on language. Second, that the paper (Gu & Dao, *Mamba: Linear-Time Sequence Modeling with Selective State Spaces*) uses four terms — SSM, S4, S6, Mamba — sitting at four different levels of abstraction, so treating them as synonyms hides the actual contribution. Third, that "linear time" and "runs well on a GPU" are not the same property, and closing that gap is where most of the paper's engineering lives.
