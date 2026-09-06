@@ -37,8 +37,6 @@ tags:
     - Numbers (LRs, losses, the "~3%" gap) are illustrative, not benchmark results.
 -->
 
-# Maximal Update Parameterization (μP): Hyperparameter Transfer Across Model Width
-
 ![muP (Maximal Update Parameterization) explained: the naive scaling ladder forces a learning-rate sweep at every model size; μP earns two invariants — activations stay O(1) at init and change by O(1) after a gradient step — which yields width-transferable hyperparameters, provided the optimizer, normalization, weight decay, and schedule respect the derivation](/assets/blogs/mup.png)
 
 There is a line you hear constantly around large-model training: *"just use μP — tune the learning rate once on a small model and transfer it to the big one for free."*
@@ -372,10 +370,10 @@ fit a relationship $\eta^{*}(N) = f(N)$, and extrapolate to 7B, 70B. You don't r
 ```mermaid
 flowchart LR
     subgraph A["μP — design for invariance"]
-        A1[Choose μP parameterization] --> A2[Optimum stays ~flat vs width] --> A3[Transfer the LR scale]
+        A1["Choose μP parameterization"] --> A2["Optimum stays ~flat vs width"] --> A3["Transfer the LR scale"]
     end
     subgraph B["Scaling law — model the movement"]
-        B1[Sweep LR at several small sizes] --> B2[Fit η*(N) = f(N)] --> B3[Extrapolate to large N]
+        B1["Sweep LR at several small sizes"] --> B2["Fit η*(N) = f(N)"] --> B3["Extrapolate to large N"]
     end
     style A fill:#f0fdf4,stroke:#22c55e
     style B fill:#eef2ff,stroke:#6366f1
@@ -526,13 +524,13 @@ Don't memorize *"μP = tune small, transfer large."* Memorize the chain of reaso
 flowchart TD
     MUP["μP"] --> INV1["Stable activations: h = O(1)"]
     MUP --> INV2["Meaningful updates: Δh = O(1)"]
-    INV1 --> SCALE[Derive parameter + optimizer scaling]
+    INV1 --> SCALE["Derive parameter + optimizer scaling"]
     INV2 --> SCALE
-    SCALE --> DYN[Preserve training dynamics across width]
-    DYN --> XFER[Hyperparameter transfer]
-    XFER --> CHECK{Did I actually<br/>preserve the assumptions?}
-    CHECK -->|Yes| OK[Transfer the LR scale]
-    CHECK -->|No| FIX[Retune, or fit the optimum empirically]
+    SCALE --> DYN["Preserve training dynamics across width"]
+    DYN --> XFER["Hyperparameter transfer"]
+    XFER --> CHECK{"Did I actually<br/>preserve the assumptions?"}
+    CHECK -->|Yes| OK["Transfer the LR scale"]
+    CHECK -->|No| FIX["Retune, or fit the optimum empirically"]
 
     style MUP fill:#dbeafe,stroke:#3b82f6
     style DYN fill:#fef9c3,stroke:#eab308
