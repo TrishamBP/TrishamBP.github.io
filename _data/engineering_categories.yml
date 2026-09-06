@@ -135,6 +135,14 @@
     - id: observability
       title: "Observability"
 
+- id: self-improving-ai-agents
+  title: "Self Improving AI Agents"
+  description: "Agents that plan, search, and refine their own reasoning — tree search, multistep planning, self-reflection, and the feedback loops that let LLM agents improve over a task."
+  keywords: ["Planning", "Reasoning", "Tree Search", "Self-Reflection"]
+  subcategories:
+    - id: multistep-planning-and-reasoning
+      title: "Multistep Planning and Reasoning"
+
 - id: models-architectures
   title: "Models & Architectures"
   description: "LLM architectures, mixture-of-experts, small language models, and emerging alternatives to the standard transformer."
