@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% if page.title %}{{ page.title }} | {% endif %}Physical AI &mdash; Trisham Patil</title>
+    <meta
+      name="description"
+      content="{{ page.description | default: 'Physical AI for Industrial Applications — AI that senses, simulates, and reasons about the real physical world: turbines, weather forecasting, CFD, automotive aerodynamics, data center cooling, battery management systems, and robotics.' }}"
+    />
+    <meta name="theme-color" content="#03050c" />
+    <link
+      rel="canonical"
+      href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}"
+    />
+    <link rel="stylesheet" href="{{ '/css/physical-ai.css' | relative_url }}" />
+  </head>
+
+  <!-- Physical AI is a self-contained dark "world": it does NOT inherit the
+       site's light/dark theming. Everything is scoped under .pa-world. -->
+  <body class="pa-world">
+    <nav class="pa-nav" id="pa-nav" aria-label="Primary">
+      <div class="pa-nav-inner">
+        <a class="pa-nav-brand" href="{{ '/physical-ai/' | relative_url }}">
+          <span class="pa-nav-mark" aria-hidden="true"></span>
+          Physical&nbsp;AI
+        </a>
+        <button
+          class="pa-nav-hamburger"
+          id="pa-nav-hamburger"
+          aria-label="Toggle navigation"
+          aria-expanded="false"
+        >
+          <span></span><span></span><span></span>
+        </button>
+        <div class="pa-nav-links" id="pa-nav-links">
+          <a class="pa-nav-link" href="{{ '/' | relative_url }}">Home</a>
+          <a class="pa-nav-link pa-nav-link--current" href="{{ '/physical-ai/' | relative_url }}">Physical AI</a>
+          <a class="pa-nav-link" href="{{ '/projects/' | relative_url }}">Production Projects</a>
+          <a class="pa-nav-link" href="{{ '/blog/' | relative_url }}">Blogs</a>
+          <a class="pa-nav-link" href="{{ '/research-articles/' | relative_url }}">Research</a>
+          <a class="pa-nav-link" href="{{ '/engineering/' | relative_url }}">Engineering</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="pa-shell">{{ content }}</main>
+
+    <footer class="pa-footer">
+      <p class="pa-footer-tagline">Physics&nbsp;+&nbsp;Data&nbsp;+&nbsp;AI&nbsp;=&nbsp;Real&nbsp;Progress</p>
+      <p class="pa-footer-note">&copy; {{ 'now' | date: "%Y" }} Trisham Patil &middot; Physical AI for Industrial Applications</p>
+    </footer>
+
+    <script>
+      (function () {
+        var btn = document.getElementById("pa-nav-hamburger");
+        var links = document.getElementById("pa-nav-links");
+        if (!btn || !links) return;
+        btn.addEventListener("click", function () {
+          var open = links.classList.toggle("open");
+          btn.setAttribute("aria-expanded", open ? "true" : "false");
+        });
+        document.addEventListener("click", function (e) {
+          if (!btn.contains(e.target) && !links.contains(e.target)) {
+            links.classList.remove("open");
+            btn.setAttribute("aria-expanded", "false");
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

@@ -11,6 +11,10 @@
             href="{{ '/' | relative_url }}"
           >Home</a>
           <a
+            class="topnav-link topnav-link--physical-ai{% if page.url contains '/physical-ai' %} active{% endif %}"
+            href="{{ '/physical-ai/' | relative_url }}"
+          >Physical AI</a>
+          <a
             class="topnav-link{% if page.url contains '/projects' %} active{% endif %}"
             href="{{ '/projects/' | relative_url }}"
           >Production Projects</a>

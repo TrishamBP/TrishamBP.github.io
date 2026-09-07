@@ -1,0 +1,501 @@
+/* =============================================================
+   PHYSICAL AI — dedicated dark, futuristic, industrial identity
+   Self-contained "world". Everything is scoped under .pa-world so
+   nothing here leaks into (or inherits from) the rest of the site.
+   Palette blends seamlessly with assets/physical_ai.png:
+   near-black navy backgrounds + electric-blue / cyan glow.
+   ============================================================= */
+
+.pa-world {
+  --pa-bg: #03050c;
+  --pa-bg-2: #060b18;
+  --pa-panel: rgba(15, 23, 42, 0.55);
+  --pa-panel-border: rgba(96, 165, 250, 0.18);
+  --pa-panel-border-hover: rgba(96, 165, 250, 0.55);
+  --pa-text: #dbe4f4;
+  --pa-text-dim: #93a4c4;
+  --pa-text-faint: #64748b;
+  --pa-blue: #3b82f6;
+  --pa-blue-light: #60a5fa;
+  --pa-cyan: #22d3ee;
+  --pa-heading: #f4f8ff;
+
+  margin: 0;
+  min-height: 100vh;
+  color: var(--pa-text);
+  background-color: var(--pa-bg);
+  /* Layered depth: deep radial blue glows over near-black navy, so the
+     hero image reads as part of the page rather than pasted on top. */
+  background-image:
+    radial-gradient(1200px 620px at 50% -8%, rgba(37, 99, 235, 0.22), transparent 60%),
+    radial-gradient(900px 700px at 100% 20%, rgba(34, 211, 238, 0.08), transparent 55%),
+    radial-gradient(900px 700px at 0% 30%, rgba(59, 130, 246, 0.1), transparent 55%),
+    linear-gradient(180deg, var(--pa-bg) 0%, var(--pa-bg-2) 40%, var(--pa-bg) 100%);
+  background-attachment: fixed;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Faint engineering "blueprint" grid — Physics + Data + Systems texture. */
+.pa-world::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(96, 165, 250, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(96, 165, 250, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(120% 100% at 50% 0%, #000 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(120% 100% at 50% 0%, #000 40%, transparent 100%);
+}
+
+.pa-world *,
+.pa-world *::before,
+.pa-world *::after {
+  box-sizing: border-box;
+}
+
+/* ===================== NAV ===================== */
+
+.pa-nav {
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  background: rgba(3, 5, 12, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(96, 165, 250, 0.14);
+}
+
+.pa-nav-inner {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pa-nav-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--pa-heading);
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-right: 16px;
+}
+
+.pa-nav-mark {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, var(--pa-cyan), var(--pa-blue));
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.9);
+}
+
+.pa-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.pa-nav-link {
+  padding: 7px 13px;
+  border-radius: 8px;
+  color: var(--pa-text-dim);
+  text-decoration: none;
+  font-size: 0.92rem;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.pa-nav-link:hover {
+  background: rgba(96, 165, 250, 0.12);
+  color: #fff;
+}
+
+.pa-nav-link--current {
+  color: #fff;
+  background: linear-gradient(90deg, rgba(30, 58, 138, 0.85), rgba(59, 130, 246, 0.65));
+}
+
+.pa-nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 38px;
+  height: 38px;
+  padding: 7px;
+  border: 1px solid rgba(96, 165, 250, 0.35);
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.pa-nav-hamburger span {
+  display: block;
+  height: 2px;
+  background: var(--pa-blue-light);
+  border-radius: 2px;
+}
+
+/* ===================== SHELL ===================== */
+
+.pa-shell {
+  position: relative;
+  z-index: 1;
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ===================== HERO ===================== */
+
+.pa-hero {
+  text-align: center;
+  padding: 72px 0 24px;
+}
+
+.pa-hero-eyebrow {
+  display: inline-block;
+  font-size: 0.78rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--pa-blue-light);
+  margin: 0 0 20px;
+  padding: 6px 16px;
+  border: 1px solid rgba(96, 165, 250, 0.3);
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.08);
+}
+
+.pa-hero-title {
+  margin: 0 auto 16px;
+  max-width: 15ch;
+  font-size: clamp(2rem, 6vw, 4.1rem);
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--pa-heading);
+  text-shadow: 0 0 40px rgba(59, 130, 246, 0.35);
+}
+
+.pa-hero-title .pa-accent {
+  background: linear-gradient(90deg, var(--pa-blue-light), var(--pa-cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.pa-hero-sub {
+  margin: 0 auto 44px;
+  max-width: 60ch;
+  font-size: clamp(1rem, 2.2vw, 1.22rem);
+  color: var(--pa-text-dim);
+}
+
+/* Full-bleed hero image that MERGES into the dark background.
+   The source PNG already has a near-black backdrop; the edge mask +
+   ambient glow dissolve its borders so nothing looks "pasted on". */
+.pa-hero-figure {
+  margin: 0;
+  position: relative;
+}
+
+.pa-hero-figure::after {
+  /* ambient bloom behind the image */
+  content: "";
+  position: absolute;
+  inset: 6% 2% -8%;
+  z-index: -1;
+  background: radial-gradient(60% 60% at 50% 45%, rgba(37, 99, 235, 0.35), transparent 72%);
+  filter: blur(48px);
+}
+
+.pa-hero-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 0;
+  /* fade all four edges into the page background */
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 5%, #000 92%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 5%, #000 92%, transparent 100%);
+  mask-composite: intersect;
+}
+
+.pa-hero-caption {
+  margin: 20px auto 0;
+  max-width: 70ch;
+  font-size: 0.9rem;
+  color: var(--pa-text-faint);
+  text-align: center;
+}
+
+/* Divider / marquee line under hero */
+.pa-rule {
+  height: 1px;
+  margin: 56px 0;
+  border: 0;
+  background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.5), transparent);
+}
+
+/* ===================== SECTIONS ===================== */
+
+.pa-section {
+  margin: 64px 0 0;
+}
+
+.pa-section-head {
+  max-width: 760px;
+  margin-bottom: 28px;
+}
+
+.pa-section-kicker {
+  display: block;
+  font-size: 0.74rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--pa-blue-light);
+  margin-bottom: 10px;
+}
+
+.pa-section-title {
+  margin: 0 0 12px;
+  font-size: clamp(1.5rem, 3.4vw, 2.1rem);
+  font-weight: 750;
+  color: var(--pa-heading);
+  letter-spacing: -0.01em;
+}
+
+.pa-section-desc {
+  margin: 0;
+  font-size: 1.02rem;
+  color: var(--pa-text-dim);
+}
+
+/* ---- Domain grid (the 7 areas shown in the hero image) ---- */
+
+.pa-domain-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+  margin-top: 8px;
+}
+
+.pa-domain-card {
+  position: relative;
+  display: block;
+  padding: 22px 22px 20px;
+  border-radius: 16px;
+  background: var(--pa-panel);
+  border: 1px solid var(--pa-panel-border);
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  transition: transform 0.18s ease, border-color 0.18s ease,
+    box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.pa-domain-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 140% at 0% 0%, rgba(59, 130, 246, 0.14), transparent 55%);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.pa-domain-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--pa-panel-border-hover);
+  background: rgba(20, 32, 58, 0.7);
+  box-shadow: 0 18px 40px -20px rgba(37, 99, 235, 0.7);
+}
+
+.pa-domain-card:hover::before {
+  opacity: 1;
+}
+
+.pa-domain-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.pa-domain-title {
+  position: relative;
+  margin: 0 0 8px;
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--pa-heading);
+}
+
+.pa-domain-desc {
+  position: relative;
+  margin: 0 0 14px;
+  font-size: 0.92rem;
+  color: var(--pa-text-dim);
+}
+
+.pa-domain-status {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pa-text-faint);
+}
+
+.pa-domain-status::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--pa-cyan);
+  box-shadow: 0 0 8px rgba(34, 211, 238, 0.9);
+}
+
+/* ---- Content-stream sections (papers / projects / notes) ---- */
+
+.pa-stream-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.pa-stream-card {
+  padding: 24px;
+  border-radius: 16px;
+  background: var(--pa-panel);
+  border: 1px solid var(--pa-panel-border);
+}
+
+.pa-stream-card h3 {
+  margin: 0 0 8px;
+  font-size: 1.12rem;
+  color: var(--pa-heading);
+}
+
+.pa-stream-card p {
+  margin: 0;
+  font-size: 0.94rem;
+  color: var(--pa-text-dim);
+}
+
+/* ---- Empty / future-ready placeholder ---- */
+
+.pa-empty {
+  margin-top: 8px;
+  padding: 40px 28px;
+  border-radius: 16px;
+  border: 1px dashed rgba(96, 165, 250, 0.28);
+  background: rgba(10, 16, 30, 0.4);
+  text-align: center;
+}
+
+.pa-empty-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--pa-blue-light);
+  padding: 5px 14px;
+  border: 1px solid rgba(96, 165, 250, 0.3);
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+
+.pa-empty p {
+  margin: 6px auto 0;
+  max-width: 52ch;
+  color: var(--pa-text-dim);
+  font-size: 0.96rem;
+}
+
+/* ===================== FOOTER ===================== */
+
+.pa-footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 48px 24px 56px;
+  border-top: 1px solid rgba(96, 165, 250, 0.12);
+}
+
+.pa-footer-tagline {
+  margin: 0 0 8px;
+  font-size: 0.82rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--pa-blue-light);
+}
+
+.pa-footer-note {
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--pa-text-faint);
+}
+
+/* ===================== RESPONSIVE ===================== */
+
+@media (max-width: 760px) {
+  .pa-nav-hamburger {
+    display: flex;
+  }
+
+  .pa-nav-links {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    padding: 10px 16px 16px;
+    background: rgba(3, 5, 12, 0.97);
+    border-bottom: 1px solid rgba(96, 165, 250, 0.14);
+    display: none;
+  }
+
+  .pa-nav-links.open {
+    display: flex;
+  }
+
+  .pa-nav-link {
+    padding: 12px 14px;
+  }
+
+  .pa-hero {
+    padding: 48px 0 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pa-domain-card {
+    transition: none;
+  }
+}

@@ -1804,6 +1804,31 @@ body.dark-mode .info-panel .verbalized {
   color: #ffffff;
 }
 
+/* Physical AI nav link — teases the separate dark "world" section */
+.topnav-link--physical-ai {
+  font-weight: 600;
+  color: #1d4ed8;
+}
+.topnav-link--physical-ai:hover {
+  background: rgba(37, 99, 235, 0.1);
+  color: #1e40af;
+}
+.topnav-link--physical-ai.active {
+  background: linear-gradient(90deg, #0b1120, #1e3a8a);
+  color: #ffffff;
+}
+body.dark-mode .topnav-link--physical-ai {
+  color: #60a5fa;
+}
+body.dark-mode .topnav-link--physical-ai:hover {
+  background: rgba(96, 165, 250, 0.16);
+  color: #93c5fd;
+}
+body.dark-mode .topnav-link--physical-ai.active {
+  background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+  color: #ffffff;
+}
+
 /* Dark mode toggle inside nav — override fixed positioning */
 .topnav .dark-mode-toggle {
   position: static;
