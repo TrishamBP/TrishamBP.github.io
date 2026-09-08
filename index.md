@@ -233,8 +233,8 @@ title: Home
           <li>
             Led end-to-end delivery as a Forward-Deployed &amp; Senior
             Innovation Engineer for an AI-powered Legal Document Intelligence
-            platform (People Case Management Automation) for Centrica UK,
-            owning stakeholder requirements, data engineering, the
+            platform (People Case Management Automation) for an enterprise
+            client, owning stakeholder requirements, data engineering, the
             React/Next.js frontend and admin portal, the FastAPI backend,
             agentic AI workflows, AWS architecture, and production deployment.
           </li>
@@ -263,7 +263,7 @@ title: Home
             penetration testing.
           </li>
           <li>
-            Designed and architected <strong>Centrica Spark</strong>, an
+            Designed and architected <strong>Spark</strong>, an
             internal multi-agent AI innovation platform that helps employees
             turn raw ideas into researched, feasibility-assessed
             recommendations &mdash; using DSPy, context engineering, ReAct-style

@@ -1,17 +1,17 @@
 ---
 layout: production-project
 permalink: /projects/centrica-spark-ai-innovation-platform/
-title: "Centrica Spark: Engineering a Multi-Agent AI Innovation Platform with DSPy and Context Engineering"
+title: "Spark: Engineering a Multi-Agent AI Innovation Platform with DSPy and Context Engineering"
 authors: "Trisham Patil — Forward-Deployed & Senior Innovation Engineer, Cloudangles"
-venue: "Production Case Study · Centrica · Internal Innovation Platform"
-description: "How Centrica Spark was engineered: DSPy-structured LLM programs, context engineering, ReAct reasoning and planning, multi-agent orchestration, long-running agents on AWS AgentCore, and DeepEval/RAGAS/Langfuse evaluation."
+venue: "Production Case Study · Enterprise Client · Internal Innovation Platform"
+description: "How Spark was engineered: DSPy-structured LLM programs, context engineering, ReAct reasoning and planning, multi-agent orchestration, long-running agents on AWS AgentCore, and DeepEval/RAGAS/Langfuse evaluation."
 tags: ["Agentic AI", "Multi-Agent Systems", "Context Engineering", "DSPy", "ReAct", "Autonomous Planning", "AWS AgentCore", "LLM", "RAG", "DeepEval", "RAGAS", "Langfuse", "Evaluation", "Orchestration"]
 image: "/assets/images/fullstack/centrica-spark.svg"
 date: 2026-06-15
 mathjax: true
 ---
 
-This is an engineering case study of **Centrica Spark** — an **internal AI innovation platform** I architected at Centrica, where LLMs and agentic workflows help employees develop ideas through structured **research, contextual analysis, feasibility assessment, risk analysis, and actionable recommendations**.
+This is an engineering case study of **Spark** — an **internal AI innovation platform** I architected for an enterprise client, where LLMs and agentic workflows help employees develop ideas through structured **research, contextual analysis, feasibility assessment, risk analysis, and actionable recommendations**.
 
 The interesting engineering is not "an LLM answers a prompt." It's that turning a raw employee idea into a grounded, feasibility-and-risk-assessed recommendation is a **multi-step, multi-agent reasoning problem** that has to be grounded in enterprise context, structured so its outputs are reliable, and evaluated so its recommendations can be trusted. This case study explains how each of those was built.
 
@@ -25,7 +25,7 @@ I do not invent specific metrics, model sizes, or components beyond my documente
 
 ---
 
-## What Centrica Spark Is
+## What Spark Is
 
 Spark is an internal platform where an employee submits an idea and the system helps develop it: it **researches** the space, **analyzes** the idea against enterprise context, assesses **feasibility**, surfaces **risks**, and produces an **actionable recommendation** — then hands a structured result to a human decision-maker. **[Implemented]**
 

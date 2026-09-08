@@ -1,17 +1,17 @@
 ---
 layout: production-project
 permalink: /projects/people-case-management-legal-document-intelligence/
-title: "People Case Management: Engineering an Agentic Legal Document Intelligence Platform for Centrica UK"
+title: "People Case Management: Engineering an Agentic Legal Document Intelligence Platform for an Enterprise Client"
 authors: "Trisham Patil — Forward-Deployed & Senior Innovation Engineer, Cloudangles"
-venue: "Production Case Study · Centrica UK · Legal / HR / Employee Relations"
-description: "How an AI-powered legal document intelligence platform for Centrica UK was engineered: event-driven AWS architecture, an 11-node LangGraph agentic pipeline, agentic RAG, long-term memory, evaluation, and AI security hardening."
+venue: "Production Case Study · Enterprise Client · Legal / HR / Employee Relations"
+description: "How an AI-powered legal document intelligence platform for an enterprise client was engineered: event-driven AWS architecture, an 11-node LangGraph agentic pipeline, agentic RAG, long-term memory, evaluation, and AI security hardening."
 tags: ["Enterprise AI", "Agentic AI", "Legal Document Intelligence", "LangGraph", "RAG", "Long-Term Memory", "AWS", "Event-Driven Architecture", "FastAPI", "LLM Evaluation", "DeepEval", "RAGAS", "Langfuse", "AI Security", "GDPR"]
 image: "/assets/images/fullstack/centrica-people-case-management.svg"
 date: 2026-06-01
 mathjax: true
 ---
 
-This is an engineering case study of **People Case Management** — an AI-powered **legal document intelligence platform** I led end-to-end for **Centrica UK** as a Forward-Deployed & Senior Innovation Engineer. It processes HR grievances, Employee Relations cases, and Legal cases for a large European energy utility, turning messy employment evidence into structured, defensible case analysis that HR, ER, and Legal teams act on.
+This is an engineering case study of **People Case Management** — an AI-powered **legal document intelligence platform** I led end-to-end for **an enterprise client** as a Forward-Deployed & Senior Innovation Engineer. It processes HR grievances, Employee Relations cases, and Legal cases for a large European energy utility, turning messy employment evidence into structured, defensible case analysis that HR, ER, and Legal teams act on.
 
 It is deliberately *not* a product tour. The goal is to show how the system was actually engineered: how sensitive documents flow through an **event-driven AWS platform**, how an **11-node LangGraph agentic pipeline** reasons over them, how **RAG and long-term memory** were built to survive growing case histories, how the system was **evaluated and traced**, and how it was **security-hardened** before formal penetration testing.
 

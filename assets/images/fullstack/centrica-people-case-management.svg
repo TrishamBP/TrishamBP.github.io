@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" role="img" aria-label="People Case Management — AI legal document intelligence platform for Centrica UK">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" role="img" aria-label="People Case Management — AI legal document intelligence platform for an enterprise client">
   <defs>
     <linearGradient id="pcmBg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#0b1f3a"/>
@@ -57,6 +57,6 @@
   </g>
   <g fill="#f8fafc" font-family="Segoe UI, Arial, sans-serif">
     <text x="70" y="345" font-size="30" font-weight="700">People Case Management</text>
-    <text x="70" y="375" font-size="17" fill="#7dd3fc">Agentic Legal Document Intelligence · Centrica UK</text>
+    <text x="70" y="375" font-size="17" fill="#7dd3fc">Agentic Legal Document Intelligence · Enterprise Client</text>
   </g>
 </svg>

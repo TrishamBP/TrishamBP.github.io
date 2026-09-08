@@ -60,13 +60,13 @@ permalink: /projects/
       </div>
     </article>
 
-    <!-- People Case Management (Centrica UK) -->
+    <!-- People Case Management (enterprise client) -->
     <article class="production-project-card" data-order="1" data-category="AI Systems">
       <div class="production-project-image-wrap">
         <img
           class="production-project-image"
           src="{{ '/assets/images/fullstack/centrica-people-case-management.svg' | relative_url }}"
-          alt="People Case Management — agentic legal document intelligence platform for Centrica UK case study preview"
+          alt="People Case Management — agentic legal document intelligence platform for an enterprise client case study preview"
         />
       </div>
 
@@ -85,7 +85,7 @@ permalink: /projects/
         </div>
 
         <p class="production-project-overview">
-          An AI-powered Legal Document Intelligence platform built for Centrica UK, combining agentic AI,
+          An AI-powered Legal Document Intelligence platform built for an enterprise client, combining agentic AI,
           advanced RAG, long-term memory, evaluation, and cloud-native event-driven infrastructure to
           automate complex HR and legal case-management workflows.
         </p>
@@ -110,18 +110,18 @@ permalink: /projects/
       </div>
     </article>
 
-    <!-- Centrica Spark -->
+    <!-- Spark -->
     <article class="production-project-card" data-order="2" data-category="AI Systems">
       <div class="production-project-image-wrap">
         <img
           class="production-project-image"
           src="{{ '/assets/images/fullstack/centrica-spark.svg' | relative_url }}"
-          alt="Centrica Spark — multi-agent AI innovation platform case study preview"
+          alt="Spark — multi-agent AI innovation platform case study preview"
         />
       </div>
 
       <div class="production-project-content">
-        <h3 class="production-project-title">Centrica Spark — AI Innovation Platform</h3>
+        <h3 class="production-project-title">Spark — AI Innovation Platform</h3>
 
         <div class="production-project-tags">
           <span>LLMs</span>
@@ -135,7 +135,7 @@ permalink: /projects/
         </div>
 
         <p class="production-project-overview">
-          An internal Centrica innovation platform where LLMs and agentic workflows help employees develop
+          An internal enterprise innovation platform where LLMs and agentic workflows help employees develop
           ideas through structured research, contextual analysis, feasibility assessment, risk analysis,
           and actionable recommendations.
         </p>
