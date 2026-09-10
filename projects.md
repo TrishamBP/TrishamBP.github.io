@@ -160,8 +160,58 @@ permalink: /projects/
       </div>
     </article>
 
-    <!-- Project Blueprint -->
+    <!-- Spark Search Engine -->
     <article class="production-project-card" data-order="3" data-category="AI Systems">
+      <div class="production-project-image-wrap">
+        <img
+          class="production-project-image"
+          src="{{ '/assets/images/fullstack/spark-search-engine.svg' | relative_url }}"
+          alt="Spark Search Engine — animated search bar over ranked ideas, low-latency search architecture case study preview"
+        />
+      </div>
+
+      <div class="production-project-content">
+        <h3 class="production-project-title">Spark Search Engine — Low-Latency Search Architecture</h3>
+
+        <div class="production-project-tags">
+          <span>Search Architecture</span>
+          <span>Vector Search</span>
+          <span>Semantic Search</span>
+          <span>pgvector</span>
+          <span>DynamoDB Streams</span>
+          <span>Read Model / CQRS</span>
+          <span>Caching</span>
+          <span>AWS</span>
+        </div>
+
+        <p class="production-project-overview">
+          A phase-by-phase engineering case study of the search engine behind Spark: how "find the right idea
+          instantly" across 30,000+ ideas evolved from a DynamoDB read path into a deliberate, layered search
+          architecture with lexical, vector, and semantic retrieval plus stream-driven caching.
+        </p>
+
+        <div class="production-project-highlights">
+          <h4>Engineering Highlights</h4>
+          <ul>
+            <li>Separated the transactional source of truth (DynamoDB) from a purpose-built search read model via DynamoDB Streams</li>
+            <li>Routed queries across syntactic/pattern, embedding/vector, and semantic retrieval with hybrid ranking</li>
+            <li>Layered query, embedding, prompt/prefix, and response caching for repeated interactive requests</li>
+            <li>Kept caches correct with the right mechanism per problem — LRU eviction, TTL expiration, and event-driven invalidation</li>
+            <li>Evaluated a consolidated PostgreSQL + pgvector + Valkey stack against a dedicated search cluster</li>
+          </ul>
+        </div>
+
+        <div class="production-project-actions">
+          <a
+            class="project-cta"
+            href="{{ '/projects/spark-search-engine/' | relative_url }}"
+          >Read Case Study</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Project Blueprint -->
+    <article class="production-project-card" data-order="4" data-category="AI Systems">
       <div class="production-project-image-wrap">
         <img
           class="production-project-image"
