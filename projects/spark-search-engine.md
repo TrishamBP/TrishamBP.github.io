@@ -293,14 +293,6 @@ graph TD
 
 We attack latency at several independent points rather than betting on one trick: a **specialized read model** (not scanning the operational store), **hybrid retrieval** (the right index for the query), and **layered caching** (query, embedding, prompt/prefix, response) kept correct by **stream-driven invalidation**. **[Interpretation]**
 
-## How I would summarize it in an interview
-
-Not: *"we switched from DynamoDB to OpenSearch."* That undersells it. Rather:
-
-> We separated the transactional source of truth from the read/search path. DynamoDB stays authoritative, while DynamoDB Streams continuously materialize a search-optimized read model. The read path can then use lexical, pattern-based, and vector/semantic retrieval, while layered caching — kept correct by stream-driven invalidation — eliminates repeated search and compute.
-
-That framing shows the real skill set the project demanded: **distributed systems + information retrieval + inference-cost awareness**, not just knowing that a search engine exists.
-
 ## Key takeaways
 
 - **Search is a different workload than storage.** The single most valuable move was refusing to make DynamoDB do two opposite jobs. **[Interpretation]**
