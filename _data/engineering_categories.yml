@@ -30,6 +30,8 @@
   subcategories:
     - id: agent-fundamentals
       title: "Agent Fundamentals"
+    - id: multi-step-reasoning-planning
+      title: "Multi-Step Reasoning and Planning"
     - id: multi-agent-systems
       title: "Multi-Agent Systems"
     - id: agent-memory
