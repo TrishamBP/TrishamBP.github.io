@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "Why We Need Distributed Training and Inference"
+title: "Why We Need Distributed Training"
 date: 2026-09-08
 author: Trisham Patil
-excerpt: "Why a single GPU is no longer enough for modern AI, and how training and inference each turn into distributed systems problems. An engineering-first look at what needs to be distributed, the core patterns, and the trade-offs involved."
+excerpt: "Why a single GPU is no longer enough for modern AI, and how distributed training turns into a distributed systems problem. An engineering-first look at the parallelism axes, DDP, ring all-reduce, NCCL, scaling efficiency, and picking the right tool."
 meta: "AI Engineering • Distributed Systems • GPU Systems"
 category: "AI Engineering"
 mathjax: true
@@ -28,15 +28,20 @@ tags:
                        scaling AI models, single GPU limits, distributed systems for AI
 
   STATUS
-    - Skeleton only. Section content to be filled in section-by-section.
-    - No technical claims, papers, citations, code, or diagrams added yet.
+    - Complete. Focus: distributed TRAINING deep dive (DDP, ring all-reduce,
+      NCCL, scaling, framework selection) built from Week 7 notes + runnable code.
+    - Distributed inference framed as the sequel (out of scope here).
 -->
 
 ![Why we need distributed training and inference: scaling AI from a single GPU to a full NVIDIA DGX H100 node (8× H100 80GB, NVSwitch, ConnectX-7) to serve bigger models, larger datasets, and millions of real-world users](/assets/distributed_training.png)
 
 ## Introduction
 
-<!-- Placeholder: this section will explain the motivation for distributed training and inference. -->
+Modern models have outgrown the hardware they run on. A single GPU can no longer hold a frontier model's weights, chew through a multi-trillion-token dataset in reasonable time, or serve millions of low-latency requests. That is the whole reason **distributed training and inference** exists: not as a fancy optimization, but as the only way to make the math fit — across many GPUs, and across many machines.
+
+This post is an engineering-first walk through *why* a single GPU stops being enough, *what* exactly gets split when you go distributed, and *how* those pieces are wired together in practice. We start from the four axes of parallelism, build up to 3D parallelism, then go deep on the workhorse of real clusters — **PyTorch DistributedDataParallel (DDP)** — with runnable code, the ring all-reduce that makes it scale, the NCCL interconnect ladder underneath it, the gotchas that silently corrupt runs, and a decision framework for picking DDP vs FSDP vs DeepSpeed vs Horovod.
+
+The through-line: distributed training is a **distributed-systems** problem wearing a machine-learning costume. Once you see where the communication lives, most "why is my scaling worse than expected" questions answer themselves.
 
 ---
 
@@ -381,85 +386,600 @@ The central point is that **there is no single parallelism strategy that is alwa
 
 ---
 
-## 3. Why Training Becomes a Distributed Systems Problem
+## From Parallelism Theory to a Working DDP Script
 
-<!-- Placeholder only. -->
+All the theory above answers *what to split*. The most common answer in practice — for anything from a single 8-GPU box to a 32-GPU job that still fits in memory — is the simplest one: **data parallelism**, implemented by PyTorch's **DistributedDataParallel (DDP)**. It is battle-tested, and it is what roughly 90% of teams reach for first.
+
+The big idea behind DDP is deliberately unglamorous:
+
+> **Write your single-GPU training loop. Wrap the model in DDP. Launch it with `torchrun`.** DDP handles the gradient synchronization for you.
+
+To see how little changes, start from the single-GPU baseline the DDP version has to match.
+
+### The single-GPU baseline
+
+`train_single.py` is an ordinary ResNet-18 on CIFAR-10 — no distributed machinery at all. It is the pedagogical control: the DDP version must produce equivalent training, just faster.
+
+```python
+# train_single.py — single-GPU baseline (the control case)
+import torch
+import torch.nn as nn
+from torch.utils.data import DataLoader
+from torchvision import datasets, transforms, models
+
+
+def main():
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+    transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize((0.4914, 0.4822, 0.4465),
+                             (0.2470, 0.2435, 0.2616)),
+    ])
+    train_set = datasets.CIFAR10(root="./data", train=True,
+                                 download=True, transform=transform)
+    train_loader = DataLoader(train_set, batch_size=128,
+                              shuffle=True, num_workers=4, pin_memory=True)
+
+    model = models.resnet18(num_classes=10).to(device)
+    optimizer = torch.optim.SGD(model.parameters(), lr=0.1, momentum=0.9)
+    criterion = nn.CrossEntropyLoss()
+
+    for epoch in range(3):
+        model.train()
+        for images, labels in train_loader:
+            images, labels = images.to(device), labels.to(device)
+            optimizer.zero_grad()
+            loss = criterion(model(images), labels)
+            loss.backward()
+            optimizer.step()
+        print(f"epoch {epoch} done")
+
+    torch.save(model.state_dict(), "resnet18_cifar10.pt")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+Note the three things that will have to change for DDP: the `DataLoader` uses `shuffle=True` (a single process owns the whole dataset), there is no notion of a "rank," and the save is a plain `state_dict()`.
+
+### The DDP version
+
+`train_ddp.py` is the same training loop with the distributed scaffolding added. Read it against the baseline — the *loop body* is unchanged; everything new is setup, sharding, and rank-aware bookkeeping.
+
+```python
+# train_ddp.py — single-node multi-GPU DDP (launch with torchrun)
+import os
+import argparse
+import torch
+import torch.nn as nn
+import torch.distributed as dist
+from torch.nn.parallel import DistributedDataParallel as DDP
+from torch.utils.data import DataLoader
+from torch.utils.data.distributed import DistributedSampler
+from torchvision import datasets, transforms, models
+
+
+def ddp_setup():
+    """torchrun sets RANK / LOCAL_RANK / WORLD_SIZE for us."""
+    dist.init_process_group(backend="nccl")          # blocking rendezvous
+    local_rank = int(os.environ["LOCAL_RANK"])
+    torch.cuda.set_device(local_rank)                # bind BEFORE touching the GPU
+    return int(os.environ["RANK"]), local_rank, int(os.environ["WORLD_SIZE"])
+
+
+def ddp_cleanup():
+    dist.destroy_process_group()
+
+
+def is_rank_zero():
+    return int(os.environ.get("RANK", 0)) == 0
+
+
+def log0(*args):
+    if is_rank_zero():
+        print(*args, flush=True)
+
+
+def build_model(local_rank):
+    model = models.resnet18(num_classes=10)
+    # Small per-GPU batches make per-device BatchNorm stats noisy — sync them.
+    model = nn.SyncBatchNorm.convert_sync_batchnorm(model)
+    return model.to(local_rank)
+
+
+def build_loaders(per_gpu_batch_size, rank, world_size):
+    transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize((0.4914, 0.4822, 0.4465),
+                             (0.2470, 0.2435, 0.2616)),
+    ])
+    # Only rank 0 downloads; everyone else waits at the barrier.
+    if is_rank_zero():
+        datasets.CIFAR10(root="./data", train=True, download=True)
+    dist.barrier()
+
+    train_set = datasets.CIFAR10(root="./data", train=True,
+                                 download=False, transform=transform)
+    sampler = DistributedSampler(train_set, num_replicas=world_size,
+                                 rank=rank, shuffle=True, drop_last=True)
+    loader = DataLoader(train_set, batch_size=per_gpu_batch_size,
+                        sampler=sampler, num_workers=4,
+                        pin_memory=True, drop_last=True)
+    return loader, sampler
+
+
+@torch.no_grad()
+def evaluate(model, loader, local_rank):
+    model.eval()
+    loss_sum = torch.zeros(1, device=local_rank)
+    correct = torch.zeros(1, device=local_rank)
+    total = torch.zeros(1, device=local_rank)
+    criterion = nn.CrossEntropyLoss(reduction="sum")
+    for images, labels in loader:
+        images, labels = images.to(local_rank), labels.to(local_rank)
+        logits = model(images)
+        loss_sum += criterion(logits, labels)
+        correct += (logits.argmax(1) == labels).sum()
+        total += labels.numel()
+    # Reduce metrics across all ranks so every process agrees.
+    for t in (loss_sum, correct, total):
+        dist.all_reduce(t, op=dist.ReduceOp.SUM)
+    return (loss_sum / total).item(), (correct / total).item()
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--epochs", type=int, default=3)
+    parser.add_argument("--per-gpu-batch-size", type=int, default=128)
+    parser.add_argument("--base-lr", type=float, default=0.1)
+    args = parser.parse_args()
+
+    rank, local_rank, world_size = ddp_setup()
+
+    # Linear LR scaling rule (Goyal et al., 2017): scale LR with global batch.
+    reference_batch = 128
+    global_batch = args.per_gpu_batch_size * world_size
+    scaled_lr = args.base_lr * global_batch / reference_batch
+
+    model = DDP(build_model(local_rank), device_ids=[local_rank])
+    loader, sampler = build_loaders(args.per_gpu_batch_size, rank, world_size)
+    optimizer = torch.optim.SGD(model.parameters(), lr=scaled_lr, momentum=0.9)
+    criterion = nn.CrossEntropyLoss()
+
+    for epoch in range(args.epochs):
+        model.train()
+        sampler.set_epoch(epoch)          # CRITICAL: reshuffles each epoch
+        for images, labels in loader:
+            images, labels = images.to(local_rank), labels.to(local_rank)
+            optimizer.zero_grad()
+            loss = criterion(model(images), labels)
+            loss.backward()               # all-reduce of gradients fires here
+            optimizer.step()
+        log0(f"epoch {epoch} done | lr={scaled_lr:.4f}")
+
+    if is_rank_zero():
+        # Unwrap .module so the checkpoint has no "module." prefix.
+        torch.save(model.module.state_dict(), "resnet18_cifar10_ddp.pt")
+
+    ddp_cleanup()
+
+
+if __name__ == "__main__":
+    main()
+```
+
+Four lines carry the entire distributed story:
+
+* `dist.init_process_group(backend="nccl")` — the blocking rendezvous where all ranks find each other.
+* `DistributedSampler(...)` + `sampler.set_epoch(epoch)` — gives each rank a *disjoint* shard and reshuffles it every epoch.
+* `DDP(model, device_ids=[local_rank])` — registers a backward hook that **all-reduces gradients automatically** during `loss.backward()`.
+* `model.module.state_dict()` — saved only from rank 0, unwrapping the DDP wrapper.
+
+### Launching it on one node
+
+You do not run `python train_ddp.py`. You hand it to `torchrun`, which spawns one process per GPU and injects `RANK` / `LOCAL_RANK` / `WORLD_SIZE`:
+
+```bash
+# Two GPUs, one machine.
+torchrun --standalone --nproc_per_node=2 train_ddp.py \
+    --epochs 3 --per-gpu-batch-size 128
+```
+
+That single command is the whole "launch step" of the big idea.
 
 ---
 
-## 4. Why Inference Becomes a Distributed Systems Problem
+## Launching DDP Across Nodes
 
-<!-- Placeholder only. -->
+Multi-node is the same script — only the launch changes. Every node runs its own `torchrun`, they all agree on a rendezvous endpoint, and NCCL wires the ranks together.
 
----
+```bash
+#!/usr/bin/env bash
+# launch_multinode.sh — run on EACH node (differing NODE_RANK)
+set -euo pipefail
 
-## 5. Distributed Training vs. Distributed Inference
+: "${MASTER_ADDR:?set MASTER_ADDR to node 0's address}"
+: "${NODE_RANK:?set NODE_RANK (0 for the first node)}"
 
-<!-- Placeholder only. -->
+NNODES="${NNODES:-2}"
+MASTER_PORT="${MASTER_PORT:-29500}"
+NPROC_PER_NODE="${NPROC_PER_NODE:-$(nvidia-smi --list-gpus | wc -l)}"
+JOB_ID="${JOB_ID:-ddp-job-001}"
 
----
+# --- NCCL tuning (uncomment as needed; see the env-var table below) ---
+# export NCCL_DEBUG=INFO
+# export NCCL_SOCKET_IFNAME=eth0
+# export NCCL_IB_HCA=mlx5_0,mlx5_1
+# export NCCL_P2P_DISABLE=0
+# export NCCL_ASYNC_ERROR_HANDLING=1
 
-## 6. What Exactly Needs to Be Distributed?
+torchrun \
+    --nnodes="${NNODES}" \
+    --nproc_per_node="${NPROC_PER_NODE}" \
+    --node_rank="${NODE_RANK}" \
+    --rdzv_id="${JOB_ID}" \
+    --rdzv_backend=c10d \
+    --rdzv_endpoint="${MASTER_ADDR}:${MASTER_PORT}" \
+    --max_restarts=3 \
+    ../02_ddp_single_node/train_ddp.py --epochs 3 --per-gpu-batch-size 128
+```
 
-<!-- Placeholder only. -->
-<!-- This section will later discuss concepts such as computation, model parameters, data, activations, KV cache, requests, and other relevant resources. Content not written yet. -->
+### How N processes on K machines find each other
 
----
+The `--rdzv_backend=c10d` flag selects PyTorch's collective-communications rendezvous. The handshake is worth knowing, because most multi-node failures happen right here:
 
-## 7. The Core Distributed Training Patterns
+1. Each process starts knowing its own rank, the total `world_size`, and a master `addr:port`.
+2. Rank 0 opens a **TCP store** on `MASTER_ADDR:MASTER_PORT` and waits for connections.
+3. All other ranks connect to the store and register themselves.
+4. Once `world_size` processes have registered, they exchange a **NCCL unique ID** through the store.
+5. NCCL uses that ID to set up peer-to-peer communicators between all ranks.
+6. The first collective runs, NCCL picks a ring topology, and training starts.
 
-<!-- Placeholder only. -->
+> **When it hangs:** a rendezvous timeout almost always means a firewall is blocking `MASTER_PORT`, the wrong `MASTER_ADDR`, or ranks disagreeing on `world_size`. Run `telnet node0 29500` from each node *before* blaming the model.
 
----
+### NCCL environment variables you'll actually use
 
-## 8. The Core Distributed Inference Patterns
-
-<!-- Placeholder only. -->
-
----
-
-## 9. Communication Becomes the Bottleneck
-
-<!-- Placeholder only. -->
-
----
-
-## 10. Memory, Compute, and Communication Trade-offs
-
-<!-- Placeholder only. -->
-
----
-
-## 11. From One GPU to Many GPUs
-
-<!-- Placeholder only. -->
-
----
-
-## 12. From One Machine to a Cluster
-
-<!-- Placeholder only. -->
-
----
-
-## 13. Why Distributed Systems Are Hard
-
-<!-- Placeholder only. -->
-
----
-
-## 14. The Systems Stack Behind Distributed AI
-
-<!-- Placeholder only. -->
+| Variable | Example value | What it does |
+| --- | --- | --- |
+| `NCCL_DEBUG` | `INFO` | Verbose logs. Set during bring-up; turn off in production (spammy). |
+| `NCCL_SOCKET_IFNAME` | `eth0` / `^lo,docker0` | Which network interface to use — essential with multiple NICs. |
+| `NCCL_IB_HCA` | `mlx5_0,mlx5_1` | Pin to specific InfiniBand HCAs. Prevents slow fallback. |
+| `NCCL_IB_DISABLE` | `1` | Force TCP fallback — use to confirm IB is the culprit. |
+| `NCCL_ASYNC_ERROR_HANDLING` | `1` | Errors become exceptions instead of deadlocks. Highly recommended. |
+| `NCCL_BUFFSIZE` | `8388608` | Bytes per collective chunk. Tune for small-message-heavy workloads. |
 
 ---
 
-## 15. Where Distributed Training and Inference Are Going
+## The DDP Memory Footprint
 
-<!-- Placeholder only. -->
+DDP replicates the *full* model on every GPU, so before you launch, do the memory arithmetic. For a **7B-parameter model trained with AdamW and an FP32 master copy**, one rank looks roughly like this:
+
+| Component | Footprint (7B) | Where it comes from |
+| --- | --- | --- |
+| Weights | ~14 GB | 2 bytes/param (FP16) × 7B |
+| Gradients | ~14 GB | one gradient per weight |
+| Optimizer states | ~56 GB | AdamW momentum + variance + FP32 master |
+| Activations | ~10–40 GB | depends on batch size and sequence length |
+| **Total per rank** | **~84–124 GB** | **× N ranks (DDP replicates everything)** |
+
+The punchline: DDP does **not** save memory — it multiplies it. Every rank pays the full ~84–124 GB. The moment that total exceeds your GPU (an 80 GB H100, say), plain DDP is off the table and you move to FSDP/ZeRO, which shard exactly the weights, gradients, and optimizer states this table enumerates.
+
+---
+
+## Ring All-Reduce: Why Communication Doesn't Explode as GPUs Grow
+
+DDP's one piece of communication is the gradient all-reduce after every backward pass. The obvious worry: as you add GPUs, does that all-reduce get more expensive per GPU? If it did, distributed training would die at a handful of GPUs. It doesn't — and the reason is the algorithm NCCL uses.
+
+### Naive vs. ring
+
+* **Naive all-reduce:** every GPU sends its gradient to every other GPU. With `N` GPUs and a gradient of `M` bytes, per-GPU traffic is `O(N·M)`. Doubling GPUs *doubles* per-GPU communication — this collapses around ~8 GPUs.
+* **Ring all-reduce (what NCCL does):** GPUs form a logical ring, each talking only to its two neighbours. Per-GPU traffic is `2·(N-1)/N · M`, which approaches `2M` as `N → ∞` — **independent of cluster size**.
+
+That independence is the whole game: 8 GPUs cost the same communication *per GPU* as 1024 GPUs. It is the algorithmic foundation of scaling to thousands of GPUs.
+
+### The algorithm
+
+Split each gradient into `N` chunks and run two phases, each `N-1` steps:
+
+1. **Reduce-scatter.** At step `k`, each GPU sends chunk `(rank - k) mod N` to its right neighbour, which sums it with its own. After `N-1` steps, each GPU holds exactly **one fully-summed chunk**.
+2. **All-gather.** Each GPU passes its fully-summed chunk around the ring. After `N-1` more steps, **every GPU has the complete sum**.
+
+This is the same identity introduced earlier — **all-reduce = reduce-scatter + all-gather** — realized on a ring. The per-GPU bandwidth cost is:
+
+$$
+\text{cost} = 2 \cdot \frac{N-1}{N} \cdot M
+$$
+
+| GPUs (N) | Per-GPU cost |
+| --- | --- |
+| 2 | 1.00 · M |
+| 4 | 1.50 · M |
+| 8 | 1.75 · M |
+| 1024 | ~2.00 · M |
+
+### Measuring it yourself
+
+`allreduce_benchmark.py` sweeps message sizes and reports achieved bandwidth per rank, using exactly the `2·(N-1)/N` factor to convert wall time into effective bandwidth:
+
+```python
+# allreduce_benchmark.py — NCCL all-reduce bandwidth sweep
+# Launch: torchrun --standalone --nproc_per_node=<GPUs> allreduce_benchmark.py
+import os
+import torch
+import torch.distributed as dist
+
+
+def bench(size_bytes, iters=50, warmup=5):
+    world = dist.get_world_size()
+    n_elems = size_bytes // 4                     # fp32 = 4 bytes
+    x = torch.ones(n_elems, dtype=torch.float32, device="cuda")
+
+    for _ in range(warmup):
+        dist.all_reduce(x)
+    torch.cuda.synchronize()
+
+    start = torch.cuda.Event(enable_timing=True)
+    end = torch.cuda.Event(enable_timing=True)
+    start.record()
+    for _ in range(iters):
+        dist.all_reduce(x)
+    end.record()
+    torch.cuda.synchronize()
+
+    sec = start.elapsed_time(end) / 1000.0 / iters
+    # Ring all-reduce moves 2*(N-1)/N * M bytes per rank.
+    factor = 2 * (world - 1) / world
+    gb_per_s = (factor * size_bytes) / sec / 1e9
+    return gb_per_s
+
+
+def main():
+    dist.init_process_group(backend="nccl")
+    torch.cuda.set_device(int(os.environ["LOCAL_RANK"]))
+    rank = dist.get_rank()
+
+    if rank == 0:
+        print(f"{'size':>12} {'bandwidth (GB/s/rank)':>24}")
+    for log2_size in range(12, 30):               # 4 KiB .. 512 MiB
+        size = 1 << log2_size
+        bw = bench(size)
+        if rank == 0:
+            print(f"{size:>12} {bw:>24.2f}")
+
+    dist.destroy_process_group()
+
+
+if __name__ == "__main__":
+    main()
+```
+
+Small messages will look slow (latency-bound); large messages converge on the interconnect's real bandwidth. Which brings us to what that interconnect actually is.
+
+---
+
+## NCCL Is Topology-Aware
+
+NCCL does not use one fixed path. At init it probes `CUDA_VISIBLE_DEVICES`, reads the NVML topology, and discovers NICs — building a graph of which GPUs share NVLink, which share a PCIe root, and which NICs sit close to which GPUs — then picks the fastest ring that visits every rank. You can see its choice in `NCCL_DEBUG=INFO` output.
+
+| Scope | Transport | Character |
+| --- | --- | --- |
+| **Intra-node** | NVLink | Direct GPU-to-GPU, ~900 GB/s on H100 |
+| | NVSwitch | Full-bandwidth all-to-all in HGX boxes |
+| | PCIe P2P | Direct GPU-GPU over PCIe, ~50 GB/s |
+| **Inter-node** | InfiniBand + GPUDirect | Zero-copy GPU↔NIC. Best. |
+| | RoCEv2 + GPUDirect | RDMA over Ethernet, near-IB |
+| | Sockets (TCP) | Fallback. 5–10× slower. |
+
+### The bandwidth ladder
+
+Every hop away from the GPU die costs roughly an order of magnitude. Knowing where your job sits on this ladder explains most "why is scaling worse than expected" surprises:
+
+| Interconnect | Approx. bandwidth |
+| --- | --- |
+| NVLink 5 (B200, intra-node) | ~1.8 TB/s |
+| NVSwitch (HGX, all-to-all) | ~900 GB/s |
+| InfiniBand NDR (inter-node) | ~400–800 Gb/s |
+| RoCEv2 Ethernet (inter-node) | ~200–400 Gb/s |
+| PCIe Gen5 P2P (fallback) | ~64 GB/s |
+| TCP sockets (last resort) | ~10–25 Gb/s |
+
+This is also why 3D-parallel topology mapping matters: you pin the chattiest dimension (tensor parallelism) to NVLink and let the quiet dimension (data parallelism) stretch across the slower inter-node links.
+
+---
+
+## The Five DDP Gotchas
+
+DDP is simple to *run* and easy to run *wrong*. These five bugs are silent — the job doesn't crash, it just trains worse — which is exactly what makes them worth memorizing.
+
+1. **Forgot `sampler.set_epoch(epoch)`.** Every epoch reuses the *same* shuffle, so each rank sees the identical order forever. Accuracy quietly suffers. Fix: call `set_epoch(epoch)` at the top of every epoch.
+2. **Saved `model.state_dict()` instead of `model.module.state_dict()`.** The checkpoint gets a `module.` prefix on every key and won't load into a plain model. Fix: unwrap `.module` and save from rank 0 only.
+3. **BatchNorm on tiny per-GPU batches.** With per-GPU batch < ~16, per-device BN statistics are noisy — measurably worse accuracy (~4% in the notes' example). Fix: `nn.SyncBatchNorm.convert_sync_batchnorm(model)`.
+4. **Uneven final batch → hang.** If one rank gets a smaller last batch, collectives desynchronize and the job deadlocks. Fix: `drop_last=True` on both the sampler and the loader.
+5. **`find_unused_parameters=True` as a crutch.** It papers over model-graph bugs at a 10–20% throughput cost. Fix: find the genuinely unused parameters and fix the forward pass instead of leaving the flag on.
+
+---
+
+## Scaling: Strong vs. Weak, and Where Efficiency Goes
+
+### Two scaling questions
+
+* **Strong scaling** — fixed problem, more GPUs. *Does my existing job finish faster on 8 GPUs than on 2?* Ideal time is `1/N`; reality runs into communication floors. Matters for eval sweeps, research iteration, deadlines.
+* **Weak scaling** — fixed per-GPU work, more GPUs. *If I scale to a bigger problem, does wall time stay constant?* Ideal is constant time; communication adds overhead.
+
+Most real AI workloads are **weak scaling** — we spend extra compute on training *bigger* things, not on finishing the same job faster.
+
+### Where the missing efficiency goes
+
+When a job scales worse than `N×`, the loss is not mysterious. A representative breakdown of GPU time:
+
+| Category | Time | How to attack it |
+| --- | --- | --- |
+| Useful compute | 64% | — |
+| All-reduce (not overlapped) | 12% | Larger model / smaller buckets / bigger grad accumulation |
+| Stragglers (slow GPUs) | 10% | Homogeneous nodes; pin to healthy GPUs |
+| Load imbalance | 6% | Even sharding; same-shape inputs (pad or drop) |
+| Host overhead | 4% | Fewer Python callbacks; compiled model |
+| Data-loading stalls | 4% | `pin_memory=True`, prefetch, more `num_workers` |
+
+> **Measure first.** The PyTorch profiler plus `torch.cuda.Event` give you the *actual* breakdown. Don't guess which bar is tallest — profile and attack the biggest one.
+
+### Optimization levers, in order of ROI
+
+1. **Mixed precision (AMP)** — fp16/bf16 halves memory and bandwidth for a 1.5–2× speedup. Should be on by default.
+2. **Larger per-GPU batch + gradient accumulation** — amortizes the all-reduce across more work. The dominant lever for communication efficiency.
+3. **Tune NCCL bucket size/count** — default 25 MB. Large models like bigger buckets; small models like more, smaller ones.
+4. **Gradient compression (PowerSGD, signSGD)** — rare but powerful: 10–100× less traffic for a small accuracy hit.
+5. **Hierarchical (tree) all-reduce** — NCCL picks this automatically on clustered topologies. Nothing to tune.
+6. **Overlap opt-step with the next batch's comm** — advanced; most of the gain is already captured by DDP's backward hook.
+
+### Putting a number on it
+
+Scaling efficiency is a single ratio:
+
+$$
+\text{eff}(N) = \frac{\text{throughput}(N)}{N \cdot \text{throughput}(1)}
+$$
+
+With a 420 samples/sec single-GPU baseline and 3,190 samples/sec on 8 GPUs:
+
+$$
+\text{eff}(8) = \frac{3190}{8 \times 420} = \frac{3190}{3360} \approx 0.949
+$$
+
+94.9% at 8 GPUs is excellent — well-tuned DDP jobs on NVLink+IB clusters typically land in the **85–95%** range. Below ~80%, profile immediately; above ~95%, you're likely compute-bound and further tuning has diminishing returns. Always report **both** throughput and efficiency — throughput alone hides whether you're wasting GPU-hours.
+
+`benchmark_scaling.py` measures this end-to-end on synthetic data, so you can characterize a cluster before committing a real run to it:
+
+```python
+# benchmark_scaling.py — DDP scaling-efficiency micro-benchmark (ResNet-50)
+# Launch on N GPUs, compare global samples/s against the N=1 baseline.
+import os
+import time
+import torch
+import torch.nn as nn
+import torch.distributed as dist
+from torch.nn.parallel import DistributedDataParallel as DDP
+from torchvision import models
+
+WARMUP_STEPS = 10
+MEASURE_STEPS = 100
+PER_GPU_BATCH = 64
+INPUT_SHAPE = (3, 224, 224)
+
+
+def main():
+    dist.init_process_group(backend="nccl")
+    local_rank = int(os.environ["LOCAL_RANK"])
+    torch.cuda.set_device(local_rank)
+    world = dist.get_world_size()
+
+    model = DDP(models.resnet50().to(local_rank), device_ids=[local_rank])
+    optimizer = torch.optim.SGD(model.parameters(), lr=0.1)
+    criterion = nn.CrossEntropyLoss()
+
+    x = torch.randn(PER_GPU_BATCH, *INPUT_SHAPE, device=local_rank)
+    y = torch.randint(0, 1000, (PER_GPU_BATCH,), device=local_rank)
+
+    def step():
+        optimizer.zero_grad()
+        loss = criterion(model(x), y)
+        loss.backward()
+        optimizer.step()
+
+    for _ in range(WARMUP_STEPS):
+        step()
+    torch.cuda.synchronize()
+
+    start = time.perf_counter()
+    for _ in range(MEASURE_STEPS):
+        step()
+    torch.cuda.synchronize()
+    elapsed = time.perf_counter() - start
+
+    local_sps = (MEASURE_STEPS * PER_GPU_BATCH) / elapsed
+    t = torch.tensor([local_sps], device=local_rank)
+    dist.all_reduce(t, op=dist.ReduceOp.SUM)         # global throughput
+    global_sps = t.item()
+
+    if dist.get_rank() == 0:
+        print(f"world_size={world}  global={global_sps:,.0f} samples/s "
+              f"({global_sps / world:,.0f}/GPU)")
+        print("Compare to N=1: eff(N) = global(N) / (N * global(1)). "
+              "Below ~0.85 => interconnect-limited, comm-dominated, "
+              "or stragglers.")
+
+    dist.destroy_process_group()
+
+
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+## Picking the Right Tool: DDP vs. FSDP vs. DeepSpeed vs. Horovod
+
+DDP is the default, not the only option. The moment the memory table above overflows your GPU, you graduate to a sharding framework. Here is the honest comparison:
+
+| Framework | Memory efficiency | Setup | Speed (fits-in-memory) | Framework support |
+| --- | --- | --- | --- | --- |
+| **DDP** | Low (full replica) | Low | Fastest | PyTorch only |
+| **FSDP** | High (full shard) | Medium | Near-DDP with overlap | PyTorch-native |
+| **DeepSpeed ZeRO** | Highest (+ CPU offload) | Medium–High | Comparable to FSDP | PyTorch (via plugin) |
+| **Horovod** | Low (full replica) | Medium | Comparable to DDP | PyTorch, TF, MXNet |
+
+### A decision framework
+
+| Scenario | Pick | Why |
+| --- | --- | --- |
+| 7B model, 8–32 GPUs, fits in memory | **DDP** | Simplest, battle-tested — what most teams use |
+| 13–70B, memory-tight but per-layer fits | **FSDP** | Shards weights + grads + opt state; keeps DDP's simplicity |
+| Very tight memory, want library-level knobs | **DeepSpeed ZeRO-3** | More knobs than FSDP; CPU-offload options |
+| Existing TF/MXNet codebase on an HPC cluster | **Horovod** | Framework-portable; plays nicely with MPI + Slurm |
+| A single layer doesn't fit on one GPU | **Tensor Parallel (Megatron)** | Can't split the batch — must split the weights |
+| Trillion-parameter frontier model | **3D Parallel (Megatron-DeepSpeed)** | Combine data + tensor + pipeline |
+
+> **The one-line heuristic:** *When in doubt, DDP. When it OOMs, FSDP. When those aren't enough, you're at frontier scale* — and back in the 3D-parallelism territory from the first half of this post.
+
+### Horovod, briefly
+
+Horovod is Uber's 2017 library. It uses **MPI** (not c10d) for rendezvous and **NCCL** for collectives, and it is framework-agnostic (TF, PyTorch, MXNet), launched with `horovodrun`. Its activity has declined since PyTorch shipped first-class DDP, but it still wins for an existing TensorFlow codebase, an HPC cluster where Slurm + MPI is already set up, or a training script that must stay framework-portable. The shape of a Horovod script:
+
+```python
+import horovod.torch as hvd
+
+hvd.init()                                    # instead of dist.init_process_group
+torch.cuda.set_device(hvd.local_rank())
+
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+optimizer = hvd.DistributedOptimizer(         # instead of the DDP wrap
+    optimizer, named_parameters=model.named_parameters())
+
+hvd.broadcast_parameters(model.state_dict(), root_rank=0)
+hvd.broadcast_optimizer_state(optimizer, root_rank=0)
+# Training loop — identical to DDP.
+# Launch: horovodrun -np 8 -H node0:4,node1:4 python train.py
+```
+
+---
+
+## Key Takeaways
+
+* **A single GPU stops being enough along three axes** — model size, dataset size, and wall-clock time — and any one of them is sufficient to force distribution.
+* **There are four ways to split the work** — data, tensor, pipeline, and sharded (FSDP/ZeRO) — and at frontier scale you compose them into **3D parallelism**, mapped onto hardware by communication frequency.
+* **DDP is the workhorse:** write the single-GPU loop, wrap in DDP, launch with `torchrun`. The gradient all-reduce is the only communication, and it fires inside `loss.backward()`.
+* **Ring all-reduce is why this scales** — per-GPU cost is `2·(N-1)/N·M`, independent of cluster size, so 8 GPUs cost the same per-GPU comm as 1024.
+* **DDP replicates memory, it doesn't save it** — a 7B AdamW run is ~84–124 GB *per rank*. When that overflows, move to FSDP or ZeRO.
+* **Most scaling losses are diagnosable** — profile first, then attack unoverlapped all-reduce, stragglers, and load imbalance in that order. Report both throughput and efficiency.
 
 ---
 
 ## Conclusion
 
-<!-- Placeholder only. -->
+Distributed training is less a machine-learning trick than a **distributed-systems discipline**: assign ranks, choose a backend, express your work as collective primitives, and map the chattiest communication onto the fastest interconnect. Everything from the four parallelism axes down to a single `torchrun` command is in service of one goal — making a workload that no longer fits on one GPU fit across many, without letting communication eat the gains.
+
+Start simple. Reach for DDP, measure your scaling efficiency, and only add sharding, tensor, or pipeline parallelism when a concrete constraint forces you to. The frontier-scale machinery is impressive, but the engineering judgment that matters most is knowing the smallest tool that solves the problem in front of you.
+
+If training is about surviving scale, the natural sequel is **distributed inference** — serving those trained models under latency and throughput pressure, where the KV cache, request batching, and model sharding raise a fresh set of distributed-systems questions. That is a story for its own post.
