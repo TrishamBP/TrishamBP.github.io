@@ -110,6 +110,39 @@ permalink: /physical-ai/
 </section>
 
 <!-- =========================================================
+     EXPLORATORY RESEARCH
+     A distinct content type from Engineering Implementations:
+     studies / explorations / reading of research (not built systems).
+     Entries live in the `exploratory_research` collection and each
+     links to its own detail page.
+
+     TO ADD AN ENTRY: create a file in _exploratory_research/ and add a
+     matching <a class="pa-domain-card"> block below.
+     ========================================================= -->
+<section class="pa-section" id="exploratory-research" aria-labelledby="pa-exploratory-title">
+  <div class="pa-section-head">
+    <span class="pa-section-kicker">Exploratory Research</span>
+    <h2 id="pa-exploratory-title" class="pa-section-title">Exploratory Research</h2>
+    <p class="pa-section-desc">
+      Research I am studying and exploring — not engineering implementations.
+      Reading, notes, architectural observations, and open questions on the
+      models and agents shaping Physical AI.
+    </p>
+  </div>
+
+  <div class="pa-stream-grid">
+    {% assign explorations = site.exploratory_research | sort: "order" %}
+    {% for item in explorations %}
+      <a class="pa-domain-card" href="{{ item.url | relative_url }}">
+        <span class="pa-domain-status">{{ item.research_type | default: "Exploratory Research" }}</span>
+        <h3 class="pa-domain-title">{{ item.title }}</h3>
+        <p class="pa-domain-desc">{{ item.excerpt }}</p>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- =========================================================
      RESEARCH & PAPERS  (future-ready — intentionally empty)
      TO ADD AN ENTRY: replace the .pa-empty block with a
      .pa-stream-grid containing .pa-stream-card blocks.

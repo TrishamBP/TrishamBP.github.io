@@ -32,3 +32,9 @@ collections:
   implementations:
     output: true
     permalink: /engineering/:name/
+  # Physical AI → Exploratory Research: studies/explorations of research
+  # (e.g. SIMA), NOT engineering implementations. Same authoring pattern
+  # as `implementations`, but nested under the Physical AI world.
+  exploratory_research:
+    output: true
+    permalink: /physical-ai/exploratory-research/:name/

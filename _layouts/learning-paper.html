@@ -12,12 +12,20 @@ layout: default
         <span class="eng-breadcrumb-sep" aria-hidden="true">/</span>
         <a href="{{ '/engineering/' | append: impl_cat.id | append: '/' | relative_url }}" class="lab-breadcrumb-link">{{ impl_cat.title }}</a>
       {% endif %}
+    {% elsif page.collection == "exploratory_research" %}
+      <a href="{{ '/physical-ai/' | relative_url }}" class="lab-breadcrumb-link">Physical AI</a>
+      <span class="eng-breadcrumb-sep" aria-hidden="true">/</span>
+      <a href="{{ '/physical-ai/#exploratory-research' | relative_url }}" class="lab-breadcrumb-link">Exploratory Research</a>
     {% else %}
       <a href="{{ '/learning-lab/' | relative_url }}" class="lab-breadcrumb-link">&larr; Learning Lab</a>
     {% endif %}
   </nav>
 
   <header class="lab-paper-detail-header">
+    {% if page.research_type %}
+      <p class="lab-paper-detail-type">{{ page.research_type }}{% if page.status %} &middot; {{ page.status }}{% endif %}</p>
+    {% endif %}
+
     <h1 id="paper-detail-heading" class="lab-paper-detail-title">{{ page.title }}</h1>
 
     {% if page.authors %}
@@ -34,7 +42,8 @@ layout: default
   </header>
 
   <div class="lab-paper-detail-body post-content">
-    {% if content and content != "" %}
+    {%- assign body_text = content | strip_html | strip -%}
+    {% if body_text != "" %}
       {{ content }}
     {% else %}
       <div class="lab-coming-soon">

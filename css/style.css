@@ -2265,6 +2265,15 @@ body.dark-mode .resume-viewer-shell {
   margin-bottom: 28px;
 }
 
+.lab-paper-detail-type {
+  margin: 0 0 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #2563eb;
+}
+
 .lab-paper-detail-title {
   margin: 0 0 10px;
   font-size: clamp(1.4rem, 3vw, 1.9rem);
@@ -2377,6 +2386,10 @@ body.dark-mode .lab-tag-pill {
 }
 
 body.dark-mode .lab-breadcrumb-link {
+  color: #93c5fd;
+}
+
+body.dark-mode .lab-paper-detail-type {
   color: #93c5fd;
 }
 
