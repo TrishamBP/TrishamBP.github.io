@@ -14,6 +14,16 @@
 #   tags        — optional list of topic tags
 # ─────────────────────────────────────────────────────────────
 
+- title: "LLM Serving, Inference & Attention Mechanisms"
+  youtube_id: "XsbxmrLqAYE"
+  description: >
+    Modern LLM inference and serving — from the Transformer attention mechanism
+    down to the GPU execution stack. Covers KV cache optimization, PagedAttention,
+    continuous batching, and the attention evolution (MHA, MQA, GQA, MLA, MoE)
+    across vLLM, SGLang, TensorRT-LLM, Mooncake, Strata, and FlashInfer on H100 GPUs.
+  date: "Sep 2026"
+  tags: ["LLM Inference", "LLM Serving", "Attention Mechanisms", "KV Cache", "vLLM", "PagedAttention", "GPU Optimization", "MoE"]
+
 - title: "System Design: Netflix & Kimi"
   youtube_id: "LLrJUyGerSc"
   description: >
