@@ -14,6 +14,17 @@
 #   tags        — optional list of topic tags
 # ─────────────────────────────────────────────────────────────
 
+- title: "RAG Engineering: From Fundamentals to Agentic & Production RAG"
+  youtube_id: "AxDZLaeI7uI"
+  description: >
+    A two-session deep dive into Retrieval-Augmented Generation — from retrieval
+    foundations (BM25, embeddings, ANN, hybrid search, chunking, query transformation)
+    to Advanced, Modular, Corrective and Agentic RAG, GraphRAG, RAG evaluation
+    (LLM-as-a-Judge, RAGAS, DeepEval), and production scaling. Includes real-world
+    case studies from Zerodha, Uber QueryGPT, and GitHub Copilot.
+  date: "Sep 2026"
+  tags: ["RAG", "Agentic RAG", "GraphRAG", "Semantic Search", "BM25", "Embeddings", "RAG Evaluation", "LangGraph", "MCP", "AI Engineering"]
+
 - title: "LLM Serving, Inference & Attention Mechanisms"
   youtube_id: "XsbxmrLqAYE"
   description: >
