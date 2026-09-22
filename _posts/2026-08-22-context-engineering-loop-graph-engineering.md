@@ -468,7 +468,6 @@ The moment routing includes *provisioning context*, orchestration and context en
 
 A few adjacent pieces I've written:
 
-- [Context Engineering for AI Agents](/2026/05/24/context-engineering-ai-agents-legal-drafting/) — the same "curate the input" discipline, worked through a concrete legal-drafting agent
 - [Agent-to-Agent Communication: Google's A2A Protocol](/ai%20engineering/2026/07/21/agent-to-agent-communication-google-a2a-protocol/) — how state and context move *between* agents in a multi-agent system
 - [DSPy: Program, Don't Prompt](/ai%20engineering/2026/08/18/dspy-program-dont-prompt-programmatic-prompt-optimization/) — decoupling intent from a specific model, the prompt-portability problem made practical
 - [LLM Inference Optimization](/2026/04/19/llm-inference-optimization/) — the serving-side costs (prefill, KV caching) that make context budget a real constraint

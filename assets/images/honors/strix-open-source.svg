@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" role="img" aria-label="Open-source contribution to Strix — AWS Bedrock support pull request">
+  <defs>
+    <linearGradient id="strixBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#150e22"/>
+      <stop offset="1" stop-color="#0d0a16"/>
+    </linearGradient>
+    <linearGradient id="strixAcc" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#a78bfa"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+  <rect width="220" height="220" rx="16" fill="url(#strixBg)"/>
+  <rect x="4" y="4" width="212" height="212" rx="13" fill="none" stroke="#2a2140" stroke-width="1.5"/>
+  <text x="110" y="42" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="800" fill="#c4b5fd" letter-spacing="2">STRIX</text>
+  <!-- merge/PR glyph -->
+  <g transform="translate(110 108)" stroke="url(#strixAcc)" stroke-width="6" fill="none" stroke-linecap="round">
+    <circle cx="-28" cy="-24" r="9" fill="#150e22"/>
+    <circle cx="-28" cy="30" r="9" fill="#150e22"/>
+    <circle cx="30" cy="-24" r="9" fill="#150e22"/>
+    <line x1="-28" y1="-15" x2="-28" y2="21"/>
+    <path d="M-28 -20 Q-28 -24 -24 -24 L21 -24"/>
+  </g>
+  <text x="110" y="184" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" fill="#c4b5fd">Open-Source PR</text>
+  <text x="110" y="203" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#8b7fb0">AWS Bedrock support</text>
+</svg>

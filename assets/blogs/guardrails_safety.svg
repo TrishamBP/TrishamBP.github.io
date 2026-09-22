@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" role="img" aria-label="Guardrails and safety layers for production LLM agents — input, output, tool and memory guardrails">
+  <defs>
+    <linearGradient id="gsBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1220"/>
+      <stop offset="1" stop-color="#141d2f"/>
+    </linearGradient>
+    <linearGradient id="gsAcc" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#38bdf8"/>
+      <stop offset="1" stop-color="#818cf8"/>
+    </linearGradient>
+    <linearGradient id="gsShield" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#6366f1"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#gsBg)"/>
+  <rect x="6" y="6" width="788" height="388" rx="18" fill="none" stroke="#243049" stroke-width="1.5"/>
+
+  <!-- pipeline lanes -->
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <rect x="70" y="150" width="120" height="100" rx="12" fill="#0f1a2e" stroke="url(#gsAcc)" stroke-width="1.6"/>
+    <text x="130" y="195" text-anchor="middle" font-size="15" font-weight="700" fill="#7dd3fc">Input</text>
+    <text x="130" y="216" text-anchor="middle" font-size="12" fill="#94a3b8">Guardrails</text>
+
+    <rect x="340" y="150" width="120" height="100" rx="12" fill="#0f1a2e" stroke="url(#gsAcc)" stroke-width="1.6"/>
+    <text x="400" y="195" text-anchor="middle" font-size="15" font-weight="700" fill="#a5b4fc">Agent</text>
+    <text x="400" y="216" text-anchor="middle" font-size="12" fill="#94a3b8">+ Tool checks</text>
+
+    <rect x="610" y="150" width="120" height="100" rx="12" fill="#0f1a2e" stroke="url(#gsAcc)" stroke-width="1.6"/>
+    <text x="670" y="195" text-anchor="middle" font-size="15" font-weight="700" fill="#7dd3fc">Output</text>
+    <text x="670" y="216" text-anchor="middle" font-size="12" fill="#94a3b8">Guardrails</text>
+
+    <line x1="190" y1="200" x2="340" y2="200" stroke="url(#gsAcc)" stroke-width="2.5" marker-end="url(#gsArrow)"/>
+    <line x1="460" y1="200" x2="610" y2="200" stroke="url(#gsAcc)" stroke-width="2.5" marker-end="url(#gsArrow)"/>
+  </g>
+  <defs>
+    <marker id="gsArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#818cf8"/>
+    </marker>
+  </defs>
+
+  <!-- shield glyph -->
+  <g transform="translate(400 84)">
+    <path d="M0 -44 L34 -30 L34 6 Q34 40 0 54 Q-34 40 -34 6 L-34 -30 Z" fill="url(#gsShield)" opacity="0.95"/>
+    <path d="M-14 4 L-4 16 L18 -12" fill="none" stroke="#0b1220" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <text x="400" y="316" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="800" fill="#f8fafc">Guardrails &amp; Safety</text>
+  <text x="400" y="348" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#94a3b8">Input · Output · Tool · Memory defense layers for LLM agents</text>
+</svg>

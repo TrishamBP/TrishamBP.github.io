@@ -1,0 +1,1278 @@
+/* =============================================================================
+   TYPESAFE THEME
+   -----------------------------------------------------------------------------
+   An opt-in per-post theme. Activate by adding `theme: typesafe` to a page's
+   frontmatter; `_layouts/default.html` then puts `theme-typesafe` on <body>
+   and `_includes/head.html` loads this file plus the webfonts.
+
+   Design language (paper-grey canvas, hard 1.2px ink rules, grotesque display
+   type, pixel-terminal labels, single saturated accent) is modelled on the
+   typesafe.ai palette:
+
+     paper   #e5e5e5     panel  #dedede     panel-2 #c4c4c4
+     ink     #1e1e1e     soft   #1e1e1edb   faint   #858585e6
+     green   #03aa5c     teal   #09aea1     magenta #d45bb6
+     pink    #f386a1     sage   #abbab9
+     easing  cubic-bezier(.12, .23, .5, 1)
+
+   FONTS: typesafe.ai licenses Die Grotesk C and LisaTerminal from commercial
+   foundries, so those files are not redistributable here. We substitute the
+   closest open-licensed equivalents (SIL OFL, served by Google Fonts):
+     Die Grotesk C  ->  Space Grotesk   (display / headings)
+     LisaTerminal   ->  Space Mono      (eyebrows, labels, captions)
+     Inter          ->  Inter           (body — same face the original uses)
+     JetBrains Mono ->  JetBrains Mono  (code — same face the original uses)
+
+   Everything is scoped under `body.theme-typesafe`, which is two classes deep
+   and therefore outranks the single-class base rules in style.css without
+   needing !important.
+   ========================================================================== */
+
+body.theme-typesafe {
+  /* ---- palette ---- */
+  --ts-paper: #e5e5e5;
+  --ts-panel: #dedede;
+  --ts-panel-2: #c4c4c4;
+  --ts-ink: #1e1e1e;
+  --ts-ink-soft: #1e1e1edb;
+  --ts-ink-faint: #858585e6;
+  --ts-light: #fefefe;
+
+  --ts-green: #03aa5c;
+  --ts-teal: #09aea1;
+  --ts-magenta: #d45bb6;
+  --ts-pink: #f386a1;
+  --ts-sage: #abbab9;
+
+  /* ---- surfaces (remapped wholesale in dark mode) ---- */
+  --ts-bg: var(--ts-paper);
+  --ts-surface: var(--ts-panel);
+  --ts-surface-2: var(--ts-panel-2);
+  --ts-fg: var(--ts-ink);
+  --ts-fg-soft: var(--ts-ink-soft);
+  --ts-fg-faint: #5c5c5c;
+  --ts-line: var(--ts-ink);
+  --ts-accent: var(--ts-green);
+
+  /* ---- type ---- */
+  --ts-display: "Space Grotesk", "Archivo", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
+  --ts-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  --ts-term: "Space Mono", "JetBrains Mono", ui-monospace, Consolas,
+    "Courier New", monospace;
+  --ts-code: "JetBrains Mono", "Space Mono", ui-monospace, Consolas,
+    "Courier New", monospace;
+
+  /* ---- geometry + motion ---- */
+  --ts-rule: 1.2px;
+  --ts-ease: cubic-bezier(0.12, 0.23, 0.5, 1);
+
+  background: var(--ts-bg);
+  color: var(--ts-fg);
+  font-family: var(--ts-body);
+}
+
+/* Dark mode: the same system inverted onto #1e1e1e, not the site-wide navy. */
+body.theme-typesafe.dark-mode {
+  --ts-bg: #1e1e1e;
+  --ts-surface: #262626;
+  --ts-surface-2: #2f2f2f;
+  --ts-fg: var(--ts-light);
+  --ts-fg-soft: #fefefedb;
+  --ts-fg-faint: #a6a6a6;
+  --ts-line: #4a4a4a;
+  --ts-accent: #0fd97a;
+}
+
+/* -----------------------------------------------------------------------------
+   Chrome: nav + page shell adopt the paper canvas
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe .topnav {
+  background: var(--ts-bg);
+  border-bottom: var(--ts-rule) solid var(--ts-line);
+}
+
+body.theme-typesafe .topnav-brand,
+body.theme-typesafe .topnav-link {
+  font-family: var(--ts-term);
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  color: var(--ts-fg-soft);
+  transition: color 0.2s var(--ts-ease);
+}
+
+/* The name is the brand: always set in caps. */
+body.theme-typesafe .topnav-brand {
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--ts-fg);
+}
+
+body.theme-typesafe .topnav-link:hover,
+body.theme-typesafe .topnav-link.active {
+  color: var(--ts-accent);
+}
+
+body.theme-typesafe .dark-mode-toggle {
+  background: var(--ts-surface);
+  border: var(--ts-rule) solid var(--ts-line);
+  border-radius: 0;
+  color: var(--ts-fg);
+}
+
+body.theme-typesafe .site-shell {
+  width: min(1040px, 100%);
+}
+
+/* -----------------------------------------------------------------------------
+   Post header
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe .post-header {
+  border-bottom: var(--ts-rule) solid var(--ts-line);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2.4rem;
+}
+
+body.theme-typesafe .post-header h1 {
+  font-family: var(--ts-display);
+  font-weight: 500;
+  font-size: clamp(2.3rem, 6.4vw, 4.2rem);
+  line-height: 0.9;
+  letter-spacing: -0.005em;
+  color: var(--ts-fg-soft);
+  margin: 0 0 1rem;
+  /* the faint outline that gives typesafe.ai's display type its inky weight */
+  -webkit-text-stroke: 0.5px var(--ts-fg-soft);
+}
+
+body.theme-typesafe .post-header .meta {
+  font-family: var(--ts-term);
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ts-fg-faint);
+  margin: 0;
+}
+
+/* -----------------------------------------------------------------------------
+   Body copy
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe .post-content {
+  font-family: var(--ts-body);
+  max-width: 78ch;
+  font-size: 1.02rem;
+  line-height: 1.68;
+  color: var(--ts-fg);
+}
+
+body.theme-typesafe .post-content p {
+  text-align: left; /* grotesque + rivers from justification don't mix */
+}
+
+body.theme-typesafe .post-content h2,
+body.theme-typesafe .post-content h3,
+body.theme-typesafe .post-content h4,
+body.theme-typesafe .post-content h5,
+body.theme-typesafe .post-content h6 {
+  font-family: var(--ts-display);
+  font-weight: 500;
+  color: var(--ts-fg-soft);
+  letter-spacing: 0;
+}
+
+body.theme-typesafe .post-content h2 {
+  font-size: clamp(1.7rem, 4vw, 2.5rem);
+  line-height: 0.92;
+  margin-top: 3.4rem;
+  margin-bottom: 1.1rem;
+  padding-top: 1.1rem;
+  border-top: var(--ts-rule) solid var(--ts-line);
+}
+
+body.theme-typesafe .post-content h3 {
+  font-size: clamp(1.2rem, 2.6vw, 1.55rem);
+  line-height: 1;
+  margin-top: 2.1rem;
+  margin-bottom: 0.7rem;
+}
+
+body.theme-typesafe .post-content h4 {
+  font-family: var(--ts-term);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ts-fg-faint);
+  margin-top: 1.7rem;
+  margin-bottom: 0.5rem;
+}
+
+body.theme-typesafe .post-content strong {
+  font-weight: 700;
+  color: var(--ts-fg);
+}
+
+body.theme-typesafe .post-content a {
+  color: var(--ts-fg);
+  text-decoration: underline;
+  text-decoration-color: var(--ts-accent);
+  text-decoration-thickness: 1.2px;
+  text-underline-offset: 3px;
+  transition: color 0.5s var(--ts-ease),
+    text-decoration-color 0.5s var(--ts-ease),
+    text-decoration-thickness 0.5s var(--ts-ease),
+    text-underline-offset 0.5s var(--ts-ease);
+}
+
+body.theme-typesafe .post-content a:hover {
+  color: var(--ts-accent);
+  text-decoration-thickness: 2.4px;
+  text-underline-offset: 2px;
+}
+
+body.theme-typesafe .post-content hr {
+  border: 0;
+  border-top: var(--ts-rule) solid var(--ts-line);
+  margin: 2.6rem 0;
+}
+
+/* -----------------------------------------------------------------------------
+   Quotes, callouts, figures
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe .post-content blockquote {
+  margin: 1.8rem 0;
+  padding: 1.1rem 1.3rem;
+  background: var(--ts-surface);
+  border: var(--ts-rule) solid var(--ts-line);
+  border-left-width: 5px;
+  border-left-color: var(--ts-accent);
+  border-radius: 0;
+  font-family: var(--ts-body);
+  color: var(--ts-fg);
+}
+
+body.theme-typesafe .post-content blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* `ts-note` — the boxed side-notes used throughout the post. */
+body.theme-typesafe .ts-note {
+  margin: 1.9rem 0;
+  border: var(--ts-rule) solid var(--ts-line);
+  background: var(--ts-surface);
+}
+
+body.theme-typesafe .ts-note > .ts-note-title {
+  display: block;
+  padding: 0.5rem 0.9rem;
+  border-bottom: var(--ts-rule) solid var(--ts-line);
+  background: var(--ts-surface-2);
+  font-family: var(--ts-term);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ts-fg);
+}
+
+body.theme-typesafe.dark-mode .ts-note > .ts-note-title {
+  color: var(--ts-light);
+}
+
+body.theme-typesafe .ts-note > .ts-note-body {
+  padding: 0.9rem 1.1rem;
+  font-size: 0.96rem;
+}
+
+body.theme-typesafe .ts-note > .ts-note-body > p:first-child {
+  margin-top: 0;
+}
+
+body.theme-typesafe .ts-note > .ts-note-body > p:last-child {
+  margin-bottom: 0;
+}
+
+/* Accent variants for the callout rail. */
+body.theme-typesafe .ts-note--key {
+  border-left: 5px solid var(--ts-accent);
+}
+body.theme-typesafe .ts-note--warn {
+  border-left: 5px solid var(--ts-magenta);
+}
+body.theme-typesafe .ts-note--math {
+  border-left: 5px solid var(--ts-teal);
+}
+
+/* Eyebrow label — the small mono kicker above a section. */
+body.theme-typesafe .ts-eyebrow {
+  display: block;
+  font-family: var(--ts-term);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ts-fg-faint);
+  margin: 2.6rem 0 -0.6rem;
+}
+
+body.theme-typesafe .post-content img {
+  border: var(--ts-rule) solid var(--ts-line);
+  border-radius: 0;
+  background: var(--ts-surface);
+}
+
+body.theme-typesafe .post-content img + em,
+body.theme-typesafe .post-content figcaption,
+body.theme-typesafe .ts-caption {
+  display: block;
+  font-family: var(--ts-term);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: var(--ts-fg-faint);
+  text-align: center;
+  font-style: normal;
+  margin: -0.8rem 0 2rem;
+}
+
+/* -----------------------------------------------------------------------------
+   Code
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe .post-content pre,
+body.theme-typesafe .post-content .highlight pre {
+  background: #1e1e1e;
+  color: #e8e8e8;
+  border: var(--ts-rule) solid var(--ts-line);
+  border-radius: 0;
+  font-family: var(--ts-code);
+  font-size: 0.83rem;
+  line-height: 1.62;
+  padding: 1rem 1.15rem;
+}
+
+body.theme-typesafe .post-content pre code {
+  color: inherit;
+  background: none;
+  border: 0;
+}
+
+body.theme-typesafe .post-content code {
+  font-family: var(--ts-code);
+}
+
+body.theme-typesafe .post-content :not(pre) > code {
+  background: var(--ts-surface-2);
+  border: var(--ts-rule) solid var(--ts-line);
+  border-radius: 0;
+  color: var(--ts-fg);
+  font-size: 0.85em;
+  padding: 0 4px;
+}
+
+/* Rouge tokens, retuned for the dark code slab. */
+body.theme-typesafe .post-content .highlight .c,
+body.theme-typesafe .post-content .highlight .c1,
+body.theme-typesafe .post-content .highlight .cm {
+  color: #7f8c8d;
+  font-style: italic;
+}
+body.theme-typesafe .post-content .highlight .k,
+body.theme-typesafe .post-content .highlight .kd,
+body.theme-typesafe .post-content .highlight .kt,
+body.theme-typesafe .post-content .highlight .kr {
+  color: #d45bb6;
+}
+body.theme-typesafe .post-content .highlight .s,
+body.theme-typesafe .post-content .highlight .s1,
+body.theme-typesafe .post-content .highlight .s2 {
+  color: #03aa5c;
+}
+body.theme-typesafe .post-content .highlight .m,
+body.theme-typesafe .post-content .highlight .mi,
+body.theme-typesafe .post-content .highlight .mf {
+  color: #09aea1;
+}
+body.theme-typesafe .post-content .highlight .n,
+body.theme-typesafe .post-content .highlight .nv {
+  color: #e8e8e8;
+}
+body.theme-typesafe .post-content .highlight .nf {
+  color: #f386a1;
+}
+body.theme-typesafe .post-content .highlight .cp {
+  color: #abbab9;
+}
+
+/* -----------------------------------------------------------------------------
+   Tables
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe .post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.9rem 0;
+  font-size: 0.88rem;
+  border: var(--ts-rule) solid var(--ts-line);
+}
+
+body.theme-typesafe .post-content th {
+  font-family: var(--ts-term);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: left;
+  background: var(--ts-surface-2);
+  color: var(--ts-fg);
+  padding: 0.6rem 0.75rem;
+  border: var(--ts-rule) solid var(--ts-line);
+}
+
+body.theme-typesafe .post-content td {
+  padding: 0.55rem 0.75rem;
+  border: var(--ts-rule) solid var(--ts-line);
+  vertical-align: top;
+}
+
+body.theme-typesafe .post-content tbody tr:nth-child(even) {
+  background: var(--ts-surface);
+}
+
+/* Numeric columns in the perf table read better tabular + mono. */
+body.theme-typesafe .post-content td:not(:first-child) {
+  font-family: var(--ts-code);
+  font-variant-numeric: tabular-nums;
+}
+
+/* -----------------------------------------------------------------------------
+   Lists
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe .post-content ul,
+body.theme-typesafe .post-content ol {
+  padding-left: 1.3rem;
+}
+
+body.theme-typesafe .post-content li {
+  margin: 0.35rem 0;
+}
+
+body.theme-typesafe .post-content ul > li::marker {
+  color: var(--ts-accent);
+}
+
+body.theme-typesafe .post-content ol > li::marker {
+  font-family: var(--ts-term);
+  font-size: 0.85em;
+  color: var(--ts-fg-faint);
+}
+
+/* -----------------------------------------------------------------------------
+   Mermaid diagrams — force the theme palette onto the generated SVG
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe .mermaid-diagram {
+  margin: 2rem 0;
+  padding: 1.2rem 0.8rem;
+  border: var(--ts-rule) solid var(--ts-line);
+  background: var(--ts-surface);
+  overflow-x: auto;
+  text-align: center;
+}
+
+body.theme-typesafe .mermaid-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
+body.theme-typesafe .mermaid-diagram .nodeLabel,
+body.theme-typesafe .mermaid-diagram .edgeLabel,
+body.theme-typesafe .mermaid-diagram .label,
+body.theme-typesafe .mermaid-diagram text {
+  font-family: var(--ts-term) !important;
+  font-size: 12px !important;
+  fill: var(--ts-fg) !important;
+  color: var(--ts-fg) !important;
+}
+
+body.theme-typesafe .mermaid-diagram .node rect,
+body.theme-typesafe .mermaid-diagram .node polygon,
+body.theme-typesafe .mermaid-diagram .node circle,
+body.theme-typesafe .mermaid-diagram .cluster rect {
+  fill: var(--ts-bg) !important;
+  stroke: var(--ts-line) !important;
+  stroke-width: 1.2px !important;
+  rx: 0 !important;
+  ry: 0 !important;
+}
+
+body.theme-typesafe .mermaid-diagram .edgePath .path,
+body.theme-typesafe .mermaid-diagram .flowchart-link {
+  stroke: var(--ts-line) !important;
+  stroke-width: 1.2px !important;
+}
+
+body.theme-typesafe .mermaid-diagram .arrowheadPath,
+body.theme-typesafe .mermaid-diagram marker path {
+  fill: var(--ts-line) !important;
+  stroke: var(--ts-line) !important;
+}
+
+body.theme-typesafe .mermaid-diagram .edgeLabel rect,
+body.theme-typesafe .mermaid-diagram .edgeLabel .labelBkg {
+  fill: var(--ts-surface) !important;
+  background: var(--ts-surface) !important;
+  opacity: 1 !important;
+}
+
+/* Author-tagged emphasis nodes: `class X hot` / `class X cool` in the diagram. */
+body.theme-typesafe .mermaid-diagram .hot > rect,
+body.theme-typesafe .mermaid-diagram .hot > polygon {
+  fill: var(--ts-accent) !important;
+}
+body.theme-typesafe .mermaid-diagram .hot .nodeLabel {
+  fill: #0d1b12 !important;
+  color: #0d1b12 !important;
+  font-weight: 700 !important;
+}
+body.theme-typesafe .mermaid-diagram .cool > rect {
+  fill: var(--ts-surface-2) !important;
+}
+
+/* -----------------------------------------------------------------------------
+   Hand-built table diagrams (SMEM banks, tiles, queues)
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe .ts-grid {
+  margin: 2rem 0;
+  border: var(--ts-rule) solid var(--ts-line);
+  background: var(--ts-surface);
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+body.theme-typesafe .ts-grid table {
+  margin: 0;
+  border: 0;
+  font-family: var(--ts-code);
+  font-size: 0.72rem;
+  width: auto;
+}
+
+body.theme-typesafe .ts-grid td,
+body.theme-typesafe .ts-grid th {
+  border: var(--ts-rule) solid var(--ts-line);
+  padding: 0.3rem 0.5rem;
+  text-align: center;
+  white-space: nowrap;
+}
+
+body.theme-typesafe .ts-grid .hit {
+  background: var(--ts-accent);
+  color: #0d1b12;
+  font-weight: 700;
+}
+
+body.theme-typesafe .ts-grid .clash {
+  background: var(--ts-magenta);
+  color: #fff;
+  font-weight: 700;
+}
+
+/* -----------------------------------------------------------------------------
+   Scroll reveal
+   -----------------------------------------------------------------------------
+   Elements start faded + nudged down and settle on the typesafe easing curve
+   when they enter the viewport. The JS in default.html adds `.ts-in`. If JS
+   never runs the `no-reveal` guard keeps everything visible, so content is
+   never hidden behind a broken animation.
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.ts-reveal-ready .ts-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.62s var(--ts-ease), transform 0.62s var(--ts-ease);
+  will-change: opacity, transform;
+}
+
+body.theme-typesafe.ts-reveal-ready .ts-reveal.ts-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* The h1 gets a slightly longer, staggered entrance. */
+body.theme-typesafe.ts-reveal-ready .post-header h1.ts-reveal {
+  transform: translateY(26px);
+  transition-duration: 0.85s;
+}
+
+body.theme-typesafe.ts-reveal-ready .post-header .meta.ts-reveal {
+  transition-delay: 0.14s;
+}
+
+/* A slow blinking terminal caret after the meta line. */
+body.theme-typesafe .post-header .meta::after {
+  content: "_";
+  display: inline-block;
+  margin-left: 0.35em;
+  color: var(--ts-accent);
+  animation: ts-caret 1.1s steps(1) infinite;
+}
+
+@keyframes ts-caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Respect the OS reduced-motion setting: no reveal, no caret blink. */
+@media (prefers-reduced-motion: reduce) {
+  body.theme-typesafe.ts-reveal-ready .ts-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  body.theme-typesafe .post-header .meta::after {
+    animation: none;
+  }
+}
+
+/* -----------------------------------------------------------------------------
+   Narrow screens
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 720px) {
+  body.theme-typesafe .post-header h1 {
+    -webkit-text-stroke: 0;
+  }
+
+  body.theme-typesafe .post-content {
+    font-size: 0.98rem;
+  }
+
+  body.theme-typesafe .post-content pre,
+  body.theme-typesafe .post-content .highlight pre {
+    font-size: 0.76rem;
+  }
+}
+
+/* =============================================================================
+   SITE-WIDE LAYER
+   -----------------------------------------------------------------------------
+   Everything above styles long-form pages (.post-header / .post-content).
+   Everything below extends the same design language to the rest of the site:
+   home, blog, research, learning lab, engineering implementations, sessions,
+   honors, resume.
+
+   style.css builds those pages from a consistent vocabulary:
+     surfaces  #ffffff card on #f3f4f6 page, 1px solid #e5e7eb, radius 12-14px
+     pills     radius 999px, #f8fafc fill, #d1d5db border
+     type      #111827 titles, #6b7280 meta, #374151 body, #1d4ed8 links
+     dark      #0f172a page, #1e293b card
+
+   We replace that skin wholesale — paper canvas, hard 1.2px ink rules, zero
+   radius, no shadows, grotesque titles, mono labels, one accent — while
+   leaving every layout property (flex, grid, gap, padding) alone.
+
+   Specificity: `body.theme-typesafe .x` ties with the `body.dark-mode .x` rules
+   in style.css, and typesafe.css is linked second, so source order decides in
+   our favour. Colours come from custom properties, so dark mode follows free.
+   ========================================================================== */
+
+/* -----------------------------------------------------------------------------
+   Global normalisation: kill radii, shadows and the serif body face
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe .site-shell,
+body.theme-typesafe .site-shell p,
+body.theme-typesafe .site-shell li,
+body.theme-typesafe .site-shell a,
+body.theme-typesafe .site-shell button,
+body.theme-typesafe .site-shell input,
+body.theme-typesafe .site-shell select,
+body.theme-typesafe .site-shell textarea {
+  font-family: var(--ts-body);
+}
+
+/* Hard edges everywhere. Attribute substring matching catches the whole
+   `-card` / `-pill` / `-grid` / `-btn` family, including classes added later. */
+body.theme-typesafe .site-shell [class*="card"],
+body.theme-typesafe .site-shell [class*="pill"],
+body.theme-typesafe .site-shell [class*="btn"],
+body.theme-typesafe .site-shell [class*="-item"],
+body.theme-typesafe .site-shell [class*="-tag"],
+body.theme-typesafe .site-shell [class*="-thumb"],
+body.theme-typesafe .site-shell [class*="-shell"],
+body.theme-typesafe .site-shell [class*="-wrap"],
+body.theme-typesafe .site-shell [class*="-viewer"],
+body.theme-typesafe .site-shell [class*="-media"],
+body.theme-typesafe .site-shell [class*="-image"],
+body.theme-typesafe .site-shell [class*="-logo"],
+body.theme-typesafe .site-shell [class*="placeholder"],
+body.theme-typesafe .site-shell img,
+body.theme-typesafe .site-shell iframe {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* The generic body copy on listing pages. `.post-content p` is handled above. */
+body.theme-typesafe .site-shell p {
+  text-align: left;
+  color: var(--ts-fg-soft);
+}
+
+/* -----------------------------------------------------------------------------
+   Section scaffolding
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe .content-section,
+body.theme-typesafe .site-shell > section[class*="-section"] {
+  margin-top: 3.4rem;
+}
+
+/* Section headings get the same display treatment and top rule as post h2s,
+   which is what visually ties the listing pages to the articles. */
+body.theme-typesafe .section-title,
+body.theme-typesafe .lab-section-heading,
+body.theme-typesafe .about-journey-title {
+  font-family: var(--ts-display);
+  font-weight: 500;
+  font-size: clamp(1.6rem, 3.6vw, 2.35rem);
+  line-height: 0.94;
+  letter-spacing: 0;
+  color: var(--ts-fg-soft);
+  border-top: var(--ts-rule) solid var(--ts-line);
+  padding-top: 1.1rem;
+  margin: 0 0 1rem;
+}
+
+body.theme-typesafe .research-intro,
+body.theme-typesafe .eng-lede,
+body.theme-typesafe .honors-intro,
+body.theme-typesafe .resources-intro {
+  color: var(--ts-fg-soft);
+  max-width: 78ch;
+  font-size: 1rem;
+  line-height: 1.68;
+}
+
+/* -----------------------------------------------------------------------------
+   Hero (home page) — the name is the loudest thing on the site
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe .hero-content h1 {
+  font-family: var(--ts-display);
+  font-weight: 500;
+  font-size: clamp(2.4rem, 7vw, 4.6rem);
+  line-height: 0.88;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+  color: var(--ts-fg-soft);
+  -webkit-text-stroke: 0.6px var(--ts-fg-soft);
+}
+
+/* Inline uses of the name in page copy (e.g. the research author line). */
+body.theme-typesafe .ts-name {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+}
+
+body.theme-typesafe .hero-intro {
+  font-family: var(--ts-display);
+  font-style: normal;
+  font-weight: 400;
+  color: var(--ts-fg-soft);
+  line-height: 1.1;
+}
+
+body.theme-typesafe .hero-interests {
+  font-family: var(--ts-term);
+  font-size: 0.76rem;
+  line-height: 1.85;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ts-fg-faint);
+}
+
+/* Square photo, hard border — a circle reads as a different design language. */
+body.theme-typesafe .hero-photo {
+  border-radius: 0;
+  border: var(--ts-rule) solid var(--ts-line);
+  filter: grayscale(1) contrast(1.05);
+  transition: filter 0.5s var(--ts-ease);
+}
+
+body.theme-typesafe .hero-photo:hover {
+  filter: grayscale(0) contrast(1);
+}
+
+body.theme-typesafe .social-link {
+  border: var(--ts-rule) solid var(--ts-line);
+  border-radius: 0;
+  background: var(--ts-surface);
+  color: var(--ts-fg);
+  transition: background-color 0.2s var(--ts-ease),
+    border-color 0.2s var(--ts-ease);
+}
+
+body.theme-typesafe .social-link:hover {
+  background: var(--ts-accent);
+  border-color: var(--ts-accent);
+}
+
+/* -----------------------------------------------------------------------------
+   Cards — one rule for every card-shaped thing on the site
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe .article-card,
+body.theme-typesafe .lab-card,
+body.theme-typesafe .lab-paper-card,
+body.theme-typesafe .lab-book-card,
+body.theme-typesafe .eng-domain-card,
+body.theme-typesafe .session-card,
+body.theme-typesafe .award-card,
+body.theme-typesafe .skills-category,
+body.theme-typesafe .stats-card,
+body.theme-typesafe .stats-media-item,
+body.theme-typesafe .hf-model-card,
+body.theme-typesafe .fullstack-card,
+body.theme-typesafe .experience-highlight,
+body.theme-typesafe .resume-viewer-shell,
+body.theme-typesafe .newsletter-placeholder,
+body.theme-typesafe .lab-coming-soon,
+body.theme-typesafe .projects-shell,
+body.theme-typesafe .lc-badge {
+  background: var(--ts-surface);
+  border: var(--ts-rule) solid var(--ts-line);
+  border-radius: 0;
+  box-shadow: none;
+  transition: background-color 0.2s var(--ts-ease),
+    border-color 0.2s var(--ts-ease);
+}
+
+/* Hover shifts the rule to the accent. No lift, no shadow — the design
+   language is flat and hard-edged, so a translateY would look borrowed. */
+body.theme-typesafe .article-card:hover,
+body.theme-typesafe .lab-card:hover,
+body.theme-typesafe .eng-domain-card:hover,
+body.theme-typesafe .session-card:hover,
+body.theme-typesafe .hf-model-card:hover,
+body.theme-typesafe .fullstack-card:hover {
+  border-color: var(--ts-accent);
+  box-shadow: none;
+  transform: none;
+}
+
+/* The coloured left rail on the skills matrix maps onto the accent set. */
+body.theme-typesafe .skills-category {
+  border-left: 5px solid var(--skills-accent, var(--ts-accent));
+}
+body.theme-typesafe .skills-category--blue {
+  --skills-accent: var(--ts-teal);
+}
+body.theme-typesafe .skills-category--green {
+  --skills-accent: var(--ts-green);
+}
+body.theme-typesafe .skills-category--purple {
+  --skills-accent: var(--ts-magenta);
+}
+body.theme-typesafe .skills-category--amber {
+  --skills-accent: var(--ts-pink);
+}
+body.theme-typesafe .skills-category--teal {
+  --skills-accent: var(--ts-sage);
+}
+
+body.theme-typesafe .skills-category h3 {
+  font-family: var(--ts-term);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+}
+
+/* -----------------------------------------------------------------------------
+   Card typography
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe .article-title,
+body.theme-typesafe .lab-card-title,
+body.theme-typesafe .lab-paper-detail-title,
+body.theme-typesafe .eng-domain-title,
+body.theme-typesafe .session-title,
+body.theme-typesafe .award-title,
+body.theme-typesafe .lc-title,
+body.theme-typesafe .stats-card h3,
+body.theme-typesafe .eng-breadcrumb-current {
+  font-family: var(--ts-display);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: 0;
+  color: var(--ts-fg-soft);
+}
+
+body.theme-typesafe .article-title a,
+body.theme-typesafe .lab-card-title a,
+body.theme-typesafe .session-title a {
+  color: var(--ts-fg-soft);
+  text-decoration: none;
+  transition: color 0.2s var(--ts-ease);
+}
+
+body.theme-typesafe .article-title a:hover,
+body.theme-typesafe .lab-card-title a:hover,
+body.theme-typesafe .session-title a:hover {
+  color: var(--ts-accent);
+  text-decoration: none;
+}
+
+/* Dates, venues, counts, authorship — the pixel-terminal register. */
+body.theme-typesafe .article-date,
+body.theme-typesafe .session-date,
+body.theme-typesafe .timeline-year,
+body.theme-typesafe .lab-card-meta,
+body.theme-typesafe .lab-card-venue,
+body.theme-typesafe .lab-paper-year,
+body.theme-typesafe .lab-paper-detail-authors,
+body.theme-typesafe .lab-paper-detail-type,
+body.theme-typesafe .eng-domain-count,
+body.theme-typesafe .eng-stat,
+body.theme-typesafe .award-lead,
+body.theme-typesafe .lab-coming-soon-label,
+body.theme-typesafe .lc-author,
+body.theme-typesafe .article-pagination,
+body.theme-typesafe .load-more-status,
+body.theme-typesafe .projects-status {
+  font-family: var(--ts-term);
+  font-style: normal;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ts-fg-faint);
+}
+
+/* Email addresses and other literal strings must not be shouted by the
+   uppercase rule above. */
+body.theme-typesafe .article-date a,
+body.theme-typesafe .lab-card-meta a {
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+body.theme-typesafe .article-preview,
+body.theme-typesafe .lab-card-description,
+body.theme-typesafe .session-desc,
+body.theme-typesafe .eng-domain-desc,
+body.theme-typesafe .award-body p,
+body.theme-typesafe .lab-card-highlights {
+  color: var(--ts-fg-soft);
+  line-height: 1.66;
+}
+
+body.theme-typesafe .lab-card-highlights li::marker {
+  color: var(--ts-accent);
+}
+
+/* Call-to-action links read as terminal commands. */
+body.theme-typesafe .article-read-more,
+body.theme-typesafe .lab-card-cta,
+body.theme-typesafe .project-cta,
+body.theme-typesafe .session-watch,
+body.theme-typesafe .lab-paper-link,
+body.theme-typesafe .lab-breadcrumb-link,
+body.theme-typesafe .lc-cta {
+  font-family: var(--ts-term);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ts-fg);
+  text-decoration: underline;
+  text-decoration-color: var(--ts-accent);
+  text-decoration-thickness: 1.2px;
+  text-underline-offset: 4px;
+  transition: color 0.35s var(--ts-ease),
+    text-decoration-thickness 0.35s var(--ts-ease);
+}
+
+body.theme-typesafe .article-read-more:hover,
+body.theme-typesafe .lab-card-cta:hover,
+body.theme-typesafe .project-cta:hover,
+body.theme-typesafe .session-watch:hover,
+body.theme-typesafe .lab-paper-link:hover,
+body.theme-typesafe .lab-breadcrumb-link:hover,
+body.theme-typesafe .lc-cta:hover {
+  color: var(--ts-accent);
+  text-decoration-thickness: 2.4px;
+}
+
+/* -----------------------------------------------------------------------------
+   Tags, pills, skill chips — square, mono, uppercase
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe .lab-tag-pill,
+body.theme-typesafe .skills-item,
+body.theme-typesafe .article-tags span,
+body.theme-typesafe .award-tags span,
+body.theme-typesafe .session-tags span,
+body.theme-typesafe .fullstack-tags span,
+body.theme-typesafe .eng-domain-keywords span {
+  border-radius: 0;
+  border: var(--ts-rule) solid var(--ts-line);
+  background: transparent;
+  color: var(--ts-fg-soft);
+  font-family: var(--ts-term);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Interactive pills and pagination buttons. */
+body.theme-typesafe .eng-filter-pill,
+body.theme-typesafe .lab-page-btn,
+body.theme-typesafe .load-more-btn {
+  border-radius: 0;
+  border: var(--ts-rule) solid var(--ts-line);
+  background: transparent;
+  color: var(--ts-fg);
+  font-family: var(--ts-term);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background-color 0.2s var(--ts-ease), color 0.2s var(--ts-ease),
+    border-color 0.2s var(--ts-ease);
+}
+
+body.theme-typesafe .eng-filter-pill:hover,
+body.theme-typesafe .lab-page-btn:hover,
+body.theme-typesafe .load-more-btn:hover {
+  background: var(--ts-surface-2);
+  border-color: var(--ts-line);
+  color: var(--ts-fg);
+}
+
+body.theme-typesafe .eng-filter-pill.active,
+body.theme-typesafe .lab-page-btn.active {
+  background: var(--ts-accent);
+  border-color: var(--ts-accent);
+  color: #0d1b12;
+  font-weight: 700;
+}
+
+body.theme-typesafe .lab-page-btn:disabled {
+  opacity: 0.35;
+}
+
+body.theme-typesafe .eng-breadcrumb-sep {
+  color: var(--ts-accent);
+}
+
+/* -----------------------------------------------------------------------------
+   Timeline (education / experience on the home page)
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe .timeline-item {
+  border-left: var(--ts-rule) solid var(--ts-line);
+  padding-left: 1.4rem;
+}
+
+body.theme-typesafe .timeline-university {
+  font-family: var(--ts-display);
+  font-weight: 500;
+  color: var(--ts-fg-soft);
+}
+
+/* Logos sit on a light panel so they survive the dark canvas. */
+body.theme-typesafe .timeline-logo {
+  border: var(--ts-rule) solid var(--ts-line);
+  border-radius: 0;
+  background: var(--ts-light);
+}
+
+/* -----------------------------------------------------------------------------
+   Media
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe .lab-paper-image,
+body.theme-typesafe .lab-book-image,
+body.theme-typesafe .stats-image,
+body.theme-typesafe .session-thumb,
+body.theme-typesafe .award-media img,
+body.theme-typesafe .social-link-logo,
+body.theme-typesafe .stats-brand-logo {
+  border-radius: 0;
+}
+
+body.theme-typesafe .lab-paper-placeholder {
+  background: var(--ts-surface-2);
+  border: var(--ts-rule) solid var(--ts-line);
+  border-radius: 0;
+  color: var(--ts-fg-faint);
+}
+
+body.theme-typesafe .session-play {
+  background: var(--ts-accent);
+  color: #0d1b12;
+  border-radius: 0;
+}
+
+/* -----------------------------------------------------------------------------
+   Resume viewer
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe .resume-viewer {
+  border: 0;
+  border-radius: 0;
+  background: var(--ts-light);
+}
+
+body.theme-typesafe .resume-actions a {
+  font-family: var(--ts-term);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: var(--ts-rule) solid var(--ts-line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ts-fg);
+  text-decoration: none;
+  transition: background-color 0.2s var(--ts-ease), color 0.2s var(--ts-ease);
+}
+
+body.theme-typesafe .resume-actions a:hover {
+  background: var(--ts-accent);
+  border-color: var(--ts-accent);
+  color: #0d1b12;
+}
+
+/* -----------------------------------------------------------------------------
+   Learning-paper / implementation detail pages
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe .lab-paper-detail-header {
+  border-bottom: var(--ts-rule) solid var(--ts-line);
+  padding-bottom: 1.4rem;
+  margin-bottom: 2.2rem;
+}
+
+body.theme-typesafe .lab-paper-detail-title {
+  font-size: clamp(2rem, 5.4vw, 3.4rem);
+  line-height: 0.92;
+  -webkit-text-stroke: 0.5px var(--ts-fg-soft);
+}
+
+body.theme-typesafe .lab-paper-detail-section {
+  border-top: var(--ts-rule) solid var(--ts-line);
+  padding-top: 1.4rem;
+  margin-top: 2.4rem;
+}
+
+/* -----------------------------------------------------------------------------
+   Scroll reveal on listing pages
+   -----------------------------------------------------------------------------
+   Cards travel a little further than article blocks and animate slightly
+   faster, which keeps a grid of eight cards from feeling sluggish.
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.ts-reveal-ready .hero.ts-reveal,
+body.theme-typesafe.ts-reveal-ready .article-card.ts-reveal,
+body.theme-typesafe.ts-reveal-ready .lab-card.ts-reveal,
+body.theme-typesafe.ts-reveal-ready .lab-book-card.ts-reveal,
+body.theme-typesafe.ts-reveal-ready .eng-domain-card.ts-reveal,
+body.theme-typesafe.ts-reveal-ready .session-card.ts-reveal,
+body.theme-typesafe.ts-reveal-ready .award-card.ts-reveal,
+body.theme-typesafe.ts-reveal-ready .skills-category.ts-reveal,
+body.theme-typesafe.ts-reveal-ready .stats-card.ts-reveal,
+body.theme-typesafe.ts-reveal-ready .hf-model-card.ts-reveal,
+body.theme-typesafe.ts-reveal-ready .fullstack-card.ts-reveal,
+body.theme-typesafe.ts-reveal-ready .experience-highlight.ts-reveal,
+body.theme-typesafe.ts-reveal-ready .timeline-item.ts-reveal,
+body.theme-typesafe.ts-reveal-ready .resume-viewer-shell.ts-reveal {
+  transform: translateY(20px);
+  transition-duration: 0.52s;
+}
+
+body.theme-typesafe.ts-reveal-ready .hero.ts-reveal.ts-in,
+body.theme-typesafe.ts-reveal-ready .article-card.ts-reveal.ts-in,
+body.theme-typesafe.ts-reveal-ready .lab-card.ts-reveal.ts-in,
+body.theme-typesafe.ts-reveal-ready .lab-book-card.ts-reveal.ts-in,
+body.theme-typesafe.ts-reveal-ready .eng-domain-card.ts-reveal.ts-in,
+body.theme-typesafe.ts-reveal-ready .session-card.ts-reveal.ts-in,
+body.theme-typesafe.ts-reveal-ready .award-card.ts-reveal.ts-in,
+body.theme-typesafe.ts-reveal-ready .skills-category.ts-reveal.ts-in,
+body.theme-typesafe.ts-reveal-ready .stats-card.ts-reveal.ts-in,
+body.theme-typesafe.ts-reveal-ready .hf-model-card.ts-reveal.ts-in,
+body.theme-typesafe.ts-reveal-ready .fullstack-card.ts-reveal.ts-in,
+body.theme-typesafe.ts-reveal-ready .experience-highlight.ts-reveal.ts-in,
+body.theme-typesafe.ts-reveal-ready .timeline-item.ts-reveal.ts-in,
+body.theme-typesafe.ts-reveal-ready .resume-viewer-shell.ts-reveal.ts-in {
+  transform: none;
+}
+
+/* -----------------------------------------------------------------------------
+   Blog + research listings — the leftovers
+   -----------------------------------------------------------------------------
+   `.article-tags` comes in two flavours. On the production/awards/session
+   cards it wraps <span> children, which the pill rule above already handles.
+   On /blog/ and /research-articles/ it is a plain <p> of joined text, which
+   style.css renders as grey italic body copy — the one place those pages still
+   looked like the old theme. Give the bare element the terminal register.
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe .article-tags {
+  font-family: var(--ts-term);
+  font-style: normal;
+  font-size: 0.68rem;
+  line-height: 1.7;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ts-fg-faint);
+}
+
+/* Paginator links. style.css gives these rounded grey chips. */
+body.theme-typesafe .article-pagination a,
+body.theme-typesafe .article-pagination span {
+  border-radius: 0;
+  border: var(--ts-rule) solid var(--ts-line);
+  background: transparent;
+  color: var(--ts-fg);
+  font-family: var(--ts-term);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background-color 0.2s var(--ts-ease), color 0.2s var(--ts-ease),
+    border-color 0.2s var(--ts-ease);
+}
+
+body.theme-typesafe .article-pagination a:hover {
+  background: var(--ts-surface-2);
+  border-color: var(--ts-accent);
+  color: var(--ts-fg);
+}
+
+body.theme-typesafe .article-pagination span.active {
+  background: var(--ts-accent);
+  border-color: var(--ts-accent);
+  color: #0d1b12;
+  font-weight: 700;
+}
+
+body.theme-typesafe .article-pagination span.disabled {
+  opacity: 0.35;
+}
+
+/* -----------------------------------------------------------------------------
+   Narrow screens
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 720px) {
+  body.theme-typesafe .hero-content h1 {
+    -webkit-text-stroke: 0;
+  }
+}

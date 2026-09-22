@@ -37,11 +37,10 @@ My long-term direction sits at the intersection of AI and physical engineering: 
 ## Work Experience
 
 ### Cloudangles, Hyderabad, India
-**Full Stack Engineer (Backend & AI Systems Engineering)**  
+**Senior Innovation Engineer & Researcher / Forward-Deployed Engineer**  
 **Feb 2026 - Present**
 
-- Building AI-native product modules with a backend-first approach.
-- Working on production AI systems with focus on reliability, maintainability, and performance.
+Part of the innovation team building AI-native systems and data infrastructure. As a Forward-Deployed Engineer, I embed directly with enterprise clients — translating real business and analyst workflows into agentic AI systems, and owning delivery end-to-end from requirements to production.
 
 ### Gaius Networks / Flipped.ai / ParseTalent.ai, Remote (US)
 **Senior Software Engineer**  

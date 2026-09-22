@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   {% include head.html %}
-  <body>
+  {%- comment -%}
+    `typesafe` is the site-wide default theme; `theme: none` opts a page out.
+    Kept in sync with the same assign in _includes/head.html.
+  {%- endcomment -%}
+  {%- assign page_theme = page.theme | default: 'typesafe' -%}
+  <body{% unless page_theme == 'none' %} class="theme-{{ page_theme }}"{% endunless %}>
     <nav class="topnav" id="topnav">
       <div class="topnav-inner">
         <a class="topnav-brand" href="{{ '/' | relative_url }}">Trisham Patil</a>
@@ -10,10 +15,14 @@
             class="topnav-link{% if page.url == '/' or page.url == '/index.html' %} active{% endif %}"
             href="{{ '/' | relative_url }}"
           >Home</a>
+          {%- comment %} Physical AI hidden from nav (the section and its pages
+          still exist and remain reachable by URL). Its exploratory-research
+          entries are now surfaced in /blog/ instead.
           <a
-            class="topnav-link{% if page.url contains '/projects' %} active{% endif %}"
-            href="{{ '/projects/' | relative_url }}"
-          >Featured Work</a>
+            class="topnav-link topnav-link--physical-ai{% if page.url contains '/physical-ai' %} active{% endif %}"
+            href="{{ '/physical-ai/' | relative_url }}"
+          >Physical AI</a>
+          {% endcomment -%}
           <a
             class="topnav-link{% if page.url contains '/blog' %} active{% endif %}"
             href="{{ '/blog/' | relative_url }}"
@@ -27,6 +36,11 @@
             href="{{ '/engineering/' | relative_url }}"
           >Engineering Implementations</a>
           <a
+            class="topnav-link{% if page.url contains '/sessions' %} active{% endif %}"
+            href="{{ '/sessions/' | relative_url }}"
+          >Sessions</a>
+          {%- comment %} Resources and Newsletter hidden from nav (pages still exist)
+          <a
             class="topnav-link{% if page.url contains '/resources' %} active{% endif %}"
             href="{{ '/resources/' | relative_url }}"
           >Resources</a>
@@ -34,6 +48,7 @@
             class="topnav-link{% if page.url contains '/newsletter' %} active{% endif %}"
             href="{{ '/newsletter/' | relative_url }}"
           >Newsletter</a>
+          {% endcomment -%}
           <a
             class="topnav-link{% if page.url contains '/honors' %} active{% endif %}"
             href="{{ '/honors/' | relative_url }}"
@@ -200,5 +215,113 @@
         }
       })();
     </script>
+    {%- unless page_theme == 'none' %}
+    <script>
+      /* Typesafe theme: scroll-triggered fade + rise on block-level content.
+         The `ts-reveal-ready` class on <body> is what actually turns the
+         hidden-initial-state CSS on, so if this script fails to run (or
+         IntersectionObserver is missing) every element simply stays visible. */
+      (function () {
+        /* Run after the mermaid block above has swapped its <pre> elements for
+           .mermaid-diagram containers, so those get revealed too. Its listener
+           is registered first, and DOMContentLoaded fires in order. */
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", init);
+        } else {
+          init();
+        }
+
+        function init() {
+        var body = document.body;
+        if (!("IntersectionObserver" in window)) return;
+
+        var article = document.querySelector(".post-content");
+        var targets;
+
+        if (article) {
+          /* Long-form pages: reveal the article's own block-level children. */
+          targets = [].slice.call(
+            article.querySelectorAll(
+              ":scope > h2, :scope > h3, :scope > p, :scope > ul, :scope > ol," +
+                ":scope > pre, :scope > blockquote, :scope > table," +
+                ":scope > .ts-note, :scope > .ts-grid, :scope > .mermaid-diagram," +
+                ":scope > .highlight, :scope > .ts-eyebrow"
+            )
+          );
+        } else {
+          /* Listing / landing pages (home, blog, engineering, sessions,
+             honors, projects, research, learning lab): reveal section
+             headings and cards.
+
+             Cards on paginated listings (.blog-post-item and friends) are
+             included. A page's own pagination JS runs inline at parse time and
+             sets `display: none` on off-page cards; those have no layout box,
+             so the observer simply holds them until pagination displays them
+             again, at which point they intersect and reveal normally. */
+          targets = [].slice.call(
+            document.querySelectorAll(
+              ".site-shell .hero, .site-shell .section-title," +
+                ".site-shell .lab-section-heading, .site-shell .research-intro," +
+                ".site-shell .eng-lede, .site-shell .honors-intro," +
+                ".site-shell .resources-intro, .site-shell .about-journey-title," +
+                ".site-shell .eng-domain-card, .site-shell .eng-stats," +
+                ".site-shell .session-card, .site-shell .award-card," +
+                ".site-shell .skills-category," +
+                ".site-shell .stats-card, .site-shell .timeline-item," +
+                ".site-shell .hf-model-card, .site-shell .fullstack-card," +
+                ".site-shell .experience-highlight, .site-shell .lab-book-card," +
+                ".site-shell .resume-viewer-shell, .site-shell .lab-breadcrumb," +
+                ".site-shell .eng-filter-bar, .site-shell .blog-post-item," +
+                ".site-shell .research-article-item," +
+                ".site-shell .paper-explainer-item," +
+                ".site-shell .implementation-item"
+            )
+          );
+        }
+
+        var header = document.querySelector(".post-header h1");
+        var meta = document.querySelector(".post-header .meta");
+        if (header) targets.unshift(header);
+        if (meta) targets.splice(1, 0, meta);
+
+        if (!targets.length) return;
+
+        targets.forEach(function (el) {
+          el.classList.add("ts-reveal");
+        });
+        body.classList.add("ts-reveal-ready");
+
+        var observer = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.add("ts-in");
+              observer.unobserve(entry.target);
+            });
+          },
+          { rootMargin: "0px 0px -8% 0px", threshold: 0.05 }
+        );
+
+        targets.forEach(function (el) {
+          observer.observe(el);
+        });
+
+        /* Anything already above the fold reveals on the next frame rather
+           than waiting for a scroll event. The height check skips elements
+           that pagination has set to `display: none` — those have a zero-size
+           rect at the origin, which would otherwise look "above the fold" and
+           burn their animation while still hidden. */
+        requestAnimationFrame(function () {
+          targets.forEach(function (el) {
+            var rect = el.getBoundingClientRect();
+            if (rect.height > 0 && rect.top < window.innerHeight) {
+              el.classList.add("ts-in");
+            }
+          });
+        });
+        }
+      })();
+    </script>
+    {%- endunless %}
   </body>
 </html>

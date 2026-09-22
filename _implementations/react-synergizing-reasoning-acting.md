@@ -11,7 +11,7 @@ highlights:
   - "Augmented action space A-hat = A union L treats language itself as a state-modifying operation"
   - "Direct intellectual ancestor of MemGPT, Letta, SimpleMem, Mem0, and all modern agent memory systems"
   - "71% success on ALFWorld vs 37% for agents trained on 100,000+ expert demonstrations — memory enables this"
-tags: ["AI Agents", "Memory Systems", "Working Memory", "ReAct", "Tool Use", "Agent Architecture", "State Management", "Production Systems"]
+tags: ["AI Agents", "Memory Systems", "Working Memory", "ReAct", "Tool Use", "Agent Architecture", "State Management", "Production Systems", "MCP", "LangGraph", "DSPy", "Amazon Bedrock", "Tool Calling"]
 image: "/assets/research/react-memory.png"
 paper_link: "https://arxiv.org/abs/2210.03629"
 category: ai-agents
@@ -1023,6 +1023,183 @@ Despite implementation differences, every framework shares the same primitive th
 3. **The agent's behavior changes** based on what it has seen and thought
 
 The evolution is in how that state is managed: from ReAct's unmanaged append-only context, to MemGPT's virtual memory, to Letta's self-managed memory, to SimpleMem's lifecycle-managed production memory.
+
+---
+
+## ReAct Is a Pattern, Not a Model
+
+There is one misconception worth killing before it spreads, because I held it myself for a while. It is tempting to think of ReAct like this:
+
+```
+Base LLM → give it ReAct traces → fine-tune → get a "ReAct model"
+```
+
+That can be done. It is not what ReAct fundamentally is.
+
+**ReAct is not a model family. It is an agent/tool-use pattern.** There is no `react_model="..."` you instantiate, the way you instantiate a Transformer. The original paper describes a model producing an *interleaved trajectory* of reasoning and actions, where actions interact with an external environment and the results flow back into the reasoning loop:
+
+```mermaid
+flowchart TD
+    U[User] --> L1[LLM]
+    L1 --> R1["Reason: 'I need information about X'"]
+    R1 --> A1["Action: search_web('X')"]
+    A1 --> T[Tool executes]
+    T --> O1["Observation: 'Here is the result...'"]
+    O1 --> L2[LLM]
+    L2 --> R2[Reason again]
+    R2 --> A2["Action: another_tool(...)"]
+    A2 --> D{More to do?}
+    D -->|Yes| T
+    D -->|No| F[Final answer]
+```
+
+You do not have to fine-tune a model to get this. You can implement ReAct entirely through **prompting + tool calling + an orchestration loop** around an existing instruction-tuned model. Fine-tuning on trajectories is one way to *improve* a model's tool-use behavior — it is not a prerequisite for building a ReAct agent.
+
+### How Does the Model Know Whether to Use Web Search or MCP?
+
+This is the part that actually matters, and the honest answer is: the model doesn't magically know "this is an MCP server, therefore I should use MCP." Instead, **you expose tools to the model** — names, descriptions, and schemas — and it decides which one fits the request.
+
+```
+Available tools:
+
+search_web(query)          Search the public internet.
+query_database(sql)        Query the company's internal database.
+get_customer(customer_id)  Retrieve customer information.
+create_ticket(...)         Create a support ticket.
+```
+
+Given those, the model routes based on intent:
+
+```mermaid
+flowchart TD
+    subgraph internal["Internal question"]
+        Q1["User: 'What happened to customer 123?'"] --> L1[LLM sees available tools]
+        L1 --> C1["get_customer(customer_id)"]
+    end
+    subgraph external["Public question"]
+        Q2["User: 'What happened in NVIDIA's latest earnings?'"] --> L2[LLM sees available tools]
+        L2 --> C2["search_web(query)"]
+    end
+```
+
+This is exactly how tool-use APIs work in practice: you provide tool definitions, the model decides whether a tool is useful and which one, and *your application* executes the requested tool and sends the result back. The model chooses; it does not run the tool itself.
+
+### The Layers People Conflate
+
+Most of the confusion around ReAct comes from collapsing five different layers into one word. They are separate concerns:
+
+| Layer | What it is | The question it answers |
+|-------|-----------|------------------------|
+| **ReAct** | The behavioral pattern | Reason → Act → Observe → Reason → ... → Answer |
+| **Tool calling** | The mechanism | How does the model *request* a capability? |
+| **MCP** | A standardized protocol | How are external tools/context *exposed*? |
+| **LangGraph** | Orchestration / state machine | How does my agent workflow *execute*? |
+| **DSPy** | A programming/optimization layer | How do I *program and optimize* this LM behavior? |
+| **LLM** | The reasoning engine | Which tool should I use, and what next? |
+
+**MCP** is a protocol/interface for exposing tools and context in a standardized way. An MCP server might expose `search_docs()`, `get_customer()`, `query_sales_db()`, `create_ticket()` — and your agent makes those capabilities available to the LLM alongside anything else. It is not a competing reasoning mechanism; it sits on the tool side of the loop:
+
+```mermaid
+flowchart LR
+    LLM[LLM] --> API[Tool API]
+    API --> W[Web Search API]
+    API --> DB[Database]
+    API --> GH[GitHub]
+    API --> MCP[MCP Server]
+```
+
+**LangGraph** is where the loop actually lives. You could write the loop yourself in Python; LangGraph just lets you represent it explicitly as nodes and edges:
+
+```mermaid
+flowchart TD
+    L[LLM] --> Q{Tool call?}
+    Q -->|Yes| E[Execute tool]
+    E --> RES[Tool result]
+    RES --> L
+    Q -->|No| A[Final answer]
+```
+
+The division of labor is clean: the **LLM** decides *"given what I know and the result I just received, should I call another tool or am I done?"* and the **framework** handles *"you requested this tool, I'll execute it and hand you the result."*
+
+### DSPy Makes ReAct a Composable Module
+
+DSPy is the clearest illustration that ReAct is a *pattern you wrap around a model*, not a model itself. It literally exposes ReAct as a module:
+
+```python
+agent = dspy.ReAct(
+    "question -> answer",
+    tools=[search, calc],
+)
+```
+
+You give it a signature, a set of tools, and an underlying LM. DSPy supplies the reasoning-and-tool-use loop — and, importantly, it can *optimize* that program against examples and metrics instead of you hand-tuning increasingly baroque prompts.
+
+```mermaid
+flowchart TD
+    D[DSPy] --> RM[dspy.ReAct module]
+    RM --> LC[LLM call]
+    LC --> RA[reasoning]
+    LC --> AC[action]
+    AC --> S[search]
+    AC --> DB[database]
+    S --> OBS[observation]
+    DB --> OBS
+    OBS --> LC
+```
+
+### Putting a Provider Underneath: Bedrock as an Example
+
+None of this changes when the model is hosted behind a provider. If you run Claude through Amazon Bedrock, the model layer just slots in underneath your agent framework. Bedrock's tool-use API returns a `tool_use` request; your application executes the tool and sends back a `tool_result` — the same request/execute/return loop, standardized:
+
+```mermaid
+flowchart TD
+    AG[Your agent] --> ORCH[LangGraph / DSPy]
+    ORCH --> M[Claude on Bedrock]
+    M --> TR{tool request?}
+    TR -->|tool_use| TOOL[Web API / MCP / internal API]
+    TOOL --> RESULT[tool_result]
+    RESULT --> M
+    TR -->|final| ANS[Answer]
+```
+
+So `DSPy → Claude → Bedrock → MCP/Web/internal APIs` and `LangGraph → Claude → Bedrock → MCP/Web/internal APIs` are both perfectly valid stacks. The framework orchestrates, the provider hosts the model, and the model reasons over whatever tools you expose.
+
+### Do You Need a Model "Trained for ReAct"?
+
+It helps, but it is not strictly required. There are roughly three positions on a spectrum, and good agentic behavior does not depend on you personally fine-tuning anything:
+
+```mermaid
+flowchart TD
+    subgraph A["A. Prompted tool use"]
+        A1[Instruction-tuned model] --> A2[Tool descriptions] --> A3[Agent loop]
+    end
+    subgraph B["B. Tool-use post-training"]
+        B1[Base model] --> B2[Tool-use training] --> B3[Better tool selection] --> B4[Agent loop]
+    end
+    subgraph C["C. Reasoning + tool-use training"]
+        C1[Base model] --> C2[Reasoning + tool-use post-training] --> C3[Stronger agent]
+    end
+```
+
+Two capabilities matter underneath any of these: the model needs enough **reasoning capability** to decompose a task, and enough **tool-use capability** to emit a structurally valid call like `web_search(query="NVIDIA latest revenue")`. Modern instruction and reasoning models — Claude, GPT, Llama, Qwen, Gemini — already carry both to varying degrees. You don't specify a "ReAct model"; you specify the LLM and configure the loop and tools around it.
+
+### The Iterative Feedback Loop Is the Whole Point
+
+This connects directly back to the memory argument earlier in this article. The reason a capable model plus a tool list produces *good* agentic behavior is that the tool result is fed **back** into the model — the observation becomes part of the accumulating context, and the next decision conditions on it:
+
+```
+User: "Find the cheapest flight from Mumbai to London and tell
+       me whether it is cheaper than last week."
+
+LLM  → search_flights(...)
+       Observation: ₹72,000
+LLM  → search_historical_price(...)
+       Observation: last week ₹81,000
+LLM  → calculate difference
+LLM  → Final answer: cheaper by ₹9,000
+```
+
+The model provides the decisions; the orchestration system runs the tools and returns observations. That loop — not a special architecture, not a fine-tuned "ReAct model" — is what turns a language model into an agent. Which is the same conclusion the memory framing reaches from the other direction: **the intelligence is in the loop and the accumulating state, not in a special model you download.**
 
 ---
 

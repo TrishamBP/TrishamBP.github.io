@@ -275,86 +275,82 @@ body.dark-mode .dark-mode-toggle .icon-moon {
   margin-top: 44px;
 }
 
-/* Skills infographic images reuse the timeline grid so the stack occupies
-   the same content column as the Education/Experience cards — matching their
-   left/right edges, max-width, and responsive breakpoints. The decorative
-   timeline rule and per-item bottom padding are removed for this instance. */
-.skills-timeline::before {
-  display: none;
-}
-
-.skills-timeline .timeline-item {
-  padding-bottom: 0;
-}
-
-/* Seamless vertical stack of Skills infographic images.
-   Images render block-level with zero spacing so consecutive
-   images touch edge-to-edge and read as one continuous graphic. */
-.skills-stack {
-  display: block;
-  min-width: 0;
-  font-size: 0;
-  line-height: 0;
-}
-
-.skills-stack img {
-  display: block;
-  width: 100%;
-  height: auto;
-  margin: 0;
-  padding: 0;
-  border: 0;
+/* Structured "skill matrix": stacked category cards, each with a colored
+   heading and a dense, responsive grid of compact icon+label chips. */
+.skills-matrix {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .skills-category {
-  margin: 22px 0 28px;
+  --skills-accent: #3b82f6;
+  margin: 0;
   border: 1px solid #e5e7eb;
+  border-left: 3px solid var(--skills-accent);
   border-radius: 12px;
   background: #ffffff;
-  padding: 14px;
+  padding: 16px 18px;
 }
 
 .skills-category h3 {
-  margin: 0 0 10px;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--skills-accent);
 }
+
+.skills-cat-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  flex: none;
+}
+
+/* Category accent colors mirror the original infographic palette. */
+.skills-category--blue { --skills-accent: #3b82f6; }
+.skills-category--green { --skills-accent: #22c55e; }
+.skills-category--purple { --skills-accent: #a855f7; }
+.skills-category--amber { --skills-accent: #f59e0b; }
+.skills-category--teal { --skills-accent: #14b8a6; }
 
 .skills-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 8px;
 }
 
+/* Compact chip: small icon + label, sized to content so ~5-6 fit per row
+   where labels are short, wrapping naturally on narrower viewports. */
 .skills-item {
-  display: flex;
-  flex-direction: column;
+  display: inline-flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 8px;
-  width: 90px;
-  padding: 4px;
-  text-align: center;
+  gap: 7px;
+  padding: 6px 11px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #f9fafb;
   color: #374151;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  line-height: 1.25;
   white-space: normal;
 }
 
+.skills-item img,
 .skills-logo {
-  width: 48px;
-  height: 48px;
+  width: 18px;
+  height: 18px;
   object-fit: contain;
-}
-
-.skills-item img {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
+  flex: none;
 }
 
 .skills-item.no-logo {
-  width: auto;
+  color: #4b5563;
 }
 
 .skill-badge {
@@ -1026,6 +1022,23 @@ body.dark-mode .project-image-placeholder {
   color: #ffffff;
 }
 
+/* Dark technical cards + compact chips for the skill matrix. */
+body.dark-mode .skills-category {
+  background-color: #0f172a;
+  border-color: #1f2937;
+  border-left-color: var(--skills-accent);
+}
+
+body.dark-mode .skills-item {
+  background: #111827;
+  border-color: #334155;
+  color: #e5e7eb;
+}
+
+body.dark-mode .skills-item.no-logo {
+  color: #cbd5e1;
+}
+
 body.dark-mode .linkedin-cell {
   border-color: #374151;
   background: #1e293b;
@@ -1454,17 +1467,18 @@ body.dark-mode .post-content tbody tr:nth-child(even) {
   }
 
   .skills-grid {
-    gap: 14px;
+    gap: 6px;
   }
 
   .skills-item {
-    width: 84px;
-    font-size: 0.8rem;
+    padding: 5px 9px;
+    font-size: 0.76rem;
   }
 
+  .skills-item img,
   .skills-logo {
-    width: 48px;
-    height: 48px;
+    width: 16px;
+    height: 16px;
   }
 
   .projects-shell {
@@ -1787,6 +1801,31 @@ body.dark-mode .info-panel .verbalized {
 
 .topnav-link.active {
   background: #111827;
+  color: #ffffff;
+}
+
+/* Physical AI nav link — teases the separate dark "world" section */
+.topnav-link--physical-ai {
+  font-weight: 600;
+  color: #1d4ed8;
+}
+.topnav-link--physical-ai:hover {
+  background: rgba(37, 99, 235, 0.1);
+  color: #1e40af;
+}
+.topnav-link--physical-ai.active {
+  background: linear-gradient(90deg, #0b1120, #1e3a8a);
+  color: #ffffff;
+}
+body.dark-mode .topnav-link--physical-ai {
+  color: #60a5fa;
+}
+body.dark-mode .topnav-link--physical-ai:hover {
+  background: rgba(96, 165, 250, 0.16);
+  color: #93c5fd;
+}
+body.dark-mode .topnav-link--physical-ai.active {
+  background: linear-gradient(90deg, #1e3a8a, #3b82f6);
   color: #ffffff;
 }
 
@@ -2226,6 +2265,15 @@ body.dark-mode .resume-viewer-shell {
   margin-bottom: 28px;
 }
 
+.lab-paper-detail-type {
+  margin: 0 0 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #2563eb;
+}
+
 .lab-paper-detail-title {
   margin: 0 0 10px;
   font-size: clamp(1.4rem, 3vw, 1.9rem);
@@ -2341,6 +2389,10 @@ body.dark-mode .lab-breadcrumb-link {
   color: #93c5fd;
 }
 
+body.dark-mode .lab-paper-detail-type {
+  color: #93c5fd;
+}
+
 body.dark-mode .lab-paper-detail-title {
   color: #ffffff;
 }
@@ -2438,152 +2490,6 @@ body.dark-mode .lab-coming-soon-note {
 
   .topnav-inner {
     position: relative;
-  }
-}
-
-/* ===== PRODUCTION PROJECTS GRID ===== */
-
-.featured-work-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-  margin-top: 24px;
-}
-
-.featured-work-card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.featured-work-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
-}
-
-.featured-work-image-wrap {
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
-  background: #f3f4f6;
-}
-
-.featured-work-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.featured-work-content {
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.featured-work-title {
-  margin: 0 0 12px;
-  color: #111827;
-  font-size: 1.25rem;
-  font-weight: 600;
-}
-
-.featured-work-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin: 0 0 14px;
-}
-
-.featured-work-tags span {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 8px;
-  border: 1px solid #cbd5e1;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #475569;
-  background: #f8fafc;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-}
-
-.featured-work-overview {
-  margin: 0 0 16px;
-  color: #374151;
-  line-height: 1.6;
-}
-
-.featured-work-highlights {
-  margin: 0 0 16px;
-  flex: 1;
-}
-
-.featured-work-highlights h4 {
-  margin: 0 0 8px;
-  color: #111827;
-  font-size: 0.95rem;
-  font-weight: 600;
-}
-
-.featured-work-highlights ul {
-  margin: 0;
-  padding-left: 20px;
-  color: #4b5563;
-}
-
-.featured-work-highlights li {
-  margin-bottom: 6px;
-  line-height: 1.5;
-}
-
-.featured-work-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: auto;
-  padding-top: 12px;
-}
-
-/* Dark mode support */
-body.dark-mode .featured-work-card {
-  background: #1e293b;
-  border-color: #374151;
-}
-
-body.dark-mode .featured-work-title,
-body.dark-mode .featured-work-highlights h4 {
-  color: #f9fafb;
-}
-
-body.dark-mode .featured-work-overview,
-body.dark-mode .featured-work-highlights li {
-  color: #d1d5db;
-}
-
-body.dark-mode .featured-work-tags span {
-  border-color: #475569;
-  background: #0f172a;
-  color: #e5e7eb;
-}
-
-body.dark-mode .featured-work-image {
-  border-bottom-color: #374151;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .featured-work-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  .featured-work-image-wrap {
-    height: 180px;
   }
 }
 
@@ -3025,4 +2931,168 @@ body.dark-mode .eng-filter-pill.active {
   background: #f1f5f9;
   color: #0f172a;
   border-color: #f1f5f9;
+}
+
+/* ===================================================================
+   SESSIONS & TECHNICAL TALKS
+   =================================================================== */
+.session-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 22px;
+  margin-top: 24px;
+}
+
+.session-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #ffffff;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease,
+    background-color 0.3s ease;
+}
+
+.session-card:hover {
+  border-color: #9ca3af;
+  box-shadow: 0 4px 14px rgba(17, 24, 39, 0.06);
+  transform: translateY(-2px);
+}
+
+.session-thumb-link {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #000;
+}
+
+.session-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.session-card:hover .session-thumb {
+  transform: scale(1.04);
+}
+
+.session-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(220, 38, 38, 0.92);
+  color: #fff;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.session-card:hover .session-play {
+  transform: translate(-50%, -50%) scale(1.08);
+  background: rgba(220, 38, 38, 1);
+}
+
+.session-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 20px 20px;
+  flex: 1;
+}
+
+.session-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #111827;
+  line-height: 1.35;
+}
+
+.session-date {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #6b7280;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.session-desc {
+  margin: 0;
+  color: #4b5563;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.session-tags {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.8rem;
+  text-align: left;
+}
+
+.session-watch {
+  margin-top: auto;
+  padding-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #1d4ed8;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.session-arrow {
+  transition: transform 0.2s ease;
+}
+
+.session-watch:hover .session-arrow {
+  transform: translateX(3px);
+}
+
+@media (max-width: 640px) {
+  .session-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Dark mode ── */
+body.dark-mode .session-card {
+  background: #1e293b;
+  border-color: #374151;
+}
+
+body.dark-mode .session-card:hover {
+  border-color: #64748b;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+body.dark-mode .session-title {
+  color: #ffffff;
+}
+
+body.dark-mode .session-desc {
+  color: #cbd5e1;
+}
+
+body.dark-mode .session-date,
+body.dark-mode .session-tags {
+  color: #94a3b8;
+}
+
+body.dark-mode .session-watch {
+  color: #93c5fd;
 }

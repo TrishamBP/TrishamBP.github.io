@@ -1,0 +1,63 @@
+# ─────────────────────────────────────────────────────────────
+# Sessions & Technical Talks — data source
+#
+# Drives the /sessions/ page grid. To add a session, copy a block
+# and fill in the fields. `youtube_id` is the part after `?v=` in a
+# YouTube URL (e.g. https://www.youtube.com/watch?v=LLrJUyGerSc → LLrJUyGerSc).
+# The thumbnail and watch link are generated automatically from it.
+#
+# Fields:
+#   title       — session title (keyword-rich)
+#   youtube_id  — 11-char YouTube video id
+#   description — 1–2 line summary shown on the card
+#   date        — human-readable date (e.g. "Sep 2026")
+#   tags        — optional list of topic tags
+# ─────────────────────────────────────────────────────────────
+
+- title: "RAG Engineering: From Fundamentals to Agentic & Production RAG"
+  youtube_id: "AxDZLaeI7uI"
+  description: >
+    A two-session deep dive into Retrieval-Augmented Generation — from retrieval
+    foundations (BM25, embeddings, ANN, hybrid search, chunking, query transformation)
+    to Advanced, Modular, Corrective and Agentic RAG, GraphRAG, RAG evaluation
+    (LLM-as-a-Judge, RAGAS, DeepEval), and production scaling. Includes real-world
+    case studies from Zerodha, Uber QueryGPT, and GitHub Copilot.
+  date: "Sep 2026"
+  tags: ["RAG", "Agentic RAG", "GraphRAG", "Semantic Search", "BM25", "Embeddings", "RAG Evaluation", "LangGraph", "MCP", "AI Engineering"]
+
+- title: "LLM Serving, Inference & Attention Mechanisms"
+  youtube_id: "XsbxmrLqAYE"
+  description: >
+    Modern LLM inference and serving — from the Transformer attention mechanism
+    down to the GPU execution stack. Covers KV cache optimization, PagedAttention,
+    continuous batching, and the attention evolution (MHA, MQA, GQA, MLA, MoE)
+    across vLLM, SGLang, TensorRT-LLM, Mooncake, Strata, and FlashInfer on H100 GPUs.
+  date: "Sep 2026"
+  tags: ["LLM Inference", "LLM Serving", "Attention Mechanisms", "KV Cache", "vLLM", "PagedAttention", "GPU Optimization", "MoE"]
+
+- title: "System Design: Netflix & Kimi"
+  youtube_id: "LLrJUyGerSc"
+  description: >
+    A deep dive into the system design and architecture behind Netflix's
+    large-scale video streaming and Kimi's LLM inference infrastructure —
+    caching, distributed services, scalability, KV cache, and GPU serving.
+  date: "Sep 2026"
+  tags: ["System Design", "Netflix", "Kimi", "Distributed Systems", "AI Infrastructure", "LLM Inference"]
+
+# ── Add more sessions below (uncomment and fill in a real youtube_id) ──
+#
+# - title: "Reinforcement Learning for LLMs"
+#   youtube_id: ""
+#   description: >
+#     Understanding RLHF, RLAIF, RLEF, RLVF, and SWiRL — how reinforcement
+#     learning is used to align and improve modern language models.
+#   date: ""
+#   tags: ["Reinforcement Learning", "RLHF", "LLM", "Alignment"]
+#
+# - title: "Building AI Systems at Scale"
+#   youtube_id: ""
+#   description: >
+#     Model serving, distributed systems, inference optimization, memory,
+#     and caching — the engineering challenges behind AI platforms.
+#   date: ""
+#   tags: ["AI Infrastructure", "Model Serving", "Inference", "Distributed Systems"]

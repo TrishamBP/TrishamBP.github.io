@@ -10,17 +10,35 @@ permalink: /blog/
     Technical writeups on AI systems, backend engineering, and applied machine learning.
   </p>
 
+  {%- comment -%}
+    The listing merges `site.posts` with the exploratory-research entries
+    (SIMA), which used to live under the now-hidden Physical AI section. They
+    are rendered with the identical card markup so the whole page reads as one
+    stream. Collection docs have no implicit date, so each exploratory-research
+    entry carries an explicit `date:` in its frontmatter for this sort.
+  {%- endcomment -%}
+  {%- assign blog_entries = site.posts | concat: site.exploratory_research | sort: "date" | reverse -%}
+
   <div id="blog-posts-list" class="articles-grid">
-    {% for post in site.posts %}
+    {% for post in blog_entries %}
       <article class="article-card blog-post-item">
         <h2 class="article-title">
           <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
         </h2>
-        <p class="article-date">Published: {{ post.date | date: "%B %Y" }}</p>
+        <p class="article-date">
+          Published: {{ post.date | date: "%B %Y" }}
+          {%- if post.collection == 'exploratory_research' %} &middot; Exploratory Research{% endif -%}
+        </p>
         {% if post.tags and post.tags.size > 0 %}
           <p class="article-tags">{{ post.tags | join: " &middot; " }}</p>
         {% endif %}
-        <p class="article-preview">{{ post.excerpt | strip_html | normalize_whitespace | truncate: 190 }}</p>
+        <p class="article-preview">
+          {%- if post.excerpt and post.excerpt != '' -%}
+            {{ post.excerpt | strip_html | normalize_whitespace | truncate: 190 }}
+          {%- else -%}
+            {{ post.description | strip_html | normalize_whitespace | truncate: 190 }}
+          {%- endif -%}
+        </p>
         <a class="article-read-more" href="{{ post.url | relative_url }}"
           >Read More &rarr;</a
         >
@@ -28,7 +46,7 @@ permalink: /blog/
     {% endfor %}
   </div>
 
-  {% if site.posts.size == 0 %}
+  {% if blog_entries.size == 0 %}
     <p>No posts published yet.</p>
   {% endif %}
 

@@ -11,6 +11,13 @@ github_username:  karpathy
 markdown: kramdown
 permalink: pretty
 
+# raw_data/ holds third-party source material kept locally for reference while
+# writing. Its files carry frontmatter, so Jekyll was rendering and publishing
+# them as real pages (complete with the original `source:` URL). Excluded so
+# they stay local-only.
+exclude:
+  - raw_data
+
 highlighter: rouge
 kramdown:
   input: GFM
@@ -32,3 +39,18 @@ collections:
   implementations:
     output: true
     permalink: /engineering/:name/
+  # Physical AI → Exploratory Research: studies/explorations of research
+  # (e.g. SIMA), NOT engineering implementations. Same authoring pattern
+  # as `implementations`, but nested under the Physical AI world.
+  exploratory_research:
+    output: true
+    permalink: /physical-ai/exploratory-research/:name/
+
+# The typesafe theme is the site-wide default (see _includes/head.html), and
+# that now includes the exploratory-research entries: Physical AI is hidden
+# from the nav and those entries are listed under /blog/, so they should look
+# like every other article rather than keeping the old dark Physical AI skin.
+#
+# The Physical AI landing page is unaffected either way — it uses the standalone
+# _layouts/physical-ai.html, which has its own <head> and never includes
+# _includes/head.html. Opt any page out with `theme: none` in frontmatter.

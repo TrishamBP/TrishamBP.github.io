@@ -21,7 +21,7 @@ includelink: true
       <h2 class="article-title">From Multi-Head to Multi-Head Latent Attention: An Engineering Analysis of Attention Mechanisms for Large Language Model Inference</h2>
       
       <p class="article-date">
-        Trisham Patil
+        <span class="ts-name">Trisham Patil</span>
         &lt;<a href="mailto:trishampatil@gmail.com">trishampatil@gmail.com</a>&gt;
       </p>
       

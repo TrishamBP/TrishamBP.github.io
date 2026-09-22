@@ -2,11 +2,62 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{% if page.title %}{{ page.title }} | {% endif %}Trisham Patil</title>
-  <meta name="description" content="Personal website of Trisham Patil." />
-  <link
-    rel="canonical"
-    href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}"
-  />
+
+  {%- comment -%}
+    SEO / social metadata. Per-page values come from frontmatter
+    (seo_title, description, keywords, image) with safe site-wide
+    fallbacks so existing pages are unaffected.
+  {%- endcomment -%}
+  {%- assign page_title = page.seo_title | default: page.title -%}
+  {%- capture full_title -%}{% if page_title %}{{ page_title }} | {% endif %}Trisham Patil{%- endcapture -%}
+  {%- assign meta_description = page.description | default: "Personal website of Trisham Patil." -%}
+  {%- capture canonical_url -%}{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}{%- endcapture -%}
+
+  <title>{{ full_title }}</title>
+  <meta name="description" content="{{ meta_description | strip_newlines | escape }}" />
+  {%- if page.keywords %}
+  <meta name="keywords" content="{{ page.keywords | escape }}" />
+  {%- endif %}
+  <link rel="canonical" href="{{ canonical_url }}" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="{% if page.layout == 'learning-paper' %}article{% else %}website{% endif %}" />
+  <meta property="og:title" content="{{ full_title | escape }}" />
+  <meta property="og:description" content="{{ meta_description | strip_newlines | escape }}" />
+  <meta property="og:url" content="{{ canonical_url }}" />
+  <meta property="og:site_name" content="Trisham Patil" />
+  {%- if page.image %}
+  <meta property="og:image" content="{{ page.image | prepend: site.baseurl | prepend: site.url }}" />
+  {%- endif %}
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="{% if page.image %}summary_large_image{% else %}summary{% endif %}" />
+  <meta name="twitter:title" content="{{ full_title | escape }}" />
+  <meta name="twitter:description" content="{{ meta_description | strip_newlines | escape }}" />
+  {%- if page.image %}
+  <meta name="twitter:image" content="{{ page.image | prepend: site.baseurl | prepend: site.url }}" />
+  {%- endif %}
+
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}" />
+
+  {%- comment -%}
+    Site-wide theme. `typesafe` is the DEFAULT for every page that renders
+    through _layouts/default.html — it loads the typesafe stylesheet plus its
+    webfonts and makes default.html put `theme-typesafe` on <body>.
+
+    Opt out with `theme: none` in frontmatter (used for the Physical AI
+    exploratory-research collection, see `defaults` in _config.yml). The
+    Physical AI landing page uses _layouts/physical-ai.html, which has its own
+    <head> and never reaches this file at all.
+  {%- endcomment -%}
+  {%- assign page_theme = page.theme | default: 'typesafe' -%}
+  {%- unless page_theme == 'none' %}
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap"
+  />
+  <link rel="stylesheet" href="{{ '/css/typesafe.css' | relative_url }}" />
+  {%- endunless %}
 </head>

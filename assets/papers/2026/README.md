@@ -1,28 +1,5 @@
 # Research Papers PDFs
 
-## Current Papers
-
-### 2026
-
-**File:** `technical-research-paper.pdf`  
-**Title:** Technical Research Paper  
-**Author:** Trisham Bharat Patil  
-**Date:** July 10, 2026
-
-**Status:** ⚠️ **PDF needs to be added**
-
-Please place the PDF file here:
-```
-/assets/papers/2026/technical-research-paper.pdf
-```
-
-The paper will be accessible at:
-```
-https://[your-domain]/assets/papers/2026/technical-research-paper.pdf
-```
-
----
-
 ## Adding New Papers
 
 To add a new research paper:
@@ -73,7 +50,7 @@ To add a new research paper:
 ```
 /assets/papers/
 ├── 2026/
-│   ├── technical-research-paper.pdf
+│   ├── [paper-slug].pdf
 │   └── README.md (this file)
 ├── 2025/
 │   └── [future papers]
