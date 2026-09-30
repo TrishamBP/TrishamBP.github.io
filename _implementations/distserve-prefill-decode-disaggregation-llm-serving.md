@@ -8,10 +8,10 @@ venue: "OSDI '24 / arXiv 2401.09670"
 description: "DistServe explained: prefill-decode disaggregation for LLM serving, KV cache transfer, tensor and pipeline parallelism, and goodput-optimized GPU placement."
 keywords: "DistServe, prefill decode disaggregation, LLM serving, LLM inference, KV cache, LLM inference optimization, distributed LLM serving, goodput, TTFT, TPOT, GPU parallelism, tensor parallelism, pipeline parallelism"
 highlights:
-  - "[PLACEHOLDER — highlight 1]"
-  - "[PLACEHOLDER — highlight 2]"
-  - "[PLACEHOLDER — highlight 3]"
-  - "[PLACEHOLDER — highlight 4]"
+  - "Prefill is compute-bound and decode is memory-bandwidth-bound; colocating them on the same GPUs causes prefill-decode interference and forces one parallelism strategy on both, so TTFT and TPOT SLOs fight each other"
+  - "DistServe disaggregates prefill and decode onto separate GPU instances, each with its own tensor/pipeline parallelism and replica count, and ships the KV cache from prefill to decode"
+  - "A simulator-driven placement search maximizes per-GPU goodput: Algorithm 1 optimizes each phase independently on fast cross-node networks, while Algorithm 2 keeps same-stage prefill and decode segments on one node so KV transfer rides NVLink"
+  - "On OPT-13B/66B/175B, DistServe serves up to 7.4x more requests or meets up to 12.6x tighter SLOs than vLLM and DeepSpeed-MII, with KV transfer under 0.1% of total latency even on 25 Gbps networking"
 tags: ["DistServe", "Prefill/Decode Disaggregation", "LLM Serving", "LLM Inference", "KV Cache", "Goodput", "TTFT", "TPOT", "Tensor Parallelism", "Pipeline Parallelism", "Distributed Serving"]
 paper_link: "https://arxiv.org/abs/2401.09670"
 category: inference-serving
@@ -29,9 +29,9 @@ SEO METADATA (reference — mirrors the frontmatter above)
 SEO Title:          DistServe Explained: Prefill-Decode Disaggregation for LLM Serving and KV Cache
 Meta Description:   DistServe explained: prefill-decode disaggregation for LLM serving, KV cache transfer, tensor and pipeline parallelism, and goodput-optimized GPU placement. (156 chars)
 URL Slug:           /engineering/distserve-prefill-decode-disaggregation-llm-serving/
-Date:               January 2024 (paper) — article date TBD
+Date:               January 2024 (paper) — article September 2026
 Author:             Trisham Patil
-Difficulty Tier:    TBD (🟢 / 🟡 / 🔴)
+Difficulty Tier:    🟡 Tier 2 — Intermediate
 
 Primary Keyword:    prefill decode disaggregation
 Secondary Keywords: DistServe, LLM serving, LLM inference, KV cache, LLM inference optimization,
@@ -40,9 +40,13 @@ Secondary Keywords: DistServe, LLM serving, LLM inference, KV cache, LLM inferen
 
 ![DistServe prefill decode disaggregation for LLM serving: prompts enter compute-bound prefill GPUs, the KV cache transfers to memory-bound decode GPUs, which stream generated tokens](/assets/blogs/distserve/main.png)
 
-> **[PLACEHOLDER — Introduction]** Hook + what this engineering implementation covers and why it matters. Primary keyword *prefill decode disaggregation* must appear within the first 100 words.
+Every LLM request is really two jobs: a compute-heavy **prefill** that reads the prompt, and a memory-bound **decode** that streams tokens one at a time. Most serving systems run both on the same GPUs and pay for it with latency, or with extra hardware. **[Interpretation]**
 
-> **[PLACEHOLDER — Scope note]** What this article focuses on / what it does not reproduce.
+**Prefill decode disaggregation** is DistServe's answer: run the two phases on separate GPUs, give each its own parallelism, and move the KV cache between them. **[Paper]**
+
+This engineering implementation explains why that split works, how DistServe picks GPU placements that maximize **per-GPU goodput**, and what the paper's experiments show: up to **7.4× more requests** or **12.6× tighter SLOs** than vLLM and DeepSpeed-MII. **[Paper]**
+
+**Scope.** This article focuses on the ideas: the TTFT/TPOT trade-off, the queueing math for prefill, the memory math for decode, and the two placement algorithms. The running example (a 70B model on H100s) and the Python placement code are **my own illustrations**, driven by a toy simulator. They do not reproduce the paper's C++/CUDA engine or its measured numbers.
 
 **Attribution convention.** Every non-obvious technical claim is tagged:
 
@@ -54,35 +58,51 @@ Secondary Keywords: DistServe, LLM serving, LLM inference, KV cache, LLM inferen
 
 ## Reasoning / Why I Studied DistServe
 
-> **[PLACEHOLDER — Personal motivation and how this connects to previous LLM serving implementations]**
+My earlier serving write-ups were all about the **KV cache inside one engine**. [vLLM](/engineering/vllm-pagedattention-efficient-memory-management-for-llm-serving/) made it fit. [SGLang](/engineering/sglang-radixattention-structured-lm-program-execution/) made it reusable. [TensorRT-LLM](/engineering/tensorrt-llm-inference-serving-engine-kv-cache-scheduling/) scheduled it tightly. **[Interpretation]**
+
+All of them still batch prefill and decode together. When I read [Mooncake](/engineering/mooncake-kvcache-centric-architecture-for-serving-llm-chatbot/), which splits the two phases into separate clusters, I wanted the paper that made the case for that split from first principles. That paper is DistServe. **[Interpretation]**
+
+What drew me in is that DistServe's argument is mostly **queueing theory and GPU arithmetic**, not a new kernel. That makes it one of the most transferable ideas in LLM serving. **[Interpretation]**
 
 ---
 
 ## I. Preface — Different Lenses on the KV Cache Problem
 
-> **[PLACEHOLDER — Preface introduction: the shared LLM serving / KV cache bottleneck and why different systems approach it through different architectural lenses]**
+Every modern LLM serving system fights the same constraint. The **KV cache** grows with every token, lives in scarce GPU memory, and has to be read on every decode step. **[Interpretation]**
+
+Different systems attack that constraint from different angles. Some manage the memory better, some reuse it, some move it. DistServe changes **where the two phases of inference run**. Before diving in, it helps to see these approaches side by side. **[Interpretation]**
 
 ![Conceptual diagram of the LLM serving and KV cache bottleneck viewed through four architectural lenses: DistServe prefill decode disaggregation, Mooncake distributed KV cache, vLLM memory-efficient KV management with PagedAttention, and SGLang KV cache reuse with RadixAttention](/assets/blogs/distserve/kv_cache_lenses.svg)
 
-> **[PLACEHOLDER — Diagram explanation]**
+*The diagram shows one shared bottleneck (the KV cache) viewed through four lenses. Each system optimizes a different quantity, so they are complementary, not ranked.* **[Interpretation]**
 
 ### DistServe: Prefill and Decode Disaggregation
 
-> **[PLACEHOLDER — Content]**
+DistServe runs prefill and decode on **separate GPU instances**. The prefill GPU computes the KV cache and hands it to a decode GPU. **[Paper]**
+
+It optimizes **TTFT and TPOT independently**, and chooses each phase's resources and parallelism to maximize goodput per GPU. **[Paper]**
 
 ### Mooncake: KV Cache as a Distributed Resource
 
-> **[PLACEHOLDER — Content]**
+Mooncake also disaggregates prefill and decode. Then it goes further: it pools **CPU DRAM, SSD and RDMA** into a global KV cache store, so a prefix computed once can be reused across requests and machines. **[Interpretation]**
+
+Its lens is *trading storage for compute*: fetch a cached KV block instead of recomputing it.
 
 ### vLLM: Memory-Efficient KV Cache Management
 
-> **[PLACEHOLDER — Content]**
+vLLM's **PagedAttention** stores the KV cache in fixed-size blocks addressed through a block table, like OS virtual memory. That removes most fragmentation, so more requests fit in one batch. **[Interpretation]**
+
+Its lens is *GPU memory efficiency inside one engine*. DistServe uses PagedAttention inside every instance. **[Paper]**
 
 ### SGLang: KV Cache Reuse and the Serving Runtime
 
-> **[PLACEHOLDER — Content]**
+SGLang's **RadixAttention** keeps KV caches in a radix tree so requests sharing a prefix (system prompts, few-shot examples, agent loops) skip recomputing it. A cache-aware scheduler orders requests to maximize those hits. **[Interpretation]**
 
-> **[PLACEHOLDER — Closing note: complementary lenses, not direct competitors; transition to why DistServe's lens matters]**
+Its lens is *serving-runtime efficiency*: do less prefill work in the first place.
+
+These lenses stack. A production stack can page its KV cache (vLLM), reuse prefixes (SGLang), pool caches across machines (Mooncake), **and** disaggregate phases (DistServe). **[Interpretation]**
+
+DistServe's lens matters because it is the one that addresses **latency SLOs directly**. The others make each GPU hold or reuse more. DistServe decides which GPUs each phase should run on in the first place. **[Interpretation]**
 
 ---
 
@@ -173,9 +193,14 @@ When prefill and decode share a GPU, each phase slows the other down: **[Paper]*
 
 On shared GPUs, the system can improve TTFT or TPOT, but only at the other's expense. Interference turns the two SLOs into a **trade-off**. **[Paper]**
 
-![PLACEHOLDER — Figure 2: batch execution time as batch size increases, decode-only batches versus batches with an added prefill request](/assets/blogs/distserve/fig2.png)
+![DistServe Figure 2 — prefill decode interference: batch execution time of a 13B LLM for decoding-only batches versus batches with one added prefill job, at input lengths 128 and 1024](/assets/blogs/distserve/fig2.png)
 
-> **[PLACEHOLDER — Figure 2 explanation]**
+*Figure 2 from the paper: batch execution time for a 13B LLM as batch size grows. Orange is decode-only; blue adds one prefill job to the batch.* **[Paper]**
+
+- **Decoding slowdown** (the gap between orange and blue). With a 128-token input, one prefill roughly doubles a small decode batch's step time, from ≈ 7 ms to ≈ 14 ms. With a 1,024-token input, it jumps from ≈ 10 ms to ≈ 120 ms, **more than 10×**. **[Paper]**
+- **Prefill slowdown** (blue rising above the dashed line). As more decode jobs join, the prefill itself also finishes later. **[Paper]**
+
+Longer prompts make interference much worse. That is why summarization, with its long inputs, gains the most from disaggregation later in the evaluation. **[Interpretation]**
 
 ### 2. Resource and Parallelism Coupling
 
@@ -223,9 +248,31 @@ Each of the four problems comes from the phases **sharing GPUs**. DistServe's re
 
 The one new cost is communication: the prefill instance must send its intermediate state, mainly the **KV cache**, to the decoding instance. **[Paper]**
 
-![PLACEHOLDER — Diagram: colocated LLM serving versus prefill decode disaggregation, with separate prefill GPUs and decode GPUs connected by KV cache transfer](/assets/blogs/distserve/colocated_vs_disaggregated.png)
+**Colocated serving: both phases share one batch on the same GPUs.**
 
-> **[PLACEHOLDER — Diagram explanation]**
+```mermaid
+flowchart TD
+    RQ["Incoming requests"] --> SCH["One scheduler<br/>one parallelism plan"]
+    SCH --> BATCH["Mixed batch on shared GPUs<br/>prefill chunks + decode steps"]:::hot
+    BATCH -->|"prefill stalls decode → TPOT ↑"| OUT1["Tokens"]
+    BATCH -->|"decode slows prefill → TTFT ↑"| OUT1
+
+    classDef hot stroke-width:2px;
+```
+
+**Disaggregated serving: each phase gets its own GPUs, joined by a KV cache transfer.**
+
+```mermaid
+flowchart TD
+    RQ2["Incoming requests"] --> PF["Prefill instance<br/>own GPUs · own parallelism<br/>optimized for TTFT"]:::cool
+    PF == "KV cache + first token" ==> DC["Decoding instance<br/>own GPUs · own parallelism<br/>optimized for TPOT"]:::hot
+    DC --> OUT2["Streamed tokens"]
+
+    classDef hot stroke-width:2px;
+    classDef cool stroke-width:1px;
+```
+
+In the colocated design, both SLOs depend on one shared batch, so every scheduling choice trades TTFT against TPOT. In the disaggregated design, each SLO depends only on its own instance. The single new edge, the KV cache transfer, is the price. **[Interpretation]**
 
 > **The central principle:** *Disaggregation turns one coupled optimization problem into two independently optimizable serving problems.*
 
@@ -287,9 +334,30 @@ $$
 
 We will reuse $s_{kv}$ for decode memory budgeting and for KV-cache transfer cost.
 
-![PLACEHOLDER — Diagram: H100 GPU anatomy for LLM serving — HBM3 capacity and bandwidth, tensor cores, NVLink — annotated for the 70B running example](/assets/blogs/distserve/h100_gpu_anatomy.png)
+**The two H100s in our running example, and the resource each phase is bound by.**
 
-> **[PLACEHOLDER — Diagram explanation]**
+```mermaid
+flowchart TD
+    subgraph G1["H100 #1"]
+        TC1["Tensor cores<br/>≈ 989 TFLOPS BF16<br/>bounds prefill"]:::cool
+        HBM1["HBM3 · 80 GB<br/>≈ 3.35 TB/s<br/>bounds decode"]:::hot
+    end
+    subgraph G2["H100 #2"]
+        TC2["Tensor cores<br/>≈ 989 TFLOPS BF16"]:::cool
+        HBM2["HBM3 · 80 GB<br/>≈ 3.35 TB/s"]:::hot
+    end
+    G1 <== "NVLink ≈ 900 GB/s<br/>tensor-parallel all-reduce · KV transfer" ==> G2
+    G2 -. "InfiniBand / Ethernet<br/>to other nodes · much slower" .-> NET["Other nodes"]
+
+    classDef hot stroke-width:2px;
+    classDef cool stroke-width:1px;
+```
+
+Three numbers drive the whole analysis. **[Derived]**
+
+- **Tensor-core FLOPS** limit prefill, which is compute-bound.
+- **HBM bandwidth and capacity** limit decode. Bandwidth sets TPOT; capacity (160 GB total minus 140 GB of weights) sets the batch size.
+- **Link bandwidth** decides how fast KV caches can move between instances. NVLink inside a node is far faster than the network between nodes, and that gap is what separates Algorithm 1 from Algorithm 2 later.
 
 ### Parallelism Primer: Pipeline vs Tensor vs Data Parallelism
 
@@ -379,9 +447,15 @@ So DistServe profiles each model–GPU pair ahead of time to find a critical inp
 - **Above $L_m$**, prefill is compute-bound, so batching hurts.
 - User prompts typically average **hundreds of tokens**, so prefill batch sizes stay **small** in practice.
 
-![PLACEHOLDER — Figure 3(a): prefill throughput versus batch size and input length for a 13B LLM on an A100](/assets/blogs/distserve/fig3a.png)
+![DistServe Figure 3(a) — prefill throughput versus batch size for input lengths 128, 256, 512 and 1024 on a 13B LLM, showing the compute-bound threshold](/assets/blogs/distserve/fig3a.png)
 
-> **[PLACEHOLDER — Figure 3(a) explanation]**
+*Figure 3(a) from the paper: prefill throughput (tokens/s) for a 13B model as batch size grows, one curve per input length.* **[Paper]**
+
+- **Short prompts (128 tokens)** keep gaining throughput until a batch of about 16, where they plateau near **≈ 9,300 tokens/s**. Batching helps them.
+- **512-token prompts** are almost flat from a batch of 4, at about **7,000 tokens/s**. The GPU is already compute-bound.
+- **1,024-token prompts** plateau lowest, at about **5,400 tokens/s**, because attention cost grows with length.
+
+The flat curves are $L_m$ made visible: past the threshold, a bigger batch only makes every request wait longer. **[Interpretation]**
 
 **Running example: where does $L_m$ land on an H100?** **[Derived]** A rough first estimate comes from **arithmetic intensity**. A dense layer processing $L$ tokens does about $2L$ FLOPs per weight while reading each 2-byte weight once:
 
@@ -459,9 +533,14 @@ flowchart TD
     classDef hot stroke-width:2px;
 ```
 
-![PLACEHOLDER — Figure 4: average TTFT versus arrival rate for a 66B LLM on two A100 GPUs — (a) real inter-op vs intra-op results, (b) effect of changing the intra-op speedup K](/assets/blogs/distserve/fig4.png)
+![DistServe Figure 4 — prefill parallelism: average TTFT versus arrival rate for a 66B LLM on two A100 GPUs, inter-op versus intra-op parallelism and the effect of the intra-op speedup coefficient K](/assets/blogs/distserve/fig4.png)
 
-> **[PLACEHOLDER — Figure 4 explanation]**
+*Figure 4 from the paper: average TTFT for OPT-66B on two A100s. (a) measured inter-op vs intra-op; (b) modeled intra-op curves for K from 1.5 to 1.9.* **[Paper]**
+
+- **(a)** Intra-op (orange) has lower TTFT up to about **3 req/s**. Past that, its queue explodes and it passes 1 s near 4 req/s. Inter-op (blue) starts higher but stays under **0.7 s** at 4.5 req/s. **[Paper]**
+- **(b)** A higher $K$ pushes the intra-op curve right, so it stays competitive to higher rates. A low $K$ makes intra-op lose early. **[Paper]**
+
+This is exactly the crossover our worked example below computes for two H100s. **[Interpretation]**
 
 #### Worked Example: 70B Prefill on Two H100 GPUs
 
@@ -540,9 +619,15 @@ Here $W$ is the weight bytes, $B$ is the batch size, and $L$ is the context leng
 
 For a dense layer in decode, the arithmetic intensity is about $B$ FLOP/byte. Decode stays **memory-bound until $B$ approaches the ridge point**. The paper puts that ridge at **156 on an A100-80GB**. **[Paper]** On an H100 it is **≈ 295**. **[Derived]**
 
-![PLACEHOLDER — Figure 3(b): decode throughput versus batch size and input length for a 13B LLM on an A100](/assets/blogs/distserve/fig3b.png)
+![DistServe Figure 3(b) — decode throughput versus batch size for input lengths 128 to 1024 on a 13B LLM, showing decode is memory-bandwidth-bound and benefits from batching](/assets/blogs/distserve/fig3b.png)
 
-> **[PLACEHOLDER — Figure 3(b) explanation]**
+*Figure 3(b) from the paper: decode throughput for the same 13B model and input lengths.* **[Paper]**
+
+- At small batches, decode throughput is **tiny**: a few hundred tokens/s at most, versus thousands for prefill. The GPU is mostly waiting on memory.
+- Throughput keeps **climbing with batch size** all the way to 128 (≈ 3,200 tokens/s for 128-token inputs). There is no plateau in sight.
+- **Longer contexts** climb more slowly, and their curves stop early because their KV caches run out of memory first.
+
+Prefill saturates at a batch of a few requests; decode wants as many as memory allows. That asymmetry is the strongest argument for giving them separate GPUs. **[Interpretation]**
 
 **Why colocation caps the decode batch.** When prefill and decode share GPUs, growing the decode batch conflicts with meeting latency goals, especially at high request rates. More arrivals mean more prefill jobs. Prioritizing those jobs for TTFT hurts TPOT. **[Paper]**
 
@@ -641,9 +726,14 @@ In the running example at $B = 32$: **[Derived]**
 - **PP=2** does not shorten a token's path. The token still crosses all 80 layers, so TPOT stays ≈ **45 ms**. What PP adds is overlap: running **two micro-batches** keeps both GPUs busy, which lifts aggregate throughput.
 - With a **30 ms TPOT SLO**, only TP=2 meets it. With a **60 ms SLO**, both do, and PP's near-linear throughput scaling becomes attractive as the instance grows.
 
-![PLACEHOLDER — Figure 5: decode latency and throughput for a 13B LLM, batch size 128, input length 256, under increasing intra-op and inter-op parallel degree](/assets/blogs/distserve/fig5.png)
+![DistServe Figure 5 — decode parallelism: decoding latency and throughput for a 13B LLM at batch size 128 under intra-op tensor parallelism versus inter-op pipeline parallelism across 1 to 8 GPUs](/assets/blogs/distserve/fig5.png)
 
-> **[PLACEHOLDER — Figure 5 explanation]**
+*Figure 5 from the paper: decode latency (left) and throughput (right) for a 13B model, batch size 128, input length 256, from 1 to 8 GPUs.* **[Paper]**
+
+- **Latency (left).** Intra-op cuts per-step latency from ≈ 61 ms to ≈ 40 ms at 2 GPUs, but only to ≈ 31 ms at 8. Inter-op stays flat at ≈ 61 ms. **[Paper]**
+- **Throughput (right).** Inter-op tracks the linear-scaling line, reaching ≈ 15,000 tokens/s on 8 GPUs. Intra-op flattens around ≈ 4,000 tokens/s. **[Paper]**
+
+Read together: **use just enough tensor parallelism to meet TPOT, then add pipeline stages for throughput.** Our TP=2 vs PP=2 numbers above follow the same pattern. **[Interpretation]**
 
 #### Replication: The Third Lever
 
@@ -826,15 +916,15 @@ For a prefill instance, attainment counts requests that meet the TTFT SLO. For a
 **Objective.** Configurations are compared by **goodput per GPU**, not raw goodput. This is the quantity that sets cost per query: **[Paper]**
 
 $$
-\text{config}^{*} = \arg\max_{\text{config}} \; \frac{\text{config.goodput}}{\text{config.num_gpus}},
+\text{config}^{*} = \arg\max_{\text{config}} \; \frac{\text{config.goodput}}{\mathrm{config.num\_gpus}},
 \qquad
-\text{config.num_gpus} = \text{inter_op} \times \text{intra_op}
+\mathrm{config.num\_gpus} = \mathrm{inter\_op} \times \mathrm{intra\_op}
 $$
 
 **Memory feasibility.** A configuration is only considered if each GPU's weight shard fits in memory: **[Paper]**
 
 $$
-\frac{G.\text{size}}{\text{inter_op} \times \text{intra_op}} < C
+\frac{G.\text{size}}{\mathrm{inter\_op} \times \mathrm{intra\_op}} < C
 $$
 
 **Replication.** Once the best configuration for a phase is found, DistServe replicates it until the traffic rate is covered: **[Paper]**
@@ -1014,7 +1104,7 @@ Inside a node, all segments of the same instance share the same parallelism and 
 **Step 3 — Pick prefill and decode together.** This is the real difference from Algorithm 1. Both segments must fit on **one node**: **[Paper]**
 
 $$
-P_p.\text{num_gpus} + P_d.\text{num_gpus} \le M
+P_p.\mathrm{num\_gpus} + P_d.\mathrm{num\_gpus} \le M
 $$
 
 On an 8-GPU node, 4 + 4 is feasible and 4 + 8 is not. **[Derived]**
@@ -1213,39 +1303,182 @@ In this toy, the per-phase search saves **22%** of GPUs over the best shared con
 
 ## VI. Online Scheduling and the DistServe Runtime
 
-![PLACEHOLDER — Figure 6: DistServe runtime system architecture with controller, prefill instances, and decode instances](/assets/blogs/distserve/fig6.png)
+The placement algorithm decides the layout once. The runtime then has to serve live, uneven traffic on that layout. **[Interpretation]**
 
-> **[PLACEHOLDER — Figure 6 explanation]**
+![DistServe Figure 6 — runtime system architecture: a central controller dispatches requests to prefill instances, which transfer the KV cache to decoding instances, each running a parallel runtime over its GPUs](/assets/blogs/distserve/fig6.png)
+
+*Figure 6 from the paper: a central controller, prefill instances and decoding instances, each with its own parallel runtime over several GPUs, joined by KV cache transfer.* **[Paper]**
 
 ### Request Flow Through the System
 
-> **[PLACEHOLDER — Step-by-step request flow]**
+DistServe uses a simple **first-come-first-served (FCFS)** policy. **[Paper]**
+
+1. **Arrive.** Every request reaches a **centralized controller**. **[Paper]**
+2. **Prefill.** The controller sends it to the prefill instance with the **shortest queue**. **[Paper]**
+3. **Hand off.** The prefill instance computes the first token and keeps the KV cache in its GPU memory. **[Paper]**
+4. **Decode.** The request is dispatched to the **least-loaded decoding instance**, which pulls the KV cache and generates the remaining tokens. **[Paper]**
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant CT as Controller
+    participant P as Prefill instance
+    participant D as Decoding instance
+    C->>CT: request
+    CT->>P: dispatch (shortest queue)
+    P->>P: prefill → first token, KV kept in GPU memory
+    CT->>D: dispatch (least loaded)
+    D->>P: pull KV cache when memory allows
+    P-->>D: KV cache
+    D-->>C: stream tokens until EOS
+```
+
+The policy is deliberately simple. The optimizations below handle real-world messiness. **[Paper]**
 
 ### Reducing Pipeline Bubbles
 
-> **[PLACEHOLDER — Content]**
+Non-uniform prompt lengths make pipeline stages run for different times, which leaves stages idle (Section IV.C). DistServe balances the **execution time of every batch** in the pipeline. **[Paper]**
+
+The key observation: for both instance types, **the number of new tokens in a batch reliably predicts its execution time**. **[Paper]**
+
+- **Prefill.** Profile the shortest prompt length $L_m$ that saturates the GPU. Build batches whose **total length is close to $L_m$**: batch several short prompts together, and schedule prompts longer than $L_m$ alone. **[Paper]**
+- **Decode.** Each request contributes one new token per step, so $L_m$ is simply the **largest batch size**. **[Paper]**
+
+Equal-sized batches mean equal-length pipeline steps, so no stage waits on a slower neighbor. **[Interpretation]**
 
 ### Combating Burstiness
 
-> **[PLACEHOLDER — Content]**
+A burst of arrivals produces a burst of KV caches, which could overflow a decoding instance's memory. **[Paper]**
+
+DistServe therefore **pulls** KV caches instead of pushing them. Decoding instances fetch a KV cache only when they have room, and the **prefill instance's GPU memory acts as the queue**. **[Paper]**
+
+Prefill keeps processing new prompts while it holds finished KV caches. Each instance type runs at its own pace, with no complex coordination. **[Paper]**
 
 ### Replanning
 
-> **[PLACEHOLDER — Content]**
+A placement is tuned to one workload pattern and can go stale when that pattern shifts. **[Paper]**
+
+A **workload profiler** tracks the average input length, output length and arrival rate. When it detects a significant shift, DistServe **reruns the placement algorithm** on recent history. **[Paper]**
+
+This is cheap enough to do routinely. The search runs in seconds to about a minute, and reloading weights takes minutes, while real workloads tend to shift on an **hourly** scale. **[Paper]**
 
 ### Preemption and Fault Tolerance
 
-> **[PLACEHOLDER — Content]**
+DistServe does **not** implement preemption or fault tolerance. The paper discusses how they would fit and leaves both as future work. **[Paper]**
+
+- **Convoy effect.** Under FCFS, a long prompt blocks shorter ones behind it in the prefill queue. Preemptive scheduling could fix this and fits the architecture. **[Paper]**
+- **Fault propagation.** In a replicated, colocated system, one failed replica does not affect the others. In DistServe, prefill and decode instances depend on each other. One failed decoding instance fed by several prefill instances could **cripple the whole service**. **[Paper]**
 
 ---
 
-## VII. Implementation Details
+## VII. Implementation Details: How DistServe Is Built
 
-> **[PLACEHOLDER — Content]**
+DistServe is an end-to-end distributed LLM serving system with four parts. **[Paper]**
+
+| Component | Language / size | Responsibility |
+|---|---|---|
+| Placement algorithm module | Python | Algorithms 1–2 plus the simulator; outputs the placement |
+| RESTful API frontend | Python | OpenAI-compatible API; clients set max output length, temperature, etc. |
+| Orchestration layer | Python | Request dispatch, KV cache transmission, result delivery |
+| Parallel execution engine | C++/CUDA | Ray-actor GPU workers that run inference and manage the distributed KV cache |
+
+The three Python components total about **6.5K lines**; the execution engine is about **8.1K lines** of C++/CUDA. **[Paper]**
+
+**KV cache transport.** The orchestration layer uses **NCCL** for cross-node GPU communication and **asynchronous `cudaMemcpy`** within a node, so a transfer never blocks GPU computation. **[Paper]**
+
+**Inside each instance.** The engine integrates **continuous batching**, **FlashAttention** and **PagedAttention**, and supports OPT and LLaMA models. **[Paper]** Disaggregation sits *above* these optimizations; it does not replace them. **[Interpretation]**
+
+The sketch below shows the two runtime ideas from Section VI in plain Python: **token-budget batching** to avoid pipeline bubbles, and **pull-based KV transfer** with shortest-queue / least-loaded dispatch. It is my simplification, not the paper's code. **[Interpretation]**
 
 ```python
-# [PLACEHOLDER — Code: implementation sketch / snippet]
+from collections import deque
+from dataclasses import dataclass, field
+
+
+@dataclass
+class Request:
+    rid: int
+    prompt_len: int
+    kv_bytes: int = 0
+
+
+def build_prefill_batches(queue, L_m):
+    """Group prompts so each batch has close to L_m tokens (balanced pipeline steps)."""
+    batches, current, tokens = [], [], 0
+    for req in queue:
+        if req.prompt_len >= L_m:              # long prompt: schedule it alone
+            batches.append([req])
+            continue
+        if tokens + req.prompt_len > L_m and current:
+            batches.append(current)
+            current, tokens = [], 0
+        current.append(req)
+        tokens += req.prompt_len
+    if current:
+        batches.append(current)
+    return batches
+
+
+@dataclass
+class PrefillInstance:
+    name: str
+    queue: deque = field(default_factory=deque)
+    finished: deque = field(default_factory=deque)   # KV caches held in GPU memory (the buffer)
+
+    def run(self, L_m, s_kv):
+        for batch in build_prefill_batches(list(self.queue), L_m):
+            for req in batch:
+                req.kv_bytes = req.prompt_len * s_kv
+                self.finished.append(req)            # keep KV locally; do not push
+        self.queue.clear()
+
+
+@dataclass
+class DecodeInstance:
+    name: str
+    free_bytes: int
+    active: list = field(default_factory=list)
+
+    def pull(self, prefill):
+        """Fetch KV caches only while memory allows: the 'pull' side of burst handling."""
+        while prefill.finished and prefill.finished[0].kv_bytes <= self.free_bytes:
+            req = prefill.finished.popleft()
+            self.free_bytes -= req.kv_bytes
+            self.active.append(req)
+
+
+class Controller:
+    def __init__(self, prefills, decodes):
+        self.prefills, self.decodes = prefills, decodes
+
+    def submit(self, req):
+        min(self.prefills, key=lambda p: len(p.queue)).queue.append(req)   # shortest queue
+
+    def step(self, L_m, s_kv):
+        for p in self.prefills:
+            p.run(L_m, s_kv)
+            while p.finished:
+                target = max(self.decodes, key=lambda d: d.free_bytes)      # least loaded
+                before = len(p.finished)
+                target.pull(p)
+                if len(p.finished) == before:      # no room anywhere: KV waits on the prefill GPU
+                    break
+
+
+if __name__ == "__main__":
+    S_KV = 327_680                                 # bytes per token, 70B GQA running example
+    ctrl = Controller([PrefillInstance("P0"), PrefillInstance("P1")],
+                      [DecodeInstance("D0", free_bytes=10**9)])
+    for i, n in enumerate([300, 900, 120, 2048, 450, 60]):
+        ctrl.submit(Request(i, n))
+    ctrl.step(L_m=512, s_kv=S_KV)
+    for d in ctrl.decodes:
+        print(d.name, "decoding", [r.rid for r in d.active], "free GB", round(d.free_bytes / 1e9, 2))
+    for p in ctrl.prefills:
+        print(p.name, "holding KV for", [r.rid for r in p.finished])
 ```
+
+With a 1 GB decode budget, the decoding instance pulls requests 0, 2, 4 and 1. The 2,048-token request 3 does not fit, so it and request 5 behind it stay on P1. The remaining KV caches **stay parked on the prefill GPUs** until memory frees up, which is exactly how DistServe absorbs a burst. **[Interpretation]**
 
 ---
 
@@ -1387,13 +1620,37 @@ In every row, **prefill and decode choose differently**. Prefill leans on more t
 
 ## IX. Trade-offs and Limitations of Disaggregated LLM Serving
 
-> **[PLACEHOLDER — Drawbacks, failure cases, engineering considerations]**
+The paper is explicit that disaggregation is **not a one-size-fits-all** answer. It targets goodput under latency SLOs on large clusters. **[Paper]**
+
+| Scenario | Why DistServe struggles | Better choice |
+|---|---|---|
+| **Throughput-optimized / offline** | Without tight SLOs, goodput stops mattering; filling every batch matters more | Chunked prefill with piggybacking, which keeps each batch at the compute-bound threshold **[Paper]** |
+| **Resource-constrained (one or a few GPUs)** | The design space collapses: little room to vary parallelism or instance counts | A simpler colocated system such as vLLM **[Paper]** |
+| **Long context (≈ 1M tokens)** | KV transfer grows linearly with prompt length | Still promising: prefill compute grows quadratically, so transfer shrinks relative to prefill, and interference worsens **[Paper]** |
+
+Further engineering costs, beyond the paper's own list: **[Interpretation]**
+
+- **Duplicate weights.** Every prefill and decode instance holds its own copy of the model, which reduces the memory left for KV caches.
+- **Imbalance.** If the prefill:decode ratio is wrong for the current traffic, one side idles while the other queues. Replanning only corrects this on an hourly scale.
+- **Network dependence.** Without fast interconnects, Algorithm 2's same-node constraint limits the placements available (Section V).
+- **New failure modes.** Paired instances fail together, and there is no preemption to protect short requests from long ones.
 
 ---
 
 ## X. Where DistServe Sits: vLLM, Chunked Prefill, and Mooncake (Related Work)
 
-> **[PLACEHOLDER — Comparison with related LLM inference optimization systems]**
+DistServe positions itself against four lines of work. **[Paper]**
+
+| Line of work | Examples | Relation to DistServe |
+|---|---|---|
+| **Colocated LLM serving** | Orca (continuous batching), vLLM (PagedAttention), SARATHI (chunked prefill), FastServe (preemptive scheduling) | All colocate prefill and decode, so all suffer interference. DistServe reuses their in-engine techniques **[Paper]** |
+| **Concurrent disaggregation** | Splitwise, TetriInfer, DéjàVu | Same core idea. DistServe focuses more on **goodput** and **network bandwidth** **[Paper]** |
+| **Goodput-optimized systems** | Pollux, Sia, Clockwork, Shepherd, AlpaServe | Earlier work targeted DL training jobs, small models, or non-autoregressive generation. DistServe claims the **first goodput optimization for autoregressive LLM inference** **[Paper]** |
+| **Resource disaggregation / training parallelism** | CXL-style disaggregated data centers; Megatron, Alpa | Same philosophy of independently scaled pools; parallelism advances can plug into the placement search **[Paper]** |
+
+Since publication, disaggregation has gone mainstream. [Mooncake](/engineering/mooncake-kvcache-centric-architecture-for-serving-llm-chatbot/) runs it in production and adds a distributed KV cache store. Major serving stacks now ship prefill–decode disaggregation modes. **[Interpretation]**
+
+The clearest contrast is with **chunked prefill**. It keeps the phases together and slices prefill to limit the damage. DistServe separates them so there is no damage to limit, at the cost of a KV transfer. **[Interpretation]**
 
 ---
 
@@ -1401,44 +1658,57 @@ In every row, **prefill and decode choose differently**. Prefill leans on more t
 
 ### What Clicked
 
-> **[PLACEHOLDER]**
+The moment it clicked was realizing that **TTFT and TPOT are bounded by different hardware resources**. Prefill hits the tensor-core ceiling; decode hits the HBM ceiling. Putting them in one batch means one of them is always running on the wrong bottleneck. **[Interpretation]**
+
+The second click was **per-GPU goodput**. Throughput rewards piling everything into one batch. Goodput per GPU rewards meeting both SLOs cheaply, and that metric is what makes disaggregation obviously right.
 
 ### What Confused Me Initially
 
-> **[PLACEHOLDER]**
+I first read disaggregation as "just use more GPUs". It isn't. The **2P+1D** example in Figure 1 uses 3 GPUs to get **2.1× the goodput per GPU** of one colocated GPU. The win comes from each GPU doing the work it is best at, not from adding hardware. **[Interpretation]**
+
+I also found the prefill queueing math confusing at first: why would pipeline parallelism, which does not reduce latency, ever lower TTFT? The answer is that at high load, **queueing delay dominates TTFT**, and pipelining halves the service interval that sets the queue.
 
 ### How I Simplified It Mentally
 
-> **[PLACEHOLDER]**
+I now think of it as **two factories joined by a conveyor belt**. The prefill factory is sized for how fast it can stamp out first tokens (TTFT). The decode factory is sized for how many streams it can keep flowing (TPOT). The conveyor belt is the KV transfer. **[Interpretation]**
+
+The placement algorithm answers three questions: how big each factory is (parallelism), how many copies to build (replication), and **whether the belt can run between buildings** (Algorithm 1) or must stay inside one (Algorithm 2).
 
 ### What I Think Is Underrated
 
-> **[PLACEHOLDER]**
+- **The simulator is the real contribution.** A search is only as good as its cost model, and a simulator accurate to under 2% is what makes the placement search trustworthy. **[Interpretation]**
+- **Pull-based KV transfer** is a small design choice with a big effect: it turns prefill GPU memory into a burst buffer for free.
+- **The M/D/1 analysis** is a reusable tool. It explains *when* tensor parallelism beats pipeline parallelism, for any compute-bound serving stage.
+- **KV transfer is not the bottleneck people assume.** Under 0.1% of latency with bandwidth-aware placement, even on 25 Gbps networking. **[Paper]**
 
 ### Critique and Open Questions
 
-> **[PLACEHOLDER]**
+- **OPT-only evaluation.** OPT uses full multi-head attention, which makes KV transfer look as bad as possible (a deliberate choice), but modern GQA/MoE models were not tested. **[Paper] / [Interpretation]**
+- **The 1:1 pairing in Algorithm 2** can waste capacity, as our use case showed (≈ 36% idle decode). A mixed prefill:decode ratio per node seems like an obvious extension. **[Interpretation]**
+- **No preemption or fault tolerance.** Both are hard problems in a system where instances depend on each other. **[Paper]**
+- **Hourly replanning** does not help with second-scale bursts beyond what the pull buffer absorbs.
+- **Open question:** once the KV cache moves between GPUs anyway, should it also be *stored* and *reused* across requests, as Mooncake does? **[Interpretation]**
 
 ---
 
 ## Key Takeaways
 
-- **[PLACEHOLDER — Takeaway 1]**
-- **[PLACEHOLDER — Takeaway 2]**
-- **[PLACEHOLDER — Takeaway 3]**
-- **[PLACEHOLDER — Takeaway 4]**
-- **[PLACEHOLDER — Takeaway 5]**
+- **Prefill is compute-bound; decode is memory-bandwidth-bound.** Colocating them causes prefill–decode interference and forces one parallelism plan on two very different workloads.
+- **Prefill decode disaggregation** gives each phase its own GPUs, parallelism and replica count, so TTFT and TPOT can be optimized independently.
+- **The right metric is per-GPU goodput**: the highest request rate each GPU sustains while meeting the SLO attainment target. Maximizing it minimizes cost per query.
+- **Placement is a search, not a rule.** A simulator-driven search picks tensor/pipeline parallelism per phase; Algorithm 2 keeps KV transfer on NVLink when cross-node bandwidth is low.
+- **The results are large:** up to 7.4× more requests or 12.6× tighter SLOs than vLLM and DeepSpeed-MII, with KV transfer under 0.1% of latency.
 
 ---
 
 ## Related Engineering Implementations
 
-- [**MOONCAKE**](/engineering/mooncake-kvcache-centric-architecture-for-serving-llm-chatbot/) — **[PLACEHOLDER — one-line relation]**
-- [**vLLM / PagedAttention**](/engineering/vllm-pagedattention-efficient-memory-management-for-llm-serving/) — **[PLACEHOLDER — one-line relation]**
-- [**SGLang / RadixAttention**](/engineering/sglang-radixattention-structured-lm-program-execution/) — **[PLACEHOLDER — one-line relation]**
-- [**TensorRT-LLM**](/engineering/tensorrt-llm-inference-serving-engine-kv-cache-scheduling/) — **[PLACEHOLDER — one-line relation]**
-- [**FlashInfer**](/engineering/flashinfer-customizable-attention-engine-llm-inference-serving/) — **[PLACEHOLDER — one-line relation]**
-- [**Strata**](/engineering/strata-hierarchical-context-caching-long-context-llm-serving/) — **[PLACEHOLDER — one-line relation]**
+- [**MOONCAKE**](/engineering/mooncake-kvcache-centric-architecture-for-serving-llm-chatbot/) — production prefill–decode disaggregation, plus a distributed CPU/DRAM/SSD KV cache pool for reuse across requests
+- [**vLLM / PagedAttention**](/engineering/vllm-pagedattention-efficient-memory-management-for-llm-serving/) — the paged KV cache manager that DistServe runs inside every prefill and decode instance
+- [**SGLang / RadixAttention**](/engineering/sglang-radixattention-structured-lm-program-execution/) — prefix-sharing KV cache reuse that shrinks the prefill work DistServe has to place
+- [**TensorRT-LLM**](/engineering/tensorrt-llm-inference-serving-engine-kv-cache-scheduling/) — an optimized colocated engine with in-flight batching: the kind of system DistServe's interference analysis targets
+- [**FlashInfer**](/engineering/flashinfer-customizable-attention-engine-llm-inference-serving/) — the attention kernels underneath; faster kernels change the latency profiles DistServe's simulator must model
+- [**Strata**](/engineering/strata-hierarchical-context-caching-long-context-llm-serving/) — hierarchical KV caching for long context, where DistServe expects disaggregation to matter even more
 
 ---
 
