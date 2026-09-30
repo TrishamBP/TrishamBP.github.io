@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 660" width="1240" height="660" role="img" aria-labelledby="title desc">
+  <title id="title">Different lenses on the KV-cache problem in LLM serving</title>
+  <desc id="desc">Conceptual diagram. A shared bottleneck, LLM serving and the KV cache, branches into four systems that each approach it through a different architectural lens. DistServe: prefill/decode disaggregation, optimizing TTFT and TPOT plus resource and parallelism allocation. Mooncake: distributed KV cache, optimizing KV reuse and transfer. vLLM: memory-efficient KV management via PagedAttention, optimizing GPU memory efficiency. SGLang: KV-cache reuse and serving runtime via RadixAttention, optimizing serving efficiency. The systems are complementary lenses, not a ranking or direct competitors.</desc>
+
+  <defs>
+    <style>
+      .sans { font-family: Inter, "Segoe UI", "Helvetica Neue", Arial, system-ui, sans-serif; }
+      .mono { font-family: "JetBrains Mono", "SF Mono", Consolas, "Liberation Mono", monospace; }
+      .ink-1 { fill: #f1f5f9; }
+      .ink-2 { fill: #cbd5e1; }
+      .ink-3 { fill: #7c8aa5; }
+      .wire  { stroke: #3a4661; stroke-width: 1.5; fill: none; }
+      .card  { fill: #0c1324; stroke: #1f2a40; stroke-width: 1; }
+    </style>
+    <radialGradient id="rootGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#5b7bd5" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#5b7bd5" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-20%" y="-200%" width="140%" height="500%">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+  </defs>
+
+  <!-- surface -->
+  <rect width="1240" height="660" fill="#070b16"/>
+
+  <!-- figure label -->
+  <text x="40" y="44" class="mono ink-3" font-size="11" letter-spacing="2">FIG. — DIFFERENT LENSES ON THE KV-CACHE PROBLEM</text>
+
+  <!-- root: shared bottleneck -->
+  <ellipse cx="690" cy="112" rx="300" ry="70" fill="url(#rootGlow)"/>
+  <rect x="470" y="78" width="440" height="68" rx="10" fill="#0d1528" stroke="#8fa3c8" stroke-opacity="0.55" stroke-width="1.25"/>
+  <text x="690" y="110" text-anchor="middle" class="sans ink-1" font-size="17" font-weight="600" letter-spacing="2.5">LLM SERVING / KV-CACHE BOTTLENECK</text>
+  <text x="690" y="132" text-anchor="middle" class="mono ink-3" font-size="10.5" letter-spacing="2">ONE SHARED CONSTRAINT</text>
+
+  <!-- branches -->
+  <path class="wire" d="M690 146 V182 M292.5 182 H1087.5 M292.5 182 V214 M557.5 182 V214 M822.5 182 V214 M1087.5 182 V214"/>
+  <circle cx="690" cy="182" r="3" fill="#8fa3c8"/>
+
+  <!-- row labels -->
+  <g class="mono ink-3" font-size="10.5" letter-spacing="2">
+    <text x="40" y="249">SYSTEM</text>
+    <text x="40" y="376">LENS</text>
+    <text x="40" y="515">OPTIMIZES FOR</text>
+  </g>
+  <path d="M40 296 H130 M40 448 H130" stroke="#1a2336" stroke-width="1"/>
+
+  <!-- column template: system card (y 214–276), lens card (y 316–428), target card (y 468–554) -->
+
+  <!-- DistServe -->
+  <g transform="translate(292.5 0)">
+    <rect x="-112" y="214" width="224" height="3" fill="#0891c9" filter="url(#soft)" opacity="0.8"/>
+    <rect x="-112" y="214" width="224" height="62" rx="8" class="card"/>
+    <rect x="-112" y="214" width="224" height="3" rx="1.5" fill="#0891c9"/>
+    <text y="252" text-anchor="middle" class="sans ink-1" font-size="20" font-weight="600" letter-spacing="0.5">DistServe</text>
+    <path class="wire" d="M0 276 V316"/>
+    <rect x="-112" y="316" width="224" height="112" rx="8" class="card"/>
+    <text y="356" text-anchor="middle" class="sans ink-2" font-size="15">Prefill / Decode</text>
+    <text y="378" text-anchor="middle" class="sans ink-2" font-size="15">Disaggregation</text>
+    <rect x="-100" y="395" width="200" height="20" rx="10" fill="none" stroke="#0891c9" stroke-opacity="0.6"/>
+    <text y="409" text-anchor="middle" class="mono ink-3" font-size="10" letter-spacing="0.5">KV: PREFILL GPU → DECODE GPU</text>
+    <path class="wire" d="M0 428 V468"/>
+    <rect x="-112" y="468" width="224" height="86" rx="8" class="card"/>
+    <text y="505" text-anchor="middle" class="sans ink-1" font-size="15" font-weight="500">TTFT / TPOT</text>
+    <text y="527" text-anchor="middle" class="sans ink-2" font-size="14">+ resource / parallelism</text>
+  </g>
+
+  <!-- Mooncake -->
+  <g transform="translate(557.5 0)">
+    <rect x="-112" y="214" width="224" height="3" fill="#d07a0c" filter="url(#soft)" opacity="0.8"/>
+    <rect x="-112" y="214" width="224" height="62" rx="8" class="card"/>
+    <rect x="-112" y="214" width="224" height="3" rx="1.5" fill="#d07a0c"/>
+    <text y="252" text-anchor="middle" class="sans ink-1" font-size="20" font-weight="600" letter-spacing="0.5">Mooncake</text>
+    <path class="wire" d="M0 276 V316"/>
+    <rect x="-112" y="316" width="224" height="112" rx="8" class="card"/>
+    <text y="356" text-anchor="middle" class="sans ink-2" font-size="15">Distributed</text>
+    <text y="378" text-anchor="middle" class="sans ink-2" font-size="15">KV Cache</text>
+    <rect x="-100" y="395" width="200" height="20" rx="10" fill="none" stroke="#d07a0c" stroke-opacity="0.6"/>
+    <text y="409" text-anchor="middle" class="mono ink-3" font-size="10" letter-spacing="0.5">CPU · DRAM · SSD KV POOL</text>
+    <path class="wire" d="M0 428 V468"/>
+    <rect x="-112" y="468" width="224" height="86" rx="8" class="card"/>
+    <text y="505" text-anchor="middle" class="sans ink-1" font-size="15" font-weight="500">KV reuse</text>
+    <text y="527" text-anchor="middle" class="sans ink-2" font-size="14">+ transfer</text>
+  </g>
+
+  <!-- vLLM -->
+  <g transform="translate(822.5 0)">
+    <rect x="-112" y="214" width="224" height="3" fill="#8b6cf0" filter="url(#soft)" opacity="0.8"/>
+    <rect x="-112" y="214" width="224" height="62" rx="8" class="card"/>
+    <rect x="-112" y="214" width="224" height="3" rx="1.5" fill="#8b6cf0"/>
+    <text y="252" text-anchor="middle" class="sans ink-1" font-size="20" font-weight="600" letter-spacing="0.5">vLLM</text>
+    <path class="wire" d="M0 276 V316"/>
+    <rect x="-112" y="316" width="224" height="112" rx="8" class="card"/>
+    <text y="356" text-anchor="middle" class="sans ink-2" font-size="15">Memory-efficient</text>
+    <text y="378" text-anchor="middle" class="sans ink-2" font-size="15">KV Management</text>
+    <rect x="-100" y="395" width="200" height="20" rx="10" fill="none" stroke="#8b6cf0" stroke-opacity="0.6"/>
+    <text y="409" text-anchor="middle" class="mono ink-3" font-size="10" letter-spacing="0.5">PAGEDATTENTION</text>
+    <path class="wire" d="M0 428 V468"/>
+    <rect x="-112" y="468" width="224" height="86" rx="8" class="card"/>
+    <text y="505" text-anchor="middle" class="sans ink-1" font-size="15" font-weight="500">GPU memory</text>
+    <text y="527" text-anchor="middle" class="sans ink-2" font-size="14">efficiency</text>
+  </g>
+
+  <!-- SGLang -->
+  <g transform="translate(1087.5 0)">
+    <rect x="-112" y="214" width="224" height="3" fill="#0b9e6c" filter="url(#soft)" opacity="0.8"/>
+    <rect x="-112" y="214" width="224" height="62" rx="8" class="card"/>
+    <rect x="-112" y="214" width="224" height="3" rx="1.5" fill="#0b9e6c"/>
+    <text y="252" text-anchor="middle" class="sans ink-1" font-size="20" font-weight="600" letter-spacing="0.5">SGLang</text>
+    <path class="wire" d="M0 276 V316"/>
+    <rect x="-112" y="316" width="224" height="112" rx="8" class="card"/>
+    <text y="356" text-anchor="middle" class="sans ink-2" font-size="15">KV-cache Reuse /</text>
+    <text y="378" text-anchor="middle" class="sans ink-2" font-size="15">Serving Runtime</text>
+    <rect x="-100" y="395" width="200" height="20" rx="10" fill="none" stroke="#0b9e6c" stroke-opacity="0.6"/>
+    <text y="409" text-anchor="middle" class="mono ink-3" font-size="10" letter-spacing="0.5">RADIXATTENTION</text>
+    <path class="wire" d="M0 428 V468"/>
+    <rect x="-112" y="468" width="224" height="86" rx="8" class="card"/>
+    <text y="505" text-anchor="middle" class="sans ink-1" font-size="15" font-weight="500">Serving</text>
+    <text y="527" text-anchor="middle" class="sans ink-2" font-size="14">efficiency</text>
+  </g>
+
+  <!-- footer -->
+  <path d="M40 596 H1200" stroke="#1a2336" stroke-width="1"/>
+  <text x="620" y="626" text-anchor="middle" class="mono ink-3" font-size="10.5" letter-spacing="2">COMPLEMENTARY LENSES ON ONE BOTTLENECK — NOT A RANKING, NOT HEAD-TO-HEAD COMPETITORS</text>
+</svg>
