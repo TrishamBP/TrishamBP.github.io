@@ -144,7 +144,7 @@ export const componentsData = [
     mapGroup: "COMPUTE",
     position: [0, 0.3, 0],
     cameraTarget: { position: [2.4, 5.6, -9.4], target: [0, 1.3, -2.4] },
-    color: COOL,
+    color: "#2cff6e",
     metadata: {
       Devices: "8× accelerators",
       Parallelism: "Tensor + pipeline parallel",

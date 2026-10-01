@@ -37,6 +37,10 @@ export const M = {
   titanium: new THREE.MeshStandardMaterial({ color: 0x8d939b, metalness: 0.95, roughness: 0.3 }),
   titaniumDark: new THREE.MeshStandardMaterial({ color: 0x3d4148, metalness: 0.9, roughness: 0.38 }),
   rotor: new THREE.MeshStandardMaterial({ color: 0x3d4148, metalness: 0.9, roughness: 0.38, side: THREE.DoubleSide }),
+  rackBody: new THREE.MeshStandardMaterial({ color: 0x0a0b0d, metalness: 0.7, roughness: 0.42 }),
+  cable: new THREE.MeshStandardMaterial({ color: 0x08090a, metalness: 0.3, roughness: 0.55 }),
+  /* Perforated floor panels for the rack aisle (canvas texture, below). */
+  grating: new THREE.MeshStandardMaterial({ color: 0x8a9099, metalness: 0.75, roughness: 0.45 }),
   /* LEDs: unlit, coloured per instance via instanceColor. */
   led: new THREE.MeshBasicMaterial({ color: 0xffffff, toneMapped: false }),
   line: new THREE.LineBasicMaterial({ color: 0x3a3f47, transparent: true, opacity: 0.8 }),
@@ -51,7 +55,32 @@ export const PALETTE = {
   lime: new THREE.Color(0xc6f432),
   off: new THREE.Color(0x15171a),
   dim: new THREE.Color(0x24272c),
+  green: new THREE.Color(0x2cff6e),
+  greenDeep: new THREE.Color(0x0b6b2c),
 };
+
+/* One floor panel: framed plate with a grid of perforations. Tiled across
+   the rack aisle so the deck reads as raised-floor grating. */
+function makeGratingTexture() {
+  const size = 128;
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = size;
+  const g = canvas.getContext("2d");
+  g.fillStyle = "#2a2d32";
+  g.fillRect(0, 0, size, size);
+  g.fillStyle = "#050607";
+  g.fillRect(0, 0, size, 4);
+  g.fillRect(0, 0, 4, size);
+  for (let y = 0; y < 10; y++)
+    for (let x = 0; x < 10; x++) g.fillRect(12 + x * 11.2, 12 + y * 11.2, 6, 6);
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  tex.repeat.set(9, 9);
+  tex.anisotropy = 4;
+  return tex;
+}
+M.grating.map = makeGratingTexture();
 
 /* Soft round sprite generated on a canvas — used by particles and halos. */
 export function makeGlowTexture() {
@@ -127,14 +156,13 @@ function lerpColor(a, b, k) {
   return _c.copy(a).lerp(b, k);
 }
 
-/* Five-petal rotor shape for GPU fans (flat, so it costs ~30 triangles). */
-function makeRotorGeometry() {
+/* Petal rotor shape for rack fans (flat, a few dozen triangles). */
+function makeRotorGeometry(petals = 7) {
   const shape = new THREE.Shape();
-  const petals = 5;
   shape.moveTo(0.04, 0);
   for (let k = 0; k < petals; k++) {
     const a0 = (k / petals) * TAU;
-    const a1 = a0 + TAU / petals * 0.55;
+    const a1 = a0 + TAU / petals * 0.62;
     const a2 = a0 + TAU / petals;
     shape.quadraticCurveTo(Math.cos(a0 + 0.2) * 0.2, Math.sin(a0 + 0.2) * 0.2, Math.cos(a1) * 0.16, Math.sin(a1) * 0.16);
     shape.lineTo(Math.cos(a2) * 0.04, Math.sin(a2) * 0.04);
@@ -355,90 +383,248 @@ const builders = {
     };
   },
 
+  /* Server-rack arc behind the core: eight cabinets, each one accelerator.
+     Cabinets alternate between blade bays (drive sleds + status LEDs) and
+     triple-fan cooling doors with neon rings; the outer face carries the
+     opposite door so the hot aisle reads as well as the cold one. Every
+     part is instanced across all cabinets via a per-cabinet basis matrix
+     (local x = tangent, y = up, z = toward the core). */
   "gpu-compute"(ctx) {
     const g = new THREE.Group();
     const N = 8;
     const R = 3.3;
-    const bodies = inst(G.box, M.graphite, N);
-    const dies = inst(G.box, ctx.accent, N);
-    const leds = ledInst(G.box, N * 6);
-    const finCount = ctx.quality.low ? 5 : 9;
-    const fins = inst(G.box, M.titanium, N * finCount);
-    const fanRings = inst(new THREE.TorusGeometry(0.19, 0.016, 6, 24), M.titanium, N * 2);
-    const rotors = inst(makeRotorGeometry(), M.rotor, N * 2, true);
-    const bridges = inst(G.box, M.titanium, N - 1);
-    const fanPos = [];
-    const angles = [];
+    const W = 0.92;
+    const H = 1.85;
+    const D = 0.56;
+    const BAY0 = 0.16;
+    const BAY1 = H - 0.2;
+    const BLADES = ctx.quality.low ? 7 : 10;
+    const FANS = 3;
+    const ARC0 = -155;
+    const SPAN = 130;
+    const thAt = (i) => (ARC0 + (i * SPAN) / (N - 1)) * DEG;
+
+    /* Door layout: a fan door on every third cabinet's inner face, and the
+       opposite door type on the outer face. faces: [cabinet, side, isFan]. */
+    const faces = [];
     for (let i = 0; i < N; i++) {
-      const th = (-155 + (i * 130) / (N - 1)) * DEG;
-      angles.push(th);
-      const ry = -(th + Math.PI / 2);
-      const cx = Math.cos(th) * R;
-      const cz = Math.sin(th) * R;
-      /* Radial unit vector (outward) and tangent. */
-      const ox = Math.cos(th);
-      const oz = Math.sin(th);
-      const tx = -Math.sin(th);
-      const tz = Math.cos(th);
-      setInst(bodies, i, cx, 0.92, cz, 0.95, 1.7, 0.32, 0, ry, 0);
-      /* Die window + LED strip on the inner face (toward the core). */
-      setInst(dies, i, cx - ox * 0.165, 1.1, cz - oz * 0.165, 0.5, 0.5, 0.02, 0, ry, 0);
-      for (let k = 0; k < 6; k++) {
-        setInst(leds, i * 6 + k, cx - ox * 0.165 + tx * 0.36, 0.35 + k * 0.17, cz - oz * 0.165 + tz * 0.36, 0.05, 0.09, 0.02, 0, ry, 0);
+      const innerFan = i % 3 === 1;
+      faces.push([i, 1, innerFan], [i, -1, !innerFan]);
+    }
+    const bladeFaces = faces.filter((f) => !f[2]);
+    const fanFaces = faces.filter((f) => f[2]);
+
+    const body = inst(G.box, M.rackBody, N);
+    const posts = inst(G.box, M.titaniumDark, N * 4);
+    const plinths = inst(G.box, M.graphite, N);
+    const caps = inst(G.box, M.titaniumDark, N);
+    const vents = inst(G.box, M.graphiteDark, N * 7);
+    const cables = inst(G.cylLow, M.cable, N * 6);
+    const clamps = inst(G.box, M.titanium, N * 2);
+    const headers = inst(G.box, ctx.accent, N);
+    const spines = inst(G.box, M.graphite, N - 1);
+    const trays = inst(G.box, M.titaniumDark, N - 1);
+    const trayCables = inst(G.cylLow, M.cable, (N - 1) * 2);
+    const bezels = inst(G.box, M.graphiteDark, faces.length);
+    const slabs = inst(G.box, M.titaniumDark, bladeFaces.length * BLADES);
+    const slabVents = inst(G.box, M.graphiteDark, bladeFaces.length * BLADES);
+    const handles = inst(G.box, M.titanium, bladeFaces.length * BLADES);
+    const housings = inst(G.box, M.titaniumDark, fanFaces.length * FANS);
+    const hubs = inst(G.cylLow, M.titanium, fanFaces.length * FANS);
+    const rotors = inst(makeRotorGeometry(), M.rotor, fanFaces.length * FANS, true);
+    /* Emissive parts, coloured per frame. */
+    const strips = ledInst(G.box, N * 4 + (N - 1));
+    const topBars = ledInst(G.box, N);
+    const bladeLeds = ledInst(G.box, bladeFaces.length * BLADES * 2);
+    const fanRings = ledInst(new THREE.TorusGeometry(0.215, 0.018, 6, 40), fanFaces.length * FANS);
+    const fanGlow = ledInst(new THREE.CircleGeometry(0.2, 32), fanFaces.length * FANS);
+
+    /* Per-cabinet basis, then parts placed in cabinet-local coordinates. */
+    const basis = [];
+    const local = new THREE.Matrix4();
+    function put(mesh, idx, i, x, y, z, sx, sy, sz, rx = 0, ry = 0, rz = 0) {
+      _p.set(x, y, z);
+      _e.set(rx, ry, rz);
+      _q.setFromEuler(_e);
+      _s.set(sx, sy, sz);
+      local.compose(_p, _q, _s);
+      mesh.setMatrixAt(idx, _m.multiplyMatrices(basis[i], local));
+    }
+    for (let i = 0; i < N; i++) {
+      const th = thAt(i);
+      _p.set(Math.cos(th) * R, 0, Math.sin(th) * R);
+      _q.setFromAxisAngle(_s.set(0, 1, 0), -(th + Math.PI / 2));
+      basis.push(new THREE.Matrix4().compose(_p, _q, _s.set(1, 1, 1)));
+    }
+
+    const proxies = [];
+    let sIdx = 0;
+    for (let i = 0; i < N; i++) {
+      put(body, i, i, 0, H / 2, 0, W, H, D);
+      put(plinths, i, i, 0, 0.045, 0, W + 0.05, 0.09, D + 0.08);
+      put(caps, i, i, 0, H + 0.025, 0, W + 0.03, 0.05, D + 0.03);
+      for (let k = 0; k < 4; k++) put(posts, i * 4 + k, i, (k & 1 ? 1 : -1) * (W / 2), H / 2, (k & 2 ? 1 : -1) * (D / 2), 0.045, H, 0.045);
+      /* Perforated top panel: dark slats across the cap. */
+      for (let k = 0; k < 7; k++) put(vents, i * 7 + k, i, -W * 0.36 + k * W * 0.12, H + 0.055, -0.04, 0.05, 0.012, D * 0.62);
+      /* Two cable looms over the top, three cables each, plus clamps. */
+      for (let b = 0; b < 2; b++) {
+        const bx = b ? 0.22 : -0.24;
+        for (let k = 0; k < 3; k++) {
+          put(cables, i * 6 + b * 3 + k, i, bx + (k - 1) * 0.046, H + 0.078 + (k === 1 ? 0.034 : 0), 0, 0.026, D - 0.02, 0.026, Math.PI / 2, 0, 0);
+        }
+        put(clamps, i * 2 + b, i, bx, H + 0.09, 0.1, 0.17, 0.07, 0.035);
       }
-      /* Heat-sink fins and two fans on the outer face. */
-      for (let k = 0; k < finCount; k++) {
-        const off = -0.4 + (k * 0.8) / (finCount - 1);
-        setInst(fins, i * finCount + k, cx + tx * off + ox * 0.2, 1.38, cz + tz * off + oz * 0.2, 0.025, 0.55, 0.1, 0, ry, 0);
+      /* Header band with a lit label plate and the white top light bar. */
+      put(headers, i, i, 0, H - 0.1, D / 2 + 0.004, 0.2, 0.035, 0.01);
+      put(topBars, i, i, 0, H - 0.025, D / 2 + 0.006, W - 0.1, 0.018, 0.01);
+      /* Neon edge strips: two per face. */
+      for (let k = 0; k < 4; k++) {
+        const side = k & 2 ? -1 : 1;
+        put(strips, sIdx++, i, (k & 1 ? 1 : -1) * (W / 2 - 0.045), (BAY0 + BAY1) / 2, side * (D / 2 + 0.006), 0.02, BAY1 - BAY0, 0.012);
       }
-      for (let f = 0; f < 2; f++) {
-        const fy = 0.45 + f * 0.48;
-        const fx = cx + ox * 0.17;
-        const fz = cz + oz * 0.17;
-        setInst(fanRings, i * 2 + f, fx, fy, fz, 1, 1, 1, 0, ry, 0);
-        fanPos.push(fx, fy, fz, ry);
-      }
-      if (i < N - 1) {
-        const th2 = (-155 + ((i + 1) * 130) / (N - 1)) * DEG;
-        const mid = (th + th2) / 2;
-        setInst(bridges, i, Math.cos(mid) * (R - 0.05), 1.82, Math.sin(mid) * (R - 0.05), 0.95, 0.05, 0.12, 0, -(mid + Math.PI / 2), 0);
+      const proxy = new THREE.Mesh(G.box, M.proxy);
+      basis[i].decompose(proxy.position, proxy.quaternion, proxy.scale);
+      proxy.position.y = H / 2;
+      proxy.scale.set(W, H + 0.2, D);
+      proxies.push(proxy);
+    }
+
+    /* Between cabinets: a recessed spine post whose core-facing edge is a
+       neon seam, and a cable tray bridging the tops. */
+    for (let i = 0; i < N - 1; i++) {
+      const mid = (thAt(i) + thAt(i + 1)) / 2;
+      const ry = -(mid + Math.PI / 2);
+      const ox = Math.cos(mid);
+      const oz = Math.sin(mid);
+      setInst(spines, i, ox * (R - 0.06), H / 2, oz * (R - 0.06), 0.16, H - 0.04, D * 0.82, 0, ry, 0);
+      setInst(strips, sIdx++, ox * (R - 0.06 - D * 0.41), (BAY0 + BAY1) / 2, oz * (R - 0.06 - D * 0.41), 0.035, BAY1 - BAY0, 0.012, 0, ry, 0);
+      setInst(trays, i, ox * (R + 0.02), H + 0.06, oz * (R + 0.02), 0.34, 0.04, 0.3, 0, ry, 0);
+      for (let k = 0; k < 2; k++) {
+        const r = R - 0.05 + k * 0.12;
+        setInst(trayCables, i * 2 + k, ox * r, H + 0.1, oz * r, 0.026, 0.36, 0.026, 0, ry, Math.PI / 2);
       }
     }
-    for (const m of [bodies, dies, fins, fanRings, bridges]) g.add(m);
-    g.add(leds);
-    g.add(rotors);
+
+    /* Doors. side = +1 inner face (toward the core), -1 outer face. */
+    const rotorBase = [];
+    let bIdx = 0;
+    let fIdx = 0;
+    faces.forEach(([i, side, isFan], f) => {
+      const z = side * (D / 2);
+      const flip = side > 0 ? 0 : Math.PI;
+      put(bezels, f, i, 0, (BAY0 + BAY1) / 2, z + side * 0.004, W - 0.16, BAY1 - BAY0, 0.008);
+      if (!isFan) {
+        const pitch = (BAY1 - BAY0) / BLADES;
+        for (let k = 0; k < BLADES; k++) {
+          const y = BAY0 + pitch * (k + 0.5);
+          const n = bIdx * BLADES + k;
+          put(slabs, n, i, 0, y, z + side * 0.016, W - 0.22, pitch * 0.8, 0.02);
+          put(slabVents, n, i, -0.12, y, z + side * 0.028, 0.34, pitch * 0.42, 0.006);
+          put(handles, n, i, 0.27, y, z + side * 0.03, 0.035, pitch * 0.62, 0.012);
+          put(bladeLeds, n * 2, i, 0.16, y + pitch * 0.14, z + side * 0.029, 0.028, 0.022, 0.006);
+          put(bladeLeds, n * 2 + 1, i, 0.2, y + pitch * 0.14, z + side * 0.029, 0.028, 0.022, 0.006);
+        }
+        bIdx++;
+      } else {
+        const pitch = (BAY1 - BAY0) / FANS;
+        for (let k = 0; k < FANS; k++) {
+          const y = BAY0 + pitch * (k + 0.5);
+          const n = fIdx * FANS + k;
+          put(housings, n, i, 0, y, z + side * 0.012, W - 0.26, pitch * 0.94, 0.016);
+          put(fanGlow, n, i, 0, y, z + side * 0.021, 1, 1, 1, 0, flip, 0);
+          put(fanRings, n, i, 0, y, z + side * 0.028, 1, 1, 1, 0, flip, 0);
+          put(hubs, n, i, 0, y, z + side * 0.032, 0.055, 0.02, 0.055, Math.PI / 2, 0, 0);
+          /* Rotor basis, spun about its local z every frame. */
+          _p.set(0, y, z + side * 0.026);
+          _q.setFromEuler(_e.set(0, flip, 0));
+          local.compose(_p, _q, _s.set(1.04, 1.04, 1.04));
+          rotorBase.push(new THREE.Matrix4().multiplyMatrices(basis[i], local));
+        }
+        fIdx++;
+      }
+    });
+    const fanCab = fanFaces.flatMap((f) => [f[0], f[0], f[0]]);
+    const bladeCab = bladeFaces.map((f) => f[0]);
+
+    for (const m of [body, posts, plinths, caps, vents, cables, clamps, headers, spines, trays, trayCables, bezels, slabs, slabVents, handles, housings, hubs]) g.add(m);
+    for (const m of [strips, topBars, bladeLeds, fanRings, fanGlow, rotors]) g.add(m);
+
+    /* Grated floor sector under the racks, edged by floor light arcs. */
+    const pad = 9 * DEG;
+    const floor = new THREE.Mesh(
+      new THREE.RingGeometry(R - 0.62, R + 0.62, 48, 1, -(ARC0 + SPAN) * DEG - pad, SPAN * DEG + pad * 2),
+      M.grating
+    );
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.y = 0.022;
+    g.add(floor);
+    const arcMat = new THREE.MeshBasicMaterial({ color: 0xdfe6f2, toneMapped: false });
+    const floorArcs = [];
+    for (const r of [R - 0.66, R + 0.66]) {
+      const arc = new THREE.Group();
+      const torus = new THREE.Mesh(new THREE.TorusGeometry(r, 0.012, 4, 64, SPAN * DEG + pad * 2), arcMat);
+      torus.rotation.x = Math.PI / 2;
+      arc.add(torus);
+      arc.rotation.y = -(ARC0 * DEG - pad);
+      arc.position.y = 0.03;
+      g.add(arc);
+      floorArcs.push(arc);
+    }
+
+    /* Green spill from the cold aisle onto the deck and the core. */
+    const spill = new THREE.PointLight(PALETTE.green, 0, 6.5, 1.6);
+    spill.position.set(0, 0.9, -(R - 1.1));
+    g.add(spill);
+
     let spin = 0;
     const updateRotors = () => {
-      for (let j = 0; j < N * 2; j++) {
-        const o = j * 4;
-        _p.set(fanPos[o], fanPos[o + 1], fanPos[o + 2]);
-        _e.set(0, fanPos[o + 3], spin + j * 0.7, "YXZ");
-        _q.setFromEuler(_e);
-        _s.set(1, 1, 1);
-        _m.compose(_p, _q, _s);
-        rotors.setMatrixAt(j, _m);
+      for (let j = 0; j < rotorBase.length; j++) {
+        local.makeRotationZ(spin * (j % 2 ? -1 : 1) + j * 0.7);
+        rotors.setMatrixAt(j, _m.multiplyMatrices(rotorBase[j], local));
       }
       rotors.instanceMatrix.needsUpdate = true;
     };
     updateRotors();
+    const onAt = (i, sim) => (sim.intro.gpu > i / N ? 1 : 0);
     return {
       group: g,
-      anchors: angles.map((th) => [Math.cos(th) * (R - 0.2), 1.2, Math.sin(th) * (R - 0.2)]),
+      proxies,
+      anchors: Array.from({ length: N }, (_, i) => {
+        const r = R - D / 2 - 0.1;
+        return [Math.cos(thAt(i)) * r, 1.0, Math.sin(thAt(i)) * r];
+      }),
       update(dt, t, sim, c) {
-        spin += dt * (2 + sim.gpuLoad * 16) * sim.motion;
+        const load = sim.gpuLoad;
+        spin += dt * (2 + load * 16) * sim.motion;
         updateRotors();
-        for (let i = 0; i < N; i++) {
-          const on = sim.intro.gpu > i / N ? 1 : 0;
-          for (let k = 0; k < 6; k++) {
-            /* LEDs climb with load: a bar meter per GPU. */
-            const lvl = sim.gpuLoad * 6 + Math.sin(t * 9 + i * 1.3) * 0.6;
-            const v = k < lvl ? 1 : 0.12;
-            const col = k >= 4 && v === 1 && sim.prefillLevel > 0.5 ? PALETTE.lime : PALETTE.cool;
-            leds.setColorAt(i * 6 + k, lit(col, v * on * 0.9 * c.emph + 0.03));
+        const e = c.emph;
+        for (let k = 0; k < strips.count; k++) {
+          const i = k < N * 4 ? k >> 2 : k - N * 4;
+          const wave = 0.85 + 0.15 * Math.sin(t * 2.4 - k * 0.6);
+          strips.setColorAt(k, lit(PALETTE.green, (0.35 + load * 0.75) * wave * onAt(i, sim) * e + 0.02));
+        }
+        for (let i = 0; i < N; i++) topBars.setColorAt(i, lit(PALETTE.cool, 0.55 * onAt(i, sim) * e + 0.03));
+        for (let j = 0; j < fanRings.count; j++) {
+          const on = onAt(fanCab[j], sim);
+          fanRings.setColorAt(j, lit(PALETTE.green, (0.45 + load * 0.9) * on * e + 0.03));
+          fanGlow.setColorAt(j, lit(PALETTE.greenDeep, (0.35 + load * 0.6) * on * e + 0.02));
+        }
+        for (let b = 0; b < bladeCab.length; b++) {
+          const on = onAt(bladeCab[b], sim);
+          /* Activity LEDs climb with load: each blade bay is a bar meter. */
+          const lvl = load * BLADES + Math.sin(t * 9 + b * 1.3) * 0.8;
+          for (let k = 0; k < BLADES; k++) {
+            const n = (b * BLADES + k) * 2;
+            const busy = k < lvl && Math.sin(t * (11 + k) + b * 2.7 + k) > -0.4 ? 1 : 0.1;
+            bladeLeds.setColorAt(n, lit(PALETTE.green, 0.7 * on * e + 0.03));
+            const col = busy === 1 && sim.prefillLevel > 0.5 ? PALETTE.lime : PALETTE.cool;
+            bladeLeds.setColorAt(n + 1, lit(col, busy * on * 0.8 * e + 0.02));
           }
         }
-        leds.instanceColor.needsUpdate = true;
-        c.activity = (0.25 + sim.gpuLoad * 1.5) * sim.intro.gpu;
+        for (const m of [strips, topBars, fanRings, fanGlow, bladeLeds]) m.instanceColor.needsUpdate = true;
+        arcMat.color.copy(PALETTE.cool).multiplyScalar(0.25 + 0.45 * sim.intro.gpu * Math.min(1, e));
+        spill.intensity = (1.2 + load * 3.2) * sim.intro.gpu * Math.min(1, e);
+        c.activity = (0.25 + load * 1.5) * sim.intro.gpu;
       },
     };
   },

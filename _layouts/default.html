@@ -139,6 +139,109 @@
           });
         }
 
+        function parseRgb(value) {
+          var m = (value || "").match(/[\d.]+/g);
+          if (!m || m.length < 3) return null;
+          return { r: +m[0], g: +m[1], b: +m[2], a: m[3] === undefined ? 1 : +m[3] };
+        }
+
+        function luminance(c) {
+          function ch(v) {
+            v /= 255;
+            return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+          }
+          return 0.2126 * ch(c.r) + 0.7152 * ch(c.g) + 0.0722 * ch(c.b);
+        }
+
+        /* For a subgraph, only recolour its own title, not nested nodes. */
+        function labelScope(group) {
+          if (group.classList && group.classList.contains("cluster")) {
+            return group.querySelector(":scope > .cluster-label") || group;
+          }
+          return group;
+        }
+
+        function setLabelColor(group, color) {
+          labelScope(group)
+            .querySelectorAll(
+              ".nodeLabel, .cluster-label, .label, span, p, div, text, tspan"
+            )
+            .forEach(function (el) {
+              el.style.setProperty("color", color, "important");
+              el.style.setProperty("fill", color, "important");
+            });
+        }
+
+        /* Diagram sources set light pastel fills (`style X fill:#dbeafe`,
+           `classDef ... fill:#ecfdf5`) written for a white page. On the dark
+           canvas the theme forces light label text, so those nodes render as
+           white boxes with invisible text. Re-tint any light-filled shape to a
+           dark wash of its own accent colour and force its labels light. */
+        function adaptLightFills(svg) {
+          var shapes = svg.querySelectorAll(
+            "rect, polygon, path, circle, ellipse"
+          );
+          var bg = { r: 17, g: 18, b: 19 };
+          shapes.forEach(function (shape) {
+            if (shape.closest("marker, .edgePath, .edgePaths, .flowchart-link"))
+              return;
+            if (shape.classList.contains("flowchart-link")) return;
+            var cs = window.getComputedStyle(shape);
+            var fill = parseRgb(cs.fill);
+            if (!fill || fill.a < 0.5) return;
+            var fillLum = luminance(fill);
+            if (fillLum < 0.18) return;
+
+            var owner = shape.closest("g.node") || shape.closest("g.cluster");
+            var group = owner || shape.parentNode;
+
+            /* Saturated mid-tone fills (e.g. a bright "current" highlight)
+               are deliberate; keep them and switch their labels to dark. */
+            if (fillLum < 0.35) {
+              if (!owner) return;
+              labelScope(group).setAttribute("data-mid-fill", "");
+              setLabelColor(group, "#0a0a0b");
+              return;
+            }
+
+            var stroke = parseRgb(cs.stroke);
+            var accent =
+              stroke && stroke.a > 0.5 && luminance(stroke) > 0.03 &&
+              Math.max(stroke.r, stroke.g, stroke.b) -
+                Math.min(stroke.r, stroke.g, stroke.b) > 40
+                ? stroke
+                : fill;
+            var mix = function (k) {
+              return Math.round(bg[k] + (accent[k] - bg[k]) * 0.24);
+            };
+            shape.style.setProperty(
+              "fill",
+              "rgb(" + mix("r") + "," + mix("g") + "," + mix("b") + ")",
+              "important"
+            );
+            shape.style.setProperty(
+              "stroke",
+              "rgb(" + accent.r + "," + accent.g + "," + accent.b + ")",
+              "important"
+            );
+            setLabelColor(group, "#f0f0fa");
+          });
+
+          /* classDef `color:` rules can still darken labels on nodes that
+             kept a dark fill; lift any label whose text is near-black. */
+          svg
+            .querySelectorAll(".nodeLabel, .cluster-label span, text")
+            .forEach(function (el) {
+              var cs = window.getComputedStyle(el);
+              var c = parseRgb(el.tagName.toLowerCase() === "text" ? cs.fill : cs.color);
+              if (el.closest("[data-mid-fill]")) return;
+              if (c && c.a > 0.5 && luminance(c) < 0.2) {
+                el.style.setProperty("color", "#f0f0fa", "important");
+                el.style.setProperty("fill", "#f0f0fa", "important");
+              }
+            });
+        }
+
         async function renderMermaid() {
           toDiagramContainers();
 
@@ -167,6 +270,8 @@
             try {
               var rendered = await window.mermaid.render(renderId, source);
               diagram.innerHTML = rendered.svg;
+              var svg = diagram.querySelector("svg");
+              if (isDark && svg) adaptLightFills(svg);
             } catch (error) {
               diagram.innerHTML =
                 "<pre><code>" + escapeHtml(source) + "</code></pre>";
