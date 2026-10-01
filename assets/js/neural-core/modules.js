@@ -17,6 +17,7 @@ import { buildSatellite } from "./satellite.js";
 import { buildStarship } from "./starship.js";
 import { buildDeathStar } from "./deathstar.js";
 import { buildDataPipeline } from "./datapipe.js";
+import { buildVectorDB } from "./vectordb.js";
 
 const TAU = Math.PI * 2;
 const DEG = Math.PI / 180;
@@ -917,46 +918,7 @@ const builders = {
   },
 
   "vector-db"(ctx) {
-    const g = new THREE.Group();
-    g.add(mesh(G.box, M.graphite, 0, 0.1, 0, 1.05, 0.2, 1.05));
-    g.add(mesh(G.box, ctx.accent, 0, 0.205, 0, 0.9, 0.012, 0.9));
-    const lattice = new THREE.Group();
-    lattice.position.y = 1.0;
-    const frame = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1.45, 1.45, 1.45)), M.line);
-    lattice.add(frame);
-    const n = ctx.quality.low ? 4 : 6;
-    const count = n * n * n;
-    const pts = ledInst(G.sphere, count);
-    const step = 1.2 / (n - 1);
-    /* Deterministic jitter so the lattice reads as data, not a grid. */
-    let seed = 7;
-    const rand = () => ((seed = (seed * 16807) % 2147483647) / 2147483647) - 0.5;
-    for (let i = 0; i < count; i++) {
-      const x = i % n;
-      const y = Math.floor(i / n) % n;
-      const z = Math.floor(i / (n * n));
-      setInst(pts, i, -0.6 + x * step + rand() * 0.12, -0.6 + y * step + rand() * 0.12, -0.6 + z * step + rand() * 0.12, 0.032, 0.032, 0.032);
-    }
-    lattice.add(pts);
-    g.add(lattice);
-    const hits = new Int16Array(4).fill(-1);
-    return {
-      group: g,
-      search() {
-        for (let k = 0; k < 4; k++) hits[k] = Math.floor(Math.random() * count);
-      },
-      update(dt, t, sim, c) {
-        lattice.rotation.y += dt * 0.12 * sim.motion;
-        for (let i = 0; i < count; i++) {
-          let hit = 0;
-          for (let k = 0; k < 4; k++) if (hits[k] === i) hit = sim.searchGlow;
-          const base = 0.14 + 0.06 * Math.sin(t * 1.5 + i);
-          pts.setColorAt(i, hit > 0.02 ? lit(PALETTE.lime, (0.3 + hit * 1.4) * c.emph) : lit(PALETTE.blue, base * c.emph));
-        }
-        pts.instanceColor.needsUpdate = true;
-        c.activity = 0.5 + sim.searchGlow;
-      },
-    };
+    return buildVectorDB(ctx);
   },
 
   embedding(ctx) {

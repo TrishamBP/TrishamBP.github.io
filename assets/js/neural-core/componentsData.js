@@ -264,12 +264,12 @@ export const componentsData = [
     id: "vector-db",
     name: "Vector Database",
     description:
-      "A lattice of embeddings. Approximate nearest-neighbour search lights up the handful of vectors closest to the query.",
+      "A glass cube of embeddings, each vector linked to its nearest neighbours. Approximate nearest-neighbour search lights up the handful of vectors closest to the query. Select it to split the index like an atom: electrons, protons, neutrons and their quarks.",
     technologies: ["FAISS", "Milvus", "Qdrant", "pgvector", "HNSW · IVF-PQ"],
     category: "RETRIEVAL",
     mapGroup: "RETRIEVAL",
     position: [4.3, 0.3, -0.4],
-    cameraTarget: { position: [8.6, 2.6, 2.6], target: [4.3, 1.1, -0.4] },
+    cameraTarget: { position: [8.4, 2.5, 2.5], target: [4.3, 1.15, -0.4] },
     color: BLUE,
     metadata: {
       Index: "HNSW graph / IVF-PQ",
