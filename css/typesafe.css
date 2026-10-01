@@ -73,16 +73,18 @@ body.theme-typesafe {
   font-family: var(--ts-body);
 }
 
-/* Dark mode: the same system inverted onto #1e1e1e, not the site-wide navy. */
+/* Dark mode (the site default): SpaceX palette — pure black canvas, the
+   rgb(240 240 250) off-white for type at stepped opacities, and their
+   rgb(37 38 40) charcoal for raised surfaces. */
 body.theme-typesafe.dark-mode {
-  --ts-bg: #1e1e1e;
-  --ts-surface: #262626;
-  --ts-surface-2: #2f2f2f;
-  --ts-fg: var(--ts-light);
-  --ts-fg-soft: #fefefedb;
-  --ts-fg-faint: #a6a6a6;
-  --ts-line: #4a4a4a;
-  --ts-accent: #0fd97a;
+  --ts-bg: #000000;
+  --ts-surface: #111213;
+  --ts-surface-2: #252628;
+  --ts-fg: #f0f0fa;
+  --ts-fg-soft: rgba(240, 240, 250, 0.8);
+  --ts-fg-faint: rgba(240, 240, 250, 0.55);
+  --ts-line: rgba(240, 240, 250, 0.22);
+  --ts-accent: #f0f0fa;
 }
 
 /* -----------------------------------------------------------------------------
@@ -114,6 +116,17 @@ body.theme-typesafe .topnav-brand {
 body.theme-typesafe .topnav-link:hover,
 body.theme-typesafe .topnav-link.active {
   color: var(--ts-accent);
+}
+
+/* SpaceX-style nav in dark mode: charcoal pill, off-white type. */
+body.theme-typesafe.dark-mode .topnav-link.active {
+  background: var(--ts-surface-2);
+  color: var(--ts-fg);
+}
+
+body.theme-typesafe.dark-mode .topnav-link:hover {
+  background: var(--ts-surface);
+  color: var(--ts-fg);
 }
 
 body.theme-typesafe .dark-mode-toggle {
@@ -232,6 +245,22 @@ body.theme-typesafe .post-content a:hover {
   color: var(--ts-accent);
   text-decoration-thickness: 2.4px;
   text-underline-offset: 2px;
+}
+
+/* Bare links on listing pages (Honors "View on GitHub", etc.) had no colour
+   rule and fell back to browser-default blue, unreadable on black. Match the
+   article link treatment. */
+body.theme-typesafe .site-shell p a:not([class]),
+body.theme-typesafe .site-shell li a:not([class]) {
+  color: var(--ts-fg);
+  text-decoration: underline;
+  text-decoration-color: var(--ts-line);
+  text-underline-offset: 3px;
+}
+
+body.theme-typesafe .site-shell p a:not([class]):hover,
+body.theme-typesafe .site-shell li a:not([class]):hover {
+  text-decoration-color: var(--ts-fg);
 }
 
 body.theme-typesafe .post-content hr {

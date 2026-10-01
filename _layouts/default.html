@@ -6,7 +6,11 @@
     Kept in sync with the same assign in _includes/head.html.
   {%- endcomment -%}
   {%- assign page_theme = page.theme | default: 'typesafe' -%}
-  <body{% unless page_theme == 'none' %} class="theme-{{ page_theme }}"{% endunless %}>
+  {%- comment -%}
+    Dark mode is the default and is rendered server-side (no light flash);
+    the toggle script below only removes it for visitors who chose light.
+  {%- endcomment -%}
+  <body class="{% unless page_theme == 'none' %}theme-{{ page_theme }} {% endunless %}dark-mode">
     <nav class="topnav" id="topnav">
       <div class="topnav-inner">
         <a class="topnav-brand" href="{{ '/' | relative_url }}">Trisham Patil</a>
@@ -89,11 +93,9 @@
         var toggle = document.getElementById("dark-mode-toggle");
         if (!toggle) return;
 
+        /* Dark is the default; only an explicit "light" choice opts out. */
         var stored = localStorage.getItem("theme");
-        var prefersDark =
-          window.matchMedia &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches;
-        var isDark = stored ? stored === "dark" : prefersDark;
+        var isDark = stored !== "light";
 
         function applyMode(darkEnabled) {
           root.classList.toggle("dark-mode", darkEnabled);

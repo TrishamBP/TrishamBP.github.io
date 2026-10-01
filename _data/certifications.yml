@@ -25,8 +25,8 @@
   issued: "2026-09"
   date: "Sep 2026"
   credential_id: "CMLJQHUC015L601Y9NG2DBY"
-  url: ""
-  image: ""
+  url: "https://lablab.ai/u/@trishampatil48922/ai-hackathons/ibm-bob-2-hackathon/certificate"
+  image: "/assets/images/certifications/ibm-bob-2-hackathon-lablab.png"
   description: >
     Certificate of Excellence for building and shipping an AI project during
     the IBM Bob 2.0 Hackathon hosted by lablab.ai.
@@ -38,8 +38,8 @@
   issued: "2026-07"
   date: "Jul 2026"
   credential_id: "CMSR9RTK807QLS801ZPRTXIOK"
-  url: ""
-  image: ""
+  url: "https://lablab.ai/u/@trishampatil48922/ai-hackathons/amd-developer-hackathon-act-ii/certificate"
+  image: "/assets/images/certifications/amd-act-ii-hackathon-lablab.png"
   description: >
     Certificate of Performance for the AMD Developer Hackathon ACT II on
     lablab.ai, ranked in the top 0.2% of ~20,000 participants.
@@ -91,7 +91,7 @@
   date: "Mar 2026"
   credential_id: "69b4ebc117e118d54f027885"
   url: ""
-  image: ""
+  image: "/assets/images/certifications/data-engineering-python-ai-freecodecamp.png"
   description: >
     Building data ingestion and streaming pipelines with Python, with AI
     applied across the data engineering workflow.
