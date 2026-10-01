@@ -48,13 +48,13 @@ export const componentsData = [
     id: "llm-inference",
     name: "LLM Inference Engine",
     description:
-      "The heart of the machine: transformer forward passes that turn a prompt into tokens. Every request, retrieved document and agent step ends up here.",
+      "The reactor at the heart of the machine: transformer forward passes that turn a prompt into tokens. Every request, retrieved document and agent step ends up here. Selected, it opens into a hologram: drag to spin it, hover a callout to trace a part.",
     technologies: ["vLLM", "SGLang", "TensorRT-LLM", "PagedAttention", "Continuous batching"],
     category: "CORE",
     mapGroup: "INFERENCE",
     position: [0, 0.3, 0],
-    cameraTarget: { position: [3.4, 3.4, 6.4], target: [0, 2.1, 0] },
-    color: COOL,
+    cameraTarget: { position: [4.7, 4.3, 9.0], target: [0, 2.05, 0] },
+    color: "#ff7414",
     metadata: {
       Workload: "Transformer forward pass",
       Batching: "Continuous / in-flight",

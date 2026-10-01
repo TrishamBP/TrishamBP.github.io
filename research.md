@@ -95,7 +95,11 @@ includelink: true
     Research-first writeups on AI systems, domain-specific NLP, model architecture, and production lessons from real deployments.
   </p>
 
-  {% assign research_posts = site.research | sort: "date" | reverse %}
+  {%- comment -%} Engineering implementations can also appear here by setting
+     `research_crosslist: true` in their frontmatter; the card links to the
+     single engineering page, so no duplicate content. {%- endcomment -%}
+  {% assign crosslisted = site.implementations | where: "research_crosslist", true %}
+  {% assign research_posts = site.research | concat: crosslisted | sort: "date" | reverse %}
   <div class="articles-grid" id="research-articles-grid">
     {% for post in research_posts %}
       <article class="article-card research-article-item" data-index="{{ forloop.index0 }}">

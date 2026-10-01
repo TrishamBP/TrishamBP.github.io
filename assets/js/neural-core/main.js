@@ -121,7 +121,7 @@ function start({ small, coarse, reducedQuery }) {
   const rim = new THREE.DirectionalLight(0x4f7dff, 0.55);
   rim.position.set(-8, 4, -10);
   scene.add(rim);
-  const coreLight = new THREE.PointLight(0xcfe0ff, 0, 9, 1.6);
+  const coreLight = new THREE.PointLight(0xff8a3c, 0, 9, 1.6);
   coreLight.position.set(0, 2.2, 0);
   scene.add(coreLight);
 
@@ -192,6 +192,15 @@ function start({ small, coarse, reducedQuery }) {
   });
   const byId = Object.fromEntries(components.map((c) => [c.data.id, c]));
   const parts = Object.fromEntries(components.map((c) => [c.data.id, c.part]));
+
+  /* The reactor opens into a hologram while selected (reactor.js). The
+     scheduler deck above it lifts clear of the exploded view. */
+  const host = byId["llm-inference"];
+  const holo = host && host.part.holo;
+  /* Positive lifts clear of the exploded view, negative retracts into the
+     deck so nothing in front blocks the hologram. */
+  const HOLO_LIFT = { "cpu-control": 1.4, prefill: -2.6, decode: -2.6, "model-serving": -1.2 };
+  const holoOpen = () => !!holo && selected === host.index && holo.k > 0.3;
 
   /* Selection / hover outlines: one reusable edge box each. */
   const edges = new THREE.EdgesGeometry(new THREE.BoxGeometry(1, 1, 1));
@@ -279,6 +288,7 @@ function start({ small, coarse, reducedQuery }) {
     if (!c) return;
     selected = i;
     kbIndex = i;
+    holo?.set(i === host.index);
     rig.holdFree = true;
     rig.focus(c.data.cameraTarget);
     ui.showInspector(c);
@@ -290,6 +300,7 @@ function start({ small, coarse, reducedQuery }) {
   function deselect(silent = false) {
     if (selected < 0 && !activeGroup) return;
     selected = -1;
+    holo?.set(false);
     rig.holdFree = false;
     ui.hideInspector();
     if (activeGroup) setGroup(null, true);
@@ -304,6 +315,7 @@ function start({ small, coarse, reducedQuery }) {
     if (id) {
       const g = MAP_GROUPS.find((m) => m.id === id);
       selected = -1;
+      holo?.set(false);
       ui.hideInspector();
       rig.holdFree = true;
       rig.focus(g.cameraTarget);
@@ -325,6 +337,7 @@ function start({ small, coarse, reducedQuery }) {
 
   function reset() {
     selected = -1;
+    holo?.set(false);
     activeGroup = null;
     rig.holdFree = false;
     ui.hideInspector();
@@ -366,7 +379,41 @@ function start({ small, coarse, reducedQuery }) {
     return hits.length ? hits[0].object.userData.index : -1;
   }
 
+  /* Grab-to-spin on the open hologram. Capture phase on the viewport so it
+     runs before OrbitControls sees the pointerdown. */
+  let grab = null;
+  viewport.addEventListener(
+    "pointerdown",
+    (e) => {
+      if (e.target !== canvas || e.button > 0 || !holoOpen()) return;
+      pick(e.clientX, e.clientY);
+      if (!holo.hits(raycaster)) return;
+      grab = { x: e.clientX, y: e.clientY, t: performance.now() };
+      controls.enabled = false;
+      canvas.setPointerCapture?.(e.pointerId);
+      canvas.style.cursor = "grabbing";
+    },
+    { capture: true }
+  );
+  function endGrab() {
+    if (!grab) return;
+    grab = null;
+    holo.release();
+    controls.enabled = true;
+    canvas.style.cursor = "grab";
+  }
+  canvas.addEventListener("pointercancel", endGrab);
+
   canvas.addEventListener("pointermove", (e) => {
+    if (grab) {
+      const now = performance.now();
+      holo.grab(e.clientX - grab.x, e.clientY - grab.y, now - grab.t);
+      grab.x = e.clientX;
+      grab.y = e.clientY;
+      grab.t = now;
+      invalidate();
+      return;
+    }
     if (e.pointerType === "touch") return;
     ndc.lastX = e.clientX;
     ndc.lastY = e.clientY;
@@ -384,6 +431,7 @@ function start({ small, coarse, reducedQuery }) {
     down = { x: e.clientX, y: e.clientY, t: performance.now() };
   });
   canvas.addEventListener("pointerup", (e) => {
+    endGrab();
     if (!down) return;
     const moved = Math.hypot(e.clientX - down.x, e.clientY - down.y);
     const quick = performance.now() - down.t < 600;
@@ -391,6 +439,7 @@ function start({ small, coarse, reducedQuery }) {
     if (moved > 8 || !quick) return;
     const i = pick(e.clientX, e.clientY);
     if (i >= 0) select(i, { fromPointer: true });
+    else if (holoOpen() && holo.hits(raycaster)) return;
     else if (selected >= 0 || activeGroup) deselect();
   });
 
@@ -633,10 +682,16 @@ function start({ small, coarse, reducedQuery }) {
       pointerDirty = false;
       hovered = pick(ndc.lastX, ndc.lastY);
       canvas.style.cursor = hovered >= 0 ? "pointer" : "";
+      if (holoOpen()) {
+        holo.pick(raycaster);
+        if (holo.hits(raycaster)) canvas.style.cursor = "grab";
+      }
       rig.hovering = hovered >= 0;
     }
     const shown = document.activeElement === viewport && kbIndex >= 0 && selected < 0 ? kbIndex : hovered;
 
+    sim.holo = holo ? holo.k : 0;
+    const holoLift = smooth(0, 0.6, sim.holo);
     emphasisTargets();
     const ea = 1 - Math.exp(-dt * 7);
     const oa = reducedMotion ? 1 : 1 - Math.exp(-dt * 4);
@@ -648,13 +703,14 @@ function start({ small, coarse, reducedQuery }) {
       const sc = c.index === selected ? 1.035 : 1;
       c.scale += (sc - c.scale) * oa;
       c.holder.position.copy(c.base).addScaledVector(c.dir, c.offset);
+      if (HOLO_LIFT[c.data.id]) c.holder.position.y += HOLO_LIFT[c.data.id] * holoLift;
       c.holder.scale.setScalar(c.scale);
       c.part.update(dt * motion, simTime, sim, c);
       c.accent.emissiveIntensity = 0.55 * c.emph * c.activity * (0.15 + 0.85 * sim.intro.core);
     }
     coreLight.intensity = (1.2 + sim.coreLevel * 3) * sim.intro.core;
 
-    if (selected >= 0) placeOutline(selectBox, components[selected]);
+    if (selected >= 0 && !(holo && selected === host.index)) placeOutline(selectBox, components[selected]);
     else selectBox.visible = false;
     if (shown >= 0 && shown !== selected) placeOutline(hoverBox, components[shown]);
     else hoverBox.visible = false;
@@ -734,5 +790,5 @@ function start({ small, coarse, reducedQuery }) {
   startLoop();
 
   /* Handy for debugging in the console; not used by the page. */
-  window.__neuralCore = { scene, camera, rig, sim, components, byId, renderer };
+  window.__neuralCore = { scene, camera, rig, sim, components, byId, renderer, select, deselect };
 }

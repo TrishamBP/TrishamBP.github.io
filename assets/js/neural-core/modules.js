@@ -13,6 +13,7 @@
    ------------------------------------------------------------------------ */
 
 import * as THREE from "three";
+import { buildReactor } from "./reactor.js";
 
 const TAU = Math.PI * 2;
 const DEG = Math.PI / 180;
@@ -326,60 +327,43 @@ export function buildChassis() {
 /* ctx: { accent, quality: { low:boolean } }                                */
 
 const builders = {
+  /* Tokamak-style fusion reactor; see reactor.js (also owns the hologram). */
   "llm-inference"(ctx) {
-    const g = new THREE.Group();
-    g.add(mesh(G.cyl, M.graphite, 0, 0.18, 0, 1.08, 0.36, 1.08));
-    g.add(mesh(G.cyl, M.graphite, 0, 0.5, 0, 0.95, 0.14, 0.95));
-    g.add(mesh(G.cyl, M.graphite, 0, 3.38, 0, 0.95, 0.14, 0.95));
-    const core = mesh(G.cyl, ctx.accent, 0, 1.95, 0, 0.5, 2.8, 0.5);
-    g.add(core);
-    const ribs = inst(G.box, M.titanium, 12);
-    for (let i = 0; i < 12; i++) {
-      const a = (i / 12) * TAU;
-      setInst(ribs, i, Math.cos(a) * 0.74, 1.95, Math.sin(a) * 0.74, 0.1, 2.8, 0.2, 0, -a, 0);
-    }
-    g.add(ribs);
-    const halo = new THREE.Sprite(
-      new THREE.SpriteMaterial({ map: ctx.glow, color: 0xcfe0ff, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.5 })
-    );
-    halo.position.set(0, 1.95, 0);
-    halo.scale.set(3.4, 4.6, 1);
-    g.add(halo);
-    const proxy = mesh(G.cyl, M.proxy, 0, 1.75, 0, 0.98, 3.5, 0.98);
-    return {
-      group: g,
-      proxies: [proxy],
-      update(dt, t, sim, c) {
-        c.activity = 0.55 + sim.coreLevel * 0.9 + Math.sin(t * 2.2) * 0.05;
-        halo.material.opacity = (0.18 + sim.coreLevel * 0.45) * sim.intro.core * Math.min(1, c.emph);
-      },
-    };
+    return buildReactor(ctx);
   },
 
+  /* Poloidal-field rings around the reactor: one wide equatorial ring and
+     two tighter ones above and below the coils. They open out with the
+     reactor's exploded view (sim.holo) and glow gold in the hologram. */
   attention(ctx) {
     const g = new THREE.Group();
     const rings = [];
     const heads = [];
-    const ringGeo = new THREE.TorusGeometry(1.32, 0.026, 6, 72);
     const proxies = [];
-    const ys = [1.05, 1.75, 2.45];
+    const MID = 1.7;
+    const ys = [0.75, MID, 2.65];
+    const radii = [1.25, 1.82, 1.25];
+    const ringMat = M.titanium.clone();
+    ringMat.emissive = new THREE.Color(0xffb444);
+    ringMat.emissiveIntensity = 0;
     for (let r = 0; r < 3; r++) {
+      const R = radii[r];
       const ring = new THREE.Group();
       ring.position.y = ys[r];
-      ring.rotation.z = (r - 1) * 4 * DEG;
-      const torus = new THREE.Mesh(ringGeo, M.titanium);
+      ring.rotation.z = (r - 1) * 3 * DEG;
+      const torus = new THREE.Mesh(new THREE.TorusGeometry(R, 0.03, 8, 96), ringMat);
       torus.rotation.x = Math.PI / 2;
       ring.add(torus);
       const h = ledInst(G.sphere, 8);
       for (let i = 0; i < 8; i++) {
         const a = (i / 8) * TAU;
-        setInst(h, i, Math.cos(a) * 1.32, 0, Math.sin(a) * 1.32, 0.065, 0.065, 0.065);
+        setInst(h, i, Math.cos(a) * R, 0, Math.sin(a) * R, 0.065, 0.065, 0.065);
       }
       ring.add(h);
       g.add(ring);
       rings.push(ring);
       heads.push(h);
-      const p = new THREE.Mesh(new THREE.TorusGeometry(1.32, 0.2, 6, 24), M.proxy);
+      const p = new THREE.Mesh(new THREE.TorusGeometry(R, 0.1, 6, 32), M.proxy);
       p.rotation.x = Math.PI / 2;
       p.position.y = ys[r];
       proxies.push(p);
@@ -389,14 +373,20 @@ const builders = {
       proxies,
       update(dt, t, sim, c) {
         const speed = 0.25 + sim.coreLevel * 0.6;
+        const hk = sim.holo || 0;
+        const ex = Math.min(1, hk / 0.6);
+        const open = ex * ex * (3 - 2 * ex);
+        ringMat.emissiveIntensity = hk * 0.3;
         for (let r = 0; r < 3; r++) {
           rings[r].rotation.y += dt * speed * (r % 2 ? -1 : 1) * (1 + r * 0.25) * sim.motion;
+          rings[r].position.y = MID + (ys[r] - MID) * (1 + 0.6 * open);
+          rings[r].scale.setScalar(1 + 0.35 * open);
           const h = heads[r];
           for (let i = 0; i < 8; i++) {
             /* A head flashes when the attention pulse sweeps past its index. */
             const phase = (sim.attnSweep * 8 - i - r * 2.7 + 64) % 8;
             const flash = phase < 1 ? 1 - phase : 0;
-            const k = (0.25 + sim.attnPulse * flash * 1.6 + sim.prefillLevel * 0.5) * sim.intro.core * c.emph;
+            const k = (0.25 + sim.attnPulse * flash * 1.6 + sim.prefillLevel * 0.5) * sim.intro.core * Math.max(c.emph, hk);
             h.setColorAt(i, lerpColor(PALETTE.blue, PALETTE.cool, flash).multiplyScalar(k));
           }
           h.instanceColor.needsUpdate = true;
