@@ -374,49 +374,52 @@ export const componentsData = [
    is fully reached; poses are spherical around `target` (degrees). */
 export const storyKeyframes = [
   { p: 0.0, target: [0, 1.9, 0], az: 38, el: 21, dist: 15.5 },
-  { p: 0.12, target: [0, 1.9, 0], az: 38, el: 21, dist: 15.5 },
-  { p: 0.3, target: [0, 1.5, -1.8], az: 160, el: 27, dist: 12.4 },
-  { p: 0.5, target: [-1.4, 1.5, 1.4], az: -18, el: 16, dist: 11.2 },
-  { p: 0.7, target: [3.0, 2.4, 0.6], az: 64, el: 17, dist: 11.6 },
-  { p: 0.9, target: [0, 1.8, 0], az: -24, el: 30, dist: 19.5 },
-  { p: 1.0, target: [0, 1.8, 0], az: -24, el: 30, dist: 19.5 },
+  { p: 0.11, target: [0, 1.9, 0], az: 38, el: 21, dist: 15.5 },
+  { p: 0.27, target: [0, 1.5, -1.8], az: 160, el: 27, dist: 12.4 },
+  { p: 0.45, target: [-1.4, 1.5, 1.4], az: -18, el: 16, dist: 11.2 },
+  { p: 0.63, target: [3.0, 2.4, 0.6], az: 64, el: 17, dist: 11.6 },
+  { p: 0.8, target: [0, 1.8, 0], az: -24, el: 30, dist: 19.5 },
+  { p: 0.85, target: [0, 1.8, 0], az: -24, el: 30, dist: 19.5 },
+  /* Handoff (see main.js `out`): the camera pulls back and rises while the
+     scene fades into black. */
+  { p: 1.0, target: [0, 1.4, 0], az: -38, el: 38, dist: 31 },
 ];
 
 export const storyChapters = [
   {
     from: 0.0,
-    to: 0.2,
+    to: 0.18,
     index: "00",
     title: "The full machine",
     body: "Eighteen modules of a production LLM system, from GPUs and HBM to retrieval and agents, running one live inference loop.",
     focus: null,
   },
   {
-    from: 0.2,
-    to: 0.4,
+    from: 0.18,
+    to: 0.36,
     index: "01",
     title: "Compute",
     body: "Eight GPUs on a CUDA kernel grid, fed by a CPU control plane. Watch them flare during prefill and idle down during decode.",
     focus: ["gpu-compute", "cuda-kernel", "cpu-control", "network-fabric"],
   },
   {
-    from: 0.4,
-    to: 0.6,
+    from: 0.36,
+    to: 0.54,
     index: "02",
     title: "Prefill → KV cache → decode",
     body: "Prefill is compute-bound: the whole prompt in one burst fills the KV cache. Decode is memory-bound: one token per step, re-reading every cached block from HBM.",
     focus: ["prefill", "decode", "kv-cache", "hbm", "llm-inference", "attention", "model-serving"],
   },
   {
-    from: 0.6,
-    to: 0.8,
+    from: 0.54,
+    to: 0.72,
     index: "03",
     title: "Retrieval & agents",
     body: "Query → embed → vector search → rerank → context → LLM. The agent hub routes work through tools and data before the model answers.",
     focus: ["rag", "vector-db", "embedding", "agent-orchestration", "data-pipeline", "distributed-storage"],
   },
   {
-    from: 0.8,
+    from: 0.72,
     to: 1.01,
     index: "04",
     title: "One system",

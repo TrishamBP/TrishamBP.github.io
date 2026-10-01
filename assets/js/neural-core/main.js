@@ -19,7 +19,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { componentsData, MAP_GROUPS, SCENE_GROUPS, storyKeyframes, storyChapters } from "./componentsData.js";
-import { buildChassis, buildComponent, makeAccent, makeGlowTexture, PALETTE } from "./modules.js";
+import { buildChassis, buildComponent, makeAccent, makeGlowTexture } from "./modules.js";
 import { Flows, createSim } from "./flows.js";
 import { CameraRig } from "./camera.js";
 import { UI } from "./ui.js";
@@ -39,7 +39,8 @@ function boot() {
   measureLayout();
   window.addEventListener("resize", measureLayout, { passive: true });
 
-  if (force === "static" || !hasWebGL2()) return showStatic("webgl");
+  if (force === "static") return showStatic("forced");
+  if (!hasWebGL2()) return showStatic("webgl");
   if (lowEnd && small && force !== "3d") return showStatic("lowpower");
 
   try {
@@ -89,7 +90,7 @@ function start({ small, coarse, reducedQuery }) {
   renderer.setPixelRatio(dpr);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
-  renderer.setClearColor(0x030303, 1);
+  renderer.setClearColor(0x000000, 1);
   const canvas = renderer.domElement;
   canvas.className = "nc-canvas";
   canvas.setAttribute("aria-hidden", "true");
@@ -102,8 +103,8 @@ function start({ small, coarse, reducedQuery }) {
   });
 
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x030303);
-  scene.fog = new THREE.Fog(0x030303, 24, 52);
+  scene.background = new THREE.Color(0x000000);
+  scene.fog = new THREE.Fog(0x000000, 24, 52);
   const pmrem = new THREE.PMREMGenerator(renderer);
   const room = new RoomEnvironment();
   scene.environment = pmrem.fromScene(room, 0.04).texture;
@@ -459,9 +460,11 @@ function start({ small, coarse, reducedQuery }) {
   let viewW = 1;
   let viewH = 1;
   let viewShift = 0;
+  /* Portrait screens: lift the machine into the empty upper half. */
+  let viewLift = 0;
   function applyViewShift() {
-    if (Math.abs(viewShift) < 0.5) camera.clearViewOffset();
-    else camera.setViewOffset(viewW, viewH, viewShift, 0, viewW, viewH);
+    if (Math.abs(viewShift) < 0.5 && viewLift === 0) camera.clearViewOffset();
+    else camera.setViewOffset(viewW, viewH, viewShift, viewLift, viewW, viewH);
     camera.updateProjectionMatrix();
   }
 
@@ -472,6 +475,7 @@ function start({ small, coarse, reducedQuery }) {
     viewH = h;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
+    viewLift = camera.aspect < 0.8 ? Math.round(h * 0.08) : 0;
     applyViewShift();
     rig.setFit(camera.aspect);
     invalidate();
@@ -543,6 +547,11 @@ function start({ small, coarse, reducedQuery }) {
   /* --------------------------------- loop ------------------------------ */
   let last = 0;
   let simTime = 0;
+  let handoff = -1;
+  const smooth = (a, b, x) => {
+    const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
+    return t * t * (3 - 2 * t);
+  };
   let slowFrames = 0;
   let frameCount = 0;
   const proj = new THREE.Vector3();
@@ -550,6 +559,17 @@ function start({ small, coarse, reducedQuery }) {
   function invalidate() {
     dirty = 2;
     if (running && !raf) raf = requestAnimationFrame(frame);
+  }
+
+  /* Which particle lane a component or map group belongs to (flows.js). */
+  const LANE_BY_GROUP = { INFERENCE: "inference", COMPUTE: "inference", MEMORY: "inference", RETRIEVAL: "retrieval", AGENTS: "agents", INFRASTRUCTURE: "infra" };
+  const LANE_BY_ID = { "data-pipeline": "retrieval", "distributed-storage": "agents" };
+  function focusLane() {
+    if (selected >= 0) {
+      const d = components[selected].data;
+      return LANE_BY_ID[d.id] || LANE_BY_GROUP[d.mapGroup] || null;
+    }
+    return activeGroup ? LANE_BY_GROUP[activeGroup] || null : null;
   }
 
   function emphasisTargets() {
@@ -592,11 +612,20 @@ function start({ small, coarse, reducedQuery }) {
     ui.setChapter(ch);
     ui.setChapterProgress((p - ch.from) / (ch.to - ch.from));
     root.classList.toggle("nc-scrolled", p > 0.035);
-    root.classList.toggle("nc-chapter-on", p > 0.06);
+    /* Handoff: over the last stretch the scene recedes into black and the
+       ENGINEER / BUILDER title takes over (css: --nc-out). */
+    const out = smooth(0.84, 0.97, p);
+    if (out !== handoff) {
+      handoff = out;
+      root.style.setProperty("--nc-out", out.toFixed(3));
+      root.classList.toggle("nc-handoff-on", out > 0.02);
+    }
+    root.classList.toggle("nc-chapter-on", p > 0.06 && out <= 0.02);
 
     /* The intro runs on wall time (loosely capped) so the name and CTA still
        arrive on schedule when a slow GPU drops frames. */
     updateIntro(Math.min(0.25, rawDt));
+    flows.setFocus(focusLane());
     flows.update(dt, motion);
 
     /* Hover raycast at most once per frame, only after the pointer moved. */
@@ -639,6 +668,8 @@ function start({ small, coarse, reducedQuery }) {
     }
 
     const moving = rig.update(dt, now, Math.min(0.25, rawDt));
+    /* The scene moved under a still pointer: re-pick next frame. */
+    if (moving && pointerInside) pointerDirty = true;
 
     if (shown >= 0 && shown !== selected) {
       const c = components[shown];
@@ -649,7 +680,8 @@ function start({ small, coarse, reducedQuery }) {
 
     ui.setHud(sim, sim.decoding ? sim.tokenIndex : sim.phase === "RELEASE" ? sim.tokenIndex : 0);
 
-    const active = motion > 0 || moving || dirty > 0 || !introDone;
+    /* Fully handed off: the canvas is invisible, so skip the GPU work. */
+    const active = handoff < 0.999 && (motion > 0 || moving || dirty > 0 || !introDone);
     if (active) {
       renderer.render(scene, camera);
       if (dirty > 0) dirty--;
@@ -667,7 +699,7 @@ function start({ small, coarse, reducedQuery }) {
       frameCount = slowFrames = 0;
     }
 
-    if (!raf && running && (active || motion > 0)) raf = requestAnimationFrame(frame);
+    if (!raf && running && (active || (motion > 0 && handoff < 0.999))) raf = requestAnimationFrame(frame);
   }
 
   function startLoop() {

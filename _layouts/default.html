@@ -7,8 +7,7 @@
   {%- endcomment -%}
   {%- assign page_theme = page.theme | default: 'typesafe' -%}
   {%- comment -%}
-    Dark mode is the default and is rendered server-side (no light flash);
-    the toggle script below only removes it for visitors who chose light.
+    Dark mode is the only theme and is rendered server-side (no light flash).
   {%- endcomment -%}
   <body class="{% unless page_theme == 'none' %}theme-{{ page_theme }} {% endunless %}dark-mode">
     <nav class="topnav" id="topnav">
@@ -74,45 +73,15 @@
         >
           <span></span><span></span><span></span>
         </button>
-        <button
-          class="dark-mode-toggle"
-          id="dark-mode-toggle"
-          type="button"
-          aria-label="Toggle dark mode"
-          title="Toggle dark mode"
-        >
-          <span class="icon-sun" aria-hidden="true">&#9728;</span>
-          <span class="icon-moon" aria-hidden="true">&#9790;</span>
-        </button>
       </div>
     </nav>
     <main class="site-shell">{{ content }}</main>
     <script>
-      (function () {
-        var root = document.body;
-        var toggle = document.getElementById("dark-mode-toggle");
-        if (!toggle) return;
-
-        /* Dark is the default; only an explicit "light" choice opts out. */
-        var stored = localStorage.getItem("theme");
-        var isDark = stored !== "light";
-
-        function applyMode(darkEnabled) {
-          root.classList.toggle("dark-mode", darkEnabled);
-          toggle.setAttribute(
-            "aria-label",
-            darkEnabled ? "Switch to light mode" : "Switch to dark mode"
-          );
-        }
-
-        applyMode(isDark);
-
-        toggle.addEventListener("click", function () {
-          isDark = !isDark;
-          localStorage.setItem("theme", isDark ? "dark" : "light");
-          applyMode(isDark);
-        });
-      })();
+      /* Dark is the only theme (rendered server-side on <body>). Drop any
+         "light" preference saved by the old light/dark toggle. */
+      try {
+        localStorage.removeItem("theme");
+      } catch (e) {}
     </script>
     <script>
       (function () {

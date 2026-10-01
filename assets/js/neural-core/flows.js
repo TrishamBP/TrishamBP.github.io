@@ -62,7 +62,8 @@ function pointsMaterial(glow, size) {
 /* ------------------------------- Stream -------------------------------- */
 
 export class Stream {
-  constructor({ curves, count, color, size = 0.12, speed = 0.12, glow, level = 0 }) {
+  constructor({ curves, count, color, size = 0.12, speed = 0.12, glow, level = 0, lane = "inference" }) {
+    this.lane = lane;
     this.curves = curves;
     this.count = count;
     this.color = color.clone();
@@ -146,7 +147,8 @@ export class PacketPool {
     return -1;
   }
 
-  update(dt, motion, master) {
+  /* `gain(lane)` scales each packet's brightness by its flow lane. */
+  update(dt, motion, master, gain) {
     const pos = this.positions;
     const col = this.colors;
     for (let s = 0; s < this.slots; s++) {
@@ -183,7 +185,7 @@ export class PacketPool {
         pos[o] = _v.x;
         pos[o + 1] = _v.y;
         pos[o + 2] = _v.z;
-        const b = master * (1 - k / this.cluster) * Math.min(1, uk * 12, (1 - uk) * 12 + 0.2);
+        const b = master * gain(seq.lane) * (1 - k / this.cluster) * Math.min(1, uk * 12, (1 - uk) * 12 + 0.2);
         col[o] = c.r * b;
         col[o + 1] = c.g * b;
         col[o + 2] = c.b * b;
@@ -347,7 +349,7 @@ export class Flows {
       const a = (i / 16) * Math.PI * 2;
       ring.push([Math.cos(a) * 5.55, 0.47, Math.sin(a) * 5.55]);
     }
-    this.fabric = add(new Stream({ curves: [curve(ring, true)], count: n(44), color: PALETTE.blue, size: 0.08, speed: 0.035, glow, level: 0.6 }));
+    this.fabric = add(new Stream({ curves: [curve(ring, true)], count: n(44), color: PALETTE.blue, size: 0.08, speed: 0.035, glow, level: 0.6, lane: "infra" }));
     this.pipeline = add(
       new Stream({
         curves: [curve([[5.0, 0.7, 3.6], [5.0, 1.1, 2.9], [4.6, 1.5, 2.15]])],
@@ -357,6 +359,7 @@ export class Flows {
         speed: 0.3,
         glow,
         level: 0.6,
+        lane: "retrieval",
       })
     );
     this.weights = add(
@@ -368,6 +371,7 @@ export class Flows {
         speed: 0.25,
         glow,
         level: 0.35,
+        lane: "infra",
       })
     );
 
@@ -380,6 +384,7 @@ export class Flows {
     this.requestSeq = {
       curve: curve([P.client, P.servingFront, P.serving, [-1.2, 1.25, 2.4], P.prefill]),
       duration: 1.0,
+      lane: "inference",
       color: PALETTE.cool,
       events: [{ u: 0.4, fn: () => (s.requestPulse = 1) }],
     };
@@ -387,6 +392,7 @@ export class Flows {
     this.tokenSeq = {
       curve: curve([[0, 2.0, 0.3], [1.3, 2.1, 1.0], P.decode, [2.1, 1.1, 2.6], [0.7, 0.9, 3.25], P.servingFront, [0.2, 1.0, 7.8]]),
       duration: 2.2,
+      lane: "inference",
       color: PALETTE.lime,
       events: [],
     };
@@ -396,6 +402,7 @@ export class Flows {
     this.ragSeq = {
       curve: ragCurve,
       duration: 6.0,
+      lane: "retrieval",
       color: PALETTE.cool,
       events: [
         { u: uAt(ragCurve, P.embedding), fn: () => (s.embedPulse = 1) },
@@ -426,6 +433,7 @@ export class Flows {
       return {
         curve: c,
         duration: 8.0,
+        lane: "agents",
         color: PALETTE.cool,
         events: [
           { u: uAt(c, P.hub), fn: () => (s.agentPulse = 1) },
@@ -441,6 +449,12 @@ export class Flows {
         ],
       };
     });
+
+    /* Flow focus (System Map / selection): the focused lane brightens and the
+       rest dim, so one data path reads clearly through the machine. */
+    this.focus = null;
+    this.gains = { inference: 1, retrieval: 1, agents: 1, infra: 1 };
+    this.gain = (lane) => this.gains[lane] ?? 1;
 
     /* Cycle clocks. */
     this.tInf = 0;
@@ -605,7 +619,16 @@ export class Flows {
   }
 
   /* `dt` is real time; `motion` is 0 when motion is paused / reduced. */
+  setFocus(lane) {
+    this.focus = lane || null;
+  }
+
   update(dt, motion) {
+    const g = this.gains;
+    for (const lane in g) {
+      const t = !this.focus ? 1 : lane === this.focus ? 1.4 : 0.16;
+      g[lane] = motion ? damp(g[lane], t, 5, dt) : t;
+    }
     const sdt = dt * motion;
     if (sdt > 0) {
       this.updateInference(sdt);
@@ -615,8 +638,11 @@ export class Flows {
     }
     this.updateKV(sdt > 0 ? sdt : 1);
     const master = this.sim.intro.flows;
-    for (let i = 0; i < this.streams.length; i++) this.streams[i].update(dt, motion, master);
-    this.packets.update(dt, motion, master);
+    for (let i = 0; i < this.streams.length; i++) {
+      const st = this.streams[i];
+      st.update(dt, motion, master * g[st.lane]);
+    }
+    this.packets.update(dt, motion, master, this.gain);
   }
 
   /* Advance the simulation silently, e.g. to a representative frame for

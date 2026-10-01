@@ -1,0 +1,622 @@
+/* =============================================================================
+   HOME CHAPTERS — the landing-page narrative after the 3D hero
+   =============================================================================
+   01 What I build (3D hero, css/neural-core.css) → 02 Who builds it (profile,
+   About, Education) → 03 What I have built (Work) → 04 How I engineer systems
+   (Skills) → 05 Research & engineering work (Stats + index) → 06 Contact.
+
+   Loaded only with `neural_core: true` (index.md). Every rule is scoped as a
+   sibling of #neural-core, so other pages are untouched and the id outranks
+   the typesafe skin (`body.theme-typesafe .x`) without !important.
+   Chapter labels come from markup: `.home-kicker` and `data-kicker` on h2.
+   ========================================================================== */
+
+#neural-core ~ section {
+  --hc-fg: #f0f0fa;
+  --hc-soft: rgba(240, 240, 250, 0.78);
+  --hc-dim: rgba(240, 240, 250, 0.5);
+  --hc-faint: rgba(240, 240, 250, 0.34);
+  --hc-line: rgba(240, 240, 250, 0.14);
+  --hc-line-strong: rgba(240, 240, 250, 0.3);
+  --hc-lime: #c6f432;
+  --hc-display: var(--ts-display, "Space Grotesk", "Helvetica Neue", Arial, sans-serif);
+  --hc-mono: var(--ts-term, "Space Mono", "JetBrains Mono", ui-monospace, Consolas, monospace);
+  --hc-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ------------------------------ shared labels ------------------------------ */
+
+/* Chapter rule: thin line, a short lime segment, a small mono label. */
+#neural-core ~ section .home-kicker,
+#neural-core ~ .content-section > .section-title[data-kicker]::before {
+  font-family: var(--hc-mono);
+  font-size: 0.6rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--hc-dim);
+  -webkit-text-stroke: 0;
+}
+
+#neural-core ~ section .home-kicker {
+  position: relative;
+  margin: 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--hc-line);
+  text-align: left;
+}
+
+#neural-core ~ section .home-kicker b {
+  font-weight: 400;
+  color: var(--hc-lime);
+  margin-right: 0.9em;
+}
+
+#neural-core ~ section .home-kicker::after,
+#neural-core ~ .content-section > .section-title::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 44px;
+  height: 1px;
+  background: var(--hc-lime);
+}
+
+#neural-core ~ section .home-meta-label {
+  margin: 26px 0 10px;
+  font-family: var(--hc-mono);
+  font-size: 0.58rem;
+  line-height: 1;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-align: left;
+  text-align-last: auto;
+  color: var(--hc-faint);
+}
+
+/* ------------------------- 02 profile (index.md .hero) --------------------- */
+
+#neural-core ~ .hero {
+  display: grid;
+  grid-template-columns: minmax(200px, 300px) minmax(0, 1fr);
+  grid-template-areas:
+    "kicker  kicker"
+    "handoff handoff"
+    "figure  content";
+  row-gap: 0;
+  column-gap: clamp(32px, 5.5vw, 76px);
+  align-items: end;
+  margin: 0 0 clamp(40px, 8vh, 96px);
+  padding-top: clamp(24px, 6vh, 72px);
+  text-align: left;
+}
+
+#neural-core ~ .hero > .home-kicker {
+  grid-area: kicker;
+  margin-bottom: clamp(28px, 5vh, 48px);
+}
+
+/* The scroll story already showed ENGINEER / BUILDER inside the 3D stage
+   (.nc-handoff); this copy is for the static / reduced-motion hero. */
+#neural-core ~ .hero > .home-handoff-title {
+  grid-area: handoff;
+  margin: 0 0 clamp(36px, 7vh, 72px);
+  font-family: var(--hc-display);
+  font-weight: 500;
+  font-size: clamp(2.4rem, 8vw, 6.4rem);
+  line-height: 0.86;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-align: left;
+  text-align-last: auto;
+  color: var(--hc-fg);
+}
+
+#neural-core ~ .hero > .home-handoff-title span {
+  display: block;
+}
+
+#neural-core ~ .hero > .home-handoff-title span + span {
+  color: var(--hc-faint);
+}
+
+#neural-core.nc-story ~ .hero > .home-handoff-title {
+  display: none;
+}
+
+#neural-core ~ .hero > .hero-figure {
+  grid-area: figure;
+  margin: 0;
+}
+
+#neural-core ~ .hero .hero-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 50% 30%;
+  border: 1px solid var(--hc-line-strong);
+  border-radius: 0;
+  filter: grayscale(1) contrast(1.06) brightness(0.92);
+  transition: filter 0.6s var(--hc-ease);
+}
+
+#neural-core ~ .hero .hero-photo:hover {
+  filter: grayscale(1) contrast(1.1) brightness(1);
+}
+
+#neural-core ~ .hero .hero-figure .home-meta-label {
+  margin: 12px 0 0;
+}
+
+#neural-core ~ .hero > .hero-content {
+  grid-area: content;
+  min-width: 0;
+}
+
+#neural-core ~ .hero .hero-content h1 {
+  margin: 0;
+  font-family: var(--hc-display);
+  font-weight: 500;
+  font-size: clamp(2.5rem, 5.6vw, 4.7rem);
+  line-height: 0.88;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--hc-fg);
+  -webkit-text-stroke: 0;
+}
+
+/* The mission line reads as a statement, not a subtitle. */
+#neural-core ~ .hero .hero-intro {
+  margin: clamp(18px, 3vh, 28px) 0 0;
+  max-width: 19em;
+  font-family: var(--hc-display);
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(1.25rem, 2.3vw, 1.9rem);
+  line-height: 1.16;
+  text-align: left;
+  text-align-last: auto;
+  color: var(--hc-soft);
+}
+
+#neural-core ~ .hero .hero-interests {
+  margin: 0;
+  max-width: 60ch;
+  font-family: var(--hc-mono);
+  font-size: 0.7rem;
+  line-height: 2;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: left;
+  text-align-last: auto;
+  color: var(--hc-dim);
+}
+
+#neural-core ~ .hero .social-links {
+  margin-top: 0;
+  gap: 6px;
+  justify-content: flex-start;
+}
+
+#neural-core ~ .hero .social-link {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--hc-line-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--hc-soft);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+#neural-core ~ .hero .social-link svg,
+#neural-core ~ .hero .social-link-logo {
+  width: 18px;
+  height: 18px;
+}
+
+#neural-core ~ .hero .social-link-logo {
+  filter: grayscale(1) brightness(1.6);
+  transition: filter 0.2s;
+}
+
+#neural-core ~ .hero .social-link:hover,
+#neural-core ~ .hero .social-link:focus-visible {
+  color: var(--hc-lime);
+  border-color: var(--hc-lime);
+  background: transparent;
+  outline: none;
+}
+
+#neural-core ~ .hero .social-link:hover .social-link-logo {
+  filter: none;
+}
+
+/* ------------------------------ chapter headings --------------------------- */
+
+#neural-core ~ .content-section {
+  margin-top: clamp(96px, 16vh, 176px);
+}
+
+#neural-core ~ .content-section > .section-title {
+  position: relative;
+  margin: 0 0 clamp(28px, 4.5vw, 52px);
+  padding-top: 16px;
+  border-top: 1px solid var(--hc-line);
+  font-family: var(--hc-display);
+  font-weight: 500;
+  font-size: clamp(2.3rem, 6.4vw, 4.8rem);
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--hc-fg);
+  -webkit-text-stroke: 0;
+}
+
+#neural-core ~ .content-section > .section-title[data-kicker]::before {
+  content: attr(data-kicker);
+  display: block;
+  margin-bottom: clamp(26px, 4vw, 44px);
+}
+
+#neural-core ~ .content-section .research-intro {
+  margin: calc(-1 * clamp(12px, 2.5vw, 30px)) 0 28px;
+  font-family: var(--hc-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--hc-dim);
+}
+
+/* ---------------------------------- about --------------------------------- */
+
+#neural-core ~ .about-section > .about-journey-title {
+  margin: 0 0 18px;
+  padding: 0;
+  border: 0;
+  font-family: var(--hc-mono);
+  font-size: 0.6rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--hc-faint);
+}
+
+#neural-core ~ .about-section > p {
+  max-width: 66ch;
+  margin: 0 0 1.25em;
+  font-size: 1.02rem;
+  line-height: 1.78;
+  text-align: left;
+  text-align-last: auto;
+  color: var(--hc-soft);
+}
+
+/* First paragraph as the lead. */
+#neural-core ~ .about-section > .about-journey-title + p {
+  font-family: var(--hc-display);
+  font-size: clamp(1.15rem, 1.9vw, 1.42rem);
+  line-height: 1.5;
+  color: var(--hc-fg);
+}
+
+@media (min-width: 900px) {
+  #neural-core ~ .about-section {
+    display: grid;
+    grid-template-columns: minmax(150px, 1fr) minmax(0, 3fr);
+    column-gap: 48px;
+  }
+
+  #neural-core ~ .about-section > .section-title {
+    grid-column: 1 / -1;
+  }
+
+  #neural-core ~ .about-section > .about-journey-title {
+    grid-column: 1;
+    grid-row: 2 / span 5;
+    align-self: start;
+    position: sticky;
+    top: calc(var(--nc-nav, 64px) + 28px);
+    margin-top: 0.7em;
+  }
+
+  #neural-core ~ .about-section > p {
+    grid-column: 2;
+  }
+}
+
+/* ------------------------------ timeline / cards --------------------------- */
+/* Same components as before, quieter surfaces: transparent panels, thin
+   graphite rules, lime only where something is current or hovered. */
+
+#neural-core ~ .content-section .timeline::before {
+  background: var(--hc-line);
+}
+
+#neural-core ~ .content-section .timeline-item {
+  background: transparent;
+  border-left-width: 1px;
+  border-left-color: var(--hc-line);
+}
+
+#neural-core ~ .content-section :is(.timeline-right, .timeline-content) {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--hc-line);
+  border-radius: 0;
+  padding: 16px 0 0;
+  transition: border-color 0.25s;
+}
+
+#neural-core ~ .content-section .timeline-item:hover :is(.timeline-right, .timeline-content) {
+  border-top-color: var(--hc-lime);
+}
+
+#neural-core ~ .content-section .timeline-year {
+  color: var(--hc-dim);
+  letter-spacing: 0.16em;
+}
+
+#neural-core ~ .content-section .timeline-item h3 {
+  font-family: var(--hc-display);
+  font-weight: 500;
+  color: var(--hc-fg);
+}
+
+#neural-core ~ .content-section :is(.skills-category, .stats-card, .stats-media-item, .hf-model-card, .experience-highlight) {
+  background: transparent;
+  border: 1px solid var(--hc-line);
+}
+
+#neural-core ~ .content-section .skills-category {
+  border-left: 1px solid var(--hc-line);
+  box-shadow: inset 2px 0 0 var(--hc-line-strong);
+  transition: box-shadow 0.25s, border-color 0.25s;
+}
+
+#neural-core ~ .content-section .skills-category:hover {
+  border-color: var(--hc-line-strong);
+  box-shadow: inset 2px 0 0 var(--hc-lime);
+}
+
+#neural-core ~ .content-section .skills-category h3 {
+  color: var(--hc-fg);
+}
+
+#neural-core ~ .content-section .hf-model-card:hover {
+  border-color: var(--hc-lime);
+}
+
+/* ------------------------- 05 research / engineering index ----------------- */
+
+#neural-core ~ section .home-index {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: clamp(40px, 6vw, 72px);
+  border-top: 1px solid var(--hc-line);
+}
+
+#neural-core ~ section .home-index a {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 18px 22px 0;
+  border-bottom: 1px solid var(--hc-line);
+  font-family: var(--hc-display);
+  font-size: clamp(1rem, 1.6vw, 1.22rem);
+  line-height: 1.2;
+  color: var(--hc-fg);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+#neural-core ~ section .home-index a::after {
+  content: "\2192";
+  font-family: var(--hc-mono);
+  font-size: 0.8rem;
+  color: var(--hc-faint);
+  transition: color 0.2s, transform 0.3s var(--hc-ease);
+}
+
+#neural-core ~ section .home-index a span {
+  font-family: var(--hc-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.3em;
+  color: var(--hc-faint);
+}
+
+#neural-core ~ section .home-index a:hover,
+#neural-core ~ section .home-index a:focus-visible {
+  color: var(--hc-lime);
+  outline: none;
+}
+
+#neural-core ~ section .home-index a:hover::after,
+#neural-core ~ section .home-index a:focus-visible::after {
+  color: var(--hc-lime);
+  transform: translateX(6px);
+}
+
+/* -------------------------------- 06 contact ------------------------------- */
+
+#neural-core ~ .contact-section {
+  margin-bottom: clamp(40px, 8vh, 96px);
+}
+
+#neural-core ~ .contact-section .home-contact {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#neural-core ~ .contact-section .home-contact li {
+  display: grid;
+  grid-template-columns: minmax(110px, 1fr) minmax(0, 3fr);
+  align-items: baseline;
+  gap: 16px;
+  margin: 0;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--hc-line);
+}
+
+#neural-core ~ .contact-section .home-contact span {
+  font-family: var(--hc-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--hc-faint);
+}
+
+#neural-core ~ .contact-section .home-contact a {
+  font-family: var(--hc-display);
+  font-size: clamp(1.05rem, 2.2vw, 1.6rem);
+  line-height: 1.2;
+  color: var(--hc-fg);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  transition: color 0.2s;
+}
+
+#neural-core ~ .contact-section .home-contact a:hover,
+#neural-core ~ .contact-section .home-contact a:focus-visible {
+  color: var(--hc-lime);
+  outline: none;
+}
+
+/* ------------------------------ scroll reveals ----------------------------- */
+/* Builds on the site reveal (default.html adds .ts-reveal / .ts-in): chapter
+   titles and the profile arrive with a short blur-to-sharp settle. */
+
+body.ts-reveal-ready #neural-core ~ .content-section > .section-title.ts-reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  filter: blur(8px);
+  transition: opacity 0.9s var(--hc-ease), transform 0.9s var(--hc-ease), filter 0.9s var(--hc-ease);
+}
+
+body.ts-reveal-ready #neural-core ~ .content-section > .section-title.ts-reveal.ts-in {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* The profile staggers its parts instead of moving as one block. */
+body.ts-reveal-ready #neural-core ~ .hero.ts-reveal {
+  opacity: 1;
+  transform: none;
+}
+
+body.ts-reveal-ready #neural-core ~ .hero.ts-reveal > * {
+  opacity: 0;
+  transform: translateY(24px);
+  filter: blur(6px);
+  transition: opacity 1s var(--hc-ease), transform 1s var(--hc-ease), filter 1s var(--hc-ease);
+}
+
+body.ts-reveal-ready #neural-core ~ .hero.ts-reveal.ts-in > * {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+body.ts-reveal-ready #neural-core ~ .hero.ts-reveal.ts-in > .home-handoff-title { transition-delay: 0.08s; }
+body.ts-reveal-ready #neural-core ~ .hero.ts-reveal.ts-in > .hero-figure { transition-delay: 0.18s; }
+body.ts-reveal-ready #neural-core ~ .hero.ts-reveal.ts-in > .hero-content { transition-delay: 0.32s; }
+
+/* --------------------------------- tablet ---------------------------------- */
+
+@media (max-width: 1000px) {
+  #neural-core ~ .hero {
+    grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+  }
+
+  #neural-core ~ section .home-index {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* --------------------------------- mobile ---------------------------------- */
+/* One column, composed for a phone: name first, then a cropped portrait,
+   then the statement, disciplines and links. */
+
+@media (max-width: 680px) {
+  /* Flex column (not grid) so the desktop named areas cannot leak into
+     implicit tracks once .hero-content dissolves via display: contents. */
+  #neural-core ~ .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  #neural-core ~ .hero > *,
+  #neural-core ~ .hero .hero-content > * {
+    order: 3;
+  }
+
+  #neural-core ~ .hero > .home-kicker,
+  #neural-core ~ .hero > .home-handoff-title {
+    order: 0;
+  }
+
+  #neural-core ~ .hero > .hero-content {
+    display: contents;
+  }
+
+  #neural-core ~ .hero .hero-content h1 {
+    order: 1;
+    font-size: clamp(2.3rem, 12.5vw, 3.4rem);
+  }
+
+  #neural-core ~ .hero > .hero-figure {
+    order: 2;
+    margin-top: 24px;
+    width: min(260px, 72%);
+  }
+
+  #neural-core ~ .hero .hero-photo {
+    aspect-ratio: 1 / 1;
+  }
+
+  #neural-core ~ .hero .social-link {
+    width: 44px;
+    height: 44px;
+  }
+
+  #neural-core ~ section .home-index {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #neural-core ~ section .home-index a {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 16px;
+    padding: 16px 0;
+  }
+
+  #neural-core ~ section .home-index a::after {
+    margin-left: auto;
+  }
+
+  #neural-core ~ .contact-section .home-contact li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+}
+
+/* ----------------------------- reduced motion ------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  body.ts-reveal-ready #neural-core ~ section .ts-reveal,
+  body.ts-reveal-ready #neural-core ~ section.ts-reveal,
+  body.ts-reveal-ready #neural-core ~ section.ts-reveal > * {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+}

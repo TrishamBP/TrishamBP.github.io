@@ -1,3 +1,0 @@
-STATE0 {"cls":"nc-hero nc-is-live nc-story nc-t-boot nc-t-name nc-t-tag nc-t-cta nc-t-ui nc-t-done","h":5642,"nc":true,"cam":"story","y":0}
-LOGS
-[log:error] Failed to load resource: the server responded with a status of 404 (File not found) http://127.0.0.1:4011/favicon.ico

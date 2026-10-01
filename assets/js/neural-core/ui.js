@@ -93,7 +93,7 @@ export class UI {
   showInspector(c) {
     const d = c.data;
     const el = this.el;
-    el.eyebrow.textContent = `${d.category} · ${d.mapGroup}`;
+    el.eyebrow.textContent = d.category.toLowerCase() === d.mapGroup.toLowerCase() ? d.category : `${d.category} · ${d.mapGroup}`;
     el.name.textContent = d.name;
     el.desc.textContent = d.description;
     el.chips.textContent = "";
@@ -147,7 +147,12 @@ export class UI {
       el.tipName.textContent = c.data.name;
       el.tipSub.textContent = c.data.mapGroup;
     }
-    el.tooltip.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0)`;
+    /* Keep the label inside the viewport even when the anchor is near an edge. */
+    const vw = el.viewport.clientWidth;
+    const vh = el.viewport.clientHeight;
+    const tx = Math.min(Math.max(x + 14, 8), vw - el.tooltip.offsetWidth - 8);
+    const ty = Math.min(Math.max(y - 18, 8), vh - el.tooltip.offsetHeight - 8);
+    el.tooltip.style.transform = `translate3d(${Math.round(tx)}px, ${Math.round(ty)}px, 0)`;
     if (!this.tipVisible) {
       el.tooltip.classList.add("is-visible");
       this.tipVisible = true;

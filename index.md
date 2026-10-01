@@ -6,24 +6,29 @@ neural_core: true
 
 {% include neural-core-hero.html %}
 
-<section class="hero">
-  <div>
+<section class="hero" id="engineer" aria-labelledby="engineer-name">
+  <p class="home-kicker"><b>02</b> Who builds it</p>
+  <p class="home-handoff-title" aria-hidden="true"><span>Engineer</span> <span>Builder</span></p>
+  <div class="hero-figure">
     <img
       class="hero-photo"
       src="{{ '/images/profile.jpeg' | relative_url }}"
       alt="Profile photo of Trisham Patil"
     />
+    <p class="home-meta-label" aria-hidden="true">Fig. 02 &mdash; The engineer</p>
   </div>
   <div class="hero-content">
-    <h1>Trisham Patil</h1>
+    <h1 id="engineer-name">Trisham Patil</h1>
     <p class="hero-intro">
       I like to build and engineer intelligent systems.
     </p>
+    <p class="home-meta-label">Disciplines</p>
     <p class="hero-interests">
       Backend Engineering &bull; AI Engineering &bull; ML Engineering &bull;
       Computer Vision &bull; Data Engineering &bull; LLMOps &bull; MLOps &bull;
       System Design &bull; Database Engineering
     </p>
+    <p class="home-meta-label">Connect</p>
     <div class="social-links" aria-label="Social links">
       <a
         class="social-link"
@@ -102,7 +107,7 @@ neural_core: true
 </section>
 
 <section class="content-section about-section" aria-labelledby="about-me-heading">
-  <h2 id="about-me-heading" class="section-title">About Me</h2>
+  <h2 id="about-me-heading" class="section-title" data-kicker="02.1 / Who builds it">About Me</h2>
   <h3 class="about-journey-title">My Journey</h3>
   <p>
     I started as a mechanical engineer. Long before I wrote production code,
@@ -161,7 +166,7 @@ neural_core: true
 </section>
 
 <section class="content-section education-section" aria-labelledby="education-heading">
-  <h2 id="education-heading" class="section-title">Education</h2>
+  <h2 id="education-heading" class="section-title" data-kicker="02.2 / Foundations">Education</h2>
 
   <div class="timeline">
     <article class="timeline-item">
@@ -207,7 +212,7 @@ neural_core: true
 </section>
 
 <section class="content-section work-section" aria-labelledby="work-experience-heading">
-  <h2 id="work-experience-heading" class="section-title">Work Experience</h2>
+  <h2 id="work-experience-heading" class="section-title" data-kicker="03 / What I have built">Work Experience</h2>
 
   <div class="timeline">
     <article class="timeline-item">
@@ -349,7 +354,7 @@ neural_core: true
 </section>
 
 <section class="content-section skills-section" aria-labelledby="skills-heading">
-  <h2 id="skills-heading" class="section-title">Skills &amp; Technologies</h2>
+  <h2 id="skills-heading" class="section-title" data-kicker="04 / How I engineer systems">Skills &amp; Technologies</h2>
 
   {% assign sk = '/images/skills' %}
   <div class="skills-matrix">
@@ -583,7 +588,7 @@ neural_core: true
   </div>
 </section>
 <section class="content-section stats-section" aria-labelledby="stats-heading">
-  <h2 id="stats-heading" class="section-title">Stats</h2>
+  <h2 id="stats-heading" class="section-title" data-kicker="05 / Research &amp; engineering work">Stats</h2>
   <p class="research-intro">
     Engineering and model activity snapshots.
   </p>
@@ -657,6 +662,27 @@ neural_core: true
       </div>
     </article>
   </div>
+
+  <nav class="home-index" aria-label="Research and engineering work">
+    <a href="{{ '/research-articles/' | relative_url }}"><span>05.1</span>Research Articles</a>
+    <a href="{{ '/engineering/' | relative_url }}"><span>05.2</span>Engineering Implementations</a>
+    <a href="{{ '/blog/' | relative_url }}"><span>05.3</span>Blogs</a>
+    <a href="{{ '/sessions/' | relative_url }}"><span>05.4</span>Sessions</a>
+    <a href="{{ '/certifications/' | relative_url }}"><span>05.5</span>Certifications</a>
+    <a href="{{ '/honors/' | relative_url }}"><span>05.6</span>Honors</a>
+  </nav>
+</section>
+
+<section class="content-section contact-section" aria-labelledby="contact-heading">
+  <h2 id="contact-heading" class="section-title" data-kicker="06 / Contact">Contact</h2>
+  <ul class="home-contact">
+    <li><span>Email</span><a href="mailto:trishampatil@gmail.com">trishampatil@gmail.com</a></li>
+    <li><span>GitHub</span><a href="https://github.com/TrishamBP" target="_blank" rel="noopener noreferrer">github.com/TrishamBP</a></li>
+    <li><span>LinkedIn</span><a href="https://www.linkedin.com/in/trishampatil/" target="_blank" rel="noopener noreferrer">linkedin.com/in/trishampatil</a></li>
+    <li><span>Hugging Face</span><a href="https://huggingface.co/QuantBridge" target="_blank" rel="noopener noreferrer">huggingface.co/QuantBridge</a></li>
+    <li><span>LeetCode</span><a href="https://leetcode.com/u/TrishamBP/" target="_blank" rel="noopener noreferrer">leetcode.com/u/TrishamBP</a></li>
+    <li><span>Resume</span><a href="{{ '/resume/' | relative_url }}">View resume</a></li>
+  </ul>
 </section>
 
 {% comment %}
