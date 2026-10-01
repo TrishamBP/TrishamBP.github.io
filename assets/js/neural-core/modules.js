@@ -15,6 +15,7 @@
 import * as THREE from "three";
 import { buildSatellite } from "./satellite.js";
 import { buildStarship } from "./starship.js";
+import { buildDeathStar } from "./deathstar.js";
 
 const TAU = Math.PI * 2;
 const DEG = Math.PI / 180;
@@ -1021,62 +1022,7 @@ const builders = {
   },
 
   "agent-orchestration"(ctx) {
-    const g = new THREE.Group();
-    const hub = new THREE.Group();
-    hub.add(mesh(G.ico, ctx.accent, 0, 0, 0, 0.26, 0.26, 0.26));
-    const hubWire = new THREE.LineSegments(new THREE.EdgesGeometry(G.ico), M.line);
-    hubWire.scale.setScalar(0.36);
-    hub.add(hubWire);
-    g.add(hub);
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.46, 0.012, 6, 48), M.titanium);
-    ring.rotation.x = Math.PI / 2;
-    g.add(ring);
-    const TOOLS = 5;
-    const toolPos = [];
-    const nodes = inst(G.box, M.titanium, TOOLS);
-    const caps = ledInst(G.box, TOOLS);
-    const linePos = new Float32Array(TOOLS * 6);
-    const lineCol = new Float32Array(TOOLS * 6);
-    for (let i = 0; i < TOOLS; i++) {
-      const a = (i / TOOLS) * TAU + 0.3;
-      const x = Math.cos(a) * 1.05;
-      const y = Math.sin(a * 2) * 0.18;
-      const z = Math.sin(a) * 1.05;
-      toolPos.push([x, y, z]);
-      setInst(nodes, i, x, y, z, 0.16, 0.16, 0.16, 0.4, a, 0);
-      setInst(caps, i, x, y + 0.1, z, 0.1, 0.02, 0.1, 0, a, 0);
-      linePos.set([0, 0, 0, x, y, z], i * 6);
-    }
-    g.add(nodes);
-    g.add(caps);
-    const lineGeo = new THREE.BufferGeometry();
-    lineGeo.setAttribute("position", new THREE.BufferAttribute(linePos, 3));
-    lineGeo.setAttribute("color", new THREE.BufferAttribute(lineCol, 3));
-    const lines = new THREE.LineSegments(lineGeo, new THREE.LineBasicMaterial({ vertexColors: true, toneMapped: false }));
-    g.add(lines);
-    return {
-      group: g,
-      toolPos,
-      update(dt, t, sim, c) {
-        hub.rotation.y += dt * (0.5 + sim.agentPulse * 3) * sim.motion;
-        hub.rotation.x = Math.sin(t * 0.6) * 0.3;
-        for (let i = 0; i < TOOLS; i++) {
-          const on = i === sim.agentTool ? sim.agentToolGlow : 0;
-          const col = on > 0.02 ? lerpColor(PALETTE.blue, PALETTE.lime, on) : _c.copy(PALETTE.blue);
-          col.multiplyScalar((0.18 + on * 1.3) * c.emph);
-          caps.setColorAt(i, col);
-          for (let v = 0; v < 2; v++) {
-            const o = i * 6 + v * 3;
-            lineCol[o] = col.r * (v ? 1 : 0.6);
-            lineCol[o + 1] = col.g * (v ? 1 : 0.6);
-            lineCol[o + 2] = col.b * (v ? 1 : 0.6);
-          }
-        }
-        caps.instanceColor.needsUpdate = true;
-        lineGeo.attributes.color.needsUpdate = true;
-        c.activity = 0.6 + sim.agentPulse * 1.2;
-      },
-    };
+    return buildDeathStar(ctx);
   },
 
   "data-pipeline"(ctx) {

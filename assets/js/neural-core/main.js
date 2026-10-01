@@ -705,6 +705,7 @@ function start({ small, coarse, reducedQuery }) {
       c.holder.position.copy(c.base).addScaledVector(c.dir, c.offset);
       if (HOLO_LIFT[c.data.id]) c.holder.position.y += HOLO_LIFT[c.data.id] * holoLift;
       c.holder.scale.setScalar(c.scale);
+      c.selected = c.index === selected;
       c.part.update(dt * motion, simTime, sim, c);
       c.accent.emissiveIntensity = 0.55 * c.emph * c.activity * (0.15 + 0.85 * sim.intro.core);
     }

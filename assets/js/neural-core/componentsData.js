@@ -300,7 +300,7 @@ export const componentsData = [
     id: "agent-orchestration",
     name: "Agent Orchestrator",
     description:
-      "Plans multi-step work. The hub picks a tool, calls it, reads the result and loops back through the model until the task is done.",
+      "Plans multi-step work. The battle station picks a tool, fires the call at it, reads the result and loops back through the model until the task is done. Select it to break the station apart and expose the agent loop at its core.",
     technologies: ["LangGraph", "CrewAI", "Model Context Protocol (MCP)", "Function calling"],
     category: "AGENTS",
     mapGroup: "AGENTS",
