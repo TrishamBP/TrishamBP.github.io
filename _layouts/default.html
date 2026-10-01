@@ -39,6 +39,10 @@
             class="topnav-link{% if page.url contains '/sessions' %} active{% endif %}"
             href="{{ '/sessions/' | relative_url }}"
           >Sessions</a>
+          <a
+            class="topnav-link{% if page.url contains '/certifications' %} active{% endif %}"
+            href="{{ '/certifications/' | relative_url }}"
+          >Certifications</a>
           {%- comment %} Resources and Newsletter hidden from nav (pages still exist)
           <a
             class="topnav-link{% if page.url contains '/resources' %} active{% endif %}"
@@ -249,7 +253,7 @@
             )
           );
         } else {
-          /* Listing / landing pages (home, blog, engineering, sessions,
+          /* Listing / landing pages (home, blog, engineering, sessions, certifications,
              honors, projects, research, learning lab): reveal section
              headings and cards.
 
@@ -265,7 +269,8 @@
                 ".site-shell .eng-lede, .site-shell .honors-intro," +
                 ".site-shell .resources-intro, .site-shell .about-journey-title," +
                 ".site-shell .eng-domain-card, .site-shell .eng-stats," +
-                ".site-shell .session-card, .site-shell .award-card," +
+                ".site-shell .session-card, .site-shell .cert-card," +
+                ".site-shell .award-card," +
                 ".site-shell .skills-category," +
                 ".site-shell .stats-card, .site-shell .timeline-item," +
                 ".site-shell .hf-model-card, .site-shell .fullstack-card," +
