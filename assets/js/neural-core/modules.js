@@ -82,6 +82,92 @@ function makeGratingTexture() {
 }
 M.grating.map = makeGratingTexture();
 
+function canvasTex(w, h, draw, repeat) {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  draw(canvas.getContext("2d"), w, h);
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 4;
+  if (repeat) {
+    tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+    tex.repeat.set(repeat[0], repeat[1]);
+  }
+  return tex;
+}
+
+/* Server sled faceplate: honeycomb intake, four drive caddies, and a dark
+   right-hand zone where the instanced status LEDs and eject lever sit. */
+function drawFaceplate(g, w, h) {
+  const grad = g.createLinearGradient(0, 0, 0, h);
+  grad.addColorStop(0, "#6a717c");
+  grad.addColorStop(0.12, "#454a53");
+  grad.addColorStop(0.88, "#353941");
+  grad.addColorStop(1, "#08090b");
+  g.fillStyle = grad;
+  g.fillRect(0, 0, w, h);
+  g.fillStyle = "#050607";
+  for (let row = 0; row < 5; row++)
+    for (let col = 0; col < 13; col++) {
+      const x = 12 + col * 9 + (row % 2) * 4.5;
+      const y = 16 + row * 15;
+      g.beginPath();
+      for (let k = 0; k < 6; k++) g.lineTo(x + Math.cos((k * TAU) / 6) * 3.6, y + Math.sin((k * TAU) / 6) * 3.6);
+      g.fill();
+    }
+  for (let d = 0; d < 4; d++) {
+    const x = 138 + d * 62;
+    g.fillStyle = "#0b0c0e";
+    g.fillRect(x, 10, 56, h - 20);
+    g.fillStyle = "#5b616b";
+    g.fillRect(x + 3, 13, 50, 10);
+    g.fillStyle = "#131518";
+    for (let k = 0; k < 5; k++) g.fillRect(x + 6, 30 + k * 10, 44, 4);
+    g.fillStyle = "#aab2be";
+    g.fillRect(x + 44, 15, 6, 6);
+  }
+  g.fillStyle = "#0a0b0d";
+  g.fillRect(392, 8, 116, h - 16);
+  g.fillStyle = "#1f2227";
+  g.fillRect(398, h - 30, 22, 14);
+  g.fillRect(424, h - 30, 22, 14);
+  g.fillStyle = "#8b93a0";
+  g.font = "600 13px monospace";
+  g.fillText("SXM5", 398, 26);
+}
+
+/* Perforated steel for cabinet tops. */
+function drawPerf(g, w, h) {
+  g.fillStyle = "#30343b";
+  g.fillRect(0, 0, w, h);
+  g.fillStyle = "#040405";
+  for (let y = 0; y < 8; y++)
+    for (let x = 0; x < 8; x++) {
+      g.beginPath();
+      g.arc(4 + x * 8 + (y % 2) * 4, 4 + y * 8, 2.6, 0, TAU);
+      g.fill();
+    }
+}
+
+/* Cabinet side panel: seams plus louvre bands top and bottom. */
+function drawSidePanel(g, w, h) {
+  g.fillStyle = "#121418";
+  g.fillRect(0, 0, w, h);
+  g.fillStyle = "#050607";
+  g.fillRect(0, h / 2 - 1, w, 2);
+  g.fillRect(w / 2 - 1, 0, 2, h);
+  for (const y0 of [24, h - 84]) for (let k = 0; k < 8; k++) g.fillRect(16, y0 + k * 7, w - 32, 3);
+  g.fillStyle = "#2a2e35";
+  g.fillRect(0, 0, w, 3);
+  g.fillRect(0, h - 3, w, 3);
+}
+
+M.faceplate = new THREE.MeshStandardMaterial({ map: canvasTex(512, 96, drawFaceplate), metalness: 0.45, roughness: 0.5 });
+M.perf = new THREE.MeshStandardMaterial({ map: canvasTex(64, 64, drawPerf, [7, 4]), metalness: 0.8, roughness: 0.4 });
+M.rackBody.map = canvasTex(128, 512, drawSidePanel);
+M.rackBody.color.set(0xb8bec8);
+
 /* Soft round sprite generated on a canvas — used by particles and halos. */
 export function makeGlowTexture() {
   const size = 64;
@@ -156,18 +242,62 @@ function lerpColor(a, b, k) {
   return _c.copy(a).lerp(b, k);
 }
 
-/* Petal rotor shape for rack fans (flat, a few dozen triangles). */
-function makeRotorGeometry(petals = 7) {
-  const shape = new THREE.Shape();
-  shape.moveTo(0.04, 0);
-  for (let k = 0; k < petals; k++) {
-    const a0 = (k / petals) * TAU;
-    const a1 = a0 + TAU / petals * 0.62;
-    const a2 = a0 + TAU / petals;
-    shape.quadraticCurveTo(Math.cos(a0 + 0.2) * 0.2, Math.sin(a0 + 0.2) * 0.2, Math.cos(a1) * 0.16, Math.sin(a1) * 0.16);
-    shape.lineTo(Math.cos(a2) * 0.04, Math.sin(a2) * 0.04);
+/* Axial fan rotor: swept blades that widen toward the tip (flat). */
+function makeRotorGeometry(blades = 9, r0 = 0.036, r1 = 0.188) {
+  const shapes = [];
+  const pt = (r, a) => [Math.cos(a) * r, Math.sin(a) * r];
+  for (let k = 0; k < blades; k++) {
+    const a = (k / blades) * TAU;
+    const sweep = 0.55;
+    const s = new THREE.Shape();
+    s.moveTo(...pt(r0, a));
+    s.quadraticCurveTo(...pt((r0 + r1) / 2, a + sweep * 0.3), ...pt(r1, a + sweep));
+    for (let j = 1; j <= 3; j++) s.lineTo(...pt(r1, a + sweep + (j / 3) * 0.42));
+    s.quadraticCurveTo(...pt((r0 + r1) / 2, a + 0.5), ...pt(r0, a + 0.3));
+    s.closePath();
+    shapes.push(s);
   }
-  return new THREE.ShapeGeometry(shape, 3);
+  return new THREE.ShapeGeometry(shapes, 4);
+}
+
+/* Live per-cabinet status screens share one canvas atlas: row i is GPU i. */
+function makeStatusAtlas(rows) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 512;
+  canvas.height = 64 * rows;
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 4;
+  const g = canvas.getContext("2d");
+  return {
+    tex,
+    draw(i, util, temp, hot) {
+      const y = i * 64;
+      g.fillStyle = "#010503";
+      g.fillRect(0, y, 512, 64);
+      g.strokeStyle = "#0f3a1f";
+      g.lineWidth = 2;
+      g.strokeRect(2, y + 2, 508, 60);
+      g.textBaseline = "middle";
+      g.fillStyle = "#3dff7f";
+      g.font = "700 28px monospace";
+      g.fillText("GPU 0" + (i + 1), 14, y + 33);
+      const segs = 12;
+      const on = Math.round(util * segs);
+      for (let k = 0; k < segs; k++) {
+        g.fillStyle = k < on ? (k >= 9 && hot ? "#d4ff3a" : "#2cff6e") : "#0c2415";
+        g.fillRect(168 + k * 14, y + 18, 10, 30);
+      }
+      g.font = "600 21px monospace";
+      g.fillStyle = "#bfffd4";
+      g.fillText(String(Math.round(util * 100)).padStart(3, " ") + "%", 346, y + 22);
+      g.fillStyle = "#6fdc95";
+      g.fillText(Math.round(temp) + "°C", 346, y + 45);
+      g.fillStyle = hot ? "#d4ff3a" : "#2cff6e";
+      g.font = "700 18px monospace";
+      g.fillText(hot ? "PREFILL" : "ONLINE", 422, y + 33);
+    },
+  };
 }
 
 /* ------------------------------- chassis ------------------------------- */
@@ -415,22 +545,25 @@ const builders = {
     const fanFaces = faces.filter((f) => f[2]);
 
     const body = inst(G.box, M.rackBody, N);
-    const posts = inst(G.box, M.titaniumDark, N * 4);
+    const posts = inst(G.box, M.titanium, N * 4);
     const plinths = inst(G.box, M.graphite, N);
     const caps = inst(G.box, M.titaniumDark, N);
-    const vents = inst(G.box, M.graphiteDark, N * 7);
+    const tops = inst(G.box, M.perf, N);
     const cables = inst(G.cylLow, M.cable, N * 6);
     const clamps = inst(G.box, M.titanium, N * 2);
-    const headers = inst(G.box, ctx.accent, N);
+    const headers = inst(G.box, ctx.accent, faces.length);
     const spines = inst(G.box, M.graphite, N - 1);
     const trays = inst(G.box, M.titaniumDark, N - 1);
     const trayCables = inst(G.cylLow, M.cable, (N - 1) * 2);
     const bezels = inst(G.box, M.graphiteDark, faces.length);
-    const slabs = inst(G.box, M.titaniumDark, bladeFaces.length * BLADES);
-    const slabVents = inst(G.box, M.graphiteDark, bladeFaces.length * BLADES);
+    const slabs = inst(G.box, M.faceplate, bladeFaces.length * BLADES);
     const handles = inst(G.box, M.titanium, bladeFaces.length * BLADES);
     const housings = inst(G.box, M.titaniumDark, fanFaces.length * FANS);
     const hubs = inst(G.cylLow, M.titanium, fanFaces.length * FANS);
+    const screws = inst(G.cylLow, M.titanium, fanFaces.length * FANS * 4);
+    const guardOuter = inst(new THREE.TorusGeometry(0.15, 0.0045, 4, 40), M.titanium, fanFaces.length * FANS);
+    const guardInner = inst(new THREE.TorusGeometry(0.085, 0.0045, 4, 32), M.titanium, fanFaces.length * FANS);
+    const struts = inst(G.box, M.titanium, fanFaces.length * FANS * 2);
     const rotors = inst(makeRotorGeometry(), M.rotor, fanFaces.length * FANS, true);
     /* Emissive parts, coloured per frame. */
     const strips = ledInst(G.box, N * 4 + (N - 1));
@@ -464,8 +597,7 @@ const builders = {
       put(plinths, i, i, 0, 0.045, 0, W + 0.05, 0.09, D + 0.08);
       put(caps, i, i, 0, H + 0.025, 0, W + 0.03, 0.05, D + 0.03);
       for (let k = 0; k < 4; k++) put(posts, i * 4 + k, i, (k & 1 ? 1 : -1) * (W / 2), H / 2, (k & 2 ? 1 : -1) * (D / 2), 0.045, H, 0.045);
-      /* Perforated top panel: dark slats across the cap. */
-      for (let k = 0; k < 7; k++) put(vents, i * 7 + k, i, -W * 0.36 + k * W * 0.12, H + 0.055, -0.04, 0.05, 0.012, D * 0.62);
+      put(tops, i, i, 0, H + 0.052, 0, W - 0.08, 0.008, D - 0.08);
       /* Two cable looms over the top, three cables each, plus clamps. */
       for (let b = 0; b < 2; b++) {
         const bx = b ? 0.22 : -0.24;
@@ -474,8 +606,7 @@ const builders = {
         }
         put(clamps, i * 2 + b, i, bx, H + 0.09, 0.1, 0.17, 0.07, 0.035);
       }
-      /* Header band with a lit label plate and the white top light bar. */
-      put(headers, i, i, 0, H - 0.1, D / 2 + 0.004, 0.2, 0.035, 0.01);
+      /* White light bar along the top edge (status screens: see doors). */
       put(topBars, i, i, 0, H - 0.025, D / 2 + 0.006, W - 0.1, 0.018, 0.01);
       /* Neon edge strips: two per face. */
       for (let k = 0; k < 4; k++) {
@@ -505,6 +636,17 @@ const builders = {
       }
     }
 
+    /* Status screens: one plane per door, UVs cropped to the cabinet's row. */
+    const atlas = makeStatusAtlas(N);
+    const screenMat = new THREE.MeshBasicMaterial({ map: atlas.tex, toneMapped: false });
+    const screenGeo = Array.from({ length: N }, (_, i) => {
+      const geo = new THREE.PlaneGeometry(0.62, 0.078);
+      const uv = geo.attributes.uv;
+      for (let k = 0; k < uv.count; k++) uv.setY(k, 1 - (i + 1 - uv.getY(k)) / N);
+      return geo;
+    });
+    const screenMatrix = new THREE.Matrix4();
+
     /* Doors. side = +1 inner face (toward the core), -1 outer face. */
     const rotorBase = [];
     let bIdx = 0;
@@ -513,16 +655,25 @@ const builders = {
       const z = side * (D / 2);
       const flip = side > 0 ? 0 : Math.PI;
       put(bezels, f, i, 0, (BAY0 + BAY1) / 2, z + side * 0.004, W - 0.16, BAY1 - BAY0, 0.008);
+      /* Header: live status screen with an accent underline. */
+      put(headers, f, i, 0, H - 0.152, z + side * 0.006, 0.62, 0.008, 0.008);
+      const screen = new THREE.Mesh(screenGeo[i], screenMat);
+      _p.set(0, H - 0.1, z + side * 0.007);
+      _q.setFromEuler(_e.set(0, flip, 0));
+      screenMatrix.multiplyMatrices(basis[i], local.compose(_p, _q, _s.set(1, 1, 1)));
+      screenMatrix.decompose(screen.position, screen.quaternion, screen.scale);
+      g.add(screen);
       if (!isFan) {
         const pitch = (BAY1 - BAY0) / BLADES;
         for (let k = 0; k < BLADES; k++) {
           const y = BAY0 + pitch * (k + 0.5);
           const n = bIdx * BLADES + k;
-          put(slabs, n, i, 0, y, z + side * 0.016, W - 0.22, pitch * 0.8, 0.02);
-          put(slabVents, n, i, -0.12, y, z + side * 0.028, 0.34, pitch * 0.42, 0.006);
-          put(handles, n, i, 0.27, y, z + side * 0.03, 0.035, pitch * 0.62, 0.012);
-          put(bladeLeds, n * 2, i, 0.16, y + pitch * 0.14, z + side * 0.029, 0.028, 0.022, 0.006);
-          put(bladeLeds, n * 2 + 1, i, 0.2, y + pitch * 0.14, z + side * 0.029, 0.028, 0.022, 0.006);
+          /* The faceplate texture reads left→right; turn it to face out. */
+          put(slabs, n, i, 0, y, z + side * 0.016, W - 0.22, pitch * 0.8, 0.02, 0, flip, 0);
+          const lx = side * 0.205;
+          put(handles, n, i, side * 0.31, y, z + side * 0.03, 0.03, pitch * 0.62, 0.014);
+          put(bladeLeds, n * 2, i, lx, y + pitch * 0.16, z + side * 0.028, 0.024, 0.02, 0.006);
+          put(bladeLeds, n * 2 + 1, i, lx + side * 0.034, y + pitch * 0.16, z + side * 0.028, 0.024, 0.02, 0.006);
         }
         bIdx++;
       } else {
@@ -533,7 +684,16 @@ const builders = {
           put(housings, n, i, 0, y, z + side * 0.012, W - 0.26, pitch * 0.94, 0.016);
           put(fanGlow, n, i, 0, y, z + side * 0.021, 1, 1, 1, 0, flip, 0);
           put(fanRings, n, i, 0, y, z + side * 0.028, 1, 1, 1, 0, flip, 0);
-          put(hubs, n, i, 0, y, z + side * 0.032, 0.055, 0.02, 0.055, Math.PI / 2, 0, 0);
+          put(hubs, n, i, 0, y, z + side * 0.038, 0.05, 0.02, 0.05, Math.PI / 2, 0, 0);
+          /* Finger guard (two rings and a cross) and housing screws. */
+          put(guardOuter, n, i, 0, y, z + side * 0.034, 1, 1, 1);
+          put(guardInner, n, i, 0, y, z + side * 0.034, 1, 1, 1);
+          for (let q = 0; q < 2; q++) put(struts, n * 2 + q, i, 0, y, z + side * 0.034, 0.006, 0.43, 0.006, 0, 0, (q ? 1 : -1) * 45 * DEG);
+          const hw = (W - 0.26) / 2 - 0.035;
+          const hh = (pitch * 0.94) / 2 - 0.035;
+          for (let q = 0; q < 4; q++) {
+            put(screws, n * 4 + q, i, (q & 1 ? 1 : -1) * hw, y + (q & 2 ? 1 : -1) * hh, z + side * 0.021, 0.012, 0.006, 0.012, Math.PI / 2, 0, 0);
+          }
           /* Rotor basis, spun about its local z every frame. */
           _p.set(0, y, z + side * 0.026);
           _q.setFromEuler(_e.set(0, flip, 0));
@@ -546,7 +706,7 @@ const builders = {
     const fanCab = fanFaces.flatMap((f) => [f[0], f[0], f[0]]);
     const bladeCab = bladeFaces.map((f) => f[0]);
 
-    for (const m of [body, posts, plinths, caps, vents, cables, clamps, headers, spines, trays, trayCables, bezels, slabs, slabVents, handles, housings, hubs]) g.add(m);
+    for (const m of [body, posts, plinths, caps, tops, cables, clamps, headers, spines, trays, trayCables, bezels, slabs, handles, housings, hubs, screws, guardOuter, guardInner, struts]) g.add(m);
     for (const m of [strips, topBars, bladeLeds, fanRings, fanGlow, rotors]) g.add(m);
 
     /* Grated floor sector under the racks, edged by floor light arcs. */
@@ -586,6 +746,14 @@ const builders = {
     };
     updateRotors();
     const onAt = (i, sim) => (sim.intro.gpu > i / N ? 1 : 0);
+    let nextScreen = -1;
+    const drawScreens = (t, sim) => {
+      for (let i = 0; i < N; i++) {
+        const util = Math.min(1, Math.max(0.03, sim.gpuLoad * (0.9 + 0.1 * Math.sin(i * 2.1)) + 0.05 * Math.sin(t * 3 + i * 1.7)));
+        atlas.draw(i, util, 44 + util * 34 + Math.sin(t * 0.7 + i) * 1.5, sim.prefillLevel > 0.5);
+      }
+      atlas.tex.needsUpdate = true;
+    };
     return {
       group: g,
       proxies,
@@ -622,6 +790,12 @@ const builders = {
           }
         }
         for (const m of [strips, topBars, fanRings, fanGlow, bladeLeds]) m.instanceColor.needsUpdate = true;
+        /* Screens redraw at ~4 Hz (string formatting is the one allocation). */
+        if (t >= nextScreen || nextScreen - t > 1) {
+          nextScreen = t + 0.25;
+          drawScreens(t, sim);
+        }
+        screenMat.color.setScalar((0.08 + 0.92 * sim.intro.gpu) * Math.min(1.2, e));
         arcMat.color.copy(PALETTE.cool).multiplyScalar(0.25 + 0.45 * sim.intro.gpu * Math.min(1, e));
         spill.intensity = (1.2 + load * 3.2) * sim.intro.gpu * Math.min(1, e);
         c.activity = (0.25 + load * 1.5) * sim.intro.gpu;
