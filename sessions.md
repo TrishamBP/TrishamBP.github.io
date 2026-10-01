@@ -5,7 +5,7 @@ seo_title: "Sessions & Technical Talks — AI Systems, ML & System Design"
 description: "Technical sessions and talks on AI systems, machine learning, reinforcement learning, system design, and large-scale AI infrastructure by Trisham Patil."
 keywords: "technical talks, AI systems, system design, machine learning, reinforcement learning, LLM inference, AI infrastructure, distributed systems, Trisham Patil"
 permalink: /sessions/
-image: https://img.youtube.com/vi/LLrJUyGerSc/hqdefault.jpg
+image: https://img.youtube.com/vi/Vfg0x0f_1kk/hqdefault.jpg
 ---
 
 <section class="content-section sessions-section" aria-labelledby="sessions-heading">
