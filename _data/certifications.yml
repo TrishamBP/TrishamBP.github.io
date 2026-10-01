@@ -1,12 +1,14 @@
 # ─────────────────────────────────────────────────────────────
 # Licenses & Certifications — data source
 #
-# Drives the /certifications/ page grid (sorted newest first by `issued`).
+# Drives the /certifications/ page grid. Cards render in file order, so keep
+# entries newest first.
 #
 # Fields:
-#   title          — certificate / course name
+#   title          — full certificate / course name (used for alt text)
+#   short_title    — shorter name shown on the card
 #   issuer         — issuing organisation
-#   issued         — YYYY-MM, used for sorting
+#   issued         — YYYY-MM
 #   date           — human-readable issue date (e.g. "Sep 2026")
 #   credential_id  — credential ID shown on the card
 #   url            — "Show credential" link (leave "" to hide the button)
@@ -14,10 +16,11 @@
 #                    /assets/images/certifications/ibm-bob-hackathon.png
 #                    (leave "" to show a styled placeholder)
 #   description    — 1–2 line summary
-#   skills         — optional list of skills
+#   skills         — 2–4 short skill tags (the first one is highlighted)
 # ─────────────────────────────────────────────────────────────
 
 - title: "IBM Bob 2.0 Hackathon — Certificate of Excellence and Completion"
+  short_title: "IBM Bob 2.0 Hackathon"
   issuer: "lablab.ai"
   issued: "2026-09"
   date: "Sep 2026"
@@ -30,6 +33,7 @@
   skills: ["Hackathon", "AI Engineering", "IBM"]
 
 - title: "AMD ACT II Hackathon — Certificate of Performance and Completion"
+  short_title: "AMD ACT II Hackathon"
   issuer: "lablab.ai"
   issued: "2026-07"
   date: "Jul 2026"
@@ -41,43 +45,47 @@
     lablab.ai, ranked in the top 0.2% of ~20,000 participants.
   skills: ["Hackathon", "AMD GPUs", "AI Engineering"]
 
-- title: "AI Engineer Production Track: Deploy LLMs & Agents at Scale"
-  issuer: "Udemy"
-  issued: "2026-05"
-  date: "May 2026"
-  credential_id: "UC-f9f6007d-da4c-4958-9fb6-e8bfb2e6fa51"
-  url: "https://www.udemy.com/certificate/UC-f9f6007d-da4c-4958-9fb6-e8bfb2e6fa51/"
-  image: ""
-  description: >
-    Deploying LLMs and AI agents to production at scale: serving,
-    infrastructure, and operating agentic systems.
-  skills: ["Agentic AI Development", "AI Agents", "LLM Deployment"]
-
 - title: "AI Engineer Agentic Track: The Complete Agent & MCP Course"
+  short_title: "AI Engineer Agentic Track"
   issuer: "Udemy"
   issued: "2026-05"
   date: "May 2026"
   credential_id: "UC-8dd47b2a-48c3-408f-833e-01e87bc1bff6"
   url: "https://www.udemy.com/certificate/UC-8dd47b2a-48c3-408f-833e-01e87bc1bff6/"
-  image: ""
+  image: "/assets/images/certifications/UC-8dd47b2a-48c3-408f-833e-01e87bc1bff6.jpg"
   description: >
     Building autonomous AI agents and multi-agent systems with CrewAI and the
     Model Context Protocol (MCP).
-  skills: ["CrewAI", "Model Context Protocol (MCP)", "AI Agents"]
+  skills: ["CrewAI", "MCP", "AI Agents"]
+
+- title: "AI Engineer Production Track: Deploy LLMs & Agents at Scale"
+  short_title: "AI Engineer Production Track"
+  issuer: "Udemy"
+  issued: "2026-05"
+  date: "May 2026"
+  credential_id: "UC-f9f6007d-da4c-4958-9fb6-e8bfb2e6fa51"
+  url: "https://www.udemy.com/certificate/UC-f9f6007d-da4c-4958-9fb6-e8bfb2e6fa51/"
+  image: "/assets/images/certifications/UC-f9f6007d-da4c-4958-9fb6-e8bfb2e6fa51.jpg"
+  description: >
+    Deploying LLMs and AI agents to production at scale: serving,
+    infrastructure, and operating agentic systems.
+  skills: ["Agentic AI", "LLM Deployment", "Production"]
 
 - title: "AI Engineer Core Track: LLM Engineering, RAG, QLoRA, Agents"
+  short_title: "AI Engineer Core Track"
   issuer: "Udemy"
   issued: "2026-03"
   date: "Mar 2026"
   credential_id: "UC-60fa572d-f5db-42fb-b289-d9b8dbac254c"
   url: "https://www.udemy.com/certificate/UC-60fa572d-f5db-42fb-b289-d9b8dbac254c/"
-  image: ""
+  image: "/assets/images/certifications/UC-60fa572d-f5db-42fb-b289-d9b8dbac254c.jpg"
   description: >
     Core LLM engineering: retrieval-augmented generation, QLoRA fine-tuning,
     and building LLM-powered agents in Python.
-  skills: ["Python", "LLM", "RAG", "QLoRA"]
+  skills: ["LLM", "RAG", "QLoRA", "Python"]
 
 - title: "Data Engineering with Python and AI"
+  short_title: "Data Engineering with Python and AI"
   issuer: "freeCodeCamp"
   issued: "2026-03"
   date: "Mar 2026"
@@ -87,40 +95,43 @@
   description: >
     Building data ingestion and streaming pipelines with Python, with AI
     applied across the data engineering workflow.
-  skills: ["Python", "Data Ingestion & Streaming Pipelines", "Data Engineering"]
+  skills: ["Python", "Data Engineering", "Streaming"]
 
 - title: "PyTorch for Deep Learning Bootcamp"
+  short_title: "PyTorch for Deep Learning Bootcamp"
   issuer: "Udemy"
   issued: "2025-07"
   date: "Jul 2025"
   credential_id: "UC-80347cf3-d6d8-4805-90cd-1b818c8f0123"
   url: "https://www.udemy.com/certificate/UC-80347cf3-d6d8-4805-90cd-1b818c8f0123/"
-  image: ""
+  image: "/assets/images/certifications/UC-80347cf3-d6d8-4805-90cd-1b818c8f0123.jpg"
   description: >
     Deep learning with PyTorch, from tensors and training loops to computer
     vision models and transfer learning.
   skills: ["Python", "Deep Learning", "PyTorch"]
 
 - title: "TensorFlow for Deep Learning Bootcamp"
+  short_title: "TensorFlow for Deep Learning Bootcamp"
   issuer: "Udemy"
   issued: "2025-06"
   date: "Jun 2025"
   credential_id: "UC-2b99a50d-bc79-407b-85f6-955a1bb4cb70"
   url: "https://www.udemy.com/certificate/UC-2b99a50d-bc79-407b-85f6-955a1bb4cb70/"
-  image: ""
+  image: "/assets/images/certifications/UC-2b99a50d-bc79-407b-85f6-955a1bb4cb70.jpg"
   description: >
     Building and training neural networks with TensorFlow for computer vision,
     NLP, and time-series problems.
   skills: ["TensorFlow", "Deep Learning", "Python"]
 
 - title: "Natural Language Processing Specialization"
+  short_title: "Natural Language Processing Specialization"
   issuer: "DeepLearning.AI"
   issued: "2024-07"
   date: "Jul 2024"
   credential_id: "PJ3RTE89BJGB"
   url: "https://www.coursera.org/account/accomplishments/specialization/PJ3RTE89BJGB"
-  image: ""
+  image: "/assets/images/certifications/nlp-specialization-deeplearning-ai.jpeg"
   description: >
     A four-course specialization covering classical and neural NLP, from
     sentiment analysis and word embeddings to sequence models and attention.
-  skills: ["Natural Language Processing (NLP)", "Named Entity Recognition (NER)", "Attention Models"]
+  skills: ["NLP", "NER", "Attention Models"]

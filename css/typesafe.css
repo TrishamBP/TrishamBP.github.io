@@ -1276,3 +1276,47 @@ body.theme-typesafe .article-pagination span.disabled {
     -webkit-text-stroke: 0;
   }
 }
+
+/* -----------------------------------------------------------------------------
+   Certifications — opt out of the hard-edge skin
+   -----------------------------------------------------------------------------
+   The /certifications/ cards are a deliberate neon/space showcase (dark in both
+   themes), so restore the radii, glow and light-on-dark copy that the global
+   normalisation above strips from every `*card*` / `*-tag*` / `*-logo*`.
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe .site-shell .cert-card {
+  border-radius: 12px;
+  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.08), 0 0 18px rgba(56, 189, 248, 0.12);
+}
+
+body.theme-typesafe .site-shell .cert-card:hover,
+body.theme-typesafe .site-shell .cert-card:focus-within {
+  box-shadow: 0 0 0 1px rgba(125, 211, 252, 0.25), 0 10px 34px var(--cert-glow);
+}
+
+body.theme-typesafe.ts-reveal-ready .cert-card.ts-reveal.ts-in:hover,
+body.theme-typesafe.ts-reveal-ready .cert-card.ts-reveal.ts-in:focus-within {
+  transform: translateY(-3px);
+}
+
+body.theme-typesafe .site-shell .cert-tag {
+  border-radius: 6px;
+}
+
+body.theme-typesafe .site-shell .cert-tag--lead {
+  box-shadow: 0 0 10px rgba(198, 244, 50, 0.18);
+}
+
+body.theme-typesafe .site-shell .cert-art-img {
+  border-radius: 6px;
+  box-shadow: 0 0 40px var(--cert-glow);
+}
+
+body.theme-typesafe .site-shell .cert-desc {
+  color: #cbd5e1;
+}
+
+body.theme-typesafe .site-shell .cert-id {
+  color: #94a3b8;
+}
