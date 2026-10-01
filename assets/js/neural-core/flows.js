@@ -352,7 +352,7 @@ export class Flows {
     this.fabric = add(new Stream({ curves: [curve(ring, true)], count: n(44), color: PALETTE.blue, size: 0.08, speed: 0.035, glow, level: 0.6, lane: "infra" }));
     this.pipeline = add(
       new Stream({
-        curves: [curve([[5.0, 0.7, 3.6], [5.0, 1.1, 2.9], [4.6, 1.5, 2.15]])],
+        curves: [curve([[3.93, 0.7, 2.69], [4.35, 1.1, 2.42], [4.6, 1.5, 2.15]])],
         count: n(10),
         color: PALETTE.blue,
         size: 0.08,

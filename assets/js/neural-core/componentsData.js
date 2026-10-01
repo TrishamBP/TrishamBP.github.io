@@ -318,12 +318,12 @@ export const componentsData = [
     id: "data-pipeline",
     name: "Data Pipeline",
     description:
-      "A glass-tube processing line: raw documents are ingested, cleaned into data blocks, chunked and embedded station by station, then streamed into the embedding engine and storage so retrieval always has fresh knowledge.",
+      "The serving pipeline end to end: the request router feeds the prefill cluster, the KV cache layer holds attention state (its cylinders fill with live KV occupancy), the decode cluster streams tokens, and the scheduler batches everything out to the embedding engine and storage.",
     technologies: ["Apache Kafka", "Apache Spark", "Airflow", "dbt"],
     category: "NETWORK",
     mapGroup: "INFRASTRUCTURE",
     position: [3.7, 0.3, 3.6],
-    cameraTarget: { position: [5.6, 2.2, 7.4], target: [3.7, 0.6, 3.6] },
+    cameraTarget: { position: [5.5, 3.2, 6.6], target: [2.93, 0.5, 3.52] },
     color: BLUE,
     metadata: {
       Stages: "Ingest → clean → chunk → embed",
