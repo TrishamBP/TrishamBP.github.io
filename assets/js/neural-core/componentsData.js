@@ -48,7 +48,7 @@ export const componentsData = [
     id: "llm-inference",
     name: "LLM Inference Engine",
     description:
-      "The reactor at the heart of the machine: transformer forward passes that turn a prompt into tokens. Every request, retrieved document and agent step ends up here. Selected, it opens into a hologram: drag to spin it, hover a callout to trace a part.",
+      "The spacecraft at the heart of the machine: transformer forward passes that turn a prompt into tokens. Every request, retrieved document and agent step ends up here. Selected, it opens into a hologram: drag to spin it, hover a callout to trace a part.",
     technologies: ["vLLM", "SGLang", "TensorRT-LLM", "PagedAttention", "Continuous batching"],
     category: "CORE",
     mapGroup: "INFERENCE",

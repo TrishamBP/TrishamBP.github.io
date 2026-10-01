@@ -13,7 +13,7 @@
    ------------------------------------------------------------------------ */
 
 import * as THREE from "three";
-import { buildReactor } from "./reactor.js";
+import { buildSatellite } from "./satellite.js";
 
 const TAU = Math.PI * 2;
 const DEG = Math.PI / 180;
@@ -327,14 +327,14 @@ export function buildChassis() {
 /* ctx: { accent, quality: { low:boolean } }                                */
 
 const builders = {
-  /* Tokamak-style fusion reactor; see reactor.js (also owns the hologram). */
+  /* Orbital spacecraft; see satellite.js (also owns the hologram). */
   "llm-inference"(ctx) {
-    return buildReactor(ctx);
+    return buildSatellite(ctx);
   },
 
-  /* Poloidal-field rings around the reactor: one wide equatorial ring and
-     two tighter ones above and below the coils. They open out with the
-     reactor's exploded view (sim.holo) and glow gold in the hologram. */
+  /* Orbit rings around the spacecraft: one wide equatorial ring and two
+     tighter ones above and below the hull. They open out with the
+     spacecraft's exploded view (sim.holo) and glow gold in the hologram. */
   attention(ctx) {
     const g = new THREE.Group();
     const rings = [];

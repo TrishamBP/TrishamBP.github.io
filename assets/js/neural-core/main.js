@@ -193,7 +193,7 @@ function start({ small, coarse, reducedQuery }) {
   const byId = Object.fromEntries(components.map((c) => [c.data.id, c]));
   const parts = Object.fromEntries(components.map((c) => [c.data.id, c.part]));
 
-  /* The reactor opens into a hologram while selected (reactor.js). The
+  /* The spacecraft opens into a hologram while selected (satellite.js). The
      scheduler deck above it lifts clear of the exploded view. */
   const host = byId["llm-inference"];
   const holo = host && host.part.holo;
