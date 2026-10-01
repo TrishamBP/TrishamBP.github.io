@@ -16,6 +16,7 @@ import * as THREE from "three";
 import { buildSatellite } from "./satellite.js";
 import { buildStarship } from "./starship.js";
 import { buildDeathStar } from "./deathstar.js";
+import { buildDataPipeline } from "./datapipe.js";
 
 const TAU = Math.PI * 2;
 const DEG = Math.PI / 180;
@@ -1026,33 +1027,7 @@ const builders = {
   },
 
   "data-pipeline"(ctx) {
-    const g = new THREE.Group();
-    g.add(mesh(G.box, M.graphite, -0.9, 0.12, 0, 0.18, 0.24, 0.3));
-    g.add(mesh(G.box, M.graphite, 0.9, 0.12, 0, 0.18, 0.24, 0.3));
-    g.add(mesh(G.box, M.titanium, 0, 0.27, 0, 2.4, 0.05, 0.32));
-    g.add(mesh(G.box, ctx.accent, 0, 0.3, 0.165, 2.4, 0.012, 0.012));
-    g.add(mesh(G.box, M.graphite, 1.32, 0.42, 0, 0.3, 0.5, 0.42));
-    const N = 6;
-    const pkts = ledInst(G.box, N);
-    pkts.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-    g.add(pkts);
-    let shift = 0;
-    return {
-      group: g,
-      update(dt, t, sim, c) {
-        shift = (shift + dt * 0.35 * sim.motion) % 1;
-        for (let i = 0; i < N; i++) {
-          const u = (i / N + shift) % 1;
-          const x = -1.1 + u * 2.3;
-          const fade = Math.min(1, u * 6, (1 - u) * 6);
-          setInst(pkts, i, x, 0.36, 0, 0.18 * fade + 0.001, 0.12 * fade + 0.001, 0.2 * fade + 0.001);
-          pkts.setColorAt(i, lit(i % 3 === 0 ? PALETTE.lime : PALETTE.blue, (0.25 + 0.4 * fade) * c.emph));
-        }
-        pkts.instanceMatrix.needsUpdate = true;
-        pkts.instanceColor.needsUpdate = true;
-        c.activity = 0.7;
-      },
-    };
+    return buildDataPipeline(ctx);
   },
 
   observability(ctx) {

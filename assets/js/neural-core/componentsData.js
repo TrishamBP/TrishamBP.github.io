@@ -318,7 +318,7 @@ export const componentsData = [
     id: "data-pipeline",
     name: "Data Pipeline",
     description:
-      "Ingests, cleans and chunks raw data, then streams it into the embedding engine and storage so retrieval always has fresh knowledge.",
+      "A glass-tube processing line: raw documents are ingested, cleaned into data blocks, chunked and embedded station by station, then streamed into the embedding engine and storage so retrieval always has fresh knowledge.",
     technologies: ["Apache Kafka", "Apache Spark", "Airflow", "dbt"],
     category: "NETWORK",
     mapGroup: "INFRASTRUCTURE",
