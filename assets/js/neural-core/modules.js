@@ -14,6 +14,7 @@
 
 import * as THREE from "three";
 import { buildSatellite } from "./satellite.js";
+import { buildStarship } from "./starship.js";
 
 const TAU = Math.PI * 2;
 const DEG = Math.PI / 180;
@@ -396,39 +397,9 @@ const builders = {
     };
   },
 
+  /* Starship hovering over the core; see starship.js. */
   "cpu-control"(ctx) {
-    const g = new THREE.Group();
-    g.add(mesh(G.hex, M.graphite, 0, 0.06, 0, 1.15, 0.12, 1.15));
-    g.add(mesh(G.box, M.titanium, 0, 0.17, 0, 0.56, 0.1, 0.56));
-    g.add(mesh(G.box, ctx.accent, 0, 0.23, 0, 0.32, 0.03, 0.32));
-    const traces = ledInst(G.box, 12);
-    for (let i = 0; i < 12; i++) {
-      const a = (i / 12) * TAU + 15 * DEG;
-      setInst(traces, i, Math.cos(a) * 0.68, 0.125, Math.sin(a) * 0.68, 0.5, 0.012, 0.025, 0, -a, 0);
-    }
-    g.add(traces);
-    const beat = new THREE.Mesh(new THREE.TorusGeometry(0.86, 0.014, 6, 64), new THREE.MeshBasicMaterial({ color: 0xffffff, toneMapped: false, transparent: true }));
-    beat.rotation.x = Math.PI / 2;
-    beat.position.y = 0.13;
-    g.add(beat);
-    const proxy = mesh(G.hex, M.proxy, 0, 0.15, 0, 1.2, 0.45, 1.2);
-    return {
-      group: g,
-      proxies: [proxy],
-      update(dt, t, sim, c) {
-        /* Double-beat heartbeat: the scheduler tick. */
-        const ph = (t % 1.3) / 1.3;
-        const hb = Math.exp(-((ph - 0.05) ** 2) / 0.0012) + 0.6 * Math.exp(-((ph - 0.2) ** 2) / 0.0012);
-        const k = (0.25 + hb * sim.motionPulse) * sim.intro.core * c.emph;
-        beat.material.color.copy(PALETTE.blue).multiplyScalar(0.4 + k * 1.4);
-        for (let i = 0; i < 12; i++) {
-          const w = 0.5 + 0.5 * Math.sin(t * 3 - i * 0.9);
-          traces.setColorAt(i, lit(PALETTE.blue, (0.12 + w * 0.35 * sim.coreLevel) * c.emph));
-        }
-        traces.instanceColor.needsUpdate = true;
-        c.activity = 0.5 + hb * 0.8 * sim.motionPulse;
-      },
-    };
+    return buildStarship(ctx);
   },
 
   prefill(ctx) {

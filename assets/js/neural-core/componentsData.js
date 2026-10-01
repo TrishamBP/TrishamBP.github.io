@@ -156,7 +156,7 @@ export const componentsData = [
     id: "cpu-control",
     name: "CPU Control Plane",
     description:
-      "The scheduler on top: tokenization, request routing, batch formation and kernel launches. Its heartbeat keeps the GPUs fed.",
+      "The starship holding station over the core: tokenization, request routing, batch formation and kernel launches. Its heartbeat pulses through the deflector and keeps the GPUs fed.",
     technologies: ["Python asyncio", "Rust tokenizers", "Kubernetes", "gRPC"],
     category: "COMPUTE",
     mapGroup: "COMPUTE",
