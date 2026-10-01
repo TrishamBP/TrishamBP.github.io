@@ -1,0 +1,868 @@
+/* =============================================================================
+   NEURAL COMPUTE CORE — homepage 3D hero
+   =============================================================================
+   Scoped under #neural-core (an id) so it outranks the typesafe skin's
+   `body.theme-typesafe .site-shell p/li/button` rules without !important.
+   Layout states set by assets/js/neural-core/main.js:
+     .nc-is-static   static SVG schematic (default before JS, no-WebGL, errors)
+     .nc-is-live     WebGL scene running
+     .nc-story       tall scroll-story section with a sticky stage
+     .nc-t-*         intro sequence steps (boot → name → tag → cta → ui)
+     .nc-scrolled / .nc-chapter-on / .nc-has-selection / .nc-has-group /
+     .nc-explore-mode
+   ========================================================================== */
+
+#neural-core {
+  --nc-bg: #030303;
+  --nc-fg: #f0f0fa;
+  --nc-soft: rgba(240, 240, 250, 0.78);
+  --nc-dim: rgba(240, 240, 250, 0.52);
+  --nc-line: rgba(240, 240, 250, 0.14);
+  --nc-line-strong: rgba(240, 240, 250, 0.32);
+  --nc-panel: rgba(8, 8, 9, 0.78);
+  --nc-blue: #6fb2ff;
+  --nc-lime: #c6f432;
+  --nc-display: var(--ts-display, "Space Grotesk", "Helvetica Neue", Arial, sans-serif);
+  --nc-mono: var(--ts-term, "Space Mono", "JetBrains Mono", ui-monospace, Consolas, monospace);
+  --nc-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --nc-stage-h: calc(100vh - var(--nc-nav, 0px));
+
+  position: relative;
+  /* Full-bleed out of the 1040px .site-shell column. --nc-vw is the
+     viewport width without the scrollbar (set by main.js). */
+  width: var(--nc-vw, 100vw);
+  margin-left: calc(50% - var(--nc-vw, 100vw) / 2);
+  margin-top: -42px;
+  margin-bottom: 64px;
+  height: var(--nc-stage-h);
+  min-height: 540px;
+  background: var(--nc-bg);
+  color: var(--nc-fg);
+  font-family: var(--nc-display);
+  /* style.css justifies every <p> with text-align-last:left. */
+  text-align-last: auto;
+}
+
+@supports (height: 100svh) {
+  #neural-core {
+    --nc-stage-h: calc(100svh - var(--nc-nav, 0px));
+  }
+}
+
+#neural-core.nc-story {
+  height: 520vh;
+}
+
+/* Undo the site-wide justified <p> (style.css) inside the hero. */
+#neural-core p {
+  text-align: left;
+  text-align-last: auto;
+  line-height: 1.5;
+}
+
+#neural-core .nc-stage {
+  position: sticky;
+  top: var(--nc-nav, 0px);
+  height: var(--nc-stage-h);
+  min-height: 540px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Vignette + top/bottom fades keep overlay text legible over the scene. */
+#neural-core .nc-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(3, 3, 3, 0.85) 0%, rgba(3, 3, 3, 0) 22%, rgba(3, 3, 3, 0) 76%, rgba(3, 3, 3, 0.9) 100%),
+    radial-gradient(ellipse at 50% 55%, rgba(3, 3, 3, 0) 45%, rgba(3, 3, 3, 0.65) 100%);
+}
+
+#neural-core .nc-viewport {
+  position: absolute;
+  inset: 0;
+  outline: none;
+}
+
+#neural-core .nc-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#neural-core .nc-viewport:focus-visible::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  z-index: 2;
+  border: 1px solid rgba(111, 178, 255, 0.45);
+  pointer-events: none;
+}
+
+/* ------------------------------ static fallback --------------------------- */
+
+#neural-core .nc-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16vh 4vw 14vh;
+}
+
+#neural-core .nc-schematic {
+  width: min(1180px, 100%);
+  height: auto;
+  max-height: 100%;
+}
+
+#neural-core .nc-schematic-labels {
+  font-family: var(--nc-mono);
+}
+
+#neural-core.nc-is-live .nc-fallback {
+  display: none;
+}
+
+#neural-core:not(.nc-is-live) :is(.nc-viewport, .nc-boot, .nc-chapter, .nc-hud, .nc-map, .nc-controls, .nc-inspector, .nc-tooltip, .nc-scroll) {
+  display: none;
+}
+
+/* --------------------------------- title ---------------------------------- */
+
+#neural-core .nc-titleblock {
+  position: absolute;
+  z-index: 3;
+  top: clamp(18px, 4.2vh, 44px);
+  left: 0;
+  right: 0;
+  text-align: center;
+  pointer-events: none;
+  transition: opacity 0.6s var(--nc-ease), transform 0.6s var(--nc-ease);
+}
+
+#neural-core .nc-name {
+  margin: 0;
+  font-family: var(--nc-display);
+  font-weight: 500;
+  font-size: clamp(2.1rem, 6.4vw, 5.6rem);
+  line-height: 0.9;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--nc-fg);
+}
+
+#neural-core .nc-keywords {
+  margin: 14px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 0;
+  font-family: var(--nc-mono);
+  font-size: clamp(0.6rem, 1.05vw, 0.74rem);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--nc-dim);
+}
+
+#neural-core .nc-keywords span + span::before {
+  content: "/";
+  margin: 0 0.9em;
+  color: rgba(240, 240, 250, 0.28);
+}
+
+/* ---------------------------------- CTA ----------------------------------- */
+
+#neural-core .nc-cta {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: clamp(18px, 4.5vh, 46px);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  transition: opacity 0.6s var(--nc-ease), transform 0.6s var(--nc-ease);
+}
+
+#neural-core .nc-explore {
+  display: inline-block;
+  padding: 13px 26px;
+  font-family: var(--nc-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--nc-fg);
+  background: rgba(3, 3, 3, 0.55);
+  border: 1px solid var(--nc-line-strong);
+  transition: color 0.25s, border-color 0.25s, background-color 0.25s;
+}
+
+#neural-core .nc-explore:hover,
+#neural-core .nc-explore:focus-visible {
+  color: var(--nc-lime);
+  border-color: var(--nc-lime);
+  outline: none;
+}
+
+#neural-core .nc-scroll {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--nc-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--nc-dim);
+}
+
+#neural-core .nc-scroll i {
+  position: relative;
+  width: 1px;
+  height: 34px;
+  overflow: hidden;
+  background: var(--nc-line);
+}
+
+#neural-core .nc-scroll i::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -40%;
+  width: 1px;
+  height: 40%;
+  background: var(--nc-fg);
+  animation: nc-scroll-line 2s var(--nc-ease) infinite;
+}
+
+@keyframes nc-scroll-line {
+  0% { top: -40%; }
+  100% { top: 100%; }
+}
+
+#neural-core.nc-scrolled .nc-titleblock,
+#neural-core.nc-has-selection .nc-titleblock,
+#neural-core.nc-has-group .nc-titleblock,
+#neural-core.nc-explore-mode .nc-titleblock {
+  opacity: 0;
+  transform: translateY(-14px);
+}
+
+#neural-core.nc-scrolled .nc-cta,
+#neural-core.nc-has-selection .nc-cta,
+#neural-core.nc-has-group .nc-cta,
+#neural-core.nc-explore-mode .nc-cta {
+  opacity: 0;
+  transform: translate(-50%, 14px);
+  pointer-events: none;
+}
+
+/* ------------------------------ intro sequence ---------------------------- */
+
+#neural-core .nc-boot {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--nc-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.32em;
+  color: var(--nc-dim);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s;
+}
+
+#neural-core .nc-boot-bar {
+  width: 160px;
+  height: 1px;
+  background: var(--nc-line);
+  overflow: hidden;
+}
+
+#neural-core .nc-boot-bar i {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--nc-fg);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+#neural-core.nc-t-boot .nc-boot { opacity: 1; }
+#neural-core.nc-t-boot .nc-boot-bar i { transform: scaleX(1); transition: transform 1.6s var(--nc-ease); }
+#neural-core.nc-t-name .nc-boot,
+#neural-core.nc-t-done .nc-boot { opacity: 0; }
+
+#neural-core.nc-is-live .nc-name,
+#neural-core.nc-is-live .nc-keywords,
+#neural-core.nc-is-live .nc-cta > * {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.9s var(--nc-ease), transform 0.9s var(--nc-ease);
+}
+
+#neural-core.nc-t-name .nc-name,
+#neural-core.nc-t-tag .nc-keywords,
+#neural-core.nc-t-cta .nc-cta > * {
+  opacity: 1;
+  transform: none;
+}
+
+#neural-core.nc-is-live :is(.nc-map, .nc-controls, .nc-hud) {
+  transition: opacity 0.8s var(--nc-ease);
+}
+
+#neural-core.nc-is-live:not(.nc-t-ui) :is(.nc-map, .nc-controls, .nc-hud) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ------------------------------ shared controls --------------------------- */
+
+#neural-core .nc-ctl,
+#neural-core .nc-entry {
+  font-family: var(--nc-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--nc-dim);
+  background: var(--nc-panel);
+  border: 1px solid var(--nc-line);
+  border-radius: 0;
+  padding: 9px 11px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+}
+
+#neural-core .nc-ctl:hover,
+#neural-core .nc-entry:hover,
+#neural-core .nc-ctl:focus-visible,
+#neural-core .nc-entry:focus-visible {
+  color: var(--nc-fg);
+  border-color: var(--nc-line-strong);
+  outline: none;
+}
+
+#neural-core .nc-ctl:focus-visible,
+#neural-core .nc-entry:focus-visible {
+  box-shadow: 0 0 0 1px var(--nc-blue);
+}
+
+#neural-core .nc-ctl[aria-pressed="true"],
+#neural-core .nc-ctl[aria-checked="true"],
+#neural-core .nc-entry[aria-current="true"] {
+  color: var(--nc-lime);
+  border-color: rgba(198, 244, 50, 0.55);
+}
+
+#neural-core .nc-ctl-icon {
+  min-width: 32px;
+  font-size: 0.85rem;
+  padding: 6px 8px;
+}
+
+/* ---------------------------------- HUD ----------------------------------- */
+
+#neural-core .nc-hud {
+  position: absolute;
+  z-index: 3;
+  top: clamp(18px, 4.2vh, 44px);
+  left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: var(--nc-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  color: var(--nc-dim);
+  pointer-events: none;
+}
+
+#neural-core .nc-hud b {
+  display: inline-block;
+  min-width: 64px;
+  font-weight: 400;
+  color: rgba(240, 240, 250, 0.32);
+}
+
+#neural-core .nc-hud [data-nc-hud="phase"] {
+  color: var(--nc-lime);
+}
+
+/* ------------------------------ chapter caption --------------------------- */
+
+#neural-core .nc-chapter {
+  position: absolute;
+  z-index: 3;
+  left: clamp(20px, 4vw, 64px);
+  top: 50%;
+  width: min(340px, 80vw);
+  transform: translateY(-40%);
+  opacity: 0;
+  pointer-events: none;
+  text-shadow: 0 1px 14px rgba(3, 3, 3, 0.9);
+  transition: opacity 0.6s var(--nc-ease), transform 0.6s var(--nc-ease);
+}
+
+/* Soft scrim so captions stay legible over bright parts of the scene. */
+#neural-core .nc-chapter::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -40px -60px -40px -120px;
+  background: radial-gradient(ellipse at 35% 50%, rgba(3, 3, 3, 0.72), rgba(3, 3, 3, 0) 70%);
+  pointer-events: none;
+}
+
+#neural-core.nc-chapter-on .nc-chapter {
+  opacity: 1;
+  transform: translateY(-50%);
+}
+
+#neural-core.nc-has-selection .nc-chapter,
+#neural-core.nc-has-group .nc-chapter {
+  opacity: 0;
+}
+
+#neural-core .nc-chapter-index {
+  font-family: var(--nc-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  color: var(--nc-lime);
+}
+
+#neural-core .nc-chapter-title {
+  margin: 10px 0 10px;
+  font-family: var(--nc-display);
+  font-size: clamp(1.4rem, 2.4vw, 2.1rem);
+  line-height: 1;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: var(--nc-fg);
+}
+
+#neural-core .nc-chapter-body {
+  margin: 0 0 16px;
+  font-family: var(--nc-display);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--nc-soft);
+}
+
+#neural-core .nc-chapter-progress {
+  display: block;
+  height: 1px;
+  background: var(--nc-line);
+}
+
+#neural-core .nc-chapter-progress i {
+  display: block;
+  height: 100%;
+  background: var(--nc-fg);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+/* ------------------------------- system map ------------------------------- */
+
+#neural-core .nc-map {
+  position: absolute;
+  z-index: 4;
+  left: 24px;
+  bottom: 24px;
+  width: 236px;
+}
+
+#neural-core .nc-map-title {
+  margin: 0 0 8px;
+  font-family: var(--nc-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(240, 240, 250, 0.38);
+}
+
+#neural-core .nc-map-groups {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+#neural-core .nc-map-groups .nc-ctl {
+  text-align: left;
+}
+
+#neural-core .nc-map-list {
+  display: none;
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  max-height: 34vh;
+  overflow: auto;
+}
+
+#neural-core.nc-has-group .nc-map-list {
+  display: grid;
+  gap: 3px;
+}
+
+#neural-core .nc-map-list li {
+  margin: 0;
+  padding: 0;
+}
+
+#neural-core .nc-map-list li[hidden] {
+  display: none;
+}
+
+#neural-core .nc-entry {
+  width: 100%;
+  text-align: left;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  font-size: 0.68rem;
+}
+
+/* ------------------------------ view controls ----------------------------- */
+
+#neural-core .nc-controls {
+  position: absolute;
+  z-index: 4;
+  right: 24px;
+  bottom: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px;
+  max-width: 420px;
+}
+
+#neural-core .nc-mode {
+  display: inline-flex;
+  gap: 4px;
+}
+
+#neural-core.nc-explore-mode .nc-controls::before {
+  content: "Drag to orbit · pinch or ctrl + scroll to zoom · click a module";
+  flex-basis: 100%;
+  text-align: right;
+  margin-bottom: 6px;
+  font-family: var(--nc-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--nc-dim);
+}
+
+/* -------------------------------- inspector ------------------------------- */
+
+#neural-core .nc-inspector {
+  position: absolute;
+  z-index: 5;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: min(360px, calc(100% - 48px));
+  max-height: calc(100% - 140px);
+  overflow: auto;
+  padding: 22px 22px 18px;
+  background: rgba(7, 7, 8, 0.86);
+  border: 1px solid var(--nc-line);
+  border-top: 1px solid var(--nc-line-strong);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  animation: nc-panel-in 0.45s var(--nc-ease);
+}
+
+#neural-core .nc-inspector[hidden] {
+  display: none;
+}
+
+@keyframes nc-panel-in {
+  from { opacity: 0; transform: translate(12px, -50%); }
+  to { opacity: 1; transform: translate(0, -50%); }
+}
+
+#neural-core .nc-inspector-eyebrow,
+#neural-core .nc-inspector-label {
+  margin: 0;
+  font-family: var(--nc-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--nc-lime);
+}
+
+#neural-core .nc-inspector-label {
+  margin-top: 18px;
+  color: rgba(240, 240, 250, 0.38);
+}
+
+#neural-core .nc-inspector-name {
+  margin: 10px 0 10px;
+  padding: 0;
+  border: 0;
+  font-family: var(--nc-display);
+  font-size: 1.5rem;
+  line-height: 1.05;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--nc-fg);
+}
+
+#neural-core .nc-inspector-desc {
+  margin: 0;
+  font-family: var(--nc-display);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--nc-soft);
+}
+
+#neural-core .nc-chips {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+#neural-core .nc-chips li {
+  margin: 0;
+  padding: 5px 8px;
+  font-family: var(--nc-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  color: var(--nc-fg);
+  border: 1px solid var(--nc-line);
+  background: rgba(240, 240, 250, 0.04);
+}
+
+#neural-core .nc-facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 14px;
+  margin: 18px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--nc-line);
+}
+
+#neural-core .nc-facts dt {
+  font-family: var(--nc-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(240, 240, 250, 0.4);
+  padding-top: 2px;
+}
+
+#neural-core .nc-facts dd {
+  margin: 0;
+  font-family: var(--nc-display);
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--nc-soft);
+}
+
+#neural-core .nc-inspector-nav {
+  display: flex;
+  gap: 4px;
+  margin-top: 18px;
+}
+
+#neural-core .nc-inspector-nav [data-nc-close] {
+  margin-left: auto;
+}
+
+/* --------------------------------- tooltip -------------------------------- */
+
+#neural-core .nc-tooltip {
+  position: absolute;
+  z-index: 4;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 7px 10px;
+  white-space: nowrap;
+  background: rgba(7, 7, 8, 0.85);
+  border: 1px solid var(--nc-line-strong);
+  border-left: 2px solid var(--nc-blue);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+#neural-core .nc-tooltip.is-visible {
+  opacity: 1;
+}
+
+#neural-core .nc-tooltip b {
+  font-family: var(--nc-display);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--nc-fg);
+}
+
+#neural-core .nc-tooltip span {
+  font-family: var(--nc-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.24em;
+  color: var(--nc-dim);
+}
+
+/* --------------------------------- utility -------------------------------- */
+
+#neural-core .nc-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.nc-end {
+  display: block;
+  height: 0;
+}
+
+/* --------------------------------- tablet --------------------------------- */
+
+@media (max-width: 1100px) {
+  #neural-core .nc-hud {
+    display: none;
+  }
+
+  #neural-core .nc-chapter {
+    top: auto;
+    bottom: 130px;
+    transform: translateY(10px);
+  }
+
+  #neural-core.nc-chapter-on .nc-chapter {
+    transform: none;
+  }
+}
+
+/* --------------------------------- mobile --------------------------------- */
+
+@media (max-width: 760px) {
+  #neural-core {
+    margin-top: -42px;
+  }
+
+  #neural-core.nc-story {
+    height: 440vh;
+  }
+
+  #neural-core .nc-fallback {
+    padding: 22vh 2vw 20vh;
+  }
+
+  #neural-core .nc-keywords {
+    letter-spacing: 0.18em;
+    padding: 0 12px;
+  }
+
+  #neural-core .nc-chapter {
+    left: 16px;
+    right: 16px;
+    width: auto;
+    bottom: 112px;
+  }
+
+  #neural-core .nc-chapter-body {
+    font-size: 0.82rem;
+  }
+
+  #neural-core .nc-map {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    width: auto;
+  }
+
+  #neural-core .nc-map-title {
+    display: none;
+  }
+
+  #neural-core .nc-map-groups {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  #neural-core .nc-map-groups .nc-ctl {
+    flex: 0 0 auto;
+  }
+
+  #neural-core .nc-map-list {
+    max-height: 24vh;
+  }
+
+  #neural-core .nc-controls {
+    right: 12px;
+    left: 12px;
+    top: auto;
+    bottom: 52px;
+    justify-content: flex-end;
+  }
+
+  #neural-core.nc-explore-mode .nc-controls::before {
+    display: none;
+  }
+
+  /* Inspector becomes a bottom sheet. */
+  #neural-core .nc-inspector {
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: 0;
+    width: auto;
+    max-height: 58%;
+    transform: none;
+    animation-name: nc-sheet-in;
+    padding: 18px 18px 14px;
+  }
+
+  @keyframes nc-sheet-in {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  #neural-core.nc-has-selection :is(.nc-map, .nc-controls) {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+/* ----------------------------- reduced motion ----------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  #neural-core *,
+  #neural-core *::before,
+  #neural-core *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

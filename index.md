@@ -1,7 +1,10 @@
 ---
 layout: default
 title: Home
+neural_core: true
 ---
+
+{% include neural-core-hero.html %}
 
 <section class="hero">
   <div>

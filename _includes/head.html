@@ -60,4 +60,24 @@
   />
   <link rel="stylesheet" href="{{ '/css/typesafe.css' | relative_url }}" />
   {%- endunless %}
+
+  {%- comment -%}
+    Neural Compute Core (homepage 3D hero, `neural_core: true`). Three.js is
+    vendored under assets/vendor/three and resolved through an import map;
+    the module script is deferred by default and falls back to the static
+    schematic in _includes/neural-core-hero.html if anything fails.
+  {%- endcomment -%}
+  {%- if page.neural_core %}
+  <link rel="stylesheet" href="{{ '/css/neural-core.css' | relative_url }}" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "{{ '/assets/vendor/three/three.module.min.js' | relative_url }}",
+        "three/addons/": "{{ '/assets/vendor/three/addons/' | relative_url }}"
+      }
+    }
+  </script>
+  <link rel="modulepreload" href="{{ '/assets/vendor/three/three.core.js' | relative_url }}" />
+  <script type="module" src="{{ '/assets/js/neural-core/main.js' | relative_url }}"></script>
+  {%- endif %}
 </head>

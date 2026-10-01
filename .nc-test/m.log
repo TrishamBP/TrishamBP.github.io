@@ -1,0 +1,9 @@
+STATE0 {"cls":"nc-hero nc-is-live nc-story nc-t-boot nc-t-name nc-t-tag nc-t-cta nc-t-ui nc-t-done","h":3714,"nc":true,"cam":"story","y":0}
+STATE scroll 0.5 {"cls":"nc-hero nc-is-live nc-story nc-t-boot nc-t-name nc-t-tag nc-t-cta nc-t-ui nc-t-done nc-scrolled nc-chapter-on","h":3714,"nc":true,"cam":"story","y":1492}
+STATE shot 1-kv {"cls":"nc-hero nc-is-live nc-story nc-t-boot nc-t-name nc-t-tag nc-t-cta nc-t-ui nc-t-done nc-scrolled nc-chapter-on","h":3714,"nc":true,"cam":"story","y":1492}
+STATE scroll 0 {"cls":"nc-hero nc-is-live nc-story nc-t-boot nc-t-name nc-t-tag nc-t-cta nc-t-ui nc-t-done","h":3714,"nc":true,"cam":"story","y":57}
+EVAL document.querySelector(".nc-map-groups button").click() => undefined
+EVAL document.querySelector(".nc-map-list li:not([hidden]) button => undefined
+STATE shot 2-sheet {"cls":"nc-hero nc-is-live nc-story nc-t-boot nc-t-name nc-t-tag nc-t-cta nc-t-ui nc-t-done nc-has-group nc-has-selection","h":3714,"nc":true,"cam":"free","y":57}
+LOGS
+[log:error] Failed to load resource: the server responded with a status of 404 (File not found) http://127.0.0.1:4011/favicon.ico

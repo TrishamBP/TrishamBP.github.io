@@ -1,0 +1,142 @@
+{%- comment -%}
+  Neural Compute Core — homepage 3D hero.
+
+  Progressive enhancement:
+    - With no JS / no WebGL2 / an error, the section stays one viewport tall
+      and shows the static SVG schematic (.nc-fallback) under the same title,
+      tagline and CTA.
+    - assets/js/neural-core/main.js swaps in the live Three.js scene by adding
+      `nc-is-live` (and `nc-story` for the tall scroll-story layout).
+  Styles: css/neural-core.css · import map + stylesheet: _includes/head.html
+  (enabled by `neural_core: true` in the page frontmatter).
+{%- endcomment -%}
+<section id="neural-core" class="nc-hero" aria-label="Neural Compute Core: an interactive 3D model of an AI inference system">
+  <div class="nc-stage">
+    <div class="nc-viewport" tabindex="0" role="group" aria-roledescription="interactive 3D model" aria-label="Neural Compute Core 3D model" aria-describedby="nc-help"></div>
+    <div class="nc-fallback" aria-hidden="true">
+      <svg class="nc-schematic" viewBox="0 0 1200 680" role="img" focusable="false">
+        <defs>
+          <radialGradient id="nc-g-core" cx="50%" cy="45%" r="50%"><stop offset="0" stop-color="#cfe0ff" stop-opacity=".9"/><stop offset=".45" stop-color="#6fb2ff" stop-opacity=".25"/><stop offset="1" stop-color="#6fb2ff" stop-opacity="0"/></radialGradient>
+          <radialGradient id="nc-g-floor" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#1b2a44" stop-opacity=".55"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+          <linearGradient id="nc-g-metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2d33"/><stop offset="1" stop-color="#121316"/></linearGradient>
+        </defs>
+        <ellipse cx="600" cy="560" rx="560" ry="120" fill="url(#nc-g-floor)"/>
+        <ellipse cx="600" cy="560" rx="480" ry="78" fill="#0b0c0e" stroke="#2b3038" stroke-width="1.5"/>
+        <ellipse cx="600" cy="556" rx="430" ry="64" fill="none" stroke="#6fb2ff" stroke-opacity=".45" stroke-dasharray="3 7"/>
+        <g fill="url(#nc-g-metal)" stroke="#3d4148">
+          <rect x="300" y="250" width="60" height="150"/><rect x="372" y="236" width="60" height="150"/><rect x="444" y="226" width="60" height="150"/><rect x="516" y="220" width="60" height="150"/>
+          <rect x="624" y="220" width="60" height="150"/><rect x="696" y="226" width="60" height="150"/><rect x="768" y="236" width="60" height="150"/><rect x="840" y="250" width="60" height="150"/>
+        </g>
+        <g fill="#e8ecf5" opacity=".85">
+          <rect x="350" y="262" width="4" height="8"/><rect x="350" y="276" width="4" height="8"/><rect x="422" y="248" width="4" height="8"/><rect x="422" y="262" width="4" height="8"/><rect x="494" y="238" width="4" height="8"/><rect x="566" y="232" width="4" height="8"/>
+          <rect x="674" y="232" width="4" height="8"/><rect x="746" y="238" width="4" height="8"/><rect x="818" y="248" width="4" height="8"/><rect x="890" y="262" width="4" height="8"/>
+        </g>
+        <g fill="#c6f432"><rect x="566" y="246" width="4" height="8"/><rect x="674" y="246" width="4" height="8"/></g>
+        <circle cx="600" cy="370" r="170" fill="url(#nc-g-core)"/>
+        <polygon points="540,206 660,206 690,222 660,238 540,238 510,222" fill="#1b1d21" stroke="#8d939b"/>
+        <rect x="586" y="214" width="28" height="12" fill="#6fb2ff" opacity=".8"/>
+        <rect x="566" y="240" width="68" height="270" fill="#141518" stroke="#8d939b"/>
+        <rect x="586" y="248" width="28" height="254" fill="#e8ecf5" opacity=".88"/>
+        <g fill="none" stroke="#8d939b" stroke-width="2"><ellipse cx="600" cy="320" rx="104" ry="18"/><ellipse cx="600" cy="384" rx="104" ry="18"/><ellipse cx="600" cy="448" rx="104" ry="18"/></g>
+        <g fill="#9cc8ff"><circle cx="496" cy="320" r="4"/><circle cx="704" cy="320" r="4"/><circle cx="530" cy="334" r="4"/><circle cx="670" cy="398" r="4"/><circle cx="496" cy="448" r="4"/><circle cx="704" cy="384" r="4"/></g>
+        <rect x="360" y="400" width="140" height="78" fill="url(#nc-g-metal)" stroke="#3d4148"/>
+        <g fill="#c6f432"><rect x="372" y="412" width="8" height="54"/><rect x="388" y="412" width="8" height="54"/><rect x="404" y="412" width="8" height="54"/><rect x="420" y="412" width="8" height="54"/><rect x="436" y="412" width="8" height="54"/><rect x="452" y="412" width="8" height="54"/><rect x="468" y="412" width="8" height="54"/><rect x="484" y="412" width="8" height="54"/></g>
+        <rect x="720" y="380" width="62" height="112" fill="url(#nc-g-metal)" stroke="#3d4148"/>
+        <rect x="748" y="388" width="6" height="96" fill="#6fb2ff"/><rect x="760" y="400" width="12" height="9" fill="#c6f432"/>
+        <rect x="470" y="512" width="260" height="40" fill="url(#nc-g-metal)" stroke="#8d939b"/>
+        <g fill="#e8ecf5" opacity=".7"><rect x="492" y="528" width="16" height="10"/><rect x="520" y="528" width="16" height="10"/><rect x="548" y="528" width="16" height="10"/><rect x="576" y="528" width="16" height="10"/><rect x="608" y="528" width="16" height="10"/><rect x="636" y="528" width="16" height="10"/><rect x="664" y="528" width="16" height="10"/></g>
+        <rect x="150" y="380" width="170" height="104" fill="#121316" stroke="#3d4148"/>
+        <g id="nc-kv-row"><rect x="160" y="390" width="16" height="14" fill="#6fb2ff" opacity=".55"/><rect x="180" y="390" width="16" height="14" fill="#6fb2ff" opacity=".55"/><rect x="200" y="390" width="16" height="14" fill="#6fb2ff" opacity=".55"/><rect x="220" y="390" width="16" height="14" fill="#6fb2ff" opacity=".55"/><rect x="240" y="390" width="16" height="14" fill="#6fb2ff" opacity=".55"/><rect x="260" y="390" width="16" height="14" fill="#6fb2ff" opacity=".55"/><rect x="280" y="390" width="16" height="14" fill="#6fb2ff" opacity=".55"/><rect x="300" y="390" width="16" height="14" fill="#c6f432"/></g>
+        <use href="#nc-kv-row" y="20"/><use href="#nc-kv-row" y="40" opacity=".55"/>
+        <g fill="#1b1e23"><rect x="160" y="450" width="16" height="14"/><rect x="180" y="450" width="16" height="14"/><rect x="200" y="450" width="16" height="14"/><rect x="220" y="450" width="16" height="14"/><rect x="240" y="450" width="16" height="14"/><rect x="260" y="450" width="16" height="14"/><rect x="280" y="450" width="16" height="14"/><rect x="300" y="450" width="16" height="14"/></g>
+        <g fill="#2a3a52" stroke="#6fb2ff" stroke-opacity=".5"><rect x="200" y="300" width="26" height="44"/><rect x="234" y="300" width="26" height="44"/><rect x="268" y="300" width="26" height="44"/></g>
+        <rect x="120" y="240" width="76" height="96" fill="url(#nc-g-metal)" stroke="#3d4148"/>
+        <g stroke="#3d4148"><line x1="126" y1="262" x2="190" y2="262"/><line x1="126" y1="284" x2="190" y2="284"/><line x1="126" y1="306" x2="190" y2="306"/></g>
+        <g fill="none" stroke="#3d4148"><rect x="890" y="370" width="110" height="110"/></g>
+        <g fill="#6fb2ff" opacity=".6"><circle cx="905" cy="385" r="3"/><circle cx="935" cy="390" r="3"/><circle cx="965" cy="384" r="3"/><circle cx="990" cy="396" r="3"/><circle cx="910" cy="420" r="3"/><circle cx="975" cy="430" r="3"/><circle cx="905" cy="465" r="3"/><circle cx="950" cy="470" r="3"/><circle cx="988" cy="460" r="3"/></g>
+        <g fill="#c6f432"><circle cx="940" cy="425" r="4"/><circle cx="958" cy="442" r="4"/><circle cx="930" cy="448" r="4"/></g>
+        <g fill="#141518" stroke="#8d939b"><rect x="896" y="300" width="22" height="34"/><rect x="926" y="300" width="22" height="34"/><rect x="986" y="300" width="22" height="34"/></g>
+        <g fill="#c6f432" fill-opacity=".85"><rect x="956" y="288" width="22" height="34"/></g>
+        <polygon points="1060,400 1084,440 1060,480 1036,440" fill="#9cc8ff" fill-opacity=".55" stroke="#e8ecf5"/>
+        <rect x="1010" y="230" width="4" height="200" fill="#8d939b"/>
+        <g fill="#1b1d21" stroke="#3d4148"><rect x="1020" y="236" width="80" height="40"/><rect x="1020" y="286" width="80" height="40"/></g>
+        <g fill="#6fb2ff"><rect x="1030" y="256" width="6" height="14"/><rect x="1042" y="250" width="6" height="20"/><rect x="1054" y="260" width="6" height="10"/><rect x="1066" y="246" width="6" height="24"/></g>
+        <g fill="#c6f432"><rect x="1078" y="300" width="6" height="20"/></g>
+        <circle cx="790" cy="156" r="16" fill="#e8ecf5" fill-opacity=".85"/>
+        <g stroke="#6fb2ff" stroke-opacity=".7"><line x1="790" y1="156" x2="720" y2="128"/><line x1="790" y1="156" x2="860" y2="126"/><line x1="790" y1="156" x2="850" y2="196"/><line x1="790" y1="156" x2="730" y2="192"/></g>
+        <line x1="790" y1="156" x2="790" y2="96" stroke="#c6f432"/>
+        <g fill="#8d939b"><rect x="714" y="122" width="12" height="12"/><rect x="854" y="120" width="12" height="12"/><rect x="844" y="190" width="12" height="12"/><rect x="724" y="186" width="12" height="12"/></g>
+        <rect x="784" y="90" width="12" height="12" fill="#c6f432"/>
+        <g fill="none" stroke-width="2" stroke-linecap="round">
+          <path d="M500 438 C 540 420, 560 400, 586 380" stroke="#c6f432" stroke-dasharray="2 9"/>
+          <path d="M614 330 C 660 330, 700 360, 724 400" stroke="#c6f432" stroke-dasharray="2 9"/>
+          <path d="M320 420 C 400 360, 500 330, 586 310" stroke="#6fb2ff" stroke-opacity=".7" stroke-dasharray="2 9"/>
+          <path d="M1036 440 C 1020 440, 1010 440, 1000 430" stroke="#6fb2ff" stroke-dasharray="2 9"/>
+          <path d="M945 370 C 945 350, 960 330, 966 322" stroke="#c6f432" stroke-dasharray="2 9"/>
+          <path d="M900 316 C 800 300, 700 300, 634 300" stroke="#e8ecf5" stroke-opacity=".6" stroke-dasharray="2 9"/>
+        </g>
+        <g class="nc-schematic-labels" font-size="12" letter-spacing="1.5" fill="#9a9aa3">
+          <text x="300" y="232">GPU COMPUTE ×8</text><text x="150" y="502">KV CACHE</text><text x="200" y="292">HBM</text><text x="112" y="230">STORAGE</text>
+          <text x="364" y="498">PREFILL</text><text x="716" y="512">DECODE</text><text x="540" y="574">MODEL SERVING</text><text x="530" y="198">CONTROL PLANE</text>
+          <text x="890" y="500">VECTOR DB</text><text x="896" y="284">RAG</text><text x="1030" y="502">EMBEDDING</text><text x="1018" y="224">OBSERVABILITY</text><text x="812" y="84">AGENT ORCHESTRATION</text>
+        </g>
+      </svg>
+    </div>
+    <div class="nc-boot" aria-hidden="true"><span class="nc-boot-text">INITIALIZING NEURAL COMPUTE CORE</span><span class="nc-boot-bar"><i></i></span></div>
+    <header class="nc-titleblock">
+      <p class="nc-name">Trisham Patil</p>
+      <p class="nc-keywords"><span>AI Engineering</span><span>LLM Systems</span><span>Inference</span><span>Distributed Computing</span></p>
+    </header>
+    <div class="nc-cta">
+      <a class="nc-explore" href="#nc-end" data-nc-explore>Explore the system</a>
+      <span class="nc-scroll" aria-hidden="true"><span>Scroll</span><i></i></span>
+    </div>
+    <div class="nc-chapter" aria-live="polite">
+      <span class="nc-chapter-index"></span>
+      <p class="nc-chapter-title"></p>
+      <p class="nc-chapter-body"></p>
+      <span class="nc-chapter-progress"><i></i></span>
+    </div>
+    <div class="nc-hud" aria-hidden="true">
+      <span class="nc-hud-row"><b>PHASE</b> <span data-nc-hud="phase">—</span></span>
+      <span class="nc-hud-row"><b>KV</b> <span data-nc-hud="kv">0/40</span></span>
+      <span class="nc-hud-row"><b>TOKENS</b> <span data-nc-hud="tokens">0</span></span>
+    </div>
+    <nav class="nc-map" aria-label="System map">
+      <p class="nc-map-title">System map</p>
+      <div class="nc-map-groups" role="toolbar" aria-label="Component groups"></div>
+      <ul class="nc-map-list" aria-label="Components"></ul>
+    </nav>
+    <div class="nc-controls" role="toolbar" aria-label="View controls">
+      <span class="nc-mode" role="radiogroup" aria-label="View mode">
+        <button type="button" class="nc-ctl" data-nc-mode="system" role="radio" aria-checked="true">System view</button>
+        <button type="button" class="nc-ctl" data-nc-mode="explore" role="radio" aria-checked="false">Explore</button>
+      </span>
+      <button type="button" class="nc-ctl nc-ctl-icon" data-nc-zoom="in" aria-label="Zoom in">+</button>
+      <button type="button" class="nc-ctl nc-ctl-icon" data-nc-zoom="out" aria-label="Zoom out">&minus;</button>
+      <button type="button" class="nc-ctl" data-nc-reset>Reset</button>
+      <button type="button" class="nc-ctl" data-nc-motion aria-pressed="false">Pause motion</button>
+    </div>
+    <aside class="nc-inspector" aria-live="polite" aria-labelledby="nc-inspector-name" hidden>
+      <p class="nc-inspector-eyebrow"></p>
+      <h2 class="nc-inspector-name" id="nc-inspector-name"></h2>
+      <p class="nc-inspector-desc"></p>
+      <p class="nc-inspector-label">Stack</p>
+      <ul class="nc-chips"></ul>
+      <dl class="nc-facts"></dl>
+      <div class="nc-inspector-nav">
+        <button type="button" class="nc-ctl" data-nc-step="-1" aria-label="Previous component">&larr; Prev</button>
+        <button type="button" class="nc-ctl" data-nc-step="1" aria-label="Next component">Next &rarr;</button>
+        <button type="button" class="nc-ctl" data-nc-close aria-label="Close component details">Close</button>
+      </div>
+    </aside>
+    <div class="nc-tooltip" aria-hidden="true"><b></b><span></span></div>
+    <p id="nc-help" class="nc-sr">
+      A 3D model of an AI compute system with 18 components. Use the arrow keys to move between components,
+      Enter to open one, Escape to close, E to toggle explore mode and R to reset the view.
+      The system map and view controls are also available as buttons.
+    </p>
+    <noscript><p class="nc-sr">Static schematic shown because JavaScript is disabled.</p></noscript>
+  </div>
+</section>
+<span id="nc-end" class="nc-end" aria-hidden="true"></span>

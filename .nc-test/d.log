@@ -1,0 +1,17 @@
+STATE0 {"cls":"nc-hero nc-is-live nc-story nc-t-boot nc-t-name nc-t-tag nc-t-cta","h":4186,"nc":true,"cam":"story","y":0}
+STATE scroll 0.3 {"cls":"nc-hero nc-is-live nc-story nc-t-boot nc-t-name nc-t-tag nc-t-cta nc-t-ui nc-t-done nc-scrolled nc-chapter-on","h":4186,"nc":true,"cam":"story","y":1071}
+STATE shot 1-gpu {"cls":"nc-hero nc-is-live nc-story nc-t-boot nc-t-name nc-t-tag nc-t-cta nc-t-ui nc-t-done nc-scrolled nc-chapter-on","h":4186,"nc":true,"cam":"story","y":1071}
+STATE scroll 0 {"cls":"nc-hero nc-is-live nc-story nc-t-boot nc-t-name nc-t-tag nc-t-cta nc-t-ui nc-t-done","h":4186,"nc":true,"cam":"story","y":57}
+STATE click 712,430 {"cls":"nc-hero nc-is-live nc-story nc-t-boot nc-t-name nc-t-tag nc-t-cta nc-t-ui nc-t-done nc-has-selection","h":4186,"nc":true,"cam":"focus","y":57}
+STATE shot 5-select {"cls":"nc-hero nc-is-live nc-story nc-t-boot nc-t-name nc-t-tag nc-t-cta nc-t-ui nc-t-done nc-has-selection","h":4186,"nc":true,"cam":"focus","y":57}
+STATE key Escape {"cls":"nc-hero nc-is-live nc-story nc-t-boot nc-t-name nc-t-tag nc-t-cta nc-t-ui nc-t-done","h":4186,"nc":true,"cam":"story","y":57}
+EVAL document.querySelector(".nc-viewport").focus() => undefined
+STATE key ArrowRight {"cls":"nc-hero nc-is-live nc-story nc-t-boot nc-t-name nc-t-tag nc-t-cta nc-t-ui nc-t-done","h":4186,"nc":true,"cam":"story","y":57}
+STATE key ArrowRight {"cls":"nc-hero nc-is-live nc-story nc-t-boot nc-t-name nc-t-tag nc-t-cta nc-t-ui nc-t-done","h":4186,"nc":true,"cam":"story","y":57}
+STATE shot 8-kbd {"cls":"nc-hero nc-is-live nc-story nc-t-boot nc-t-name nc-t-tag nc-t-cta nc-t-ui nc-t-done","h":4186,"nc":true,"cam":"story","y":57}
+STATE key Enter {"cls":"nc-hero nc-is-live nc-story nc-t-boot nc-t-name nc-t-tag nc-t-cta nc-t-ui nc-t-done nc-has-selection","h":4186,"nc":true,"cam":"focus","y":57}
+EVAL document.querySelector(".nc-inspector-name").textContent => Decode Stage
+EVAL document.querySelector("[data-nc-mode=explore]").click() => undefined
+STATE shot 9-explore {"cls":"nc-hero nc-is-live nc-story nc-t-boot nc-t-name nc-t-tag nc-t-cta nc-t-ui nc-t-done nc-has-selection nc-explore-mode","h":4186,"nc":true,"cam":"free","y":57}
+LOGS
+[log:error] Failed to load resource: the server responded with a status of 404 (File not found) http://127.0.0.1:4011/favicon.ico

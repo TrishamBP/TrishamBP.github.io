@@ -1,0 +1,3 @@
+STATE0 {"cls":"nc-hero nc-is-static","fb":"webgl","h":748,"nc":false,"y":0}
+LOGS
+[log:error] Failed to load resource: the server responded with a status of 404 (File not found) http://127.0.0.1:4011/favicon.ico
