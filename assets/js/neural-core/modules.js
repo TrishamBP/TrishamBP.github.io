@@ -21,6 +21,9 @@ import { buildVectorDB } from "./vectordb.js";
 import { buildIronRAG } from "./ironrag.js";
 import { buildKVCache } from "./kvcache.js";
 import { buildEngine } from "./engine.js";
+import { buildGateway } from "./gateway.js";
+import { buildDecode } from "./decode.js";
+import { buildPrefill } from "./prefill.js";
 
 const TAU = Math.PI * 2;
 const DEG = Math.PI / 180;
@@ -408,76 +411,19 @@ const builders = {
     return buildStarship(ctx);
   },
 
+  /* Glass compute block: whole prompt in one pass; see prefill.js. */
   prefill(ctx) {
-    const g = new THREE.Group();
-    g.add(mesh(G.box, M.graphite, 0, 0.35, 0, 0.5, 0.7, 0.5));
-    g.add(mesh(G.box, M.graphite, 0, 1.15, 0, 1.7, 0.9, 0.9));
-    g.add(mesh(G.box, ctx.accent, 0, 1.62, 0.46, 1.6, 0.025, 0.02));
-    const lanes = ledInst(G.box, 8);
-    for (let i = 0; i < 8; i++) setInst(lanes, i, -0.7 + i * 0.2, 1.12, 0.455, 0.12, 0.66, 0.02);
-    g.add(lanes);
-    const fins = inst(G.box, M.titanium, 10);
-    for (let i = 0; i < 10; i++) setInst(fins, i, -0.72 + i * 0.16, 1.68, 0, 0.025, 0.16, 0.8);
-    g.add(fins);
-    return {
-      group: g,
-      update(dt, t, sim, c) {
-        for (let i = 0; i < 8; i++) {
-          const flick = 0.75 + 0.25 * Math.sin(t * 23 + i * 1.7);
-          const k = (0.08 + sim.prefillLevel * 1.4 * flick) * c.emph;
-          lanes.setColorAt(i, lerpColor(PALETTE.blue, PALETTE.lime, sim.prefillLevel).multiplyScalar(k));
-        }
-        lanes.instanceColor.needsUpdate = true;
-        c.activity = 0.4 + sim.prefillLevel * 1.4;
-      },
-    };
+    return buildPrefill(ctx);
   },
 
+  /* Glass decode tower: KV re-read wave, token emitter; see decode.js. */
   decode(ctx) {
-    const g = new THREE.Group();
-    g.add(mesh(G.box, M.graphite, 0, 0.35, 0, 0.5, 0.7, 0.5));
-    g.add(mesh(G.box, M.graphite, 0, 1.35, 0, 0.72, 1.3, 0.72));
-    g.add(mesh(G.cyl, ctx.accent, 0, 1.35, 0.37, 0.05, 1.18, 0.05));
-    const regs = ledInst(G.box, 6);
-    for (let i = 0; i < 6; i++) setInst(regs, i, 0.22, 0.85 + i * 0.2, 0.365, 0.14, 0.11, 0.02);
-    g.add(regs);
-    g.add(mesh(G.box, M.titanium, 0, 2.04, 0, 0.78, 0.06, 0.78));
-    return {
-      group: g,
-      update(dt, t, sim, c) {
-        const active = sim.tokenIndex % 6;
-        for (let i = 0; i < 6; i++) {
-          const on = sim.decoding && i === active ? sim.tokenPulse : 0;
-          const k = (0.1 + on * 1.6) * c.emph;
-          regs.setColorAt(i, lerpColor(PALETTE.blue, PALETTE.lime, on).multiplyScalar(k));
-        }
-        regs.instanceColor.needsUpdate = true;
-        c.activity = 0.4 + sim.tokenPulse * 1.2;
-      },
-    };
+    return buildDecode(ctx);
   },
 
+  /* Six-stage neon serving chassis; see gateway.js. */
   "model-serving"(ctx) {
-    const g = new THREE.Group();
-    g.add(mesh(G.box, M.graphite, 0, 0.36, 0, 2.8, 0.55, 0.55));
-    g.add(mesh(G.box, ctx.accent, 0, 0.6, 0.28, 2.6, 0.035, 0.02));
-    g.add(mesh(G.box, M.titanium, -1.45, 0.36, 0, 0.08, 0.6, 0.6));
-    g.add(mesh(G.box, M.titanium, 1.45, 0.36, 0, 0.08, 0.6, 0.6));
-    const ports = ledInst(G.box, 8);
-    for (let i = 0; i < 8; i++) setInst(ports, i, -1.05 + i * 0.3, 0.34, 0.28, 0.18, 0.11, 0.03);
-    g.add(ports);
-    return {
-      group: g,
-      update(dt, t, sim, c) {
-        for (let i = 0; i < 8; i++) {
-          const blink = Math.sin(t * (3.1 + i * 0.7) + i * 2.1) > 0.55 ? 1 : 0.25;
-          const k = (0.08 + blink * 0.5 * sim.motionPulse + sim.tokenPulse * 0.6 * (i === sim.tokenIndex % 8 ? 1 : 0)) * c.emph;
-          ports.setColorAt(i, lit(i === sim.tokenIndex % 8 && sim.decoding ? PALETTE.lime : PALETTE.cool, k));
-        }
-        ports.instanceColor.needsUpdate = true;
-        c.activity = 0.6 + sim.requestPulse * 0.8;
-      },
-    };
+    return buildGateway(ctx);
   },
 
   /* Server-rack arc behind the core: eight cabinets, each one accelerator.

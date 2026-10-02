@@ -84,12 +84,12 @@ export const componentsData = [
     id: "prefill",
     name: "Prefill Stage",
     description:
-      "Processes the whole prompt in one parallel pass. Thousands of tokens hit the GPUs at once, saturating tensor cores and filling the KV cache in a burst.",
+      "Processes the whole prompt in one parallel pass. Thousands of tokens hit the GPUs at once, saturating tensor cores and filling the KV cache in a burst. Watch every prompt token drop into the tensor-core array together, the fins run hot, and the KV burst stream out toward the cache.",
     technologies: ["Chunked prefill", "Tensor cores", "BF16 / FP8 GEMM", "Prefix caching"],
     category: "CORE",
     mapGroup: "INFERENCE",
     position: [-2.5, 0.3, 1.7],
-    cameraTarget: { position: [-3.6, 2.9, 6.0], target: [-2.5, 1.5, 1.7] },
+    cameraTarget: { position: [-1.5, 3.2, 6.3], target: [-2.5, 1.3, 1.75] },
     color: BLUE,
     metadata: {
       Bound: "Compute-bound",
@@ -102,12 +102,12 @@ export const componentsData = [
     id: "decode",
     name: "Decode Stage",
     description:
-      "Generates one token per step. Each step re-reads cached keys and values from HBM to emit a single token, so memory bandwidth sets the pace, not FLOPs.",
+      "Generates one token per step. Each step re-reads cached keys and values from HBM to emit a single token, so memory bandwidth sets the pace, not FLOPs. Watch the read wave climb the K/V slab stack on every step while the HBM meter stays pinned and the emitter launches one token.",
     technologies: ["Speculative decoding", "CUDA Graphs", "Continuous batching", "Paged KV reads"],
     category: "CORE",
     mapGroup: "INFERENCE",
     position: [2.5, 0.3, 1.7],
-    cameraTarget: { position: [3.8, 2.9, 6.0], target: [2.5, 1.5, 1.7] },
+    cameraTarget: { position: [3.8, 3.2, 6.1], target: [2.5, 1.35, 1.75] },
     color: BLUE,
     metadata: {
       Bound: "Memory-bandwidth-bound",
@@ -120,12 +120,12 @@ export const componentsData = [
     id: "model-serving",
     name: "Model Serving Gateway",
     description:
-      "The front door: an OpenAI-compatible API that admits requests, queues them into batches and streams generated tokens back to the client.",
+      "The front door: an OpenAI-compatible API that admits requests, queues them into batches and streams generated tokens back to the client. Requests run through six stages: intake, KV cache lookup, prefill/attention, model execution, KV cache update and response streaming. The console below plots routing, batching, GPU load, KV memory and tokens/s.",
     technologies: ["OpenAI-compatible API", "Triton Inference Server", "KServe", "Ray Serve", "SSE streaming"],
     category: "CORE",
     mapGroup: "INFERENCE",
     position: [0, 0.3, 3.1],
-    cameraTarget: { position: [1.8, 2.2, 7.4], target: [0, 0.8, 3.1] },
+    cameraTarget: { position: [1.1, 2.3, 7.9], target: [0, 0.8, 3.15] },
     color: COOL,
     metadata: {
       Protocol: "HTTP · gRPC · server-sent events",

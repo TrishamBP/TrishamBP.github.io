@@ -56,7 +56,7 @@ const _s = new THREE.Vector3();
 const _c = new THREE.Color();
 const _w = new Float32Array(8);
 
-function canvasTex(w, h, draw) {
+export function canvasTex(w, h, draw) {
   const c = document.createElement("canvas");
   c.width = w;
   c.height = h;
@@ -67,7 +67,7 @@ function canvasTex(w, h, draw) {
   return t;
 }
 
-function roundRect(g, x, y, w, h, r) {
+export function roundRect(g, x, y, w, h, r) {
   g.beginPath();
   g.moveTo(x + r, y);
   g.arcTo(x + w, y, x + w, y + h, r);
@@ -78,7 +78,7 @@ function roundRect(g, x, y, w, h, r) {
 }
 
 /* Glass HUD panel background: dark navy glass, glowing border, corner ticks. */
-function panelBg(g, W, H, glow) {
+export function panelBg(g, W, H, glow) {
   g.clearRect(0, 0, W, H);
   const bg = g.createLinearGradient(0, 0, 0, H);
   bg.addColorStop(0, "rgba(10,22,44,0.92)");
@@ -97,7 +97,7 @@ function panelBg(g, W, H, glow) {
 
 /* One cache block: glowing bezel, faint diagonal facets, bright core. The
    texture is white so instanceColor tints it per block. */
-function tileTexture() {
+export function tileTexture() {
   return canvasTex(128, 128, (g, W) => {
     g.clearRect(0, 0, W, W);
     const fill = g.createRadialGradient(64, 64, 4, 64, 64, 70);
@@ -265,7 +265,7 @@ function stepTexture(step, i) {
   });
 }
 
-function glowMat(color, opacity = 1) {
+export function glowMat(color, opacity = 1) {
   return new THREE.MeshBasicMaterial({
     color,
     transparent: true,
@@ -276,23 +276,23 @@ function glowMat(color, opacity = 1) {
   });
 }
 
-function hudMat(map) {
+export function hudMat(map) {
   return new THREE.MeshBasicMaterial({ map, transparent: true, depthWrite: false, toneMapped: false, side: THREE.DoubleSide });
 }
 
-function box(mat, x, y, z, sx, sy, sz) {
+export function box(mat, x, y, z, sx, sy, sz) {
   const m = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz), mat);
   m.position.set(x, y, z);
   return m;
 }
 
-function plane(mat, x, y, z, w, h) {
+export function plane(mat, x, y, z, w, h) {
   const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat);
   m.position.set(x, y, z);
   return m;
 }
 
-function curve(points) {
+export function curve(points) {
   return new THREE.CatmullRomCurve3(points.map((p) => new THREE.Vector3(...p)), false, "catmullrom", 0.4);
 }
 
