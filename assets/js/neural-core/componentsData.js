@@ -287,7 +287,7 @@ export const componentsData = [
     category: "RETRIEVAL",
     mapGroup: "RETRIEVAL",
     position: [4.4, 0.3, 1.9],
-    cameraTarget: { position: [7.6, 2.4, 5.0], target: [4.4, 1.3, 1.9] },
+    cameraTarget: { position: [8.9, 3.6, 6.7], target: [4.6, 1.35, 2.1] },
     color: SOFT_BLUE,
     metadata: {
       Output: "768–3072-dimension vectors",

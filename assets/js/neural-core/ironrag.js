@@ -35,11 +35,12 @@ const COL = {
 };
 
 const Y0 = 0.2;
-/* Suit-up timeline (seconds): blast out, hover, staggered fly-in. */
-const OUT = 0.5;
-const HOLD = 0.35;
-const SPREAD = 2.6;
-const DUR = 0.75;
+/* Suit-up timeline (seconds): blast out, hover while the selection camera
+   glides in (~1.5 s), then a staggered fly-in. */
+const OUT = 0.6;
+const HOLD = 1.6;
+const SPREAD = 3.0;
+const DUR = 1.0;
 const END = OUT + HOLD + SPREAD + DUR + 0.4;
 
 const smooth = (a, b, x) => {
@@ -307,7 +308,7 @@ export function buildIronRAG(ctx) {
     P.home = P.obj.position.clone();
     P.homeQ = P.obj.quaternion.clone();
     P.dir = new THREE.Vector3(P.home.x * 1.4 + (rand() - 0.5) * 1.2, 0.35 + rand() * 0.9, (rand() - 0.5) * 2.2).normalize();
-    P.dist = 0.9 + rand() * 0.8;
+    P.dist = 1.2 + rand() * 1.0;
     P.axis = new THREE.Vector3(rand() - 0.5, rand() - 0.5, rand() - 0.5).normalize();
     P.spin = (rand() > 0.5 ? 1 : -1) * (1.5 + rand() * 2.5);
     P.ph = rand() * TAU;
@@ -331,7 +332,7 @@ export function buildIronRAG(ctx) {
   const thrustGeo = glowPoints(low ? 0.14 : 0.18);
   const flashGeo = glowPoints(0.5);
 
-  /* Suit-up waits for the intro; starts with the pieces out. */
+  /* Suit-up waits for the intro camera move; starts with the pieces out. */
   let tau = OUT;
   let armed = false;
   let wasSel = false;
@@ -363,7 +364,7 @@ export function buildIronRAG(ctx) {
         for (const P of pieces) P.k = 0;
       }
       wasSel = c.selected;
-      if (!armed && intro >= 0.999) armed = true;
+      if (!armed && (sim.intro ? sim.intro.flows : 1) >= 0.999) armed = true;
       if (sim.motion === 0) tau = END;
       else if (armed) tau = Math.min(END, tau + dt);
 

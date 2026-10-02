@@ -20,6 +20,7 @@ import { buildDataPipeline } from "./datapipe.js";
 import { buildVectorDB } from "./vectordb.js";
 import { buildIronRAG } from "./ironrag.js";
 import { buildKVCache } from "./kvcache.js";
+import { buildEngine } from "./engine.js";
 
 const TAU = Math.PI * 2;
 const DEG = Math.PI / 180;
@@ -900,29 +901,9 @@ const builders = {
     return buildVectorDB(ctx);
   },
 
+  /* V8 embedding engine that explodes into sub-parts; see engine.js. */
   embedding(ctx) {
-    const g = new THREE.Group();
-    g.add(mesh(G.cyl, M.graphite, 0, 0.25, 0, 0.4, 0.5, 0.4));
-    g.add(mesh(G.cyl, M.titanium, 0, 0.52, 0, 0.44, 0.04, 0.44));
-    const crystal = new THREE.Group();
-    crystal.position.y = 1.25;
-    crystal.add(mesh(G.octa, ctx.accent, 0, 0, 0, 0.36, 0.48, 0.36));
-    const wire = new THREE.LineSegments(new THREE.EdgesGeometry(G.octa), M.line);
-    wire.scale.set(0.48, 0.62, 0.48);
-    crystal.add(wire);
-    g.add(crystal);
-    const orbit = new THREE.Mesh(new THREE.TorusGeometry(0.66, 0.012, 6, 64), M.titanium);
-    orbit.position.y = 1.25;
-    g.add(orbit);
-    return {
-      group: g,
-      update(dt, t, sim, c) {
-        crystal.rotation.y += dt * (0.4 + sim.embedPulse * 5) * sim.motion;
-        orbit.rotation.x = Math.PI / 2 + Math.sin(t * 0.7) * 0.35;
-        orbit.rotation.y += dt * 0.5 * sim.motion;
-        c.activity = 0.6 + sim.embedPulse * 1.6;
-      },
-    };
+    return buildEngine(ctx);
   },
 
   rag(ctx) {
