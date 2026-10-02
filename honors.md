@@ -95,6 +95,45 @@ permalink: /honors/
       <div class="award-card">
         <div class="award-media">
           <img
+            src="{{ '/assets/images/honors/buildwithclaude-fastapi-plugin.svg' | relative_url }}"
+            alt="Production FastAPI template Claude Code plugin merged into the Build with Claude marketplace"
+            loading="lazy"
+          />
+        </div>
+        <div class="award-body">
+          <h4 class="award-title">Build with Claude Marketplace — Production FastAPI Template Plugin</h4>
+          <p class="award-lead">
+            Open-source Claude Code plugin merged into the Build with Claude marketplace
+          </p>
+          <p class="research-intro">
+            Authored <code>production-fast-api-template</code>, a Claude Code plugin that encodes
+            production standards for a unified FastAPI + RAG + agentic AI backend on AWS ECS Fargate.
+            It ships one skill plus seven companion standards: async execution, Pydantic and structured
+            LLM outputs, API conventions, guardrails, AI evaluation (DeepEval, Ragas), API security, and
+            LLM/agent security mapped to the OWASP API, LLM and Agentic Top 10. The pull request
+            (+6,268 lines across 11 files) was merged by the maintainer and the plugin is now listed on
+            the public marketplace.
+          </p>
+          <ul class="award-tags">
+            <li>Open Source</li>
+            <li>Claude Code</li>
+            <li>FastAPI</li>
+            <li>Agentic AI</li>
+            <li>AI Security</li>
+          </ul>
+          <p class="research-intro">
+            <a href="https://github.com/davepoon/buildwithclaude/pull/347" target="_blank" rel="noopener noreferrer">View pull request #347 &rarr;</a>
+            &nbsp;&middot;&nbsp;
+            <a href="https://buildwithclaude.com/plugin/production-fast-api-template" target="_blank" rel="noopener noreferrer">View on the marketplace &rarr;</a>
+            &nbsp;&middot;&nbsp;
+            <a href="https://github.com/TrishamBP/buildwithclaude/tree/main" target="_blank" rel="noopener noreferrer">View fork &rarr;</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="award-card">
+        <div class="award-media">
+          <img
             src="{{ '/assets/images/honors/strix-open-source.svg' | relative_url }}"
             alt="Open-source pull request to Strix adding AWS Bedrock support"
             loading="lazy"

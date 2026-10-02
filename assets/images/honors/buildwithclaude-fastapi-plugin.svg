@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" role="img" aria-label="Open-source Claude Code plugin — production FastAPI template merged into the Build with Claude marketplace">
+  <defs>
+    <linearGradient id="bwcBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1f130d"/>
+      <stop offset="1" stop-color="#120b08"/>
+    </linearGradient>
+    <linearGradient id="bwcAcc" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f0a07a"/>
+      <stop offset="1" stop-color="#d97757"/>
+    </linearGradient>
+  </defs>
+  <rect width="220" height="220" rx="16" fill="url(#bwcBg)"/>
+  <rect x="4" y="4" width="212" height="212" rx="13" fill="none" stroke="#3a2418" stroke-width="1.5"/>
+  <text x="110" y="40" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="800" fill="#f0a07a" letter-spacing="2">BUILD WITH CLAUDE</text>
+  <!-- plugin block with merge glyph -->
+  <g transform="translate(110 106)">
+    <rect x="-46" y="-40" width="92" height="80" rx="12" fill="none" stroke="url(#bwcAcc)" stroke-width="5"/>
+    <rect x="-12" y="-52" width="24" height="14" rx="4" fill="#d97757"/>
+    <g stroke="url(#bwcAcc)" stroke-width="5" fill="none" stroke-linecap="round">
+      <circle cx="-16" cy="-14" r="7" fill="#1f130d"/>
+      <circle cx="-16" cy="20" r="7" fill="#1f130d"/>
+      <circle cx="18" cy="2" r="7" fill="#1f130d"/>
+      <line x1="-16" y1="-7" x2="-16" y2="13"/>
+      <path d="M-16 -8 Q-16 2 -6 2 L11 2"/>
+    </g>
+  </g>
+  <text x="110" y="182" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" fill="#f0a07a">Merged Plugin</text>
+  <text x="110" y="201" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#b08a76">Production FastAPI template</text>
+</svg>
