@@ -605,21 +605,60 @@
 /* -------------------------------- inspector ------------------------------- */
 
 #neural-core .nc-inspector {
+  --nc-holo: #4fb4ff;
+  --nc-holo-soft: rgba(79, 180, 255, 0.32);
   position: absolute;
   z-index: 5;
   right: 24px;
   top: 50%;
   transform: translateY(-50%);
-  width: min(360px, calc(100% - 48px));
+  width: min(370px, calc(100% - 48px));
   max-height: calc(100% - 140px);
   overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--nc-holo-soft) transparent;
   padding: 22px 22px 18px;
-  background: rgba(7, 7, 8, 0.86);
-  border: 1px solid var(--nc-line);
-  border-top: 1px solid var(--nc-line-strong);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
+  background:
+    linear-gradient(180deg, rgba(79, 180, 255, 0.08), rgba(79, 180, 255, 0) 38%),
+    repeating-linear-gradient(0deg, rgba(120, 190, 255, 0.035) 0 1px, transparent 1px 3px),
+    linear-gradient(160deg, rgba(10, 22, 44, 0.9), rgba(3, 7, 16, 0.92));
+  border: 1px solid var(--nc-holo-soft);
+  border-radius: 6px;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.6),
+    0 0 24px rgba(47, 140, 255, 0.22),
+    inset 0 0 32px rgba(47, 140, 255, 0.08);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(14px) saturate(1.2);
   animation: nc-panel-in 0.45s var(--nc-ease);
+}
+
+/* Corner brackets + a top beam, HUD style. */
+#neural-core .nc-inspector::before,
+#neural-core .nc-inspector::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+  border: 2px solid var(--nc-holo);
+  filter: drop-shadow(0 0 4px var(--nc-holo));
+}
+
+#neural-core .nc-inspector::before {
+  top: -1px;
+  left: -1px;
+  border-right: 0;
+  border-bottom: 0;
+  border-top-left-radius: 6px;
+}
+
+#neural-core .nc-inspector::after {
+  bottom: -1px;
+  right: -1px;
+  border-left: 0;
+  border-top: 0;
+  border-bottom-right-radius: 6px;
 }
 
 #neural-core .nc-inspector[hidden] {
@@ -636,35 +675,70 @@
   margin: 0;
   font-family: var(--nc-mono);
   font-size: 0.58rem;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: var(--nc-lime);
+  text-align: left;
+  text-align-last: left;
+  color: var(--nc-holo);
+}
+
+#neural-core .nc-inspector-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Live status dot + rule after the group name. */
+#neural-core .nc-inspector-eyebrow::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--nc-holo);
+  box-shadow: 0 0 8px var(--nc-holo);
+  animation: nc-holo-blink 1.6s ease-in-out infinite;
+}
+
+#neural-core .nc-inspector-eyebrow::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--nc-holo-soft), transparent);
+}
+
+@keyframes nc-holo-blink {
+  50% { opacity: 0.35; }
 }
 
 #neural-core .nc-inspector-label {
   margin-top: 18px;
-  color: rgba(240, 240, 250, 0.38);
+  color: rgba(160, 205, 255, 0.55);
 }
 
 #neural-core .nc-inspector-name {
-  margin: 10px 0 10px;
+  margin: 10px 0 12px;
   padding: 0;
   border: 0;
   font-family: var(--nc-display);
-  font-size: 1.5rem;
+  font-size: 1.65rem;
   line-height: 1.05;
-  font-weight: 500;
-  letter-spacing: 0;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: var(--nc-fg);
+  color: #d6ecff;
+  text-shadow: 0 0 12px rgba(79, 180, 255, 0.75), 0 0 32px rgba(47, 140, 255, 0.35);
 }
 
 #neural-core .nc-inspector-desc {
   margin: 0;
+  padding-left: 12px;
+  border-left: 2px solid var(--nc-holo-soft);
   font-family: var(--nc-display);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   line-height: 1.55;
-  color: var(--nc-soft);
+  text-align: left;
+  text-align-last: left;
+  color: rgba(220, 232, 250, 0.8);
 }
 
 #neural-core .nc-chips {
@@ -673,50 +747,93 @@
   padding: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 6px;
 }
 
+/* Tags cycle through the Q / K / V palette: blue, orange, purple. */
 #neural-core .nc-chips li {
+  --nc-tag: #4fb4ff;
   margin: 0;
-  padding: 5px 8px;
+  padding: 5px 9px;
   font-family: var(--nc-mono);
   font-size: 0.62rem;
-  letter-spacing: 0.04em;
-  color: var(--nc-fg);
-  border: 1px solid var(--nc-line);
-  background: rgba(240, 240, 250, 0.04);
+  letter-spacing: 0.05em;
+  color: #eef6ff;
+  border: 1px solid color-mix(in srgb, var(--nc-tag) 65%, transparent);
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--nc-tag) 12%, transparent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--nc-tag) 28%, transparent), inset 0 0 8px color-mix(in srgb, var(--nc-tag) 14%, transparent);
+  text-shadow: 0 0 6px color-mix(in srgb, var(--nc-tag) 70%, transparent);
 }
+
+#neural-core .nc-chips li:nth-child(3n + 2) { --nc-tag: #ff9a2e; }
+#neural-core .nc-chips li:nth-child(3n + 3) { --nc-tag: #a26bff; }
 
 #neural-core .nc-facts {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 8px 14px;
+  gap: 1px 0;
   margin: 18px 0 0;
-  padding-top: 14px;
-  border-top: 1px solid var(--nc-line);
+  padding: 0;
+  border: 1px solid rgba(79, 180, 255, 0.16);
+  border-radius: 4px;
+  background: rgba(79, 180, 255, 0.12);
+  overflow: hidden;
+}
+
+#neural-core .nc-facts dt,
+#neural-core .nc-facts dd {
+  padding: 8px 10px;
+  background: rgba(4, 10, 22, 0.92);
 }
 
 #neural-core .nc-facts dt {
+  position: relative;
+  padding-left: 16px;
   font-family: var(--nc-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.12em;
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(240, 240, 250, 0.4);
-  padding-top: 2px;
+  color: rgba(130, 195, 255, 0.85);
+}
+
+#neural-core .nc-facts dt::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 9px;
+  bottom: 9px;
+  width: 2px;
+  background: var(--nc-holo);
+  box-shadow: 0 0 6px var(--nc-holo);
 }
 
 #neural-core .nc-facts dd {
   margin: 0;
   font-family: var(--nc-display);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   line-height: 1.4;
-  color: var(--nc-soft);
+  color: #dbe9fb;
 }
 
 #neural-core .nc-inspector-nav {
   display: flex;
-  gap: 4px;
+  gap: 6px;
   margin-top: 18px;
+}
+
+#neural-core .nc-inspector-nav .nc-ctl {
+  color: rgba(200, 225, 255, 0.85);
+  background: rgba(79, 180, 255, 0.06);
+  border-color: rgba(79, 180, 255, 0.35);
+  border-radius: 3px;
+}
+
+#neural-core .nc-inspector-nav .nc-ctl:hover,
+#neural-core .nc-inspector-nav .nc-ctl:focus-visible {
+  color: #fff;
+  border-color: var(--nc-holo);
+  box-shadow: 0 0 12px rgba(79, 180, 255, 0.45);
 }
 
 #neural-core .nc-inspector-nav [data-nc-close] {

@@ -215,7 +215,7 @@ export const componentsData = [
     category: "MEMORY",
     mapGroup: "MEMORY",
     position: [-4.4, 0.3, 1.7],
-    cameraTarget: { position: [-5.4, 2.0, 5.8], target: [-4.4, 1.15, 1.7] },
+    cameraTarget: { position: [-5.5, 2.7, 6.9], target: [-4.45, 1.3, 1.8] },
     color: BLUE,
     metadata: {
       "Block states": "Free → populated → active",
@@ -246,7 +246,7 @@ export const componentsData = [
     id: "rag",
     name: "RAG Context Assembler",
     description:
-      "Turns retrieved chunks into a prompt: reranks candidates, keeps the most relevant documents and packs them into the context window.",
+      "A mechanical retrieval pipeline in red and gold armour, powered by an arc reactor: the query intake, embed gearbox, search probe, rerank rack and context window feed a nozzle aimed at the LLM. The top 3 of 6 retrieved chunks lift, turn gold and pack into the context window. Select it to watch every piece fly in and lock together, suit-up style.",
     technologies: ["LlamaIndex", "LangChain", "Cross-encoder rerankers", "Hybrid BM25 + dense"],
     category: "RETRIEVAL",
     mapGroup: "RETRIEVAL",

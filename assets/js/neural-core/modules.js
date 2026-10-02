@@ -18,6 +18,8 @@ import { buildStarship } from "./starship.js";
 import { buildDeathStar } from "./deathstar.js";
 import { buildDataPipeline } from "./datapipe.js";
 import { buildVectorDB } from "./vectordb.js";
+import { buildIronRAG } from "./ironrag.js";
+import { buildKVCache } from "./kvcache.js";
 
 const TAU = Math.PI * 2;
 const DEG = Math.PI / 180;
@@ -826,32 +828,9 @@ const builders = {
     };
   },
 
+  /* KV cache data centre; see kvcache.js. */
   "kv-cache"(ctx) {
-    const g = new THREE.Group();
-    const COLS = 8;
-    const ROWS = 5;
-    g.add(mesh(G.box, M.graphite, 0, 0.2, 0, 0.35, 0.4, 0.35));
-    g.add(mesh(G.box, M.graphite, 0, 0.98, -0.02, 1.95, 1.2, 0.12));
-    g.add(mesh(G.box, M.titanium, -1.0, 0.98, 0, 0.06, 1.28, 0.2));
-    g.add(mesh(G.box, M.titanium, 1.0, 0.98, 0, 0.06, 1.28, 0.2));
-    g.add(mesh(G.box, ctx.accent, 0, 1.62, 0.05, 1.95, 0.025, 0.03));
-    const blocks = ledInst(G.box, COLS * ROWS);
-    for (let r = 0; r < ROWS; r++)
-      for (let k = 0; k < COLS; k++)
-        /* Fill order: top row left→right, downward. */
-        setInst(blocks, r * COLS + k, -0.84 + k * 0.24, 1.46 - r * 0.22, 0.07, 0.19, 0.17, 0.05);
-    g.add(blocks);
-    return {
-      group: g,
-      update(dt, t, sim, c) {
-        const kv = sim.kv;
-        for (let i = 0; i < kv.count; i++) {
-          blocks.setColorAt(i, _c.setRGB(kv.r[i], kv.g[i], kv.b[i]).multiplyScalar(c.emph));
-        }
-        blocks.instanceColor.needsUpdate = true;
-        c.activity = 0.5 + sim.kvFill * 0.8;
-      },
-    };
+    return buildKVCache(ctx);
   },
 
   "distributed-storage"(ctx) {
@@ -947,41 +926,7 @@ const builders = {
   },
 
   rag(ctx) {
-    const g = new THREE.Group();
-    g.add(mesh(G.box, M.graphite, 0, 0, 0, 1.5, 0.05, 0.62));
-    g.add(mesh(G.box, ctx.accent, 0, 0.03, 0.31, 1.5, 0.012, 0.012));
-    g.add(mesh(G.cylLow, M.titaniumDark, 0.2, -0.28, 0, 0.035, 0.55, 0.035));
-    const docs = ledInst(G.box, 6);
-    g.add(docs);
-    const lift = new Float32Array(6);
-    const chosen = new Uint8Array(6);
-    return {
-      group: g,
-      rerank() {
-        chosen.fill(0);
-        let picked = 0;
-        while (picked < 3) {
-          const k = Math.floor(Math.random() * 6);
-          if (!chosen[k]) {
-            chosen[k] = 1;
-            picked++;
-          }
-        }
-      },
-      update(dt, t, sim, c) {
-        const a = 1 - Math.exp(-dt * 8);
-        for (let i = 0; i < 6; i++) {
-          const target = chosen[i] ? sim.rerankGlow : 0;
-          lift[i] += (target - lift[i]) * a;
-          setInst(docs, i, -0.6 + i * 0.24, 0.28 + lift[i] * 0.2, 0, 0.17, 0.46, 0.02, 0, 0, (i - 2.5) * -2 * DEG);
-          const col = lift[i] > 0.05 ? lerpColor(PALETTE.cool, PALETTE.lime, lift[i]) : _c.copy(PALETTE.cool);
-          docs.setColorAt(i, col.multiplyScalar((0.12 + lift[i] * 1.1 + sim.searchGlow * 0.15) * c.emph));
-        }
-        docs.instanceMatrix.needsUpdate = true;
-        docs.instanceColor.needsUpdate = true;
-        c.activity = 0.5 + sim.rerankGlow;
-      },
-    };
+    return buildIronRAG(ctx);
   },
 
   "agent-orchestration"(ctx) {
