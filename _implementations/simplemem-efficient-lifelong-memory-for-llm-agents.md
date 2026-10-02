@@ -16,7 +16,6 @@ category: ai-agents
 subcategory: agent-memory
 date: 2026-08-30
 order: 2
-research_crosslist: true
 mathjax: true
 ---
 
