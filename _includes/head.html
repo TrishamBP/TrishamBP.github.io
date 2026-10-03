@@ -89,6 +89,17 @@
   />
   <link rel="stylesheet" href="{{ '/css/research-cinema.css' | relative_url }}" />
   {%- endif %}
+  {%- comment -%}
+    Certifications: neon grid skin with light racers. Same gate as the
+    `grid-neon` body class in _layouts/default.html.
+  {%- endcomment -%}
+  {%- if page.url == '/certifications/' %}
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700&display=swap"
+  />
+  <link rel="stylesheet" href="{{ '/css/certs-neon.css' | relative_url }}" />
+  {%- endif %}
   {%- endunless %}
 
   {%- comment -%}

@@ -14,9 +14,10 @@
     (css/engineering-glossary.css, loaded by the same gate in head.html).
     The blog listing and posts get the light paper skin (css/blog-paper.css).
     The research page gets the full-screen cinema skin (css/research-cinema.css).
+    Certifications get the neon grid skin (css/certs-neon.css).
   {%- endcomment -%}
   {%- assign url_prefix = page.url | slice: 0, 13 -%}
-  <body class="{% unless page_theme == 'none' %}theme-{{ page_theme }} {% endunless %}{% if url_prefix == '/engineering/' or page.collection == 'implementations' %}eng-glossary {% endif %}{% if page.url == '/blog/' or page.layout == 'post' %}ts-paper {% endif %}{% if page.url == '/research-articles/' %}spx-cinema {% endif %}dark-mode">
+  <body class="{% unless page_theme == 'none' %}theme-{{ page_theme }} {% endunless %}{% if url_prefix == '/engineering/' or page.collection == 'implementations' %}eng-glossary {% endif %}{% if page.url == '/blog/' or page.layout == 'post' %}ts-paper {% endif %}{% if page.url == '/research-articles/' %}spx-cinema {% endif %}{% if page.url == '/certifications/' %}grid-neon {% endif %}dark-mode">
     <nav class="topnav" id="topnav">
       <div class="topnav-inner">
         <a class="topnav-brand" href="{{ '/' | relative_url }}">Trisham Patil</a>

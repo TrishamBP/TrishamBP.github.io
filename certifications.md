@@ -8,7 +8,14 @@ permalink: /certifications/
 image: /assets/images/certifications/UC-8dd47b2a-48c3-408f-833e-01e87bc1bff6.jpg
 ---
 
+{%- comment -%}
+  Neon grid skin (css/certs-neon.css + assets/js/certs-neon.js): the canvas
+  below is a fixed full-screen backdrop with light racers on a grid floor.
+{%- endcomment -%}
+<canvas class="gn-canvas" aria-hidden="true"></canvas>
+
 <section class="content-section certs-section" aria-labelledby="certs-heading">
+  <p class="gn-eyebrow"><span class="gn-dot" aria-hidden="true"></span>{{ site.data.certifications.size }} Credentials &middot; Verified &middot; Online</p>
   <h1 id="certs-heading" class="section-title">Licenses &amp; Certifications</h1>
   <p class="research-intro">
     Certifications and hackathon credentials across AI engineering, LLM deployment,
@@ -70,3 +77,5 @@ image: /assets/images/certifications/UC-8dd47b2a-48c3-408f-833e-01e87bc1bff6.jpg
     {% endfor %}
   </div>
 </section>
+
+<script src="{{ '/assets/js/certs-neon.js' | relative_url }}" defer></script>
