@@ -59,6 +59,18 @@
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap"
   />
   <link rel="stylesheet" href="{{ '/css/typesafe.css' | relative_url }}" />
+  {%- comment -%}
+    Engineering Implementations skin (green glossary look). Same gate as the
+    `eng-glossary` body class in _layouts/default.html.
+  {%- endcomment -%}
+  {%- assign url_prefix = page.url | slice: 0, 13 -%}
+  {%- if url_prefix == '/engineering/' or page.collection == 'implementations' %}
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&display=swap"
+  />
+  <link rel="stylesheet" href="{{ '/css/engineering-glossary.css' | relative_url }}" />
+  {%- endif %}
   {%- endunless %}
 
   {%- comment -%}

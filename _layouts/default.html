@@ -9,7 +9,12 @@
   {%- comment -%}
     Dark mode is the only theme and is rendered server-side (no light flash).
   {%- endcomment -%}
-  <body class="{% unless page_theme == 'none' %}theme-{{ page_theme }} {% endunless %}dark-mode">
+  {%- comment -%}
+    Engineering Implementations pages get the green glossary skin
+    (css/engineering-glossary.css, loaded by the same gate in head.html).
+  {%- endcomment -%}
+  {%- assign url_prefix = page.url | slice: 0, 13 -%}
+  <body class="{% unless page_theme == 'none' %}theme-{{ page_theme }} {% endunless %}{% if url_prefix == '/engineering/' or page.collection == 'implementations' %}eng-glossary {% endif %}dark-mode">
     <nav class="topnav" id="topnav">
       <div class="topnav-inner">
         <a class="topnav-brand" href="{{ '/' | relative_url }}">Trisham Patil</a>
