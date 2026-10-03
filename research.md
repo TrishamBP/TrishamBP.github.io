@@ -1,180 +1,102 @@
 ---
 layout: default
 title: Research Articles
+seo_title: "AI Systems Research Papers & Articles — LLM Inference, NLP, Attention"
+description: "AI systems research by Trisham Patil: technical reports and papers on LLM inference, attention mechanisms, KV cache management, and domain-specific NLP."
+keywords: "AI research, LLM inference research, attention mechanisms, KV cache, multi-head latent attention, domain-specific NLP, technical report"
 permalink: /research-articles/
 includelink: true
 ---
+{%- comment -%}
+  Cinematic layout: every publication is one full-screen section with an
+  animated background (see _includes/spx-section.html). Per-entry frontmatter
+  can override the background with `bg_video:` (+ optional `bg_poster:`) or
+  pick a canvas scene with `bg_scene:`. Otherwise scenes cycle through the
+  list below.
+{%- endcomment -%}
+{%- assign scenes = "orbit,network,stars,grid" | split: "," -%}
+{%- assign research_papers = site.papers | sort: "date" | reverse -%}
+{%- assign crosslisted = site.implementations | where: "research_crosslist", true -%}
+{%- assign research_posts = site.research | concat: crosslisted | sort: "date" | reverse -%}
+{%- assign total = research_papers.size | plus: research_posts.size | plus: 1 -%}
 
-<!-- ===================== RESEARCH PAPERS SECTION ===================== -->
-<section class="content-section papers-section" aria-labelledby="papers-heading">
-  <h1 id="papers-heading" class="section-title">Research Papers</h1>
-  <p class="research-intro">
-    Peer-reviewed publications, technical whitepapers, and production engineering research focused 
-    on AI systems, agentic workflows, large language models, distributed inference, memory architectures, 
-    and autonomous systems.
-  </p>
+{% capture hero_eyebrow %}{{ total }} Publications &middot; Papers &middot; Reports &middot; Articles{% endcapture %}
+{% include spx-section.html
+   hero=true
+   heading="h1"
+   id="research-hero"
+   scene="ascent"
+   eyebrow=hero_eyebrow
+   title="AI Systems Research"
+   desc="Peer-reviewed publications, technical whitepapers, and production engineering research on large language models, distributed inference, memory architectures, agentic workflows, and autonomous systems."
+   cta="Research Papers"
+   href="#research-papers"
+   external_url=true
+   cta2="Articles"
+   href2="#research-articles" %}
 
-  {% assign research_papers = site.papers | sort: "date" | reverse %}
-  <div class="articles-grid">
-    <!-- New Technical Report: Multi-Head Latent Attention -->
-    <article class="article-card">
-      <h2 class="article-title">From Multi-Head to Multi-Head Latent Attention: An Engineering Analysis of Attention Mechanisms for Large Language Model Inference</h2>
-      
-      <p class="article-date">
-        <span class="ts-name">Trisham Patil</span>
-        &lt;<a href="mailto:trishampatil@gmail.com">trishampatil@gmail.com</a>&gt;
-      </p>
-      
-      <p class="article-date">
-        Published: July 2026 | Technical Report
-      </p>
-      
-      <p class="article-tags">Attention Mechanisms | Transformer Architecture | LLM Inference | KV Cache | Multi-Head Attention | Multi-Query Attention | Grouped Query Attention | Multi-Head Latent Attention | GPU Architecture | Memory Bandwidth</p>
-      
-      <p class="article-preview">
-        Modern large language models have become increasingly constrained by memory bandwidth rather than compute during autoregressive inference. This technical report presents a systems-level engineering analysis of the evolution of attention mechanisms—from Multi-Head Attention (MHA) through Multi-Query Attention (MQA), Grouped Query Attention (GQA), and Multi-Head Latent Attention (MLA)—covering their mathematical foundations, KV cache optimization, GPU memory behavior, and inference trade-offs in modern LLM serving systems.
-      </p>
-      
-      <a 
-        class="article-read-more" 
-        href="{{ '/assets/papers/2026/Attention%20-%20Technical%20Report.pdf' | relative_url }}" 
-        target="_blank" 
-        rel="noopener noreferrer"
-      >View Technical Report &rarr;</a>
-    </article>
+<!-- ===================== RESEARCH PAPERS ===================== -->
+<div id="research-papers" class="spx-group">
+  <p class="spx-group-label"><span>01</span> Research Papers</p>
 
-    {% for paper in research_papers %}
-      <article class="article-card">
-        <h2 class="article-title">{{ paper.title }}</h2>
-        
-        <p class="article-date">
-          {% if paper.authors %}
-            {{ paper.authors }}
-            {% if paper.author_email %}
-              &lt;<a href="mailto:{{ paper.author_email }}">{{ paper.author_email }}</a>&gt;
-            {% endif %}
-          {% endif %}
-        </p>
-        
-        <p class="article-date">
-          Published: {{ paper.date | date: "%B %-d, %Y" }}
-          {% if paper.venue %} | {{ paper.venue }}{% endif %}
-        </p>
-        
-        {% if paper.keywords and paper.keywords.size > 0 %}
-          <p class="article-tags">{{ paper.keywords | join: " | " }}</p>
-        {% endif %}
-        
-        <p class="article-preview">
-          {% if paper.abstract_short %}
-            {{ paper.abstract_short }}
-          {% else %}
-            {{ paper.abstract | strip_html | normalize_whitespace | truncate: 300 }}
-          {% endif %}
-        </p>
-        
-        <a 
-          class="article-read-more" 
-          href="{{ paper.pdf | relative_url }}" 
-          target="_blank" 
-          rel="noopener noreferrer"
-        >Read Paper &rarr;</a>
-      </article>
-    {% endfor %}
-  </div>
+  {% include spx-section.html
+     id="mla-technical-report"
+     scene="orbit"
+     eyebrow="July 2026 &middot; Technical Report &middot; Trisham Patil"
+     title="From Multi-Head to Multi-Head Latent Attention"
+     desc="A systems-level engineering analysis of attention for LLM inference — MHA, MQA, GQA and MLA — covering KV cache optimization, GPU memory behavior, and the trade-offs that matter in modern serving systems."
+     tags="Attention · KV Cache · MQA · GQA · MLA · GPU Memory Bandwidth"
+     cta="View Technical Report"
+     href="/assets/papers/2026/Attention%20-%20Technical%20Report.pdf"
+     new_tab=true %}
 
-  {% if research_papers.size == 0 %}
-    <p class="research-intro">Research papers will be published here.</p>
-  {% endif %}
-</section>
+  {% for paper in research_papers %}
+    {%- assign scene_i = forloop.index | modulo: scenes.size -%}
+    {%- assign scene_name = paper.bg_scene | default: scenes[scene_i] -%}
+    {%- capture eyebrow -%}{{ paper.date | date: "%B %Y" }}{% if paper.venue %} &middot; {{ paper.venue }}{% endif %}{% if paper.authors %} &middot; {{ paper.authors }}{% endif %}{%- endcapture -%}
+    {%- capture desc -%}{% if paper.abstract_short %}{{ paper.abstract_short }}{% else %}{{ paper.abstract | strip_html | normalize_whitespace | truncate: 240 }}{% endif %}{%- endcapture -%}
+    {%- capture tags -%}{% if paper.keywords %}{{ paper.keywords | join: " · " }}{% endif %}{%- endcapture -%}
+    {% include spx-section.html
+       id=paper.slug
+       scene=scene_name
+       video=paper.bg_video
+       poster=paper.bg_poster
+       eyebrow=eyebrow
+       title=paper.title
+       desc=desc
+       tags=tags
+       cta="Read Paper"
+       href=paper.pdf
+       new_tab=true %}
+  {% endfor %}
+</div>
 
-<!-- ===================== RESEARCH ARTICLES SECTION ===================== -->
-<section class="content-section articles-section" aria-labelledby="research-articles-heading" style="margin-top: 56px;">
-  <h2 id="research-articles-heading" class="section-title">Research Articles</h2>
-  <p class="research-intro">
-    Research-first writeups on AI systems, domain-specific NLP, model architecture, and production lessons from real deployments.
-  </p>
+<!-- ===================== RESEARCH ARTICLES ===================== -->
+<div id="research-articles" class="spx-group">
+  <p class="spx-group-label"><span>02</span> Research Articles</p>
 
-  {%- comment -%} Engineering implementations can also appear here by setting
-     `research_crosslist: true` in their frontmatter; the card links to the
-     single engineering page, so no duplicate content. {%- endcomment -%}
-  {% assign crosslisted = site.implementations | where: "research_crosslist", true %}
-  {% assign research_posts = site.research | concat: crosslisted | sort: "date" | reverse %}
-  <div class="articles-grid" id="research-articles-grid">
-    {% for post in research_posts %}
-      <article class="article-card research-article-item" data-index="{{ forloop.index0 }}">
-        <h2 class="article-title">
-          <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-        </h2>
-        <p class="article-date">
-          Published: {{ post.date | date: "%B %-d, %Y" }}
-        </p>
-        {% if post.tags and post.tags.size > 0 %}
-          <p class="article-tags">Tags: {{ post.tags | join: " | " }}</p>
-        {% endif %}
-        <p class="article-preview">
-          {% if post.description %}
-            {{ post.description }}
-          {% else %}
-            {{ post.excerpt | strip_html | normalize_whitespace | truncate: 220 }}
-          {% endif %}
-        </p>
-        <a class="article-read-more" href="{{ post.url | relative_url }}">Read Research &rarr;</a>
-      </article>
-    {% endfor %}
-  </div>
+  {% for post in research_posts %}
+    {%- assign scene_i = forloop.index0 | plus: 1 | modulo: scenes.size -%}
+    {%- assign scene_name = post.bg_scene | default: scenes[scene_i] -%}
+    {%- capture eyebrow -%}{{ post.date | date: "%B %Y" }} &middot; Research Article{%- endcapture -%}
+    {%- capture desc -%}{% if post.description %}{{ post.description | strip_html | truncate: 240 }}{% else %}{{ post.excerpt | strip_html | normalize_whitespace | truncate: 240 }}{% endif %}{%- endcapture -%}
+    {%- capture tags -%}{% if post.tags %}{{ post.tags | slice: 0, 6 | join: " · " }}{% endif %}{%- endcapture -%}
+    {% include spx-section.html
+       id=post.slug
+       scene=scene_name
+       video=post.bg_video
+       poster=post.bg_poster
+       eyebrow=eyebrow
+       title=post.title
+       desc=desc
+       tags=tags
+       cta="Read Research"
+       href=post.url %}
+  {% endfor %}
 
   {% if research_posts.size == 0 %}
-    <p>Research articles are being prepared for publication.</p>
+    <p class="spx-empty">Research articles are being prepared for publication.</p>
   {% endif %}
+</div>
 
-  <div class="load-more-container" id="research-load-more-container" style="display: none;">
-    <button 
-      class="load-more-btn" 
-      id="research-load-more-btn"
-      aria-label="Load more research articles"
-    >
-      Load More Research Articles
-    </button>
-    <p class="load-more-status" id="research-load-more-status" aria-live="polite"></p>
-  </div>
-</section>
-
-<script>
-(function() {
-  var ITEMS_PER_PAGE = 5;
-  var container = document.getElementById('research-articles-grid');
-  var loadMoreBtn = document.getElementById('research-load-more-btn');
-  var loadMoreContainer = document.getElementById('research-load-more-container');
-  var statusEl = document.getElementById('research-load-more-status');
-  
-  if (!container || !loadMoreBtn) return;
-  
-  var items = Array.from(container.querySelectorAll('.research-article-item'));
-  var totalItems = items.length;
-  var visibleCount = ITEMS_PER_PAGE;
-  
-  function updateDisplay() {
-    items.forEach(function(item, index) {
-      item.style.display = index < visibleCount ? '' : 'none';
-    });
-    
-    var remaining = totalItems - visibleCount;
-    if (remaining > 0) {
-      loadMoreContainer.style.display = 'block';
-      statusEl.textContent = 'Showing ' + visibleCount + ' of ' + totalItems + ' articles';
-    } else {
-      loadMoreContainer.style.display = 'none';
-    }
-  }
-  
-  loadMoreBtn.addEventListener('click', function() {
-    visibleCount += ITEMS_PER_PAGE;
-    updateDisplay();
-  });
-  
-  if (totalItems > ITEMS_PER_PAGE) {
-    updateDisplay();
-  }
-})();
-</script>
+<script src="{{ '/assets/js/research-cinema.js' | relative_url }}" defer></script>

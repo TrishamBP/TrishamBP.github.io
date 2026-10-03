@@ -1,0 +1,68 @@
+{% comment %}
+  Full-screen cinematic section for the Research page (css/research-cinema.css,
+  assets/js/research-cinema.js).
+
+  Usage:
+    {% include spx-section.html
+       id="mla-report" scene="orbit" eyebrow="July 2026 · Technical Report"
+       title="..." desc="..." tags="A · B · C"
+       cta="Read Report" href="/path/" external=true %}
+
+  Background, in priority order:
+    video=  path to your own .mp4/.webm (muted, looped, autoplayed)
+    scene=  procedural canvas scene: ascent | orbit | stars | network | grid
+  poster= optional still shown before the video loads.
+  heading= "h1" for the hero; defaults to h2.
+{% endcomment %}
+{%- assign spx_tag = include.heading | default: "h2" -%}
+<section
+  class="spx-section{% if include.hero %} spx-section--hero{% endif %}"
+  {% if include.id %}id="{{ include.id }}"{% endif %}
+  {% unless include.video %}data-scene="{{ include.scene | default: 'stars' }}"{% endunless %}
+  aria-labelledby="{{ include.id | default: 'spx' }}-title"
+>
+  <div class="spx-bg" aria-hidden="true">
+    {% if include.video %}
+      <video
+        class="spx-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        {% if include.poster %}poster="{{ include.poster | relative_url }}"{% endif %}
+      >
+        <source src="{{ include.video | relative_url }}" />
+      </video>
+    {% else %}
+      <canvas class="spx-canvas"></canvas>
+    {% endif %}
+  </div>
+  <div class="spx-shade" aria-hidden="true"></div>
+
+  <div class="spx-copy">
+    {% if include.eyebrow %}<p class="spx-eyebrow">{{ include.eyebrow }}</p>{% endif %}
+    <{{ spx_tag }} id="{{ include.id | default: 'spx' }}-title" class="spx-title{% if include.title.size > 48 %} spx-title--long{% endif %}">{{ include.title }}</{{ spx_tag }}>
+    {% if include.desc %}<p class="spx-desc">{{ include.desc }}</p>{% endif %}
+    {% if include.tags and include.tags != "" %}<p class="spx-tags">{{ include.tags }}</p>{% endif %}
+    {% if include.cta %}
+      <div class="spx-actions">
+        <a
+          class="spx-button"
+          href="{% if include.external_url %}{{ include.href }}{% else %}{{ include.href | relative_url }}{% endif %}"
+          {% if include.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+        >{{ include.cta }}<span class="spx-button-arrow" aria-hidden="true">&rarr;</span></a>
+        {% if include.cta2 %}
+          <a class="spx-button spx-button--ghost" href="{{ include.href2 }}"
+          >{{ include.cta2 }}<span class="spx-button-arrow" aria-hidden="true">&darr;</span></a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+
+  {% if include.hero %}
+    <a class="spx-scroll-cue" href="{{ include.href2 | default: '#' }}" aria-label="Scroll to content">
+      <span>Scroll</span>
+    </a>
+  {% endif %}
+</section>

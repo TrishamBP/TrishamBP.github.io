@@ -1,0 +1,339 @@
+/* =============================================================================
+   RESEARCH CINEMA SKIN
+   -----------------------------------------------------------------------------
+   Applied to /research-articles/ only. `_layouts/default.html` adds
+   `spx-cinema` to <body>; `_includes/head.html` loads this file plus the
+   Barlow Condensed webfont. Markup lives in _includes/spx-section.html and
+   the animated backgrounds in assets/js/research-cinema.js.
+
+   Look: launch-broadcast style — every publication is a full-screen panel
+   with a moving background, a bold condensed uppercase headline in the
+   bottom-left, one line of copy and a single outlined button.
+
+     black   #000000     off-white rgb(240 240 250) at stepped opacities
+     charcoal rgb(37 38 40)
+
+   Scoped body.theme-typesafe.spx-cinema (three classes) so it outranks the
+   typesafe theme without !important.
+   ========================================================================== */
+
+body.theme-typesafe.spx-cinema {
+  --spx-white: rgb(240, 240, 250);
+  --spx-white-80: rgba(240, 240, 250, 0.8);
+  --spx-white-60: rgba(240, 240, 250, 0.6);
+  --spx-white-35: rgba(240, 240, 250, 0.35);
+  --spx-white-15: rgba(240, 240, 250, 0.15);
+  --spx-charcoal: rgb(37, 38, 40);
+  --spx-head: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", Arial,
+    sans-serif;
+
+  background: #000;
+  color: var(--spx-white);
+}
+
+/* The page runs edge to edge; sections handle their own padding. */
+body.theme-typesafe.spx-cinema .site-shell {
+  width: 100%;
+  max-width: none;
+  padding: 0;
+}
+
+/* -----------------------------------------------------------------------------
+   Nav: floats over the hero, solidifies once the page scrolls
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.spx-cinema .topnav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0));
+  border-bottom: 1px solid transparent;
+  transition: background-color 0.4s var(--ts-ease), border-color 0.4s var(--ts-ease);
+}
+
+body.theme-typesafe.spx-cinema.spx-scrolled .topnav {
+  background: rgba(0, 0, 0, 0.92);
+  border-bottom-color: var(--spx-white-15);
+}
+
+body.theme-typesafe.spx-cinema .topnav-brand,
+body.theme-typesafe.spx-cinema .topnav-link {
+  font-family: var(--spx-head);
+  font-weight: 600;
+  font-size: 0.92rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--spx-white);
+  border-radius: 0;
+}
+
+body.theme-typesafe.spx-cinema.dark-mode .topnav-link.active {
+  background: transparent;
+  box-shadow: inset 0 -2px 0 var(--spx-white);
+}
+
+body.theme-typesafe.spx-cinema.dark-mode .topnav-link:hover {
+  background: transparent;
+  color: var(--spx-white-60);
+}
+
+/* -----------------------------------------------------------------------------
+   Full-screen section
+   -------------------------------------------------------------------------- */
+
+.spx-cinema .spx-section {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  padding-top: 10rem; /* fixed nav + group label never overlap the copy */
+  box-sizing: border-box;
+  background: #000;
+  border-top: 1px solid var(--spx-white-15);
+}
+
+.spx-cinema .spx-section--hero {
+  border-top: 0;
+}
+
+.spx-cinema .spx-bg,
+.spx-cinema .spx-shade {
+  position: absolute;
+  inset: 0;
+}
+
+.spx-cinema .spx-bg {
+  z-index: -2;
+}
+
+.spx-cinema .spx-canvas,
+.spx-cinema .spx-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Darken the bottom-left where the copy sits, like a broadcast lower third. */
+.spx-cinema .spx-shade {
+  z-index: -1;
+  background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.85) 0%,
+      rgba(0, 0, 0, 0.35) 38%,
+      rgba(0, 0, 0, 0) 70%
+    ),
+    linear-gradient(to right, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 55%);
+}
+
+.spx-cinema .spx-copy {
+  width: min(760px, 100%);
+  padding: 0 6vw 13vh;
+  box-sizing: border-box;
+}
+
+.spx-cinema .spx-eyebrow {
+  margin: 0 0 0.6rem;
+  font-family: var(--ts-term);
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--spx-white);
+}
+
+.spx-cinema .spx-title {
+  margin: 0 0 1.1rem;
+  font-family: var(--spx-head);
+  font-weight: 700;
+  font-size: clamp(2.4rem, 5.6vw, 4.8rem);
+  line-height: 0.94;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+  color: var(--spx-white);
+  -webkit-text-stroke: 0;
+  border: 0;
+  padding: 0;
+}
+
+.spx-cinema .spx-title--long {
+  font-size: clamp(2rem, 4vw, 3.4rem);
+}
+
+.spx-cinema .spx-section--hero .spx-title {
+  font-size: clamp(3rem, 8.4vw, 7rem);
+}
+
+.spx-cinema .spx-desc {
+  max-width: 56ch;
+  margin: 0 0 0.9rem;
+  font-family: var(--ts-body);
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: var(--spx-white-80);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.spx-cinema .spx-tags {
+  margin: 0 0 1.8rem;
+  font-family: var(--ts-term);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--spx-white-60);
+}
+
+/* -----------------------------------------------------------------------------
+   Outlined button: fills white on hover
+   -------------------------------------------------------------------------- */
+
+.spx-cinema .spx-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+body.theme-typesafe.spx-cinema .spx-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1.05rem 1.4rem;
+  border: 1px solid var(--spx-white);
+  background: transparent;
+  color: var(--spx-white);
+  font-family: var(--spx-head);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color 0.3s var(--ts-ease), color 0.3s var(--ts-ease);
+}
+
+body.theme-typesafe.spx-cinema .spx-button:hover,
+body.theme-typesafe.spx-cinema .spx-button:focus-visible {
+  background: var(--spx-white);
+  color: #000;
+}
+
+body.theme-typesafe.spx-cinema .spx-button--ghost {
+  border-color: var(--spx-white-35);
+}
+
+.spx-cinema .spx-button-arrow {
+  transition: transform 0.3s var(--ts-ease);
+}
+
+.spx-cinema .spx-button:hover .spx-button-arrow {
+  transform: translateX(4px);
+}
+
+/* -----------------------------------------------------------------------------
+   Group label pinned over the first section of each group, scroll cue
+   -------------------------------------------------------------------------- */
+
+.spx-cinema .spx-group {
+  position: relative;
+}
+
+body.theme-typesafe.spx-cinema .spx-group-label {
+  position: absolute;
+  z-index: 2;
+  top: 6.2rem;
+  left: 6vw;
+  margin: 0;
+  font-family: var(--ts-term);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--spx-white-60);
+}
+
+.spx-cinema .spx-group-label span {
+  color: var(--spx-white);
+  margin-right: 0.6rem;
+}
+
+body.theme-typesafe.spx-cinema .spx-scroll-cue {
+  position: absolute;
+  right: 6vw;
+  bottom: 13vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  font-family: var(--ts-term);
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--spx-white-60);
+  text-decoration: none;
+}
+
+.spx-cinema .spx-scroll-cue::after {
+  content: "";
+  width: 1px;
+  height: 56px;
+  background: linear-gradient(var(--spx-white), transparent);
+  animation: spx-cue 2.2s var(--ts-ease) infinite;
+  transform-origin: top;
+}
+
+@keyframes spx-cue {
+  0% { transform: scaleY(0); opacity: 1; }
+  70% { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 0; }
+}
+
+.spx-cinema .spx-empty {
+  padding: 4rem 6vw;
+  color: var(--spx-white-60);
+}
+
+/* -----------------------------------------------------------------------------
+   Copy rises in as each section enters (class set by research-cinema.js)
+   -------------------------------------------------------------------------- */
+
+.spx-cinema.spx-js .spx-copy > * {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.9s var(--ts-ease), transform 0.9s var(--ts-ease);
+}
+
+.spx-cinema.spx-js .spx-section.spx-in .spx-copy > * {
+  opacity: 1;
+  transform: none;
+}
+
+.spx-cinema.spx-js .spx-section.spx-in .spx-copy > :nth-child(2) { transition-delay: 0.08s; }
+.spx-cinema.spx-js .spx-section.spx-in .spx-copy > :nth-child(3) { transition-delay: 0.16s; }
+.spx-cinema.spx-js .spx-section.spx-in .spx-copy > :nth-child(4) { transition-delay: 0.24s; }
+.spx-cinema.spx-js .spx-section.spx-in .spx-copy > :nth-child(5) { transition-delay: 0.32s; }
+
+@media (max-width: 760px) {
+  .spx-cinema .spx-copy {
+    padding-bottom: 10vh;
+  }
+  .spx-cinema .spx-scroll-cue {
+    display: none;
+  }
+  body.theme-typesafe.spx-cinema .spx-group-label {
+    top: 5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spx-cinema.spx-js .spx-copy > * {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .spx-cinema .spx-scroll-cue::after {
+    animation: none;
+  }
+}

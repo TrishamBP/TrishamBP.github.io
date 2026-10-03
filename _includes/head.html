@@ -78,6 +78,17 @@
   {%- if page.url == '/blog/' or page.layout == 'post' %}
   <link rel="stylesheet" href="{{ '/css/blog-paper.css' | relative_url }}" />
   {%- endif %}
+  {%- comment -%}
+    Research page: full-screen cinematic sections. Same gate as the
+    `spx-cinema` body class in _layouts/default.html.
+  {%- endcomment -%}
+  {%- if page.url == '/research-articles/' %}
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&display=swap"
+  />
+  <link rel="stylesheet" href="{{ '/css/research-cinema.css' | relative_url }}" />
+  {%- endif %}
   {%- endunless %}
 
   {%- comment -%}
