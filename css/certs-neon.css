@@ -145,6 +145,25 @@ body.theme-typesafe.grid-neon .site-shell .certs-section .research-intro {
   color: rgba(233, 253, 255, 0.78);
 }
 
+/* Empty arena between the heading and the cards: the racers ride here. */
+.grid-neon .gn-stage {
+  position: relative;
+  height: 46vh;
+  min-height: 260px;
+}
+
+body.theme-typesafe.grid-neon .site-shell .gn-stage span {
+  position: absolute;
+  left: 50%;
+  bottom: 0.4rem;
+  transform: translateX(-50%);
+  font-family: var(--ts-term);
+  font-size: 0.66rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(233, 253, 255, 0.55);
+}
+
 /* -----------------------------------------------------------------------------
    Cards: dark glass, neon edge, corner brackets, sweeping light on hover
    -------------------------------------------------------------------------- */

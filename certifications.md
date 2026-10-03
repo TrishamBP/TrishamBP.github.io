@@ -23,6 +23,9 @@ image: /assets/images/certifications/UC-8dd47b2a-48c3-408f-833e-01e87bc1bff6.jpg
     listed newest first.
   </p>
 
+  {%- comment -%} Open floor so the light racers are visible before the cards. {%- endcomment -%}
+  <div class="gn-stage" aria-hidden="true"><span>Scroll</span></div>
+
   <div class="cert-grid" aria-label="Certifications">
     {% for c in site.data.certifications %}
       {% assign issuer_key = c.issuer | downcase | replace: ".", "" | replace: " ", "" %}
