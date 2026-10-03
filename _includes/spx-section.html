@@ -8,9 +8,12 @@
        title="..." desc="..." tags="A · B · C"
        cta="Read Report" href="/path/" external=true %}
 
-  Background, in priority order:
+  Background:
     video=  path to your own .mp4/.webm (muted, looped, autoplayed)
     scene=  procedural canvas scene: ascent | orbit | stars | network | grid
+  The canvas scene is always rendered; when a video is given it plays on top
+  and the scene stops once the video is actually playing. A missing or
+  broken video file therefore falls back to the scene instead of black.
   poster= optional still shown before the video loads.
   heading= "h1" for the hero; defaults to h2.
 {% endcomment %}
@@ -18,10 +21,11 @@
 <section
   class="spx-section{% if include.hero %} spx-section--hero{% endif %}"
   {% if include.id %}id="{{ include.id }}"{% endif %}
-  {% unless include.video %}data-scene="{{ include.scene | default: 'stars' }}"{% endunless %}
+  data-scene="{{ include.scene | default: 'stars' }}"
   aria-labelledby="{{ include.id | default: 'spx' }}-title"
 >
   <div class="spx-bg" aria-hidden="true">
+    <canvas class="spx-canvas"></canvas>
     {% if include.video %}
       <video
         class="spx-video"
@@ -34,8 +38,6 @@
       >
         <source src="{{ include.video | relative_url }}" />
       </video>
-    {% else %}
-      <canvas class="spx-canvas"></canvas>
     {% endif %}
   </div>
   <div class="spx-shade" aria-hidden="true"></div>

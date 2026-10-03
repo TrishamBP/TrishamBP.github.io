@@ -13,6 +13,11 @@ tags:
   - LLM
   - Weak Supervision
 description: "We present QuantBridge/energy-news-classifier-ner-multitask, a unified architecture performing Named Entity Recognition and multi-label topic classification in a single forward pass over a shared DistilBERT encoder, designed for real-time structured signal extraction from financial and geopolitical news."
+# Research page background (/research-articles/). Scenes: ascent | orbit | stars | network | grid
+bg_scene: grid
+# To use your own clip instead, add the files and uncomment:
+# bg_video: /assets/research/quantbridge.mp4   # muted, looped, autoplayed
+# bg_poster: /assets/research/quantbridge.jpg  # optional still while loading
 ---
 
 ## Abstract

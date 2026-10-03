@@ -117,6 +117,18 @@ body.theme-typesafe.spx-cinema.dark-mode .topnav-link:hover {
   object-fit: cover;
 }
 
+/* A video sits over the fallback canvas and fades in once it is playing. */
+.spx-cinema .spx-video {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s var(--ts-ease);
+}
+
+.spx-cinema .spx-section.spx-video-ready .spx-video {
+  opacity: 1;
+}
+
 /* Darken the bottom-left where the copy sits, like a broadcast lower third. */
 .spx-cinema .spx-shade {
   z-index: -1;

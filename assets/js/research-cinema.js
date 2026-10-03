@@ -5,7 +5,8 @@
    only animate while their section is on screen, the device-pixel ratio is
    capped, and `prefers-reduced-motion` renders a single still frame instead.
    Sections with a real <video> (frontmatter `bg_video:`) are played/paused
-   the same way.
+   the same way; their canvas scene keeps running as a fallback until the
+   video is actually playing, so a missing file never leaves a black panel.
 
    Scenes: ascent | orbit | stars | network | grid
    ========================================================================== */
@@ -625,9 +626,16 @@
       item.scene = make();
       sizeCanvas(item);
     }
-    if (video && reduceMotion) {
-      video.removeAttribute("autoplay");
-      video.pause();
+    if (video) {
+      video.addEventListener("playing", function () {
+        item.videoReady = true;
+        sec.classList.add("spx-video-ready");
+        setVisible(item, item.visible, true);
+      });
+      if (reduceMotion) {
+        video.removeAttribute("autoplay");
+        video.pause();
+      }
     }
     items.push(item);
   });
@@ -655,8 +663,8 @@
     if (!rafId) last = 0;
   }
 
-  function setVisible(it, on) {
-    if (it.visible === on) return;
+  function setVisible(it, on, force) {
+    if (it.visible === on && !force) return;
     it.visible = on;
     if (it.video && !reduceMotion) {
       if (on) {
@@ -667,9 +675,10 @@
       }
     }
     if (!it.scene || reduceMotion) return;
+    var animate = on && !it.videoReady;
     var idx = running.indexOf(it);
-    if (on && idx === -1) running.push(it);
-    if (!on && idx !== -1) running.splice(idx, 1);
+    if (animate && idx === -1) running.push(it);
+    if (!animate && idx !== -1) running.splice(idx, 1);
     if (running.length && !rafId) rafId = requestAnimationFrame(tick);
   }
 

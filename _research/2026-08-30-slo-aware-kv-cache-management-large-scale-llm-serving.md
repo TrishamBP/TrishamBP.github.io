@@ -16,6 +16,11 @@ tags:
   - Systems
   - GPU Inference
 mathjax: true
+# Research page background (/research-articles/). Scenes: ascent | orbit | stars | network | grid
+bg_scene: network
+# To use your own clip instead, add the files and uncomment:
+# bg_video: /assets/research/slo-kv-cache.mp4   # muted, looped, autoplayed
+# bg_poster: /assets/research/slo-kv-cache.jpg  # optional still while loading
 ---
 
 ## Abstract
