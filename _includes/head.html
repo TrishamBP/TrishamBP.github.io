@@ -71,6 +71,13 @@
   />
   <link rel="stylesheet" href="{{ '/css/engineering-glossary.css' | relative_url }}" />
   {%- endif %}
+  {%- comment -%}
+    Blog listing + posts: light typesafe.ai paper skin. Same gate as the
+    `ts-paper` body class in _layouts/default.html.
+  {%- endcomment -%}
+  {%- if page.url == '/blog/' or page.layout == 'post' %}
+  <link rel="stylesheet" href="{{ '/css/blog-paper.css' | relative_url }}" />
+  {%- endif %}
   {%- endunless %}
 
   {%- comment -%}

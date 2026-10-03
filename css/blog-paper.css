@@ -1,0 +1,297 @@
+/* =============================================================================
+   BLOG PAPER SKIN
+   -----------------------------------------------------------------------------
+   Applied to the /blog/ listing and every post (`layout: post`).
+   `_layouts/default.html` adds `ts-paper` to <body> and `_includes/head.html`
+   loads this file, both gated on the same condition.
+
+   The site forces `dark-mode` on every page, which remaps the typesafe theme
+   to black. This skin flips the blog back to the light typesafe.ai palette:
+
+     paper  #e5e5e5     panel  #dedede     panel-2 #c4c4c4
+     ink    #1e1e1e     soft   #1e1e1edb   faint   #5c5c5c
+     green  #03aa5c     teal   #09aea1     magenta #d45bb6
+
+   Scoped as body.theme-typesafe.ts-paper (three classes), which outranks both
+   the `body.theme-typesafe.dark-mode` remap and style.css's `body.dark-mode`
+   rules without !important.
+   ========================================================================== */
+
+body.theme-typesafe.ts-paper {
+  --ts-bg: var(--ts-paper);
+  --ts-surface: var(--ts-panel);
+  --ts-surface-2: var(--ts-panel-2);
+  --ts-fg: var(--ts-ink);
+  --ts-fg-soft: var(--ts-ink-soft);
+  --ts-fg-faint: #5c5c5c;
+  --ts-line: var(--ts-ink);
+  --ts-accent: var(--ts-green);
+  --ts-rule: 1.2px;
+
+  background: var(--ts-bg);
+  color: var(--ts-fg);
+}
+
+body.theme-typesafe.ts-paper ::selection {
+  background: var(--ts-green);
+  color: var(--ts-light);
+}
+
+/* -----------------------------------------------------------------------------
+   Nav: paper bar, ink rule, green active marker
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.ts-paper .topnav {
+  background: var(--ts-bg);
+  border-bottom: var(--ts-rule) solid var(--ts-line);
+}
+
+body.theme-typesafe.ts-paper .topnav-brand {
+  color: var(--ts-fg);
+}
+
+body.theme-typesafe.ts-paper .topnav-link {
+  color: var(--ts-fg-soft);
+  border-radius: 0;
+}
+
+body.theme-typesafe.ts-paper.dark-mode .topnav-link:hover {
+  background: var(--ts-surface);
+  color: var(--ts-fg);
+}
+
+body.theme-typesafe.ts-paper.dark-mode .topnav-link.active {
+  background: var(--ts-ink);
+  color: var(--ts-light);
+}
+
+body.theme-typesafe.ts-paper .topnav-hamburger span {
+  background: var(--ts-ink);
+}
+
+body.theme-typesafe.ts-paper .topnav-links.open {
+  background: var(--ts-bg);
+  border: var(--ts-rule) solid var(--ts-line);
+}
+
+/* -----------------------------------------------------------------------------
+   Listing: big inked title + a numbered index of rows instead of cards
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.ts-paper .articles-section .section-title {
+  font-family: var(--ts-display);
+  font-weight: 500;
+  font-size: clamp(3rem, 9vw, 5.8rem);
+  line-height: 0.9;
+  color: var(--ts-fg-soft);
+  -webkit-text-stroke: 0.5px var(--ts-fg-soft);
+  margin-bottom: 0.8rem;
+}
+
+body.theme-typesafe.ts-paper .articles-section .research-intro {
+  font-family: var(--ts-term);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ts-fg-faint);
+  padding-bottom: 1.6rem;
+  border-bottom: var(--ts-rule) solid var(--ts-line);
+  margin-bottom: 0;
+}
+
+body.theme-typesafe.ts-paper .articles-grid {
+  display: block;
+  counter-reset: blog-index;
+}
+
+body.theme-typesafe.ts-paper .articles-grid .article-card {
+  counter-increment: blog-index;
+  display: grid;
+  grid-template-columns: 4.2rem 1fr;
+  column-gap: 1.4rem;
+  margin: 0;
+  padding: 1.6rem 0.4rem 1.7rem;
+  background: transparent;
+  border: 0;
+  border-bottom: var(--ts-rule) solid var(--ts-line);
+  transition: background-color 0.35s var(--ts-ease);
+}
+
+body.theme-typesafe.ts-paper .articles-grid .article-card > * {
+  grid-column: 2;
+}
+
+/* Index number in the left gutter, set in the terminal face. */
+body.theme-typesafe.ts-paper .articles-grid .article-card::before {
+  content: counter(blog-index, decimal-leading-zero);
+  grid-column: 1;
+  grid-row: 1 / span 5;
+  font-family: var(--ts-term);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: var(--ts-fg-faint);
+  padding-top: 0.45rem;
+}
+
+body.theme-typesafe.ts-paper .articles-grid .article-card:hover {
+  background: var(--ts-surface);
+  border-color: var(--ts-line);
+}
+
+body.theme-typesafe.ts-paper .articles-grid .article-card:hover::before {
+  color: var(--ts-green);
+}
+
+body.theme-typesafe.ts-paper .article-title {
+  font-size: clamp(1.45rem, 3.2vw, 2.1rem);
+  line-height: 1;
+  margin: 0 0 0.7rem;
+}
+
+body.theme-typesafe.ts-paper .article-title a {
+  color: var(--ts-fg-soft);
+  -webkit-text-stroke: 0.3px var(--ts-fg-soft);
+}
+
+body.theme-typesafe.ts-paper .article-title a:hover {
+  color: var(--ts-green);
+  -webkit-text-stroke-color: var(--ts-green);
+}
+
+body.theme-typesafe.ts-paper .article-date {
+  margin: 0 0 0.35rem;
+}
+
+body.theme-typesafe.ts-paper .article-tags {
+  font-family: var(--ts-term);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ts-green);
+  margin: 0 0 0.8rem;
+}
+
+body.theme-typesafe.ts-paper .article-preview {
+  max-width: 68ch;
+  color: var(--ts-fg-soft);
+  margin: 0 0 1rem;
+}
+
+body.theme-typesafe.ts-paper .article-read-more {
+  justify-self: start;
+  color: var(--ts-fg);
+}
+
+/* Pagination: square ink boxes, active page filled ink. */
+body.theme-typesafe.ts-paper .article-pagination {
+  margin-top: 2.2rem;
+}
+
+body.theme-typesafe.ts-paper .article-pagination a,
+body.theme-typesafe.ts-paper .article-pagination span {
+  border: var(--ts-rule) solid var(--ts-line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ts-fg);
+}
+
+body.theme-typesafe.ts-paper .article-pagination a:hover {
+  background: var(--ts-green);
+  border-color: var(--ts-green);
+  color: var(--ts-light);
+}
+
+body.theme-typesafe.ts-paper .article-pagination .active {
+  background: var(--ts-ink);
+  border-color: var(--ts-ink);
+  color: var(--ts-light);
+}
+
+body.theme-typesafe.ts-paper .article-pagination .disabled {
+  opacity: 0.35;
+}
+
+/* -----------------------------------------------------------------------------
+   Post body: undo the dark-mode overrides from style.css
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.ts-paper .post-content {
+  color: var(--ts-fg);
+}
+
+body.theme-typesafe.ts-paper .post-content h3 {
+  color: var(--ts-fg);
+}
+
+/* Code stays an ink slab: it reads as a printed block on the paper. */
+body.theme-typesafe.ts-paper .post-content pre,
+body.theme-typesafe.ts-paper .post-content .highlight pre {
+  background: var(--ts-ink);
+  color: #e8e8e8;
+  border-color: var(--ts-ink);
+}
+
+body.theme-typesafe.ts-paper .post-content :not(pre) > code {
+  background: var(--ts-surface);
+  border-color: var(--ts-panel-2);
+  color: var(--ts-ink);
+}
+
+body.theme-typesafe.ts-paper .post-content table {
+  border: var(--ts-rule) solid var(--ts-line);
+  background: transparent;
+}
+
+body.theme-typesafe.ts-paper .post-content th {
+  background: var(--ts-ink);
+  color: var(--ts-light);
+  font-family: var(--ts-term);
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-color: var(--ts-ink);
+}
+
+body.theme-typesafe.ts-paper .post-content td {
+  color: var(--ts-fg);
+  border-color: var(--ts-line);
+  background: transparent;
+}
+
+body.theme-typesafe.ts-paper .post-content tbody tr:nth-child(even) td,
+body.theme-typesafe.ts-paper .post-content tbody tr:nth-child(even) {
+  background: var(--ts-surface);
+}
+
+body.theme-typesafe.ts-paper .post-content img {
+  background: var(--ts-light);
+  border-color: var(--ts-line);
+}
+
+body.theme-typesafe.ts-paper .post-content li::marker {
+  color: var(--ts-green);
+}
+
+body.theme-typesafe.ts-paper.dark-mode .ts-note > .ts-note-title {
+  color: var(--ts-fg);
+}
+
+body.theme-typesafe.ts-paper .post-content .mermaid-diagram {
+  background: var(--ts-light);
+  border: var(--ts-rule) solid var(--ts-line);
+}
+
+/* Tight 0.9 display leading lets descenders touch the meta line below. */
+body.theme-typesafe.ts-paper .post-header h1 {
+  line-height: 0.96;
+  margin-bottom: 1.4rem;
+}
+
+/* Let the intro's rule span the full column like the row rules below it. */
+body.theme-typesafe.ts-paper .articles-section .research-intro {
+  max-width: none;
+}
+
+body.theme-typesafe.ts-paper .post-header .meta {
+  padding-top: 1.1rem;
+}
