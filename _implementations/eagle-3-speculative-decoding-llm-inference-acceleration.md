@@ -12,7 +12,21 @@ highlights:
   - "Low-, middle- and high-level features from the target model are concatenated (3k) and projected by an FC layer back to the hidden size k, giving a fused feature g that feeds a single-decoder-layer draft model"
   - "Training-time test simulates the multi-step drafting process during training, feeding the draft model's own outputs back in through a modified (diagonal) attention mask"
   - "Reports 3.0x–6.5x speedup over vanilla autoregressive decoding, 20–40% over EAGLE-2, and a 1.38x SGLang throughput gain at batch size 64 on H100"
-tags: ["EAGLE-3", "Speculative Decoding", "Speculative Sampling", "Training-Time Test", "Draft Model", "Multi-Layer Feature Fusion", "LLM Inference Acceleration", "LLM Inference Optimization", "PyTorch", "SGLang", "vLLM", "Serving Systems"]
+tags:
+  [
+    "EAGLE-3",
+    "Speculative Decoding",
+    "Speculative Sampling",
+    "Training-Time Test",
+    "Draft Model",
+    "Multi-Layer Feature Fusion",
+    "LLM Inference Acceleration",
+    "LLM Inference Optimization",
+    "PyTorch",
+    "SGLang",
+    "vLLM",
+    "Serving Systems",
+  ]
 paper_link: "https://arxiv.org/abs/2503.01840"
 category: inference-serving
 subcategory: speculative-decoding
@@ -22,7 +36,7 @@ mathjax: true
 image: "/assets/blogs/eagle-3/fig5-eagle-3-inference-pipeline.png"
 # All sections written; code in VIII–XII tested on CPU (see XI.6).
 # Preview locally with `jekyll serve --unpublished`; flip to true to publish.
-published: false
+published: true
 ---
 
 <!--
@@ -88,11 +102,11 @@ That makes them extremely costly, the longer response time severely hurts user s
 
 The paper measures acceleration as speedup ratio, acceptance length and throughput. It never uses the serving terms TTFT, TBT or SLO. The mapping below is my own. **[Interpretation]**
 
-| Serving metric | What it measures | Phase | Does EAGLE-3 target it? |
-| --- | --- | --- | --- |
-| **TTFT** (time to first token) | Prompt arrival → first output token | Prefill | Not directly. The first token still comes from the target model's own prefill pass. |
-| **TBT / TPOT** (time between tokens) | Gap between streamed output tokens | Decode | Yes. Several accepted tokens per target forward pass lower the *average* time per output token. Tokens arrive in bursts, one burst per drafting-verification cycle. |
-| **SLO attainment** | Share of requests meeting latency targets | Both | Indirectly, through TBT. The benefit shrinks as batch size grows (paper §4.3, Table 3). |
+| Serving metric                       | What it measures                          | Phase   | Does EAGLE-3 target it?                                                                                                                                             |
+| ------------------------------------ | ----------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **TTFT** (time to first token)       | Prompt arrival → first output token       | Prefill | Not directly. The first token still comes from the target model's own prefill pass.                                                                                 |
+| **TBT / TPOT** (time between tokens) | Gap between streamed output tokens        | Decode  | Yes. Several accepted tokens per target forward pass lower the _average_ time per output token. Tokens arrive in bursts, one burst per drafting-verification cycle. |
+| **SLO attainment**                   | Share of requests meeting latency targets | Both    | Indirectly, through TBT. The benefit shrinks as batch size grows (paper §4.3, Table 3).                                                                             |
 
 Long reasoning outputs are dominated by decode, so TBT is where EAGLE-3 has its effect. **[Interpretation]** For how TTFT and TPOT work as serving SLOs, see [DistServe](/engineering/distserve-prefill-decode-disaggregation-llm-serving/).
 
@@ -138,7 +152,7 @@ A **feature** is the numerical vector that represents a token's internal state i
 
 Take the prefix **"How can I"**. The target model passes these tokens through its decoder layers, and at every layer each token has its own vector representation. **[Interpretation]**
 
-The **top-layer feature** is a token's vector after the *final* decoder layer, just before the LM head. **[Paper]** Each feature is $k$-dimensional, where $k$ is the target model's hidden size (§3.1). **[Paper]**
+The **top-layer feature** is a token's vector after the _final_ decoder layer, just before the LM head. **[Paper]** Each feature is $k$-dimensional, where $k$ is the target model's hidden size (§3.1). **[Paper]**
 
 ```text
 Token → Transformer decoder layers → feature vector → LM head → next-token probabilities
@@ -214,19 +228,19 @@ flowchart TD
     class E3 focus;
 ```
 
-*Where EAGLE-3 sits in the LLM serving stack. The EAGLE → EAGLE-2 → EAGLE-3 lineage is* **[Paper]***; the stack framing is* **[Interpretation]***.*
+_Where EAGLE-3 sits in the LLM serving stack. The EAGLE → EAGLE-2 → EAGLE-3 lineage is_ **[Paper]\***; the stack framing is\* **[Interpretation]\***.\*
 
 ### II.1 Autoregressive LLM Inference
 
 An LLM generates one token at a time, and each token is conditioned on every token before it. Each new token requires accessing all model parameters. **[Paper]**
 
-This site already covers the mechanics in [Mastering LLM inference optimization](/2026/04/19/llm-inference-optimization/). The point to carry forward is that the cost is *per token*, and it is paid in sequence.
+This site already covers the mechanics in [Mastering LLM inference optimization](/2026/04/19/llm-inference-optimization/). The point to carry forward is that the cost is _per token_, and it is paid in sequence.
 
 ### II.2 Prefill and Decode
 
 **Prefill** processes the whole prompt in one parallel pass and produces the first output token. **Decode** then produces one token per forward pass. **[Interpretation]** For the full treatment, see [prefill and decode phases](/2026/04/19/llm-inference-optimization/#understanding-llm-inference) and [DistServe](/engineering/distserve-prefill-decode-disaggregation-llm-serving/).
 
-One detail matters for EAGLE-3. In the paper's example, the target's prefill pass over "How can" both samples the next token "I" *and* produces the features EAGLE-3 needs (§3.1). **[Paper]**
+One detail matters for EAGLE-3. In the paper's example, the target's prefill pass over "How can" both samples the next token "I" _and_ produces the features EAGLE-3 needs (§3.1). **[Paper]**
 
 So EAGLE-3 gets its inputs from a pass the target was running anyway. **[Interpretation]**
 
@@ -238,17 +252,17 @@ That spare compute is the resource speculative decoding spends. The paper also n
 
 ### II.4 Speculative Decoding
 
-The paper uses the term **speculative sampling**: a lossless technique that alternates between a cheap drafting stage and a parallel verification stage (§2.1). **[Paper]** Serving engines usually call the same idea *speculative decoding*.
+The paper uses the term **speculative sampling**: a lossless technique that alternates between a cheap drafting stage and a parallel verification stage (§2.1). **[Paper]** Serving engines usually call the same idea _speculative decoding_.
 
 For how a production engine exposes it, see [TensorRT-LLM: speculative decoding](/engineering/tensorrt-llm-inference-serving-engine-kv-cache-scheduling/#xxvi-speculative-decoding).
 
 ### II.5 Draft Model and Target Model
 
-| Role | Vanilla speculative sampling | EAGLE family |
-| --- | --- | --- |
-| **Target model** | The large model whose output distribution must be preserved | Same. EAGLE-3 does not modify its weights (§4). |
-| **Draft model** | A separate, smaller LLM from the same series, e.g. Vicuna-68M drafting for Vicuna-13B (Figure 2 caption) | A lightweight head that reads the target's own features. EAGLE-3's is a single Transformer decoder layer (§3.2). |
-| **Relationship** | The draft runs independently of the target (§1) | The draft depends on the target's hidden states |
+| Role             | Vanilla speculative sampling                                                                             | EAGLE family                                                                                                     |
+| ---------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| **Target model** | The large model whose output distribution must be preserved                                              | Same. EAGLE-3 does not modify its weights (§4).                                                                  |
+| **Draft model**  | A separate, smaller LLM from the same series, e.g. Vicuna-68M drafting for Vicuna-13B (Figure 2 caption) | A lightweight head that reads the target's own features. EAGLE-3's is a single Transformer decoder layer (§3.2). |
+| **Relationship** | The draft runs independently of the target (§1)                                                          | The draft depends on the target's hidden states                                                                  |
 
 All cells are **[Paper]**.
 
@@ -276,14 +290,14 @@ The paper positions EAGLE-3 among other methods (§1, §2.2, §3.2): **[Paper]**
 
 Speculative sampling alternates **drafting** (cheap) and **verification** (parallel). **[Paper]** The paper's notation (§2.1):
 
-| Symbol | Meaning |
-| --- | --- |
-| $t_i$ | The $i$-th token |
-| $T_{a:b}$ | The token sequence $t_a, t_{a+1}, \dots, t_b$ |
-| $T_{1:j}$ | The current prefix |
-| $\hat{T}_{j+1:j+k}$ | The $k$ draft tokens |
-| $\hat{p}$ | Draft-model probabilities |
-| $p$ | Target-model probabilities |
+| Symbol              | Meaning                                       |
+| ------------------- | --------------------------------------------- |
+| $t_i$               | The $i$-th token                              |
+| $T_{a:b}$           | The token sequence $t_a, t_{a+1}, \dots, t_b$ |
+| $T_{1:j}$           | The current prefix                            |
+| $\hat{T}_{j+1:j+k}$ | The $k$ draft tokens                          |
+| $\hat{p}$           | Draft-model probabilities                     |
+| $p$                 | Target-model probabilities                    |
 
 ```mermaid
 flowchart TD
@@ -298,7 +312,7 @@ flowchart TD
     G --> A
 ```
 
-*One drafting-verification cycle of vanilla speculative sampling. Rules are* **[Paper]** *(§2.1); the flowchart is my rendering.*
+_One drafting-verification cycle of vanilla speculative sampling. Rules are_ **[Paper]** _(§2.1); the flowchart is my rendering._
 
 ### III.1 Draft Generation
 
@@ -332,13 +346,13 @@ The paper cites Appendix A.1 of Leviathan et al. (2023) for the proof that this 
 
 **Worked example.** Suppose the target gives a draft token probability 0.6 and the draft gave it 0.8. The token is accepted with probability $0.6 / 0.8 = 0.75$. **[Interpretation]**
 
-If the draft had been *under*-confident instead (0.4 vs the target's 0.6), the token is always accepted. **[Interpretation]**
+If the draft had been _under_-confident instead (0.4 vs the target's 0.6), the token is always accepted. **[Interpretation]**
 
 ### III.6 Why It Is Faster
 
 Each cycle commits between 1 and $k$ tokens for a single target forward pass. **[Derived]** Because decode is memory-bound, scoring $k$ extra positions costs far less than $k$ separate decode steps. **[Interpretation]**
 
-What standard implementations do when *all* $k$ tokens are accepted (typically sampling one bonus token) is not discussed in the paper. **[Interpretation]**
+What standard implementations do when _all_ $k$ tokens are accepted (typically sampling one bonus token) is not discussed in the paper. **[Interpretation]**
 
 As a baseline for what follows: vanilla speculative sampling on Vicuna 13B averages **1.92x** speedup with $\tau = 2.24$ at temperature 0 (Table 1). **[Paper]**
 
@@ -348,13 +362,13 @@ As a baseline for what follows: vanilla speculative sampling on Vicuna 13B avera
 
 ![EAGLE vs EAGLE-3 training-time test: EAGLE predicts features with a feature loss, EAGLE without feature loss fails at step 2, EAGLE-3 feeds its own predictions back during training](/assets/blogs/eagle-3/fig3-training-time-test-vs-eagle.png)
 
-*Figure 3 (adapted from arXiv:2503.01840) — three drafting designs, top to bottom:*
+_Figure 3 (adapted from arXiv:2503.01840) — three drafting designs, top to bottom:_
 
-- *EAGLE: predicts features $\hat{f}$ under both $l_{\text{fea}}$ and $l_{\text{token}}$.*
-- *EAGLE with $l_{\text{fea}}$ simply removed: trained on step 1 only, so step 2 sees an out-of-distribution input $\hat{a}_{t+1}$ and mispredicts.*
-- *EAGLE-3: training-time test feeds $\hat{a}_{t+1}$ back in during training.*
+- _EAGLE: predicts features $\hat{f}$ under both $l_{\text{fea}}$ and $l_{\text{token}}$._
+- _EAGLE with $l_{\text{fea}}$ simply removed: trained on step 1 only, so step 2 sees an out-of-distribution input $\hat{a}_{t+1}$ and mispredicts._
+- _EAGLE-3: training-time test feeds $\hat{a}_{t+1}$ back in during training._
 
-*Here $f$ is a feature, $t$ a token, and $a$ an unconstrained draft output.*
+_Here $f$ is a feature, $t$ a token, and $a$ an unconstrained draft output._
 
 ### IV.1 EAGLE Architecture
 
@@ -386,9 +400,9 @@ The paper identifies three problems:
 
 ![Acceptance rate 0-alpha and 1-alpha versus training data scale for EAGLE, EAGLE without feature prediction, and EAGLE-3 speculative decoding](/assets/blogs/eagle-3/fig4-acceptance-rate-vs-data-scale.png)
 
-*Figure 4 (adapted from arXiv:2503.01840) — first-token (0-α, left) and second-token (1-α, right) acceptance rates as training data grows relative to ShareGPT.*
+_Figure 4 (adapted from arXiv:2503.01840) — first-token (0-α, left) and second-token (1-α, right) acceptance rates as training data grows relative to ShareGPT._
 
-*"EAGLE without fea pred" wins on 0-α but collapses to roughly 0.2–0.3 on 1-α. EAGLE-3 stays around 0.70–0.78 (values read from the plot).*
+_"EAGLE without fea pred" wins on 0-α but collapses to roughly 0.2–0.3 on 1-α. EAGLE-3 stays around 0.70–0.78 (values read from the plot)._
 
 ---
 
@@ -398,11 +412,11 @@ EAGLE-3 alternates drafting and verification like any speculative method. The di
 
 ![EAGLE-3 architecture and inference pipeline: target model low, middle and high-level features for "How can" fused by an FC layer into g, then three draft steps producing "do" and "it"](/assets/blogs/eagle-3/fig5-eagle-3-inference-pipeline.png)
 
-*Figure 5 (adapted from arXiv:2503.01840) — the EAGLE-3 inference pipeline.*
+_Figure 5 (adapted from arXiv:2503.01840) — the EAGLE-3 inference pipeline._
 
-- *Left: the frozen target model (snowflakes) runs on "How can", exposes $l$, $m$, $h$ at each position, and samples "I".*
-- *Centre: per-position concat and FC produce $g_{\text{how}}$ and $g_{\text{can}}$.*
-- *Right: three draft steps, separated by red dashed lines, produce "do" and then "it".*
+- _Left: the frozen target model (snowflakes) runs on "How can", exposes $l$, $m$, $h$ at each position, and samples "I"._
+- _Centre: per-position concat and FC produce $g_{\text{how}}$ and $g_{\text{can}}$._
+- _Right: three draft steps, separated by red dashed lines, produce "do" and then "it"._
 
 ```mermaid
 flowchart TD
@@ -441,7 +455,7 @@ flowchart TD
     class FC1,FC2,DEC,LMH2 trained;
 ```
 
-*The EAGLE-3 architecture as a dataflow graph. Blue = frozen target components, yellow = drawn as draft-side components in Figure 5. Structure is* **[Paper]** *(§3.1, Figure 5); the graph layout is mine.*
+_The EAGLE-3 architecture as a dataflow graph. Blue = frozen target components, yellow = drawn as draft-side components in Figure 5. Structure is_ **[Paper]** _(§3.1, Figure 5); the graph layout is mine._
 
 ### V.1 Target Model
 
@@ -455,11 +469,11 @@ During the target's forward pass, EAGLE-3 records three feature sequences: **low
 
 These are **per token position**, not one tensor for the whole prompt. For "How can":
 
-| | How | can |
-| --- | --- | --- |
-| Low | $l_{\text{how}}$ | $l_{\text{can}}$ |
+|        | How              | can              |
+| ------ | ---------------- | ---------------- |
+| Low    | $l_{\text{how}}$ | $l_{\text{can}}$ |
 | Middle | $m_{\text{how}}$ | $m_{\text{can}}$ |
-| High | $h_{\text{how}}$ | $h_{\text{can}}$ |
+| High   | $h_{\text{how}}$ | $h_{\text{can}}$ |
 
 Figure 5 draws more decoder layers between $h$ and the LM head. So the "high-level" feature is not necessarily the final-layer feature that EAGLE used. **[Interpretation]**
 
@@ -473,7 +487,7 @@ $$\big[\,l_{\text{how}} ;\ m_{\text{how}} ;\ h_{\text{how}}\,\big] \in \mathbb{R
 
 Why fuse? Top-layer features are tied to the next token, so they carry limited information for predicting further ahead. Low-, middle- and high-level features capture semantic information from different layers (§1). **[Paper]**
 
-Fusion is only possible *because* $l_{\text{fea}}$ was removed. There is no longer a requirement that the draft input look like a top-layer feature (§1). **[Paper]**
+Fusion is only possible _because_ $l_{\text{fea}}$ was removed. There is no longer a requirement that the draft input look like a top-layer feature (§1). **[Paper]**
 
 ### V.4 Fully Connected Layer
 
@@ -489,7 +503,7 @@ $g$ exists **only for tokens the target model has already processed**. This is w
 
 $g$ alone cannot tell the draft model which token was actually sampled. So, as in EAGLE, EAGLE-3 adds the embedding $e$ of the sampled token (§3.1). **[Paper]**
 
-Figure 5 pairs each feature with the embedding of the *following* token: $g_{\text{how}}$ with $e_{\text{can}}$, and $g_{\text{can}}$ with $e_{\text{I}}$. **[Paper]** This is the same one-step shift EAGLE uses. **[Interpretation]**
+Figure 5 pairs each feature with the embedding of the _following_ token: $g_{\text{how}}$ with $e_{\text{can}}$, and $g_{\text{can}}$ with $e_{\text{I}}$. **[Paper]** This is the same one-step shift EAGLE uses. **[Interpretation]**
 
 ### V.7 Draft Model
 
@@ -509,14 +523,14 @@ $a$ goes into the LM head, and the draft token is sampled from the result. **[Pa
 
 Nothing forces $a$ to match any target feature. Figure 3's caption calls $a$ an "unconstrained vector". **[Paper]** That freedom is the whole point of removing $l_{\text{fea}}$.
 
-| | EAGLE | EAGLE-3 |
-| --- | --- | --- |
-| Feature source | Top-layer features $f$ | Fused low/mid/high features $g$ |
-| Draft predicts | The next **feature** $\hat{f}$ | An unconstrained vector $a$, read as a **token** |
-| Training loss | $l_{\text{fea}} + l_{\text{token}}$ | $l_{\text{token}}$ only |
-| Later-step input | Its own predicted features $\hat{f}$ | Its own outputs $a$ |
-| Training | Native step only | Training-time test (simulated steps) |
-| More training data | Little gain (Figure 1) | Speedup keeps rising (Figure 1) |
+|                    | EAGLE                                | EAGLE-3                                          |
+| ------------------ | ------------------------------------ | ------------------------------------------------ |
+| Feature source     | Top-layer features $f$               | Fused low/mid/high features $g$                  |
+| Draft predicts     | The next **feature** $\hat{f}$       | An unconstrained vector $a$, read as a **token** |
+| Training loss      | $l_{\text{fea}} + l_{\text{token}}$  | $l_{\text{token}}$ only                          |
+| Later-step input   | Its own predicted features $\hat{f}$ | Its own outputs $a$                              |
+| Training           | Native step only                     | Training-time test (simulated steps)             |
+| More training data | Little gain (Figure 1)               | Speedup keeps rising (Figure 1)                  |
 
 All rows are **[Paper]**.
 
@@ -561,7 +575,7 @@ Draft:              I → do → it
                        draft  draft
 ```
 
-The paper says $g_{\text{I}}$ is unavailable "because the token 'I' has not yet been checked by the target model". I read "checked" as *processed as an input*: "I" is already a target sample, but the target has not yet run a forward pass with "I" in its context. **[Interpretation]**
+The paper says $g_{\text{I}}$ is unavailable "because the token 'I' has not yet been checked by the target model". I read "checked" as _processed as an input_: "I" is already a target sample, but the target has not yet run a forward pass with "I" in its context. **[Interpretation]**
 
 In the next verification pass, "I" goes in as input alongside the draft tokens. That pass produces $g_{\text{I}}$ and the distribution used to check "do". **[Derived]**
 
@@ -690,7 +704,7 @@ Click through the steps. Each one shows which tensors exist at that point and wh
 <div class="e3s-legend"><span class="e3s-c e3s-op">frozen target ❄</span><span class="e3s-c e3s-tr">draft-side layer</span><span class="e3s-c e3s-l">l</span><span class="e3s-c e3s-m">m</span><span class="e3s-c e3s-hh">h</span><span class="e3s-c e3s-g">g</span><span class="e3s-c e3s-e">e (embedding)</span><span class="e3s-c e3s-a">a (draft output)</span><span class="e3s-c e3s-tgt">target token</span><span class="e3s-c e3s-dft">draft token</span></div>
 </div>
 
-*My interactive redrawing of Figure 5, one step at a time. The mechanism is* **[Paper]** *(§3.1); the stepping, colours and shape notes are* **[Interpretation]***.*
+_My interactive redrawing of Figure 5, one step at a time. The mechanism is_ **[Paper]** _(§3.1); the stepping, colours and shape notes are_ **[Interpretation]\***.\*
 
 ### VI.1 Target Forward Pass
 
@@ -792,19 +806,19 @@ flowchart LR
 
 One detail only the code shows: what feeds back is the draft's **feature** $a$, while the **token embeddings stay ground truth** (the training sequence, shifted one position per step). The draft learns to cope with its own imperfect features, not its own wrong tokens. **[Code]**
 
-*Training-time test unrolled for the three steps drawn in Figure 6. Every training position gets a prediction in each round, in parallel. Mechanism* **[Paper]** *(§3.2, Figures 3 and 6); layout* **[Interpretation]***.*
+_Training-time test unrolled for the three steps drawn in Figure 6. Every training position gets a prediction in each round, in parallel. Mechanism_ **[Paper]** _(§3.2, Figures 3 and 6); layout_ **[Interpretation]\***.\*
 
 ### VII.5 Attention Mask
 
 ![EAGLE-3 training-time test attention mask: lower-triangular causal mask for the native step on How can I, then diagonal masks for the simulated draft tokens are, we, do and you, help, it](/assets/blogs/eagle-3/fig6-training-time-test-attention-mask.png)
 
-*Figure 6 (adapted from arXiv:2503.01840) — attention masks during training-time test. Grey = training-data tokens, blue = first-round draft predictions, yellow = second-round predictions. Arrows in the trees show which token each prediction follows.*
+_Figure 6 (adapted from arXiv:2503.01840) — attention masks during training-time test. Grey = training-data tokens, blue = first-round draft predictions, yellow = second-round predictions. Arrows in the trees show which token each prediction follows._
 
 The paper explains the mask with tokens rather than features, for clarity (§3.2). **[Paper]**
 
 **Native step.** The training sequence "How can I" has normal sequential dependency, so the mask is **lower-triangular**. **[Paper]**
 
-**First simulated step.** The outputs at the three positions are "are", "we" and "do". They have a **tree-like** relationship with "How", "can" and "I": each one is a prediction made *at* one ground-truth position. **[Paper]**
+**First simulated step.** The outputs at the three positions are "are", "we" and "do". They have a **tree-like** relationship with "How", "can" and "I": each one is a prediction made _at_ one ground-truth position. **[Paper]**
 
 When "are", "we" and "do" are fed back as inputs, the mask must follow that tree (Figure 6, top right): **[Paper]**
 
@@ -828,12 +842,12 @@ The draft model's core is a Transformer decoder layer. Apart from self-attention
 
 HASS makes a similar attention change, but the paper stresses that the two methods differ (§3.2): **[Paper]**
 
-| | HASS | EAGLE-3 |
-| --- | --- | --- |
-| Motivation | Reduce error accumulation from inaccurate feature predictions in EAGLE | Remove unnecessary constraints to increase the draft model's expressiveness |
-| Feature prediction loss $l_{\text{fea}}$ | Kept | Removed |
-| Draft input | Top-layer features | Free: fused low/mid/high features |
-| Data scaling law | Not reported | New scaling law observed (Figure 1) |
+|                                          | HASS                                                                   | EAGLE-3                                                                     |
+| ---------------------------------------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Motivation                               | Reduce error accumulation from inaccurate feature predictions in EAGLE | Remove unnecessary constraints to increase the draft model's expressiveness |
+| Feature prediction loss $l_{\text{fea}}$ | Kept                                                                   | Removed                                                                     |
+| Draft input                              | Top-layer features                                                     | Free: fused low/mid/high features                                           |
+| Data scaling law                         | Not reported                                                           | New scaling law observed (Figure 1)                                         |
 
 ---
 
@@ -843,14 +857,14 @@ The paper describes the draft model in two paragraphs. Building one means answer
 
 The module below is my own reconstruction, tested on a small LLaMA target (results in [§XI.6](#xi6-complete-pytorch-implementation)). **[Our implementation]**
 
-| Open question | Paper | Official code **[Code]** |
-| --- | --- | --- |
-| Which layers are $l$, $m$, $h$? | Not stated | Hidden states *entering* decoder layers 2, $L/2$ and $L-3$ |
-| What happens to $[\,g ; e\,]$? | "an FC layer" reduces it to $k$ | No separate FC. The attention's Q/K/V projections read the $2k$ input directly |
-| Token embedding | "the embedding $e$" | A copy of the target's embedding table, **frozen** |
-| LM head | "the LM head" | **Draft-owned**, after a final RMSNorm, over a **reduced draft vocabulary** (32,000 of LLaMA-3.1's 128,256 tokens) |
-| Training-time-test steps | Not stated | **7** |
-| Loss | $l_{\text{token}}$ | Soft cross-entropy against the target's distribution, step $s$ weighted $0.8^s$ |
+| Open question                   | Paper                           | Official code **[Code]**                                                                                           |
+| ------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Which layers are $l$, $m$, $h$? | Not stated                      | Hidden states _entering_ decoder layers 2, $L/2$ and $L-3$                                                         |
+| What happens to $[\,g ; e\,]$?  | "an FC layer" reduces it to $k$ | No separate FC. The attention's Q/K/V projections read the $2k$ input directly                                     |
+| Token embedding                 | "the embedding $e$"             | A copy of the target's embedding table, **frozen**                                                                 |
+| LM head                         | "the LM head"                   | **Draft-owned**, after a final RMSNorm, over a **reduced draft vocabulary** (32,000 of LLaMA-3.1's 128,256 tokens) |
+| Training-time-test steps        | Not stated                      | **7**                                                                                                              |
+| Loss                            | $l_{\text{token}}$              | Soft cross-entropy against the target's distribution, step $s$ weighted $0.8^s$                                    |
 
 ### VIII.1 Transformer Decoder Layer
 
@@ -964,14 +978,14 @@ class DraftAttention(nn.Module):
 How `forward_ttt` maps onto Figure 6: **[Derived]**
 
 - **`ttt["k"][0]`** holds the native-step keys: one per training position, attended causally.
-- **Each later step $s$** appends one more key per position. A query at position $i$ sees *only* key $i$ from those steps, which is the diagonal.
+- **Each later step $s$** appends one more key per position. A query at position $i$ sees _only_ key $i$ from those steps, which is the diagonal.
 - **Diagonal scores** are computed as `(q * k_s).sum(-1)`, one dot product per position. This is the paper's "vector dot products instead of matrix multiplication" (§3.2). **[Paper]**
 
 **Check.** I compared `forward_ttt` against standard attention over all steps' keys concatenated, with Figure 6's mask built explicitly. The maximum absolute difference was **1.19e-7** at every step, i.e. float32 rounding. **[Our implementation]**
 
 ### VIII.3 Draft Model Inputs
 
-At each position, the input is $[\,e ; x\,]$ with $e$ the embedding of the *next* token (§V.6):
+At each position, the input is $[\,e ; x\,]$ with $e$ the embedding of the _next_ token (§V.6):
 
 - At **real** positions, $x = g$.
 - At **drafted** positions, $x = a$, the draft's previous output.
@@ -1042,14 +1056,14 @@ Is the restriction lossy? **No.** A draft that can never propose a rare token ju
 
 Instantiated at LLaMA-3.1-8B scale on PyTorch's `meta` device (no memory allocated), with $k = 4096$, 32 heads, 8 KV heads, MLP width 14,336 and a 32,000-token draft vocabulary:
 
-| Component | Shape | Parameters |
-| --- | --- | --- |
-| `fc` (fusion) | $12288 \rightarrow 4096$ | 50.3M |
-| Attention (Q/K/V from $2k$, O) | $8192 \rightarrow 4096 / 1024 / 1024$, $4096 \rightarrow 4096$ | 67.1M |
-| MLP (SwiGLU) | $4096 \rightarrow 14336 \rightarrow 4096$ | 176.2M |
-| `lm_head` | $4096 \rightarrow 32000$ | 131.1M |
-| **Trainable total** | | **424.7M** |
-| Embedding (frozen copy) | $128256 \times 4096$ | 525.3M |
+| Component                      | Shape                                                          | Parameters |
+| ------------------------------ | -------------------------------------------------------------- | ---------- |
+| `fc` (fusion)                  | $12288 \rightarrow 4096$                                       | 50.3M      |
+| Attention (Q/K/V from $2k$, O) | $8192 \rightarrow 4096 / 1024 / 1024$, $4096 \rightarrow 4096$ | 67.1M      |
+| MLP (SwiGLU)                   | $4096 \rightarrow 14336 \rightarrow 4096$                      | 176.2M     |
+| `lm_head`                      | $4096 \rightarrow 32000$                                       | 131.1M     |
+| **Trainable total**            |                                                                | **424.7M** |
+| Embedding (frozen copy)        | $128256 \times 4096$                                           | 525.3M     |
 
 Parameter counts are **[Our implementation]**, measured.
 
@@ -1331,13 +1345,13 @@ My module names differ from the official ones, so loading an official EAGLE-3 ch
 - **Sharpened output head:** its weights were scaled by 8, so next-token distributions look more like a real LM's than a near-uniform random model's.
 - **Draft:** trained for 800 steps of `ttt_loss` on 64 sequences the target generated itself, with a 64-token draft vocabulary.
 
-| Test | Result |
-| --- | --- |
-| TTT dot-product attention vs explicit Figure 6 mask | Max abs. difference 1.19e-7 |
-| `verify` output distribution vs target $p$ (200K trials) | Total-variation distance 0.0024 |
-| Greedy EAGLE-3 vs plain greedy target, **untrained** draft | Identical output; 0.00 drafts accepted per cycle |
-| Greedy EAGLE-3 vs plain greedy target, **trained** draft | Identical output; 0.74 drafts accepted per cycle (1.74 tokens per target pass) |
-| Temperature 1, untrained → trained draft | 0.73 → 1.55 drafts accepted per cycle |
+| Test                                                       | Result                                                                         |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| TTT dot-product attention vs explicit Figure 6 mask        | Max abs. difference 1.19e-7                                                    |
+| `verify` output distribution vs target $p$ (200K trials)   | Total-variation distance 0.0024                                                |
+| Greedy EAGLE-3 vs plain greedy target, **untrained** draft | Identical output; 0.00 drafts accepted per cycle                               |
+| Greedy EAGLE-3 vs plain greedy target, **trained** draft   | Identical output; 0.74 drafts accepted per cycle (1.74 tokens per target pass) |
+| Temperature 1, untrained → trained draft                   | 0.73 → 1.55 drafts accepted per cycle                                          |
 
 The two greedy rows are the key correctness check. Whatever the draft proposes, the output equals plain greedy decoding of the target, token for token. **[Our implementation]**
 
@@ -1400,23 +1414,23 @@ Gradient clipping at **0.5**. **[Paper]**
 
 ### XII.7 Training Configuration
 
-| Setting | Value | Source |
-| --- | --- | --- |
-| Optimizer | AdamW, $\beta = (0.9, 0.95)$ | §4 **[Paper]** |
-| Learning rate | 5e-5 | §4 **[Paper]** |
-| Gradient clipping | 0.5 | §4 **[Paper]** |
-| Data | ShareGPT (~68K) + UltraChat-200K (~464K), responses regenerated by the target | §4 **[Paper]** |
-| Extra data (DeepSeek-R1-Distill-LLaMA 8B) | OpenThoughts-114k-math | §4 **[Paper]** |
-| Loss | $l_{\text{token}}$ only, with training-time test | §3.2 **[Paper]** |
-| Trainable parts | Draft model only; target frozen | Figure 5, §4 **[Paper]** |
-| Training-time-test steps | 7, step weights $0.8^s$ | **[Code]** |
-| Epochs | 40 | **[Code]** (repo default) |
-| Batch | 1 sequence per GPU × 2 gradient-accumulation steps | **[Code]** (repo default) |
-| Max sequence length | 2048 | **[Code]** (repo default) |
-| LR schedule | WarmupDecayLR: 12,000 warmup steps to 5e-5, 800,000 total | **[Code]** (repo default) |
-| Precision / parallelism | fp16, DeepSpeed ZeRO-2 | **[Code]** (repo default) |
-| Draft vocabulary | 32,000 most frequent target tokens in the training responses | **[Code]** |
-| Training hardware | Not stated | **Gap** |
+| Setting                                   | Value                                                                         | Source                    |
+| ----------------------------------------- | ----------------------------------------------------------------------------- | ------------------------- |
+| Optimizer                                 | AdamW, $\beta = (0.9, 0.95)$                                                  | §4 **[Paper]**            |
+| Learning rate                             | 5e-5                                                                          | §4 **[Paper]**            |
+| Gradient clipping                         | 0.5                                                                           | §4 **[Paper]**            |
+| Data                                      | ShareGPT (~68K) + UltraChat-200K (~464K), responses regenerated by the target | §4 **[Paper]**            |
+| Extra data (DeepSeek-R1-Distill-LLaMA 8B) | OpenThoughts-114k-math                                                        | §4 **[Paper]**            |
+| Loss                                      | $l_{\text{token}}$ only, with training-time test                              | §3.2 **[Paper]**          |
+| Trainable parts                           | Draft model only; target frozen                                               | Figure 5, §4 **[Paper]**  |
+| Training-time-test steps                  | 7, step weights $0.8^s$                                                       | **[Code]**                |
+| Epochs                                    | 40                                                                            | **[Code]** (repo default) |
+| Batch                                     | 1 sequence per GPU × 2 gradient-accumulation steps                            | **[Code]** (repo default) |
+| Max sequence length                       | 2048                                                                          | **[Code]** (repo default) |
+| LR schedule                               | WarmupDecayLR: 12,000 warmup steps to 5e-5, 800,000 total                     | **[Code]** (repo default) |
+| Precision / parallelism                   | fp16, DeepSpeed ZeRO-2                                                        | **[Code]** (repo default) |
+| Draft vocabulary                          | 32,000 most frequent target tokens in the training responses                  | **[Code]**                |
+| Training hardware                         | Not stated                                                                    | **Gap**                   |
 
 The **[Code]** rows are the public repository's defaults. They are not necessarily the exact settings behind the paper's tables. **[Interpretation]**
 
@@ -1463,7 +1477,7 @@ def ttt_loss(target, draft, input_ids, loss_mask, steps=7, decay=0.8):
 How each line maps to the paper and the code:
 
 - **Before step 0:** inputs and targets shift by one, so position $i$ sees $e_{t_{i+1}}$ and is trained to predict $t_{i+2}$. That is the $(g_{\text{can}}, e_{\text{I}}) \rightarrow$ "do" alignment from Figure 5. **[Code]**
-- **Each further step** shifts tokens and targets one more position. `x` is *not* reset: the draft's own output $a$ becomes the next step's feature input. **[Code]**
+- **Each further step** shifts tokens and targets one more position. `x` is _not_ reset: the draft's own output $a$ becomes the next step's feature input. **[Code]**
 - **RoPE positions** advance by $s$ per step (`pos + s`), as in the official attention. **[Code]**
 
 A training step is then ordinary PyTorch:
@@ -1493,13 +1507,13 @@ The goal of the experiments is to test whether EAGLE-3 makes generation **faster
 - **Vanilla baseline:** HuggingFace Transformers models with the PyTorch backend and a pre-allocated KV cache. Every other method uses these models as its base (Appendix A). **[Paper]**
 - **Weights:** the same weights are used for every task, with no per-task fine-tuning (§4). **[Paper]**
 
-| Method | Configuration (Appendix A) |
-| --- | --- |
-| Standard speculative sampling | HuggingFace Transformers "assisted generation" |
-| PLD, Lookahead, Medusa, Hydra | Default settings, officially released weights |
-| EAGLE | Official weights for Vicuna and LLaMA2-Chat; LLaMA3-Instruct trained on ShareGPT |
-| EAGLE-2 | Total draft tokens 60 / 50 / 48 for 7B (8B) / 13B / 70B; tree depth 6; 10 nodes selected in expansion |
-| EAGLE-3 | Tree depth raised to 8, same number of nodes as EAGLE-2 |
+| Method                        | Configuration (Appendix A)                                                                            |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Standard speculative sampling | HuggingFace Transformers "assisted generation"                                                        |
+| PLD, Lookahead, Medusa, Hydra | Default settings, officially released weights                                                         |
+| EAGLE                         | Official weights for Vicuna and LLaMA2-Chat; LLaMA3-Instruct trained on ShareGPT                      |
+| EAGLE-2                       | Total draft tokens 60 / 50 / 48 for 7B (8B) / 13B / 70B; tree depth 6; 10 nodes selected in expansion |
+| EAGLE-3                       | Tree depth raised to 8, same number of nodes as EAGLE-2                                               |
 
 All rows are **[Paper]**. **Gap:** the paper does not state the GPU used for the main Table 1 experiments.
 
@@ -1511,13 +1525,13 @@ The 405B and 671B models were not tested because of GPU constraints. **[Paper]**
 
 ### XIII.3 Evaluation Tasks
 
-| Task | Dataset |
-| --- | --- |
-| Multi-turn conversation | MT-bench |
-| Code generation | HumanEval |
-| Mathematical reasoning | GSM8K |
-| Instruction following | Alpaca |
-| Summarization | CNN/Daily Mail |
+| Task                    | Dataset        |
+| ----------------------- | -------------- |
+| Multi-turn conversation | MT-bench       |
+| Code generation         | HumanEval      |
+| Mathematical reasoning  | GSM8K          |
+| Instruction following   | Alpaca         |
+| Summarization           | CNN/Daily Mail |
 
 **[Paper]** The task suite follows EAGLE and Spec-Bench. **[Paper]**
 
@@ -1574,7 +1588,7 @@ On every task and target model, EAGLE-3 achieves the **highest speedup ratio and
 
 ![EAGLE-3 speculative decoding speedup ratios at temperature 0 versus vanilla, speculative sampling, Medusa, HASS, EAGLE and EAGLE-2 on Vicuna 13B, LLaMA-Instruct 3.1 8B, LLaMA-Instruct 3.3 70B and DeepSeek-R1-Distill-LLaMA 8B](/assets/blogs/eagle-3/fig2-speedup-ratios-by-method.png)
 
-*Figure 2 (adapted from arXiv:2503.01840) — speedup at temperature 0. Chat models are measured on MT-bench and the reasoning model on GSM8K. Standard speculative sampling uses Vicuna-68M as the draft for Vicuna-13B.*
+_Figure 2 (adapted from arXiv:2503.01840) — speedup at temperature 0. Chat models are measured on MT-bench and the reasoning model on GSM8K. Standard speculative sampling uses Vicuna-68M as the draft for Vicuna-13B._
 
 **Table 1 — speedup and average acceptance length $\tau$** (reproduced from the paper). Abbreviations:
 
@@ -1583,39 +1597,39 @@ On every task and target model, EAGLE-3 achieves the **highest speedup ratio and
 
 **Temperature = 0**
 
-| Model | Method | MT-bench | τ | HumanEval | τ | GSM8K | τ | Alpaca | τ | CNN/DM | τ | Mean | τ |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| V 13B | SpS | 1.93x | 2.27 | 2.23x | 2.57 | 1.77x | 2.01 | 1.76x | 2.03 | 1.93x | 2.33 | 1.92x | 2.24 |
-| V 13B | PLD | 1.58x | 1.63 | 1.85x | 1.93 | 1.68x | 1.73 | 1.16x | 1.19 | 2.42x | 2.50 | 1.74x | 1.80 |
-| V 13B | Medusa | 2.07x | 2.59 | 2.50x | 2.78 | 2.23x | 2.64 | 2.08x | 2.45 | 1.71x | 2.09 | 2.12x | 2.51 |
-| V 13B | Lookahead | 1.65x | 1.69 | 1.71x | 1.75 | 1.81x | 1.90 | 1.46x | 1.51 | 1.46x | 1.50 | 1.62x | 1.67 |
-| V 13B | Hydra | 2.88x | 3.65 | 3.28x | 3.87 | 2.93x | 3.66 | 2.86x | 3.53 | 2.05x | 2.81 | 2.80x | 3.50 |
-| V 13B | EAGLE | 3.07x | 3.98 | 3.58x | 4.39 | 3.08x | 3.97 | 3.03x | 3.95 | 2.49x | 3.52 | 3.05x | 3.96 |
-| V 13B | EAGLE-2 | 4.26x | 4.83 | 4.96x | 5.41 | 4.22x | 4.79 | 4.25x | 4.89 | 3.40x | 4.21 | 4.22x | 4.83 |
-| V 13B | **EAGLE-3** | **5.58x** | **6.65** | **6.47x** | **7.54** | **5.32x** | **6.29** | **5.16x** | **6.17** | **5.01x** | **6.47** | **5.51x** | **6.62** |
-| L31 8B | EAGLE-2 | 3.16x | 4.05 | 3.66x | 4.71 | 3.39x | 4.24 | 3.28x | 4.12 | 2.65x | 3.45 | 3.23x | 4.11 |
-| L31 8B | **EAGLE-3** | **4.40x** | **6.13** | **4.85x** | **6.74** | **4.48x** | **6.23** | **4.82x** | **6.70** | **3.65x** | **5.34** | **4.44x** | **6.23** |
-| L33 70B | EAGLE-2 | 2.83x | 3.67 | 3.12x | 4.09 | 2.83x | 3.69 | 3.03x | 3.92 | 2.44x | 3.55 | 2.85x | 3.78 |
+| Model   | Method      | MT-bench  | τ        | HumanEval | τ        | GSM8K     | τ        | Alpaca    | τ        | CNN/DM    | τ        | Mean      | τ        |
+| ------- | ----------- | --------- | -------- | --------- | -------- | --------- | -------- | --------- | -------- | --------- | -------- | --------- | -------- |
+| V 13B   | SpS         | 1.93x     | 2.27     | 2.23x     | 2.57     | 1.77x     | 2.01     | 1.76x     | 2.03     | 1.93x     | 2.33     | 1.92x     | 2.24     |
+| V 13B   | PLD         | 1.58x     | 1.63     | 1.85x     | 1.93     | 1.68x     | 1.73     | 1.16x     | 1.19     | 2.42x     | 2.50     | 1.74x     | 1.80     |
+| V 13B   | Medusa      | 2.07x     | 2.59     | 2.50x     | 2.78     | 2.23x     | 2.64     | 2.08x     | 2.45     | 1.71x     | 2.09     | 2.12x     | 2.51     |
+| V 13B   | Lookahead   | 1.65x     | 1.69     | 1.71x     | 1.75     | 1.81x     | 1.90     | 1.46x     | 1.51     | 1.46x     | 1.50     | 1.62x     | 1.67     |
+| V 13B   | Hydra       | 2.88x     | 3.65     | 3.28x     | 3.87     | 2.93x     | 3.66     | 2.86x     | 3.53     | 2.05x     | 2.81     | 2.80x     | 3.50     |
+| V 13B   | EAGLE       | 3.07x     | 3.98     | 3.58x     | 4.39     | 3.08x     | 3.97     | 3.03x     | 3.95     | 2.49x     | 3.52     | 3.05x     | 3.96     |
+| V 13B   | EAGLE-2     | 4.26x     | 4.83     | 4.96x     | 5.41     | 4.22x     | 4.79     | 4.25x     | 4.89     | 3.40x     | 4.21     | 4.22x     | 4.83     |
+| V 13B   | **EAGLE-3** | **5.58x** | **6.65** | **6.47x** | **7.54** | **5.32x** | **6.29** | **5.16x** | **6.17** | **5.01x** | **6.47** | **5.51x** | **6.62** |
+| L31 8B  | EAGLE-2     | 3.16x     | 4.05     | 3.66x     | 4.71     | 3.39x     | 4.24     | 3.28x     | 4.12     | 2.65x     | 3.45     | 3.23x     | 4.11     |
+| L31 8B  | **EAGLE-3** | **4.40x** | **6.13** | **4.85x** | **6.74** | **4.48x** | **6.23** | **4.82x** | **6.70** | **3.65x** | **5.34** | **4.44x** | **6.23** |
+| L33 70B | EAGLE-2     | 2.83x     | 3.67     | 3.12x     | 4.09     | 2.83x     | 3.69     | 3.03x     | 3.92     | 2.44x     | 3.55     | 2.85x     | 3.78     |
 | L33 70B | **EAGLE-3** | **4.11x** | **5.63** | **4.79x** | **6.52** | **4.34x** | **6.15** | **4.30x** | **6.09** | **3.27x** | **5.02** | **4.12x** | **5.88** |
-| DSL 8B | EAGLE-2 | 2.92x | 3.80 | 3.42x | 4.29 | 3.40x | 4.40 | 3.01x | 3.80 | 3.53x | 3.33 | 3.26x | 3.92 |
-| DSL 8B | **EAGLE-3** | **4.05x** | **5.58** | **4.59x** | **6.38** | **5.01x** | **6.93** | **3.65x** | **5.37** | **3.52x** | **4.92** | **4.16x** | **5.84** |
+| DSL 8B  | EAGLE-2     | 2.92x     | 3.80     | 3.42x     | 4.29     | 3.40x     | 4.40     | 3.01x     | 3.80     | 3.53x     | 3.33     | 3.26x     | 3.92     |
+| DSL 8B  | **EAGLE-3** | **4.05x** | **5.58** | **4.59x** | **6.38** | **5.01x** | **6.93** | **3.65x** | **5.37** | **3.52x** | **4.92** | **4.16x** | **5.84** |
 
 **Temperature = 1**
 
-| Model | Method | MT-bench | τ | HumanEval | τ | GSM8K | τ | Alpaca | τ | CNN/DM | τ | Mean | τ |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| V 13B | SpS | 1.62x | 1.84 | 1.72x | 1.97 | 1.46x | 1.73 | 1.52x | 1.78 | 1.66x | 1.89 | 1.60x | 1.84 |
-| V 13B | EAGLE | 2.32x | 3.20 | 2.65x | 3.63 | 2.57x | 3.60 | 2.45x | 3.57 | 2.23x | 3.26 | 2.44x | 3.45 |
-| V 13B | EAGLE-2 | 3.80x | 4.40 | 4.22x | 4.89 | 3.77x | 4.41 | 3.78x | 4.37 | 3.25x | 3.97 | 3.76x | 4.41 |
-| V 13B | **EAGLE-3** | **4.57x** | **5.42** | **5.15x** | **6.22** | **4.71x** | **5.58** | **4.49x** | **5.39** | **4.33x** | **5.72** | **4.65x** | **5.67** |
-| L31 8B | EAGLE-2 | 2.44x | 3.16 | 3.39x | 4.39 | 2.86x | 3.74 | 2.83x | 3.65 | 2.44x | 3.14 | 2.80x | 3.62 |
-| L31 8B | **EAGLE-3** | **3.07x** | **4.24** | **4.13x** | **5.82** | **3.32x** | **4.59** | **3.90x** | **5.56** | **2.99x** | **4.39** | **3.45x** | **4.92** |
-| L33 70B | EAGLE-2 | 2.73x | 3.51 | 2.89x | 3.81 | 2.52x | 3.36 | 2.77x | 3.73 | 2.32x | 3.27 | 2.65x | 3.54 |
+| Model   | Method      | MT-bench  | τ        | HumanEval | τ        | GSM8K     | τ        | Alpaca    | τ        | CNN/DM    | τ        | Mean      | τ        |
+| ------- | ----------- | --------- | -------- | --------- | -------- | --------- | -------- | --------- | -------- | --------- | -------- | --------- | -------- |
+| V 13B   | SpS         | 1.62x     | 1.84     | 1.72x     | 1.97     | 1.46x     | 1.73     | 1.52x     | 1.78     | 1.66x     | 1.89     | 1.60x     | 1.84     |
+| V 13B   | EAGLE       | 2.32x     | 3.20     | 2.65x     | 3.63     | 2.57x     | 3.60     | 2.45x     | 3.57     | 2.23x     | 3.26     | 2.44x     | 3.45     |
+| V 13B   | EAGLE-2     | 3.80x     | 4.40     | 4.22x     | 4.89     | 3.77x     | 4.41     | 3.78x     | 4.37     | 3.25x     | 3.97     | 3.76x     | 4.41     |
+| V 13B   | **EAGLE-3** | **4.57x** | **5.42** | **5.15x** | **6.22** | **4.71x** | **5.58** | **4.49x** | **5.39** | **4.33x** | **5.72** | **4.65x** | **5.67** |
+| L31 8B  | EAGLE-2     | 2.44x     | 3.16     | 3.39x     | 4.39     | 2.86x     | 3.74     | 2.83x     | 3.65     | 2.44x     | 3.14     | 2.80x     | 3.62     |
+| L31 8B  | **EAGLE-3** | **3.07x** | **4.24** | **4.13x** | **5.82** | **3.32x** | **4.59** | **3.90x** | **5.56** | **2.99x** | **4.39** | **3.45x** | **4.92** |
+| L33 70B | EAGLE-2     | 2.73x     | 3.51     | 2.89x     | 3.81     | 2.52x     | 3.36     | 2.77x     | 3.73     | 2.32x     | 3.27     | 2.65x     | 3.54     |
 | L33 70B | **EAGLE-3** | **3.96x** | **5.45** | **4.36x** | **6.16** | **4.17x** | **5.95** | **4.14x** | **5.87** | **3.11x** | **4.88** | **3.95x** | **5.66** |
-| DSL 8B | EAGLE-2 | 2.69x | 3.41 | 3.01x | 3.82 | 3.16x | 4.05 | 2.64x | 3.29 | 2.35x | 3.13 | 2.77x | 3.54 |
-| DSL 8B | **EAGLE-3** | **3.20x** | **4.49** | **3.77x** | **5.28** | **4.38x** | **6.10** | **3.16x** | **4.30** | **3.08x** | **4.27** | **3.52x** | **4.89** |
+| DSL 8B  | EAGLE-2     | 2.69x     | 3.41     | 3.01x     | 3.82     | 3.16x     | 4.05     | 2.64x     | 3.29     | 2.35x     | 3.13     | 2.77x     | 3.54     |
+| DSL 8B  | **EAGLE-3** | **3.20x** | **4.49** | **3.77x** | **5.28** | **4.38x** | **6.10** | **3.16x** | **4.30** | **3.08x** | **4.27** | **3.52x** | **4.89** |
 
-*Table 1 values are* **[Paper]***.* Medusa-style methods relax acceptance under non-greedy sampling and are not lossless, so the paper does not compare them at temperature 1. **[Paper]**
+_Table 1 values are_ **[Paper]\***.\* Medusa-style methods relax acceptance under non-greedy sampling and are not lossless, so the paper does not compare them at temperature 1. **[Paper]**
 
 ### XIV.2 Acceptance Length
 
@@ -1652,11 +1666,11 @@ Higher speedup
 
 EAGLE-3's mean speedup over EAGLE-2, computed from Table 1's Mean columns: **[Derived]**
 
-| Target model | T = 0 | T = 1 |
-| --- | --- | --- |
-| Vicuna 13B | 1.31x | 1.24x |
-| LLaMA-Instruct 3.1 8B | 1.37x | 1.23x |
-| LLaMA-Instruct 3.3 70B | 1.45x | 1.49x |
+| Target model                 | T = 0 | T = 1 |
+| ---------------------------- | ----- | ----- |
+| Vicuna 13B                   | 1.31x | 1.24x |
+| LLaMA-Instruct 3.1 8B        | 1.37x | 1.23x |
+| LLaMA-Instruct 3.3 70B       | 1.45x | 1.49x |
 | DeepSeek-R1-Distill-LLaMA 8B | 1.28x | 1.27x |
 
 The paper summarizes this as "20%–40%" (§4.1) and "about 1.4x" at batch size 1 (§1). **[Paper]**
@@ -1667,18 +1681,18 @@ The largest model, LLaMA-Instruct 3.3 70B, gains the most at both temperatures. 
 
 ![EAGLE-3 data scaling law: speedup and average acceptance length on MT-bench with LLaMA-Instruct 3.1 8B rise as training data grows from 1x to 8x ShareGPT, while EAGLE-2 stays flat](/assets/blogs/eagle-3/fig1-eagle-3-data-scaling-law.png)
 
-*Figure 1 (adapted from arXiv:2503.01840) — speedup (top) and acceptance length (bottom) on MT-bench with LLaMA-Instruct 3.1 8B. The x-axis is training data scale relative to ShareGPT.*
+_Figure 1 (adapted from arXiv:2503.01840) — speedup (top) and acceptance length (bottom) on MT-bench with LLaMA-Instruct 3.1 8B. The x-axis is training data scale relative to ShareGPT._
 
 This is the paper's headline discovery: a **scaling law for inference acceleration**. With the EAGLE-3 architecture, more draft training data gives a proportional increase in speedup. That was not observed for the original EAGLE architecture. **[Paper]**
 
 Reading the plot (values approximate): **[Interpretation]**
 
 | Data scale | EAGLE-2 speedup | EAGLE-3 speedup | EAGLE-2 τ | EAGLE-3 τ |
-| --- | --- | --- | --- | --- |
-| 1x | ≈3.16 | ≈3.71 | ≈4.05 | ≈5.21 |
-| 2x | ≈3.27 | ≈3.99 | ≈4.15 | ≈5.59 |
-| 4x | ≈3.29 | ≈4.24 | ≈4.17 | ≈5.91 |
-| 8x | ≈3.30 | ≈4.40 | ≈4.19 | ≈6.13 |
+| ---------- | --------------- | --------------- | --------- | --------- |
+| 1x         | ≈3.16           | ≈3.71           | ≈4.05     | ≈5.21     |
+| 2x         | ≈3.27           | ≈3.99           | ≈4.15     | ≈5.59     |
+| 4x         | ≈3.29           | ≈4.24           | ≈4.17     | ≈5.91     |
+| 8x         | ≈3.30           | ≈4.40           | ≈4.19     | ≈6.13     |
 
 **Cross-check.** The 8x EAGLE-3 point (4.40x, τ 6.13) matches Table 1's L31 8B MT-bench entry and Table 2's final row exactly. The 1x EAGLE-2 point matches Table 2's EAGLE-2 row. **[Derived]**
 
@@ -1694,11 +1708,11 @@ The ablation runs on LLaMA-Instruct 3.1 8B (§4.2). **[Paper]**
 
 **Table 2 — ablation (reproduced from the paper)**
 
-| Method | MT-bench speedup | MT-bench τ | GSM8K speedup | GSM8K τ |
-| --- | --- | --- | --- | --- |
-| EAGLE-2 | 3.16x | 4.05 | 3.39x | 4.24 |
-| + remove fea con | 3.82x | 5.37 | 3.77x | 5.22 |
-| + fused features (EAGLE-3) | **4.40x** | **6.13** | **4.48x** | **6.23** |
+| Method                     | MT-bench speedup | MT-bench τ | GSM8K speedup | GSM8K τ  |
+| -------------------------- | ---------------- | ---------- | ------------- | -------- |
+| EAGLE-2                    | 3.16x            | 4.05       | 3.39x         | 4.24     |
+| + remove fea con           | 3.82x            | 5.37       | 3.77x         | 5.22     |
+| + fused features (EAGLE-3) | **4.40x**        | **6.13**   | **4.48x**     | **6.23** |
 
 "Remove fea con" removes the feature prediction constraint. "Fused features" replaces top-layer features with low/mid/high fusion. Both are **[Paper]**.
 
@@ -1706,19 +1720,19 @@ The ablation runs on LLaMA-Instruct 3.1 8B (§4.2). **[Paper]**
 
 Removing the feature constraint (with training-time test): **[Derived]**
 
-| Benchmark | Speedup | τ |
-| --- | --- | --- |
-| MT-bench | 3.16x → 3.82x (+21%) | +1.32 |
-| GSM8K | 3.39x → 3.77x (+11%) | +0.98 |
+| Benchmark | Speedup              | τ     |
+| --------- | -------------------- | ----- |
+| MT-bench  | 3.16x → 3.82x (+21%) | +1.32 |
+| GSM8K     | 3.39x → 3.77x (+11%) | +0.98 |
 
 ### XV.2 Multi-Layer Feature Fusion
 
 Adding fused features on top: **[Derived]**
 
-| Benchmark | Speedup | τ |
-| --- | --- | --- |
-| MT-bench | 3.82x → 4.40x (+15%) | +0.76 |
-| GSM8K | 3.77x → 4.48x (+19%) | +1.01 |
+| Benchmark | Speedup              | τ     |
+| --------- | -------------------- | ----- |
+| MT-bench  | 3.82x → 4.40x (+15%) | +0.76 |
+| GSM8K     | 3.77x → 4.48x (+19%) | +1.01 |
 
 Both changes contribute substantially. Which one matters more depends on the task: on MT-bench removing the constraint helps more, on GSM8K fusion does. **[Derived]**
 
@@ -1736,7 +1750,7 @@ Remove feature constraint  +  Fuse low/mid/high features
 
 ![EAGLE-3 vs EAGLE acceptance rate n-alpha on MT-bench with LLaMA-Instruct 3.1 8B: EAGLE drops from 0.71 to about 0.51 as self-predicted inputs increase while EAGLE-3 stays near 0.8](/assets/blogs/eagle-3/fig7-acceptance-rate-n-alpha.png)
 
-*Figure 7 (adapted from arXiv:2503.01840) — acceptance rate $n$-$\alpha$ on MT-bench with LLaMA-Instruct 3.1 8B, where $n$ is the number of self-estimated inputs and all earlier estimates were accepted.*
+_Figure 7 (adapted from arXiv:2503.01840) — acceptance rate $n$-$\alpha$ on MT-bench with LLaMA-Instruct 3.1 8B, where $n$ is the number of self-estimated inputs and all earlier estimates were accepted._
 
 As the draft's input contains more of its own predictions, **EAGLE's acceptance rate drops significantly**, from about 0.71 at 0-α to about 0.51–0.53 by 6-α/7-α. **EAGLE-3's stays almost unchanged**, at roughly 0.78–0.81. **[Paper]** (values read from the plot)
 
@@ -1747,7 +1761,7 @@ EAGLE-3:  more self-predicted inputs  →  acceptance stays flat
 
 ### XV.4 Effect of Training-Time Test
 
-The paper presents Figure 7 as evidence of training-time test's effectiveness. **[Paper]** Figure 4 adds the counterfactual: drop $l_{\text{fea}}$ *without* training-time test, and 1-α collapses to about 0.2–0.3. **[Paper]**
+The paper presents Figure 7 as evidence of training-time test's effectiveness. **[Paper]** Figure 4 adds the counterfactual: drop $l_{\text{fea}}$ _without_ training-time test, and 1-α collapses to about 0.2–0.3. **[Paper]**
 
 The lesson: train the draft model on inputs that look like the ones it will receive at inference time. **[Interpretation]**
 
@@ -1770,10 +1784,10 @@ The SGLang team evaluated EAGLE-3 in **SGLang v0.4.4** with these settings: **[P
 
 **Table 3 — SGLang throughput vs batch size** (baseline = SGLang without speculative sampling, 1.00x)
 
-| Batch size | 2 | 4 | 8 | 16 | 24 | 32 | 48 | 56 | 64 |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| EAGLE | 1.40x | 1.38x | 1.23x | 1.02x | 0.93x | 0.94x | 0.88x | 0.99x | 0.99x |
-| EAGLE-3 | **1.81x** | **1.82x** | **1.62x** | **1.48x** | **1.39x** | **1.32x** | **1.38x** | **1.34x** | **1.38x** |
+| Batch size | 2         | 4         | 8         | 16        | 24        | 32        | 48        | 56        | 64        |
+| ---------- | --------- | --------- | --------- | --------- | --------- | --------- | --------- | --------- | --------- |
+| EAGLE      | 1.40x     | 1.38x     | 1.23x     | 1.02x     | 0.93x     | 0.94x     | 0.88x     | 0.99x     | 0.99x     |
+| EAGLE-3    | **1.81x** | **1.82x** | **1.62x** | **1.48x** | **1.39x** | **1.32x** | **1.38x** | **1.34x** | **1.38x** |
 
 **[Paper]** EAGLE reduces throughput from batch size 24. EAGLE-3 still gives a **38%** throughput improvement at batch size 64. **[Paper]**
 
@@ -1783,10 +1797,10 @@ The vLLM study uses LLaMA-Instruct 3.1 8B on MT-Bench, with **no tree** and maxi
 
 **Table 5 — vLLM throughput vs batch size** (baseline = vLLM without speculative sampling, 1.00x)
 
-| Batch size | 2 | 4 | 8 | 16 | 24 | 32 | 48 | 56 |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| EAGLE | 1.30x | 1.25x | 1.21x | 1.10x | 1.03x | 0.93x | 0.82x | 0.71x |
-| EAGLE-3 | **1.75x** | **1.68x** | **1.58x** | **1.49x** | **1.42x** | **1.36x** | **1.21x** | **1.01x** |
+| Batch size | 2         | 4         | 8         | 16        | 24        | 32        | 48        | 56        |
+| ---------- | --------- | --------- | --------- | --------- | --------- | --------- | --------- | --------- |
+| EAGLE      | 1.30x     | 1.25x     | 1.21x     | 1.10x     | 1.03x     | 0.93x     | 0.82x     | 0.71x     |
+| EAGLE-3    | **1.75x** | **1.68x** | **1.58x** | **1.49x** | **1.42x** | **1.36x** | **1.21x** | **1.01x** |
 
 **[Paper]**
 
@@ -1810,17 +1824,17 @@ At batch size 64 in SGLang that gives 1.38x, which the paper also rounds to "40%
 
 **Table 4 — SGLang throughput at batch size 1** (H100, LLaMA-Instruct 3.1 8B, MT-Bench; run by the SGLang team)
 
-| Method | Throughput (bs = 1) | Time per token | vs SGLang |
-| --- | --- | --- | --- |
-| SGLang, no speculation | 158.34 tokens/s | 6.32 ms | 1.00x |
-| SGLang + EAGLE-2 | 244.10 tokens/s | 4.10 ms | 1.54x |
-| SGLang + EAGLE-3 | **373.25 tokens/s** | **2.68 ms** | **2.36x** |
+| Method                 | Throughput (bs = 1) | Time per token | vs SGLang |
+| ---------------------- | ------------------- | -------------- | --------- |
+| SGLang, no speculation | 158.34 tokens/s     | 6.32 ms        | 1.00x     |
+| SGLang + EAGLE-2       | 244.10 tokens/s     | 4.10 ms        | 1.54x     |
+| SGLang + EAGLE-3       | **373.25 tokens/s** | **2.68 ms**    | **2.36x** |
 
 Throughput values are **[Paper]**. Time per token and ratios are **[Derived]**.
 
 At batch size 1, throughput and per-request token rate are the same thing, so this is effectively a latency result. **[Interpretation]**
 
-The time per token is an *average*: tokens arrive in bursts, one burst per drafting-verification cycle. **[Interpretation]**
+The time per token is an _average_: tokens arrive in bursts, one burst per drafting-verification cycle. **[Interpretation]**
 
 ---
 
@@ -1920,35 +1934,35 @@ Tests confirm that the dot-product attention trick is exact, that verification p
 
 ### A. Mathematical Notation
 
-| Symbol | Meaning | Source |
-| --- | --- | --- |
-| $t_i$, $T_{a:b}$ | The $i$-th token; the token sequence $t_a \dots t_b$ | §2.1 |
-| $\hat{T}_{j+1:j+k}$ | The $k$ draft tokens after prefix $T_{1:j}$ | §2.1 |
-| $p$, $\hat{p}$ | Target and draft probabilities | §2.1 |
-| $f$, $\hat{f}$ | EAGLE's top-layer feature and its prediction | §1, Figure 3 |
-| $l$, $m$, $h$ | Low-, middle-, high-level target features, $k$-dim, per position | §3.1 |
-| $g$ | Fused feature: $\text{FC}([\,l ; m ; h\,])$, $k$-dim | §3.1 |
-| $e$ | Token embedding | §3.1 |
-| $a$ | Draft-model output, an unconstrained vector | §3.1, Figure 3 |
-| $k$ | Target model hidden size | §3.1 |
-| $l_{\text{fea}}$, $l_{\text{token}}$ | Feature and token prediction losses | §1 |
-| $\tau$ | Average acceptance length | §4 |
-| $n$-$\alpha$ | Acceptance rate with $n$ self-estimated inputs | §4 |
+| Symbol                               | Meaning                                                          | Source         |
+| ------------------------------------ | ---------------------------------------------------------------- | -------------- |
+| $t_i$, $T_{a:b}$                     | The $i$-th token; the token sequence $t_a \dots t_b$             | §2.1           |
+| $\hat{T}_{j+1:j+k}$                  | The $k$ draft tokens after prefix $T_{1:j}$                      | §2.1           |
+| $p$, $\hat{p}$                       | Target and draft probabilities                                   | §2.1           |
+| $f$, $\hat{f}$                       | EAGLE's top-layer feature and its prediction                     | §1, Figure 3   |
+| $l$, $m$, $h$                        | Low-, middle-, high-level target features, $k$-dim, per position | §3.1           |
+| $g$                                  | Fused feature: $\text{FC}([\,l ; m ; h\,])$, $k$-dim             | §3.1           |
+| $e$                                  | Token embedding                                                  | §3.1           |
+| $a$                                  | Draft-model output, an unconstrained vector                      | §3.1, Figure 3 |
+| $k$                                  | Target model hidden size                                         | §3.1           |
+| $l_{\text{fea}}$, $l_{\text{token}}$ | Feature and token prediction losses                              | §1             |
+| $\tau$                               | Average acceptance length                                        | §4             |
+| $n$-$\alpha$                         | Acceptance rate with $n$ self-estimated inputs                   | §4             |
 
 ### B. Tensor Shapes
 
 For one sequence with a prefix of length $T$ and target hidden size $k$: **[Derived]** from §3.1, confirmed by running the §VIII–XI code. **[Our implementation]**
 
-| Tensor | Shape | Notes |
-| --- | --- | --- |
-| $l$, $m$, $h$ | $[T, k]$ each | Read from three target decoder layers |
-| $[\,l ; m ; h\,]$ | $[T, 3k]$ | Per-position concat |
-| $g$ | $[T, k]$ | After FC $3k \rightarrow k$ |
-| $e$ | $[T, k]$ | Embeddings of the next tokens (shifted by one) |
-| Draft input $[\,e ; g\,]$ | $[T, 2k]$ | Becomes $[\,e ; a\,]$ for drafted positions; read directly by Q/K/V in the official code |
-| $a$ | $[T, k]$ | Single decoder layer output |
-| Draft LM head output | $[T, V_d]$ | $V_d$ = draft vocabulary (32,000 in the official LLaMA-3.1 config) |
-| Verification logits | $[k_{\text{draft}} + 1, V]$ | One target pass over `[pending, d_1..d_k]` |
+| Tensor                    | Shape                       | Notes                                                                                    |
+| ------------------------- | --------------------------- | ---------------------------------------------------------------------------------------- |
+| $l$, $m$, $h$             | $[T, k]$ each               | Read from three target decoder layers                                                    |
+| $[\,l ; m ; h\,]$         | $[T, 3k]$                   | Per-position concat                                                                      |
+| $g$                       | $[T, k]$                    | After FC $3k \rightarrow k$                                                              |
+| $e$                       | $[T, k]$                    | Embeddings of the next tokens (shifted by one)                                           |
+| Draft input $[\,e ; g\,]$ | $[T, 2k]$                   | Becomes $[\,e ; a\,]$ for drafted positions; read directly by Q/K/V in the official code |
+| $a$                       | $[T, k]$                    | Single decoder layer output                                                              |
+| Draft LM head output      | $[T, V_d]$                  | $V_d$ = draft vocabulary (32,000 in the official LLaMA-3.1 config)                       |
+| Verification logits       | $[k_{\text{draft}} + 1, V]$ | One target pass over `[pending, d_1..d_k]`                                               |
 
 ### C. PyTorch Implementation
 
@@ -2275,27 +2289,27 @@ def ttt_loss(target, draft, input_ids, loss_mask, steps=7, decay=0.8):
 
 ### D. Benchmark Configuration
 
-| Item | Value | Source |
-| --- | --- | --- |
-| Target models | Vicuna 13B, LLaMA-Instruct 3.1 8B, LLaMA-Instruct 3.3 70B, DeepSeek-R1-Distill-LLaMA 8B | §4 |
-| Tasks | MT-bench, HumanEval, GSM8K, Alpaca, CNN/DM | §4 |
-| Temperatures | 0 and 1 | Table 1 |
-| Vanilla baseline | HF Transformers, PyTorch backend, pre-allocated KV cache | Appendix A |
-| EAGLE-2 draft budget | 60 / 50 / 48 draft tokens for 7B (8B) / 13B / 70B; depth 6; 10 nodes in expansion | Appendix A |
-| EAGLE-3 draft budget | Depth 8, same node count as EAGLE-2 | Appendix A |
-| Acceptance-rate measurement | Chain draft | §4 |
-| SGLang study | v0.4.4, 1× H100, chain length 3, MT-Bench | §4.3 |
-| vLLM study | Chain length 2, MT-Bench; RTX3090 (text) vs A100 (caption) | §4.4, Table 5 |
+| Item                        | Value                                                                                   | Source        |
+| --------------------------- | --------------------------------------------------------------------------------------- | ------------- |
+| Target models               | Vicuna 13B, LLaMA-Instruct 3.1 8B, LLaMA-Instruct 3.3 70B, DeepSeek-R1-Distill-LLaMA 8B | §4            |
+| Tasks                       | MT-bench, HumanEval, GSM8K, Alpaca, CNN/DM                                              | §4            |
+| Temperatures                | 0 and 1                                                                                 | Table 1       |
+| Vanilla baseline            | HF Transformers, PyTorch backend, pre-allocated KV cache                                | Appendix A    |
+| EAGLE-2 draft budget        | 60 / 50 / 48 draft tokens for 7B (8B) / 13B / 70B; depth 6; 10 nodes in expansion       | Appendix A    |
+| EAGLE-3 draft budget        | Depth 8, same node count as EAGLE-2                                                     | Appendix A    |
+| Acceptance-rate measurement | Chain draft                                                                             | §4            |
+| SGLang study                | v0.4.4, 1× H100, chain length 3, MT-Bench                                               | §4.3          |
+| vLLM study                  | Chain length 2, MT-Bench; RTX3090 (text) vs A100 (caption)                              | §4.4, Table 5 |
 
 ### E. Reproducibility
 
 The official code is [SafeAILab/EAGLE](https://github.com/SafeAILab/EAGLE). **[Paper]**
 
-| Detail | Source |
-| --- | --- |
-| Architecture, inference pipeline, training-time test, optimizer, data, all benchmark numbers | **[Paper]** |
-| Layer taps (2, $L/2$, $L-3$), no separate $2k \rightarrow k$ FC, frozen copied embedding, draft-owned reduced-vocab LM head, 7 steps, $0.8^s$ weights, soft cross-entropy loss, repo training defaults | **[Code]**, commit `cb7e084` |
-| Chain draft (no tree), batch size 1, cache-rollback scheme, bonus-token sampling, absolute-ID `d2t`, test suite | **[Our implementation]** |
-| Hardware for the main Table 1 runs and for training | Not stated anywhere (**Gap**) |
+| Detail                                                                                                                                                                                                 | Source                        |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------- |
+| Architecture, inference pipeline, training-time test, optimizer, data, all benchmark numbers                                                                                                           | **[Paper]**                   |
+| Layer taps (2, $L/2$, $L-3$), no separate $2k \rightarrow k$ FC, frozen copied embedding, draft-owned reduced-vocab LM head, 7 steps, $0.8^s$ weights, soft cross-entropy loss, repo training defaults | **[Code]**, commit `cb7e084`  |
+| Chain draft (no tree), batch size 1, cache-rollback scheme, bonus-token sampling, absolute-ID `d2t`, test suite                                                                                        | **[Our implementation]**      |
+| Hardware for the main Table 1 runs and for training                                                                                                                                                    | Not stated anywhere (**Gap**) |
 
 The test harness used a randomly initialised `LlamaForCausalLM` from HuggingFace Transformers. The library versions were PyTorch 2.14.1 (CPU) and Transformers 5.18.0. **[Our implementation]**
