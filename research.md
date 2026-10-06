@@ -40,14 +40,14 @@ includelink: true
   <p class="spx-group-label"><span>01</span> Research Papers</p>
 
   {% include spx-section.html
-     id="agentic-legal-memory-lifecycle"
+     id="agentic-workflow-memory-lifecycle"
      scene="neural"
      eyebrow="July 2026 &middot; Research Paper &middot; Trisham Patil"
-     title="A Scalable Memory Lifecycle Architecture for Agentic Legal Document Intelligence Systems"
-     desc="A SimpleMem-inspired memory lifecycle for an eleven-node LangGraph legal pipeline: legal-taxonomy gating, tenant-isolated three-view indexing, memory aging, and HITL-aware updates."
-     tags="Agent Memory · LangGraph · RAG · Multi-Tenant Retrieval · Vector Compression · Legal AI"
+     title="A Scalable Memory Lifecycle Architecture for Agentic Workflows"
+     desc="A SimpleMem-inspired memory lifecycle for an eleven-node LangGraph agentic workflow: taxonomy gating, tenant-isolated three-view indexing, memory aging, and HITL-aware updates."
+     tags="Agent Memory · LangGraph · RAG · Multi-Tenant Retrieval · Vector Compression · Agentic Workflows"
      cta="Read Paper"
-     href="/assets/papers/2026/Scalable%20Memory%20Lifecycle%20Architecture%20-%20Agentic%20Legal%20Document%20Intelligence.pdf"
+     href="/assets/papers/2026/Scalable%20Memory%20Lifecycle%20Architecture%20-%20Agentic%20Workflows.pdf"
      new_tab=true %}
 
   {% include spx-section.html
