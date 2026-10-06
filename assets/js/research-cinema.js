@@ -8,7 +8,7 @@
    the same way; their canvas scene keeps running as a fallback until the
    video is actually playing, so a missing file never leaves a black panel.
 
-   Scenes: ascent | orbit | stars | network | grid
+   Scenes: ascent | orbit | stars | network | grid | neural
    ========================================================================== */
 (function () {
   "use strict";
@@ -578,12 +578,204 @@
     return { resize: resize, frame: frame, still: 3 };
   }
 
+  /* =========================================================================
+     Scene: neural — branching neurons firing action potentials, with a
+     Neuralink-style multi-channel spike readout along the bottom
+     ======================================================================= */
+  function sceneNeural() {
+    var w, h, trees, spikes, dust, raster, channels = 12, rasterSpan = 6;
+
+    // One neuron: soma + recursively forked dendrites stored as a parent tree.
+    function grow(cx, cy, size) {
+      var nodes = [{ x: cx, y: cy, p: -1, d: 0 }], leaves = [];
+      function branch(from, ang, len, depth) {
+        var steps = 4, prev = from;
+        for (var s = 1; s <= steps; s++) {
+          ang += rand(-0.28, 0.28);
+          var n = nodes[prev];
+          nodes.push({
+            x: n.x + Math.cos(ang) * (len / steps),
+            y: n.y + Math.sin(ang) * (len / steps),
+            p: prev,
+            d: depth
+          });
+          prev = nodes.length - 1;
+        }
+        if (depth >= 4 || len < 14) {
+          leaves.push(prev);
+          return;
+        }
+        var forks = Math.random() < 0.35 ? 3 : 2;
+        for (var f = 0; f < forks; f++) {
+          branch(prev, ang + rand(-0.75, 0.75), len * rand(0.58, 0.78), depth + 1);
+        }
+      }
+      var roots = 5 + ((Math.random() * 3) | 0), base = rand(0, Math.PI * 2);
+      for (var r = 0; r < roots; r++) {
+        branch(0, base + (r / roots) * Math.PI * 2 + rand(-0.3, 0.3), size * rand(0.32, 0.46), 1);
+      }
+      return { nodes: nodes, leaves: leaves, flash: 0, next: rand(0.2, 2.5), ch: 0 };
+    }
+
+    function pathTo(tree, leaf) {
+      var path = [], i = leaf;
+      while (i !== -1) {
+        path.push(tree.nodes[i]);
+        i = tree.nodes[i].p;
+      }
+      return path.reverse();
+    }
+
+    function resize(W, H) {
+      w = W;
+      h = H;
+      var s = Math.min(w, h);
+      // Weighted to the right so the copy column stays readable.
+      trees = [
+        grow(w * 0.72, h * 0.4, s * 0.95),
+        grow(w * 0.9, h * 0.72, s * 0.62),
+        grow(w * 0.5, h * 0.78, s * 0.5)
+      ];
+      trees.forEach(function (tr, k) {
+        tr.ch = k;
+      });
+      spikes = [];
+      raster = [];
+      dust = [];
+      for (var i = 0; i < Math.round((w * h) / 14000); i++) {
+        dust.push({ x: Math.random() * w, y: Math.random() * h, vy: rand(-6, -2), r: rand(0.4, 1.3), a: rand(0.1, 0.45) });
+      }
+    }
+
+    function fire(tree, t) {
+      tree.flash = 1;
+      var n = 2 + ((Math.random() * 3) | 0);
+      for (var i = 0; i < n; i++) {
+        var leaf = tree.leaves[(Math.random() * tree.leaves.length) | 0];
+        spikes.push({ path: pathTo(tree, leaf), p: 0, v: rand(1.4, 2.6) });
+      }
+      raster.push({ ch: tree.ch * 4 + ((Math.random() * 4) | 0), t: t });
+    }
+
+    function frame(ctx, t, dt) {
+      ctx.fillStyle = "#010205";
+      ctx.fillRect(0, 0, w, h);
+      var glow = ctx.createRadialGradient(w * 0.72, h * 0.42, 0, w * 0.72, h * 0.42, Math.max(w, h) * 0.6);
+      glow.addColorStop(0, "rgba(40,90,160,0.20)");
+      glow.addColorStop(0.5, "rgba(70,40,140,0.08)");
+      glow.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, 0, w, h);
+
+      var i, j, k, tr, n, q;
+
+      // Drifting neurotransmitter dust.
+      for (i = 0; i < dust.length; i++) {
+        q = dust[i];
+        q.y += q.vy * dt;
+        if (q.y < -2) {
+          q.y = h + 2;
+          q.x = Math.random() * w;
+        }
+        ctx.fillStyle = "rgba(150,200,255," + q.a.toFixed(3) + ")";
+        ctx.fillRect(q.x, q.y, q.r, q.r);
+      }
+
+      // Dendrites: one path per depth so thick trunks taper to fine tips.
+      for (k = 0; k < trees.length; k++) {
+        tr = trees[k];
+        tr.next -= dt;
+        if (tr.next <= 0) {
+          fire(tr, t);
+          tr.next = rand(1.2, 3.6);
+        }
+        tr.flash = Math.max(0, tr.flash - dt * 1.6);
+        for (var d = 1; d <= 5; d++) {
+          ctx.beginPath();
+          for (j = 1; j < tr.nodes.length; j++) {
+            n = tr.nodes[j];
+            if (n.d !== d) continue;
+            var pn = tr.nodes[n.p];
+            ctx.moveTo(pn.x, pn.y);
+            ctx.lineTo(n.x, n.y);
+          }
+          ctx.lineWidth = Math.max(0.5, 2.6 - d * 0.45);
+          ctx.strokeStyle = "rgba(120,170,255," + (0.30 - d * 0.035 + tr.flash * 0.12).toFixed(3) + ")";
+          ctx.stroke();
+        }
+      }
+
+      ctx.globalCompositeOperation = "lighter";
+
+      // Action potentials racing soma → dendrite tip, with a fading trail.
+      for (i = spikes.length - 1; i >= 0; i--) {
+        var sp = spikes[i];
+        sp.p += dt * sp.v / (sp.path.length / 20);
+        if (sp.p >= 1) {
+          spikes.splice(i, 1);
+          continue;
+        }
+        var head = sp.p * (sp.path.length - 1);
+        var tail = Math.max(0, head - 6);
+        ctx.beginPath();
+        for (j = Math.floor(tail); j <= Math.floor(head); j++) {
+          q = sp.path[j];
+          if (j === Math.floor(tail)) ctx.moveTo(q.x, q.y);
+          else ctx.lineTo(q.x, q.y);
+        }
+        var hi = Math.floor(head), fr = head - hi, A = sp.path[hi], B = sp.path[Math.min(hi + 1, sp.path.length - 1)];
+        var hx = A.x + (B.x - A.x) * fr, hy = A.y + (B.y - A.y) * fr;
+        ctx.lineTo(hx, hy);
+        ctx.lineWidth = 1.6;
+        ctx.strokeStyle = "rgba(120,220,255,0.45)";
+        ctx.stroke();
+        var g = ctx.createRadialGradient(hx, hy, 0, hx, hy, 9);
+        g.addColorStop(0, "rgba(235,250,255,0.95)");
+        g.addColorStop(1, "rgba(90,180,255,0)");
+        ctx.fillStyle = g;
+        ctx.fillRect(hx - 9, hy - 9, 18, 18);
+      }
+
+      // Somas pulse when they fire.
+      for (k = 0; k < trees.length; k++) {
+        tr = trees[k];
+        n = tr.nodes[0];
+        var R = 26 + tr.flash * 30;
+        var sg = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, R);
+        sg.addColorStop(0, "rgba(220,240,255," + (0.55 + tr.flash * 0.4).toFixed(3) + ")");
+        sg.addColorStop(0.25, "rgba(110,170,255," + (0.25 + tr.flash * 0.35).toFixed(3) + ")");
+        sg.addColorStop(1, "rgba(80,60,200,0)");
+        ctx.fillStyle = sg;
+        ctx.fillRect(n.x - R, n.y - R, R * 2, R * 2);
+      }
+      ctx.globalCompositeOperation = "source-over";
+
+      // Spike raster: one row per electrode channel, newest spikes at right.
+      var rx = w * 0.42, rw = w * 0.54, ry = h * 0.9, rowH = Math.max(2.5, h * 0.0045);
+      ctx.fillStyle = "rgba(150,190,255,0.07)";
+      for (i = 0; i < channels; i++) ctx.fillRect(rx, ry - i * rowH * 1.6, rw, 0.6);
+      for (i = raster.length - 1; i >= 0; i--) {
+        var age = t - raster[i].t;
+        if (age > rasterSpan) {
+          raster.splice(i, 1);
+          continue;
+        }
+        var x = rx + rw * (1 - age / rasterSpan);
+        ctx.fillStyle = "rgba(140,220,255," + (0.75 * (1 - age / rasterSpan) + 0.15).toFixed(3) + ")";
+        ctx.fillRect(x, ry - raster[i].ch * rowH * 1.6 - rowH, 1.4, rowH * 1.4);
+      }
+    }
+
+    return { resize: resize, frame: frame, still: 4 };
+  }
+
   var SCENES = {
     ascent: sceneAscent,
     orbit: sceneOrbit,
     stars: sceneStars,
     network: sceneNetwork,
-    grid: sceneGrid
+    grid: sceneGrid,
+    neural: sceneNeural
   };
 
   /* ---- wiring --------------------------------------------------------------- */

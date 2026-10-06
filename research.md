@@ -18,7 +18,7 @@ includelink: true
 {%- assign research_papers = site.papers | sort: "date" | reverse -%}
 {%- assign crosslisted = site.implementations | where: "research_crosslist", true -%}
 {%- assign research_posts = site.research | concat: crosslisted | sort: "date" | reverse -%}
-{%- assign total = research_papers.size | plus: research_posts.size | plus: 1 -%}
+{%- assign total = research_papers.size | plus: research_posts.size | plus: 2 -%}
 
 {% capture hero_eyebrow %}{{ total }} Publications &middot; Papers &middot; Reports &middot; Articles{% endcapture %}
 {% include spx-section.html
@@ -38,6 +38,17 @@ includelink: true
 <!-- ===================== RESEARCH PAPERS ===================== -->
 <div id="research-papers" class="spx-group">
   <p class="spx-group-label"><span>01</span> Research Papers</p>
+
+  {% include spx-section.html
+     id="agentic-legal-memory-lifecycle"
+     scene="neural"
+     eyebrow="July 2026 &middot; Research Paper &middot; Trisham Patil"
+     title="A Scalable Memory Lifecycle Architecture for Agentic Legal Document Intelligence Systems"
+     desc="A SimpleMem-inspired memory lifecycle for an eleven-node LangGraph legal pipeline: legal-taxonomy gating, tenant-isolated three-view indexing, memory aging, and HITL-aware updates."
+     tags="Agent Memory · LangGraph · RAG · Multi-Tenant Retrieval · Vector Compression · Legal AI"
+     cta="Read Paper"
+     href="/assets/papers/2026/Scalable%20Memory%20Lifecycle%20Architecture%20-%20Agentic%20Legal%20Document%20Intelligence.pdf"
+     new_tab=true %}
 
   {% include spx-section.html
      id="mla-technical-report"

@@ -17,6 +17,7 @@ permalink: pretty
 # they stay local-only.
 exclude:
   - raw_data
+  - eagle_three
 
 highlighter: rouge
 kramdown:
