@@ -18,6 +18,7 @@ permalink: pretty
 exclude:
   - raw_data
   - eagle_three
+  - harness_engineering
 
 highlighter: rouge
 kramdown:
