@@ -1,40 +1,38 @@
 ---
 layout: default
 title: Newsletter
+seo_title: "The Weekly Tech Brew by Trisham — Weekly AI Engineering Newsletter"
+description: "The Weekly Tech Brew by Trisham: a weekly AI engineering newsletter on LLMs, AI agents, GPU systems and production AI. Browse every edition in the archive."
+keywords: "The Weekly Tech Brew, AI engineering newsletter, weekly AI newsletter, LLM newsletter, AI agents newsletter, production AI, Trisham Patil"
 permalink: /newsletter/
 ---
 
-<section class="content-section newsletter-section" aria-labelledby="newsletter-heading">
+<section class="content-section articles-section newsletter-section" aria-labelledby="newsletter-heading">
   <h1 id="newsletter-heading" class="section-title">Newsletter</h1>
   <p class="research-intro">
-    Insights on AI Systems Engineering, Large Language Models, Reinforcement Learning, 
-    Autonomous Systems, and Production AI.
+    The Weekly Tech Brew &middot; a weekly read on AI systems engineering, LLMs, and production AI.
   </p>
 
-  <div class="newsletter-hero">
-    <h2>Coming Soon</h2>
-    <p>
-      Subscribe to receive updates on AI Systems Engineering, LLMs, Reinforcement Learning, 
-      Autonomous Systems, and Production AI.
-    </p>
+  {%- assign editions = site.newsletters | sort: "date" | reverse -%}
+
+  <div id="newsletter-list" class="articles-grid newsletter-grid">
+    {% for edition in editions %}
+      <article class="article-card newsletter-item">
+        <h2 class="article-title">
+          <a href="{{ edition.url | relative_url }}">{{ edition.title }}</a>
+        </h2>
+        <p class="article-date">
+          <time datetime="{{ edition.date | date: '%Y-%m-%d' }}">{{ edition.date | date: "%B %-d, %Y" }}</time>
+        </p>
+      </article>
+    {% endfor %}
   </div>
 
-  <div class="newsletter-details">
-    <h3>What to Expect</h3>
-    <ul>
-      <li>Deep dives into AI system architecture and design patterns</li>
-      <li>Production lessons learned from deploying LLM-based systems</li>
-      <li>Research paper breakdowns with practical engineering insights</li>
-      <li>Backend engineering patterns for AI workloads</li>
-      <li>MLOps and LLMOps best practices</li>
-      <li>Updates on new implementations and projects</li>
-    </ul>
-  </div>
+  {% if editions.size == 0 %}
+    <p>No editions published yet.</p>
+  {% endif %}
 
-  <div class="newsletter-placeholder">
-    <p class="research-intro">
-      <strong>Newsletter launching soon.</strong> The platform will include an archive of past editions,
-      topic-based categories, full-text search, and tag-based navigation.
-    </p>
-  </div>
+  <nav id="newsletter-pagination" class="article-pagination" aria-label="Newsletter pagination"></nav>
 </section>
+
+{% include list-pagination.html list_id="newsletter-list" nav_id="newsletter-pagination" item_class="newsletter-item" per_page=5 %}

@@ -1,7 +1,8 @@
 /* =============================================================================
    BLOG PAPER SKIN
    -----------------------------------------------------------------------------
-   Applied to the /blog/ listing and every post (`layout: post`).
+   Applied to the /blog/ and /newsletter/ listings and every post (`layout: post`,
+   which newsletter editions also use).
    `_layouts/default.html` adds `ts-paper` to <body> and `_includes/head.html`
    loads this file, both gated on the same condition.
 
@@ -209,6 +210,56 @@ body.theme-typesafe.ts-paper .article-pagination .active {
 
 body.theme-typesafe.ts-paper .article-pagination .disabled {
   opacity: 0.35;
+}
+
+/* -----------------------------------------------------------------------------
+   Newsletter listing: same numbered rows, but each edition is a boxed card
+   with a hard ink border, and the whole card is the link.
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.ts-paper .articles-section.newsletter-section .research-intro {
+  border-bottom: 0;
+}
+
+body.theme-typesafe.ts-paper .newsletter-grid {
+  display: grid;
+  gap: 1.1rem;
+}
+
+body.theme-typesafe.ts-paper .newsletter-grid .article-card {
+  position: relative;
+  padding: 1.5rem 1.4rem 1.4rem;
+  border: 2px solid var(--ts-ink);
+  border-radius: 0;
+  box-shadow: 6px 6px 0 var(--ts-ink);
+  transition: background-color 0.2s var(--ts-ease), transform 0.2s var(--ts-ease),
+    box-shadow 0.2s var(--ts-ease);
+}
+
+body.theme-typesafe.ts-paper .newsletter-grid .article-card::before {
+  padding-top: 0.3rem;
+}
+
+body.theme-typesafe.ts-paper .newsletter-grid .article-card:hover {
+  border-color: var(--ts-ink);
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 var(--ts-green);
+}
+
+/* Stretch the title link over the card so a click anywhere opens the edition. */
+body.theme-typesafe.ts-paper .newsletter-grid .article-title a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+body.theme-typesafe.ts-paper .newsletter-grid .article-card:focus-within {
+  outline: 2px solid var(--ts-green);
+  outline-offset: 3px;
+}
+
+body.theme-typesafe.ts-paper .newsletter-grid .article-date {
+  margin: 0;
 }
 
 /* -----------------------------------------------------------------------------

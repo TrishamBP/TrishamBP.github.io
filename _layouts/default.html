@@ -17,7 +17,7 @@
     Certifications get the neon grid skin (css/certs-neon.css).
   {%- endcomment -%}
   {%- assign url_prefix = page.url | slice: 0, 13 -%}
-  <body class="{% unless page_theme == 'none' %}theme-{{ page_theme }} {% endunless %}{% if url_prefix == '/engineering/' or page.collection == 'implementations' %}eng-glossary {% endif %}{% if page.url == '/blog/' or page.layout == 'post' %}ts-paper {% endif %}{% if page.url == '/research-articles/' %}spx-cinema {% endif %}{% if page.url == '/certifications/' %}grid-neon {% endif %}dark-mode">
+  <body class="{% unless page_theme == 'none' %}theme-{{ page_theme }} {% endunless %}{% if url_prefix == '/engineering/' or page.collection == 'implementations' %}eng-glossary {% endif %}{% if page.url == '/blog/' or page.url == '/newsletter/' or page.layout == 'post' %}ts-paper {% endif %}{% if page.url == '/research-articles/' %}spx-cinema {% endif %}{% if page.url == '/certifications/' %}grid-neon {% endif %}dark-mode">
     <nav class="topnav" id="topnav">
       <div class="topnav-inner">
         <a class="topnav-brand" href="{{ '/' | relative_url }}">Trisham Patil</a>
@@ -54,15 +54,15 @@
             class="topnav-link{% if page.url contains '/certifications' %} active{% endif %}"
             href="{{ '/certifications/' | relative_url }}"
           >Certifications</a>
-          {%- comment %} Resources and Newsletter hidden from nav (pages still exist)
-          <a
-            class="topnav-link{% if page.url contains '/resources' %} active{% endif %}"
-            href="{{ '/resources/' | relative_url }}"
-          >Resources</a>
           <a
             class="topnav-link{% if page.url contains '/newsletter' %} active{% endif %}"
             href="{{ '/newsletter/' | relative_url }}"
           >Newsletter</a>
+          {%- comment %} Resources hidden from nav (page still exists)
+          <a
+            class="topnav-link{% if page.url contains '/resources' %} active{% endif %}"
+            href="{{ '/resources/' | relative_url }}"
+          >Resources</a>
           {% endcomment -%}
           <a
             class="topnav-link{% if page.url contains '/honors' %} active{% endif %}"

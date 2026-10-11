@@ -1,0 +1,69 @@
+{%- comment -%}
+  Client-side pagination for a card listing (used by /blog/ and /newsletter/).
+  Params: list_id, nav_id, item_class (selector for each card), per_page.
+{%- endcomment -%}
+<script>
+  (function () {
+    var POSTS_PER_PAGE = {{ include.per_page | default: 5 }};
+    var container = document.getElementById("{{ include.list_id }}");
+    var paginationEl = document.getElementById("{{ include.nav_id }}");
+
+    if (!container || !paginationEl) return;
+
+    var posts = Array.from(container.querySelectorAll(".{{ include.item_class }}"));
+    var totalPosts = posts.length;
+    var totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
+
+    if (totalPages <= 1) return;
+
+    var currentPage = 1;
+
+    function showPage(page) {
+      currentPage = page;
+      var start = (page - 1) * POSTS_PER_PAGE;
+      var end = start + POSTS_PER_PAGE;
+
+      posts.forEach(function (post, i) {
+        post.style.display = i >= start && i < end ? "" : "none";
+      });
+
+      renderPagination();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderPagination() {
+      var html = "";
+
+      if (currentPage > 1) {
+        html += '<a href="#" data-page="' + (currentPage - 1) + '">Previous</a>';
+      } else {
+        html += '<span class="disabled">Previous</span>';
+      }
+
+      for (var p = 1; p <= totalPages; p++) {
+        if (p === currentPage) {
+          html += '<span class="active">' + p + "</span>";
+        } else {
+          html += '<a href="#" data-page="' + p + '">' + p + "</a>";
+        }
+      }
+
+      if (currentPage < totalPages) {
+        html += '<a href="#" data-page="' + (currentPage + 1) + '">Next</a>';
+      } else {
+        html += '<span class="disabled">Next</span>';
+      }
+
+      paginationEl.innerHTML = html;
+
+      paginationEl.querySelectorAll("a[data-page]").forEach(function (link) {
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+          showPage(parseInt(this.getAttribute("data-page"), 10));
+        });
+      });
+    }
+
+    showPage(1);
+  })();
+</script>

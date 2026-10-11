@@ -47,6 +47,12 @@ collections:
   exploratory_research:
     output: true
     permalink: /physical-ai/exploratory-research/:name/
+  # The Weekly Tech Brew: one file per weekly edition, listed on /newsletter/.
+  # Each edition sets an explicit `date:` (collection docs have no implicit one).
+  newsletters:
+    output: true
+    sort_by: date
+    permalink: /newsletter/:name/
 
 # The typesafe theme is the site-wide default (see _includes/head.html), and
 # that now includes the exploratory-research entries: Physical AI is hidden
