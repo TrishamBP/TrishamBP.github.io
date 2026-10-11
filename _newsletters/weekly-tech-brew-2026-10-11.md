@@ -6,7 +6,7 @@ seo_title: "Starlink in India, Anti-Drone Lasers & Anduril Fury Drone | The Week
 date: 2026-10-11
 author: Trisham Patil
 description: "Why Starlink won't work for India, US anti-drone lasers, a deadly Houthi strike on a Saudi airport, and Anduril's Fury loyal wingman drone flying with fighters."
-keywords: "Starlink India, Elon Musk oligarchy, Starlink national security, satellite internet India, Starlink Arunachal Pradesh, Starlink LoC, India communication sovereignty, military satellite communications, Telecommunications Act 2023, anti-drone laser, directed energy weapon, drone defence, Houthi drone attack, Saudi airport attack, cheap drone warfare, jet-powered Shahed drone, Russia drone attack Kyiv, Shahed-136, drone interceptors, Scottish independence, Cardiff declaration, Trident Faslane, UK nuclear deterrent, Anduril, Anduril Fury, YFQ-44A, Collaborative Combat Aircraft, loyal wingman drone, Lattice software, top GitHub repos, REA reverse engineering, Strix AI pentesting, AnyPS5, ArtCraft, Adobe alternative, open-source Photoshop alternative, PhotoCraft, open-source Adobe suite, LLM router, Claude model routing, agent harness, AI news, AI research agents, Epoch AI, AI governance, AI in warfare, on-device AI, OpenAI Decisions API, JEV, TypeSafe AI, decision models, internet rabbit holes, best websites to explore, trending AI papers, AgentGarten, UltraText Bench, on-policy distillation, Kandinsky 6.0 Video, RealCompanion, LLM inference, LLM serving, vLLM, SGLang, KV cache, prompt engineering, AI agents, agentic evals, pass^k, AI agent cost, best AI model October 2026, AI model pricing, Claude Opus 5.5, GPT-6 Astra, Kimi K3, Grok Bot, DeepSeek-V4.1-Flash, KV cache compression, LLM inference memory, The Weekly Tech Brew"
+keywords: "Starlink India, Elon Musk oligarchy, Starlink national security, satellite internet India, Starlink Arunachal Pradesh, Starlink LoC, India communication sovereignty, military satellite communications, Telecommunications Act 2023, anti-drone laser, directed energy weapon, drone defence, Houthi drone attack, Saudi airport attack, cheap drone warfare, jet-powered Shahed drone, Russia drone attack Kyiv, Shahed-136, drone interceptors, Scottish independence, Cardiff declaration, Trident Faslane, UK nuclear deterrent, Indonesia haze lawsuit, can you sue a country, sovereign immunity, Anduril, Anduril Fury, YFQ-44A, Collaborative Combat Aircraft, loyal wingman drone, Lattice software, top GitHub repos, REA reverse engineering, Strix AI pentesting, AnyPS5, ArtCraft, Adobe alternative, open-source Photoshop alternative, PhotoCraft, open-source Adobe suite, LLM router, Claude model routing, agent harness, AI news, AI research agents, Epoch AI, AI governance, AI in warfare, on-device AI, OpenAI Decisions API, JEV, TypeSafe AI, decision models, internet rabbit holes, best websites to explore, trending AI papers, AgentGarten, UltraText Bench, on-policy distillation, Kandinsky 6.0 Video, RealCompanion, LLM inference, LLM serving, vLLM, SGLang, KV cache, prompt engineering, AI agents, agentic evals, pass^k, AI agent cost, best AI model October 2026, AI model pricing, Claude Opus 5.5, GPT-6 Astra, Kimi K3, Grok Bot, DeepSeek-V4.1-Flash, KV cache compression, LLM inference memory, The Weekly Tech Brew"
 ---
 
 ## News Around the World
@@ -181,6 +181,41 @@ The SNP has long opposed basing Trident near Glasgow. So if Scotland moves towar
 | **Make a deal with Scotland** | Negotiate long-term basing rights, as other countries host foreign military bases today. That keeps continuous patrols running but hands an independent Scotland real leverage over the UK's nuclear posture, and runs against the SNP's own anti-nuclear stance. |
 
 There is no third option that keeps one submarine at sea every day without Faslane or a replacement for it. That makes the nuclear base the hardest practical question behind the Cardiff declaration, and the one Westminster can't simply dismiss.
+
+</div>
+</details>
+
+### 6. Can You Actually Sue a Country? Indonesia's President Is Being Sued Over Toxic Haze
+
+An Indigenous group in Indonesia is suing President Prabowo Subianto over the toxic haze from forest fires that is blanketing Borneo, Sumatra and Papua, and drifting into Malaysia and Singapore.
+
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less" hidden>Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+**The case:** four plaintiffs, including the local chapter of the Indigenous NGO **AMAN**, filed a class-action lawsuit in a court in Pontianak, West Kalimantan. They accuse the government of "gross negligence" over the fires that return every year.
+
+**The damage:** the haze has closed schools, caused widespread respiratory illness, and pushed smog across borders, at one point making Malaysia the most polluted country in the world. The fires are largely blamed on forest destruction and have been made worse by severe El Niño droughts.
+
+**A no-show in court:** at the first hearing on October 7, 2026, none of the 10 defendants turned up. The plaintiffs' lawyer, Glorio Sanen, pointed out the irony: perhaps the haze itself meant they "were unable to land in Pontianak." He called the lawsuit "a step to address the problem."
+
+**What they want:** a declared **national emergency**, which would unlock government funds for the medical costs and rehabilitation of people affected. Success isn't guaranteed: a similar challenge in South Sumatra failed in 2025.
+
+#### So, Can You Actually Sue a Country?
+
+It depends on who is suing whom, and where:
+
+| Who sues | Can it work? | Why |
+| --- | --- | --- |
+| **Citizens suing their own government, at home** | Yes | Many countries let citizens take their own government to court for failing its legal duties. That's this case: Indonesians suing Indonesia's president in an Indonesian court. |
+| **Foreigners suing a country in their own courts** | Usually no | Under **sovereign immunity**, courts generally won't hear cases against a foreign state, with narrow exceptions such as commercial activity. A Malaysian or Singaporean can't easily sue Indonesia at home over haze. |
+| **Countries going after the companies** | Yes | Countries can target the businesses behind the fires instead. Singapore's Transboundary Haze Pollution Act, for example, lets it act against companies that cause haze in Singapore, wherever the fires are. |
+| **Country vs country** | Rarely | Possible at international courts or through treaties like the ASEAN Agreement on Transboundary Haze Pollution, but slow, diplomatic and rarely used. |
+
+So yes, you can sue a country, but in practice it's usually its own citizens, in its own courts, that have the best chance. That's why a domestic class action like this one matters more than any cross-border complaint from Malaysia or Singapore.
+
+Source: reporting by SAYS (Sukhbir Cheema, October 8, 2026), quoting AFP.
+{: .nl-repo-meta}
 
 </div>
 </details>
