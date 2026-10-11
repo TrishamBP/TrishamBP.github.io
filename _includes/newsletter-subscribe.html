@@ -1,15 +1,27 @@
 {%- comment -%}
   Subscribe box for The Weekly Tech Brew (used on /newsletter/ and at the end
-  of every issue). Posts straight to Buttondown, which sends the confirmation
-  email (double opt-in) and adds an unsubscribe link to every issue it sends.
-  Renders nothing until `buttondown_username` is set in _config.yml.
+  of every issue). Two modes, set in _config.yml:
+  - `newsletter_signup_url` set: a button to the Google Form (manual list);
+  - otherwise `buttondown_username` set: posts straight to Buttondown, which
+    sends the confirmation email and adds an unsubscribe link to every issue.
+  Renders nothing if neither is set.
 {%- endcomment -%}
-{%- if site.buttondown_username and site.buttondown_username != "" -%}
+{%- assign signup_url = site.newsletter_signup_url | default: "" -%}
+{%- assign bd_user = site.buttondown_username | default: "" -%}
+{%- if signup_url != "" or bd_user != "" -%}
 <aside class="nl-subscribe" aria-labelledby="nl-subscribe-title">
   <h2 id="nl-subscribe-title" class="nl-subscribe-title">Get The Weekly Tech Brew in your inbox</h2>
   <p class="nl-subscribe-text">
     One email a week on AI engineering, defence tech, top GitHub repos and the AI news that matters. Unsubscribe anytime.
   </p>
+  {%- if signup_url != "" %}
+  <a class="nl-subscribe-button nl-subscribe-link" href="{{ signup_url }}" target="_blank" rel="noopener">
+    Subscribe with your email &rarr;
+  </a>
+  <p class="nl-subscribe-fine">
+    Opens a short Google Form. To unsubscribe, just reply "unsubscribe" to any issue.
+  </p>
+  {%- else %}
   <form
     class="nl-subscribe-form"
     action="https://buttondown.com/api/emails/embed-subscribe/{{ site.buttondown_username }}"
@@ -32,5 +44,6 @@
   <p class="nl-subscribe-fine">
     Check your inbox to confirm. Every email has a one-click unsubscribe link.
   </p>
+  {%- endif %}
 </aside>
 {%- endif -%}

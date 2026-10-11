@@ -10,7 +10,11 @@ github_username:  karpathy
 # Newsletter (The Weekly Tech Brew). Your Buttondown username, as in
 # buttondown.com/<username>. The subscribe form renders only once this is set;
 # Buttondown emails each new issue from /newsletter/feed.xml (RSS-to-email).
-buttondown_username: ""
+# While the list is small, sign-ups go through a Google Form and are added by
+# hand. When set, the subscribe box links here instead of posting to Buttondown;
+# clear it to switch to the Buttondown form.
+newsletter_signup_url: "https://docs.google.com/forms/d/e/1FAIpQLSdMGOaj8JUvqwPgALDTahb9dXzDb-3g2Pj29CtXgUs1DKAvcQ/viewform"
+buttondown_username: "trisham"
 
 # Build settings
 markdown: kramdown

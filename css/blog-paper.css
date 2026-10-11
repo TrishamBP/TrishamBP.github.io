@@ -436,6 +436,18 @@ body.theme-typesafe.ts-paper .nl-subscribe-button:focus-visible {
   outline: none;
 }
 
+/* Google Form mode: the same ink button, as a link. */
+body.theme-typesafe.ts-paper a.nl-subscribe-link {
+  display: inline-block;
+  color: var(--ts-light);
+  text-decoration: none;
+}
+
+body.theme-typesafe.ts-paper a.nl-subscribe-link:hover,
+body.theme-typesafe.ts-paper a.nl-subscribe-link:focus-visible {
+  color: var(--ts-light);
+}
+
 body.theme-typesafe.ts-paper .nl-subscribe-fine {
   margin: 0.8rem 0 0;
   font-family: var(--ts-term);
