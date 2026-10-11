@@ -479,6 +479,17 @@ body.theme-typesafe.ts-paper .nl-subscribe-fine {
   color: var(--ts-fg-faint);
 }
 
+/* Section hero image (All About AI Agents): full content width. The PNG
+   draws its own ink frame and offset shadow, so no CSS frame here. */
+body.theme-typesafe.ts-paper .post-content img.nl-hero {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0.4rem 0 1.1rem;
+  border: 0;
+  box-shadow: none;
+}
+
 /* Padding lives on the children, so a click on the <dialog> element itself
    can only be a backdrop click (the script closes on that). */
 body.theme-typesafe.ts-paper .nl-modal {
@@ -490,6 +501,12 @@ body.theme-typesafe.ts-paper .nl-modal {
   border: 2px solid var(--ts-ink);
   border-radius: 0;
   box-shadow: 8px 8px 0 var(--ts-ink);
+}
+
+/* Long-read modals (All About AI Agents): wider and taller. */
+body.theme-typesafe.ts-paper .nl-modal.nl-modal--wide {
+  width: min(64rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
 }
 
 body.theme-typesafe.ts-paper .nl-modal::backdrop {

@@ -6,7 +6,7 @@ seo_title: "Starlink in India, Anti-Drone Lasers & Anduril Fury Drone | The Week
 date: 2026-10-11
 author: Trisham Patil
 description: "Why Starlink won't work for India, US anti-drone lasers, a deadly Houthi strike on a Saudi airport, and Anduril's Fury loyal wingman drone flying with fighters."
-keywords: "Starlink India, Elon Musk oligarchy, Starlink national security, satellite internet India, Starlink Arunachal Pradesh, Starlink LoC, India communication sovereignty, military satellite communications, Telecommunications Act 2023, anti-drone laser, directed energy weapon, drone defence, Houthi drone attack, Saudi airport attack, cheap drone warfare, Anduril, Anduril Fury, YFQ-44A, Collaborative Combat Aircraft, loyal wingman drone, Lattice software, top GitHub repos, REA reverse engineering, Strix AI pentesting, AnyPS5, ArtCraft, Adobe alternative, open-source Photoshop alternative, PhotoCraft, open-source Adobe suite, LLM router, Claude model routing, agent harness, AI news, AI research agents, Epoch AI, AI governance, AI in warfare, on-device AI, OpenAI Decisions API, JEV, TypeSafe AI, decision models, internet rabbit holes, best websites to explore, trending AI papers, AgentGarten, UltraText Bench, on-policy distillation, Kandinsky 6.0 Video, RealCompanion, LLM inference, LLM serving, vLLM, SGLang, KV cache, prompt engineering, The Weekly Tech Brew"
+keywords: "Starlink India, Elon Musk oligarchy, Starlink national security, satellite internet India, Starlink Arunachal Pradesh, Starlink LoC, India communication sovereignty, military satellite communications, Telecommunications Act 2023, anti-drone laser, directed energy weapon, drone defence, Houthi drone attack, Saudi airport attack, cheap drone warfare, Anduril, Anduril Fury, YFQ-44A, Collaborative Combat Aircraft, loyal wingman drone, Lattice software, top GitHub repos, REA reverse engineering, Strix AI pentesting, AnyPS5, ArtCraft, Adobe alternative, open-source Photoshop alternative, PhotoCraft, open-source Adobe suite, LLM router, Claude model routing, agent harness, AI news, AI research agents, Epoch AI, AI governance, AI in warfare, on-device AI, OpenAI Decisions API, JEV, TypeSafe AI, decision models, internet rabbit holes, best websites to explore, trending AI papers, AgentGarten, UltraText Bench, on-policy distillation, Kandinsky 6.0 Video, RealCompanion, LLM inference, LLM serving, vLLM, SGLang, KV cache, prompt engineering, AI agents, agentic evals, pass^k, AI agent cost, best AI model October 2026, AI model pricing, Claude Opus 5.5, GPT-6 Astra, Kimi K3, Grok Bot, The Weekly Tech Brew"
 ---
 
 ## News Around the World
@@ -491,6 +491,348 @@ RealCompanion releases **ten real relationships** with an AI companion: **27,218
 3. **Cost varies wildly for the same result.** Three agent systems rebuilt the user's persona with the same F1 score, at a 31x difference in cost.
 
 <a class="nl-source" href="https://arxiv.org/abs/2610.01780" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+  </div>
+</dialog>
+
+## All About AI Agents
+
+### 1. Agentic Evals: Did the Agent Do the Job, and Will It Do It Again?
+
+Guide · by Sergii Makarevych on X
+{: .nl-repo-meta}
+
+![Agentic evals hero: a reply-only grader passed 58 of 60 agent runs while a full state grader passed 48](/assets/newsletter/weekly-tech-brew-2026-10-11/evals-hero.png){: .nl-hero}
+
+An agent can say "your refund is on its way" while no refund exists. This guide shows how to grade agents by what they changed, measure reliability, not just capability, and find exactly where a run broke.
+
+<button type="button" class="nl-modal-open" data-modal-open="agents-evals" aria-haspopup="dialog">
+  Read more &rarr;
+</button>
+
+<dialog id="agents-evals" class="nl-modal nl-modal--wide" aria-labelledby="agents-evals-title">
+  <div class="nl-modal-head">
+    <h2 id="agents-evals-title">Agentic Evals, Explained</h2>
+    <button type="button" class="nl-modal-close" data-modal-close aria-label="Close">&times;</button>
+  </div>
+
+  <div class="nl-modal-body" markdown="1">
+
+A single-answer model can only be wrong in its text. An agent can be wrong in its text, its actions, their order, their count, and what it left behind in the database, and those can all disagree.
+
+Sergii Makarevych's guide works through one small, fully described experiment: a support agent for a fictional bike shop, with 8 tools, 20 tasks, each run 3 times (60 episodes). Here is what it teaches, level by level.
+
+### The Five-Step Recipe
+
+1. **Write tasks with an expected end state.** Not "the customer feels helped" but "order O101 cancelled, $120 refunded, no fee".
+2. **Run each task several times** from the same clean database, and keep the whole trail: tool calls, results, reply, database before and after.
+3. **Grade the end state and the path first:** right records changed, required tools used, forbidden tools avoided, inside the step budget. Read the reply last.
+4. **Report two numbers:** tasks solved at least once (capability) and tasks solved every time (reliability).
+5. **For each failure, find the first wrong step,** count the kinds and fix the most common one first.
+
+### Level 1: What Counts as "Did the Job"?
+
+The same 60 episodes, graded four ways:
+
+| Grader | Passed |
+| --- | --- |
+| Reply-only (keywords in the final text) | 58 / 60 |
+| Model-as-judge reading the transcript | 49 / 60 (a *different* 49) |
+| State-only (database fields) | 48 / 60 |
+| Full grader (all five checks) | 48 / 60 |
+
+Then the killer test: a **do-nothing agent** that calls no tools and just writes the expected keyword. A reply-only grader passes it on all 20 tasks. State-only passes it on 11, because "change nothing" is the correct outcome for refusals. Only the full grader holds it to 6.
+
+The audit also found **2 of the 20 tasks were impossible**: written as if an earlier task's changes persisted, when every run starts clean. Fix those and the pass rate rises from 0.80 to 0.89.
+
+**The lesson:** run a do-nothing agent through every grader, and check every task can be solved from the clean starting world.
+
+### Level 2: Will It Do It Again?
+
+- **pass@k** is the chance at least one of k tries passes. That's capability.
+- **pass^k** is the chance *all* k tries pass. That's reliability, and it's what customers actually experience.
+
+In the example, pass@3 is 0.85 and pass^3 is 0.75. But the average hides the truth: policy refusals scored 1.00, while escalations scored 0.00. The field agrees: on τ-bench, GPT-4o's pass^1 of 61.2 on retail falls under 25 at pass^8.
+
+Run every task at least 3 times (5 is better), report both numbers by category, and vary the *wording* as well as the random seed.
+
+### Level 3: Where Did It Go Wrong?
+
+Walk each failure back to its **first wrong step**. In the example, every one of the 6 real failures was the same mistake: the agent replied before issuing the refund. In one run it even invented a policy to justify skipping it.
+
+One category explained every real failure, and it pointed at the prompt's refund rules, not the model. Track the cheap trail metrics on every run too: steps per episode, tool errors, refused change attempts, and "replied before acting".
+
+### Level 4: Can a Model Grade an Agent?
+
+A judge reading only the transcript matched the code grader on the headline (49 vs 48) but disagreed on 23 of 60 episodes, with a Cohen's kappa of **−0.24**: worse than chance. It credited refunds that were promised but never made.
+
+Giving the judge the database before and after cut its false alarms from 11 to 2, but it still missed the real failures. **A judge grades the evidence you give it.** Give it the trail, the state difference and the task specification. Never let the agent's own model grade it, and treat the code grader as the gate.
+
+### Levels 5 to 8: Cost, Hand-Offs, Gaming and Habit
+
+- **Cost:** price the *successes*, not the episodes. Calls per pass ranged from 2.0 to 10.0 across tasks rated equally routine; in the field, the same task varied 30-fold in cost across models.
+- **Hand-offs:** every agent-to-agent hand-off is lossy. One study measured about 8.5 points lost per free-prose hand-off, versus about 2.8 with structured fields. Keep a single-agent baseline at the same token budget.
+- **Reward hacking:** when coding agents could reach the tests, 28.57% of "resolved" tasks were hacked. With verification moved out of reach, that fell to 0.56%. Keep policy inside the tools, rebuild the world every run, and run the grader outside the agent.
+- **Make it a habit:** gate every prompt, tool or model change on pass^k per category, zero forbidden actions, cost per pass and judge agreement. Grow the task set from real failures.
+
+### My Take
+
+Most teams eval agents the way they eval chatbots: read the reply. The "do-nothing agent" test is the single most useful idea here. If your grader can't fail an agent that does nothing, your pass rate is measuring tone. Grade state, report pass^k, and read every first wrong step.
+
+<a class="nl-source" href="https://x.com/sermakarevich" target="_blank" rel="noopener">Read Sergii Makarevych's full guide on X &rarr;</a>
+
+  </div>
+</dialog>
+
+### 2. 80% Cheaper Agents: Stop Paying a Frontier LLM for Every Decision
+
+Deep dive · by Trisham Patil
+{: .nl-repo-meta}
+
+![80 percent cheaper AI agents: moving 8 of 10 agent decision calls from a frontier LLM to the JEV decision model](/assets/newsletter/weekly-tech-brew-2026-10-11/cheaper-agents-hero.png){: .nl-hero}
+
+Most steps in an agent loop aren't writing; they're deciding: route this, approve that, check the result. Move those decisions to a fast decision model like JEV and keep the frontier LLM for the work that needs it.
+
+<button type="button" class="nl-modal-open" data-modal-open="agents-cheaper" aria-haspopup="dialog">
+  Read more &rarr;
+</button>
+
+<dialog id="agents-cheaper" class="nl-modal nl-modal--wide" aria-labelledby="agents-cheaper-title">
+  <div class="nl-modal-head">
+    <h2 id="agents-cheaper-title">How to Make AI Agents 80% Cheaper</h2>
+    <button type="button" class="nl-modal-close" data-modal-close aria-label="Close">&times;</button>
+  </div>
+
+  <div class="nl-modal-body" markdown="1">
+
+### The Hidden Cost in Every Agent Loop
+
+An agent runs in a loop: a model decides what to do, a tool runs, a model checks the result, repeat. The problem: **every decision is another full LLM call**, with the latency and price of a model that can write essays.
+
+But look at what most of those calls actually do:
+
+- **Route:** which tool or sub-agent handles this?
+- **Gate:** is this action safe, or does a human need to approve it?
+- **Check:** did the tool result answer the question?
+- **Score:** how good, urgent or risky is this?
+
+None of these need generated text. They need a typed answer your code can branch on.
+
+### The Fix: A Decision Model for Decisions
+
+A **System One** decision model like TypeSafe AI's JEV takes a state and a list of questions and returns typed answers with probabilities: yes/no, pick one, or rate a level. TypeSafe reports up to **200x faster inference** and **400x lower cost** than comparable LLMs on classification tasks.
+
+Two features make the savings compound:
+
+- **Many questions, one call.** TypeSafe's cookbook reports batching 13 questions into one call is **12.2x cheaper and 10.0x faster** than 13 separate calls.
+- **Calibrated confidence.** High confidence acts automatically, medium asks for confirmation, low hands off to a human or the big model. You only pay for the frontier LLM when the decision is genuinely hard.
+
+### Where the 80% Comes From
+
+Take one agent task that makes **10 model calls**, where 8 are decisions (routing, gating, checking) and 2 are real generation (writing the plan and the final answer). This is an illustrative workload, not a benchmark:
+
+| | Frontier LLM calls | Decision-model calls |
+| --- | --- | --- |
+| Before | 10 | 0 |
+| After | 2 | 8 |
+
+That's **80% fewer frontier calls**. Because each decision-model call costs a tiny fraction of an LLM call, total cost falls by close to the same share, and latency drops too. The more decision-heavy your agent, the bigger the saving.
+
+### How to Start
+
+1. Log a week of agent traces and tag every model call as *decide* or *generate*.
+2. Move the decide calls (routing, guardrails, tool-call gating, result checks) to a decision model, batching questions about the same state.
+3. Add confidence thresholds, with low-confidence cases escalating to the LLM or a human.
+4. Measure cost per *successful* task before and after, not cost per call.
+
+My full JEV breakdown covers the architecture, confidence, LangGraph and Langfuse integration, and seven production use cases, including model routing, guardrails and tool-call gating.
+
+<a class="nl-source" href="{% post_url 2026-10-06-jev-decoded %}">Read my JEV deep dive &rarr;</a>
+
+  </div>
+</dialog>
+
+### 3. Which AI Model in October 2026? The Complete Guide and What Each Costs
+
+Guide · by Kirill on X
+{: .nl-repo-meta}
+
+![Which AI model in October 2026: output price per million tokens from GPT-6 Astra at $50 to GPT-6 Luna at $0.50](/assets/newsletter/weekly-tech-brew-2026-10-11/model-guide-hero.png){: .nl-hero}
+
+September reshuffled the whole model map: GPT-6 Astra, Claude Fable 5.1, Claude Opus 5.5, GPT-6 Sol and Luna all landed. Here's what each one is for, what it costs, and how to route between them.
+
+<button type="button" class="nl-modal-open" data-modal-open="agents-model-guide" aria-haspopup="dialog">
+  Read more &rarr;
+</button>
+
+<dialog id="agents-model-guide" class="nl-modal nl-modal--wide" aria-labelledby="agents-model-guide-title">
+  <div class="nl-modal-head">
+    <h2 id="agents-model-guide-title">Which AI Model in October 2026? A Guide to Models and Prices</h2>
+    <button type="button" class="nl-modal-close" data-modal-close aria-label="Close">&times;</button>
+  </div>
+
+  <div class="nl-modal-body" markdown="1">
+
+September changed the answer to "which model should I use?" three times. GPT-6 Astra and Claude Fable 5.1 arrived in the first week, Gemini 3.8 Flash and Meta's Muse Spark 1.3 just before, then Claude Opus 5.5, GPT-6 Sol and GPT-6 Luna on September 22.
+
+### The Map: Models and Prices
+
+List prices per million tokens, input / output, as of late September 2026:
+
+| Model | Input / Output | Best for |
+| --- | --- | --- |
+| GPT-6 Astra | $10 / $50 | Frontend, abstract reasoning, computer use |
+| Claude Fable 5.1 | $10 / $50 | The hardest multi-day autonomous runs |
+| Claude Opus 5.5 | $4 / $20 | The new coding default |
+| Kimi K3 | $3 / $15 | Open weights: self-hosting and fine-tuning |
+| GPT-6 Sol | $2 / $10 | Everyday work |
+| Grok 4.7 | $2 / $6 | Live X data, cheap reasoning |
+| Gemini 3.8 Flash | $0.75 / $3.75 | Fast, cheap, multimodal |
+| DeepSeek V4.1 Flash | $0.30 / $1.20 | Open-weight bulk work at the price floor |
+| GPT-6 Luna | $0.10 / $0.50 | Classification and extraction at huge volume |
+
+Two things stand out. The flagships are back at $10/$50, and Opus 5.5 costs less than half of either. Kimi K3 is no longer the *cheap* option; it's the *open* one.
+
+### What Changed Since July
+
+- **Opus 5.5 became the coding default.** On Terminal-Bench 4.0, vendor-reported scores are Opus 5.5 at 66.4%, Astra at 57.9% and Fable 5.1 at 55.8%. A $4/$20 model leading two $10/$50 models on agentic coding is the story of the month.
+- **Kimi K3 lost the frontend crown.** Astra took #1 on the Frontend Code Arena; K3 is now seventh, but still the top open-weight model there and first among open weights on the Agent Arena.
+- **SWE-bench Verified is retired.** Vals AI archived it in September because it's saturated. Ranking October models on it uses an outdated yardstick.
+
+### The Models, One by One
+
+**Claude Opus 5.5: the default.** Anthropic positions it at roughly Fable 5.1's level for most tasks, at 40% less than Opus 5 to run. It leads agentic coding and can drive applications. The catch: closed weights, and GPT-6 Sol is half the price for routine work.
+
+**GPT-6 Astra: the expensive specialist.** #1 on the Frontend Code Arena, 96.0% on GPQA Diamond, 62.7% on ARC-AGI-3 (more than double Opus 5's 30.2%), and state-of-the-art computer use. Worth it for top-tier frontend, novel reasoning and the hardest screen-driving work; otherwise it's 2.5x Opus 5.5.
+
+**Claude Fable 5.1: the ceiling.** With Opus 5.5 at roughly its level for most tasks, Fable's remaining case is very long autonomous runs where extra capability compounds. Escalate to it only when Opus 5.5 genuinely fails.
+
+**Kimi K3: the open one.** 2.8 trillion parameters, 1M context, open weights. It scored 57 on the Artificial Analysis Intelligence Index (fourth of 189 at the time, the highest an open model has reached) and 93.5% on GPQA Diamond. One independent analysis put it at about $0.94 per completed task, around half of Claude Opus. It's the only real choice when data can't leave your servers. It has no computer use.
+
+**The rest:** Sol for everyday work, Grok 4.7 when live X context matters, Gemini 3.8 Flash for fast multimodal, DeepSeek V4.1 Flash and Luna for bulk work where cost dominates.
+
+### What a Month Costs
+
+My own calculation at list prices for a mixed workload of **100M input + 40M output tokens a month**:
+
+| Model | Monthly cost |
+| --- | --- |
+| GPT-6 Astra / Claude Fable 5.1 | $3,000 |
+| Claude Opus 5.5 | $1,200 |
+| Kimi K3 | $900 |
+| GPT-6 Sol | $600 |
+| Grok 4.7 | $440 |
+| Gemini 3.8 Flash | $225 |
+| DeepSeek V4.1 Flash | $78 |
+| GPT-6 Luna | $30 |
+
+But **price per token isn't price per task.** A model that reasons longer burns more output tokens on the same job. Measure cost per *completed* task on your own work.
+
+### The Routing Rule
+
+| Task | Route to |
+| --- | --- |
+| Agentic coding | Claude Opus 5.5 |
+| Frontend where #1 matters, computer use | GPT-6 Astra |
+| Multi-day autonomous runs where Opus fails | Claude Fable 5.1 |
+| Confidential data, fine-tuning | Kimi K3 or DeepSeek, self-hosted |
+| Routine drafting, summarising | GPT-6 Sol |
+| Classification, extraction at volume | GPT-6 Luna or Gemini 3.8 Flash |
+
+### Common Mistakes
+
+- **Picking the flagship by reflex.** Astra and Fable cost 2.5x Opus 5.5; unless the task is one of their specific wins, you're paying for unused headroom.
+- **Trusting one benchmark.** Terminal-Bench, Frontend Code Arena, GPQA and ARC-AGI-3 each rank these models differently. Pick the one closest to your work.
+- **Comparing token prices, not task costs.**
+- **Choosing Kimi K3 for screen work.** It has no computer use.
+
+### My Take
+
+The most capable model is rarely the right model. The right one is the cheapest that clears the bar on your task. Route by task, test on your own workload, and remember that most benchmark figures here are vendor-reported.
+
+<a class="nl-source" href="https://x.com/kirillk_web3" target="_blank" rel="noopener">Read Kirill's full guide on X &rarr;</a>
+
+  </div>
+</dialog>
+
+### 4. Grok Bot Explained: Always-On AI Agents in the Cloud
+
+Guide · by Anatoli Kopadze on X
+{: .nl-repo-meta}
+
+![Grok Bot explained: a lead bot delegating to AI agents that each run on their own cloud computer, with a review agent gating risky actions](/assets/newsletter/weekly-tech-brew-2026-10-11/grok-bot-hero.png){: .nl-hero}
+
+Grok Bot gives every agent its own computer in the cloud, so it keeps working after you close the laptop. No servers to rent, no loops to wire, just describe the job.
+
+<button type="button" class="nl-modal-open" data-modal-open="agents-grok-bot" aria-haspopup="dialog">
+  Read more &rarr;
+</button>
+
+<dialog id="agents-grok-bot" class="nl-modal nl-modal--wide" aria-labelledby="agents-grok-bot-title">
+  <div class="nl-modal-head">
+    <h2 id="agents-grok-bot-title">Grok Bot, Explained</h2>
+    <button type="button" class="nl-modal-close" data-modal-close aria-label="Close">&times;</button>
+  </div>
+
+  <div class="nl-modal-body" markdown="1">
+
+### What Grok Bot Is (and Isn't)
+
+Grok Bot comes from the xAI and Cursor team. It isn't another LLM. Claude, GPT and Grok are models you talk to. Grok Bot is an **agent layer** that puts those models to work.
+
+Today's models can browse, run code and use tools, but mostly inside a session, on your machine, while you watch. Close the tab and the work stops. Grok Bot's idea is that **it runs without you**: each bot lives on its own cloud computer with a real browser, file system and terminal, and keeps going around the clock.
+
+- **It operates real apps:** opening sites, signing in, filling forms, moving files.
+- **It picks the right model:** through Cursor, each bot can route to Claude, GPT, Gemini and others.
+- **You run it from your phone** while the work happens in the cloud.
+- **Bots work as a team,** in parallel, handing work to each other.
+
+### Why It's Different
+
+Tools like OpenClaw and Hermes already ran autonomous agents, but you needed technical skills, a rented server, and hand-wired memory and skills. Grok Bot removes all of that: download the app, sign in, and your first bot is working in minutes.
+
+The bigger deal is what's pre-built. The **loops and graph-style multi-agent setups** that engineers have been wiring by hand (agents running in cycles, passing work down a chain and checking each other) come ready out of the box. Bots also keep context and learn from you over time.
+
+### How Bots Run on Their Own
+
+A bot starts on one of two triggers, set in a single sentence:
+
+- **A schedule:** a 7am brief, a Friday summary.
+- **An event:** a new Slack message, a GitHub push, a Teams message.
+
+It connects to your tools through **MCP connectors** where they exist (Gmail, Calendar, Slack, HubSpot, Drive) and falls back to operating the app visually where they don't. You can also teach it by **recording yourself doing a task once**, which it turns into a repeatable automation.
+
+### Seven Agents You Could Build
+
+1. **Competitor intelligence:** a daily brief of only what changed on rivals' pricing, launches, ads and hiring.
+2. **Inbound lead qualifier:** enrich, score against your ideal customer, and draft replies for your approval.
+3. **Content repurposing:** turn one long video or article into a week of platform-native posts.
+4. **Support triage:** categorise tickets, draft known answers, escalate bugs and anything ambiguous.
+5. **Morning news desk:** the three things that moved your niche overnight, before you're online.
+6. **Recruiting scout:** a ranked shortlist of 10 strong candidates with drafted outreach.
+7. **Overnight ops runner:** reconcile expenses (read-only), update the project tracker, prep tomorrow's brief.
+
+The pattern in every one: spell out the role, inputs, cadence, output format and limits, so the bot behaves like an employee, not a chatbot guessing.
+
+### Keeping It Safe
+
+A bot with your logins acting while you sleep needs guardrails:
+
+- **No passwords in chat.** At a login, 2FA or captcha the bot hands you the screen; it gets access, never your password.
+- **A separate review agent** checks each action and can allow it, block it or bring it to you, using rules you write in plain English ("never send money").
+- **The rule that matters is reversibility,** not task size. Reversible work (drafting, filing, research) runs on its own; anything public, financial or irreversible waits for your approval.
+
+### Pricing and Who It's For
+
+There's a one-week free trial (card required). After that it's **$120/month per seat**, $200 for Ultra and $300 for SuperGrok Heavy. It's built for founders, operators, freelancers and small teams with more recurring work than hours. If you just want to chat with AI, a $20 Claude or ChatGPT plan is enough.
+
+### My Take
+
+The real shift isn't the model; it's the **harness**: a cloud computer per agent, triggers, connectors, delegation and a review gate, all pre-built. The reversibility rule is the part every agent builder should copy. Just remember this is one enthusiast's write-up: test it on your own workflows, and watch the cost per completed task.
+
+If you want to see how that runtime works under the hood, my [Harness Engineering breakdown](/engineering/harness-engineering/) covers the loop, tool policies and verification inside production agents.
+
+<a class="nl-source" href="https://x.com/AnatoliKopadze" target="_blank" rel="noopener">Read Anatoli Kopadze's full guide on X &rarr;</a>
 
   </div>
 </dialog>
