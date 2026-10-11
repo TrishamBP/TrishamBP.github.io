@@ -6,7 +6,7 @@ seo_title: "Starlink in India, Anti-Drone Lasers & Anduril Fury Drone | The Week
 date: 2026-10-11
 author: Trisham Patil
 description: "Why Starlink won't work for India, US anti-drone lasers, a deadly Houthi strike on a Saudi airport, and Anduril's Fury loyal wingman drone flying with fighters."
-keywords: "Starlink India, Elon Musk oligarchy, Starlink national security, satellite internet India, Starlink Arunachal Pradesh, Starlink LoC, India communication sovereignty, military satellite communications, Telecommunications Act 2023, anti-drone laser, directed energy weapon, drone defence, Houthi drone attack, Saudi airport attack, cheap drone warfare, Anduril, Anduril Fury, YFQ-44A, Collaborative Combat Aircraft, loyal wingman drone, Lattice software, top GitHub repos, REA reverse engineering, Strix AI pentesting, AnyPS5, ArtCraft, Adobe alternative, open-source Photoshop alternative, PhotoCraft, open-source Adobe suite, LLM router, Claude model routing, agent harness, AI news, AI research agents, Epoch AI, AI governance, AI in warfare, on-device AI, OpenAI Decisions API, JEV, TypeSafe AI, decision models, The Weekly Tech Brew"
+keywords: "Starlink India, Elon Musk oligarchy, Starlink national security, satellite internet India, Starlink Arunachal Pradesh, Starlink LoC, India communication sovereignty, military satellite communications, Telecommunications Act 2023, anti-drone laser, directed energy weapon, drone defence, Houthi drone attack, Saudi airport attack, cheap drone warfare, Anduril, Anduril Fury, YFQ-44A, Collaborative Combat Aircraft, loyal wingman drone, Lattice software, top GitHub repos, REA reverse engineering, Strix AI pentesting, AnyPS5, ArtCraft, Adobe alternative, open-source Photoshop alternative, PhotoCraft, open-source Adobe suite, LLM router, Claude model routing, agent harness, AI news, AI research agents, Epoch AI, AI governance, AI in warfare, on-device AI, OpenAI Decisions API, JEV, TypeSafe AI, decision models, internet rabbit holes, best websites to explore, The Weekly Tech Brew"
 ---
 
 ## News Around the World
@@ -440,3 +440,117 @@ Want the full breakdown of JEV: architecture, confidence, LangGraph and Langfuse
 **AI songs outstreamed Taylor Swift.** A North Carolina man was sentenced to 18 months in prison for using bots to stream hundreds of thousands of AI-generated songs.
 
 In April 2023 alone, his fake songs racked up 80.9 million streams, against 9.3 million for Taylor Swift's entire catalogue that month. The Justice Department says he is the first American criminally charged with AI-assisted streaming fraud.
+
+## Rabbit Holes to Deep Dive
+
+Fifty corners of the internet worth getting lost in this weekend: live maps of every plane, ship and lightning strike on Earth, centuries-old maps, NASA's entire archive, and free libraries of books, art and music.
+
+<button type="button" class="nl-modal-open" data-modal-open="rabbit-holes" aria-haspopup="dialog">
+  Open the 50 rabbit holes &rarr;
+</button>
+
+<dialog id="rabbit-holes" class="nl-modal" aria-labelledby="rabbit-holes-title">
+  <div class="nl-modal-head">
+    <h2 id="rabbit-holes-title">50 Internet Rabbit Holes Worth Exploring</h2>
+    <button type="button" class="nl-modal-close" data-modal-close aria-label="Close">&times;</button>
+  </div>
+
+  <div class="nl-modal-body" markdown="1">
+
+Pick one and lose an hour. Every link opens in a new tab.
+
+
+### Watch the Planet Live
+
+| # | Site | What you will find |
+| --- | --- | --- |
+| 1 | [zoom.earth](https://zoom.earth){: target="_blank" rel="noopener"} | Live satellite imagery of the whole planet |
+| 2 | [flightradar24.com](https://flightradar24.com){: target="_blank" rel="noopener"} | Every plane in the sky right now |
+| 3 | [marinetraffic.com](https://marinetraffic.com){: target="_blank" rel="noopener"} | Every ship at sea, tracked in real time |
+| 4 | [windy.com](https://windy.com){: target="_blank" rel="noopener"} | Live map of winds and storms |
+| 5 | [lightningmaps.org](https://lightningmaps.org){: target="_blank" rel="noopener"} | Lightning strikes hitting Earth as they happen |
+| 6 | [earthquake.usgs.gov](https://earthquake.usgs.gov){: target="_blank" rel="noopener"} | A live feed of recent earthquakes |
+| 7 | [submarinecablemap.com](https://submarinecablemap.com){: target="_blank" rel="noopener"} | The undersea cables that carry the internet |
+| 8 | [globalforestwatch.org](https://globalforestwatch.org){: target="_blank" rel="noopener"} | Forest loss, seen from space |
+| 9 | [worldometers.info](https://worldometers.info){: target="_blank" rel="noopener"} | World statistics ticking second by second |
+| 10 | [internetlivestats.com](https://internetlivestats.com){: target="_blank" rel="noopener"} | Tweets, searches and more, counted live |
+
+### Maps and Places
+
+| # | Site | What you will find |
+| --- | --- | --- |
+| 11 | [thetruesize.com](https://thetruesize.com){: target="_blank" rel="noopener"} | Drag countries around to see their real size |
+| 12 | [oldmapsonline.org](https://oldmapsonline.org){: target="_blank" rel="noopener"} | Search maps from centuries ago |
+| 13 | [davidrumsey.com](https://davidrumsey.com){: target="_blank" rel="noopener"} | An archive of 150,000 historical maps |
+| 14 | [openstreetmap.org](https://openstreetmap.org){: target="_blank" rel="noopener"} | A map of the world drawn by volunteers |
+| 15 | [window-swap.com](https://window-swap.com){: target="_blank" rel="noopener"} | Look out a stranger's window somewhere in the world |
+| 16 | [virtualvacation.us](https://virtualvacation.us){: target="_blank" rel="noopener"} | Virtual walks through cities |
+| 17 | [mapcrunch.com](https://mapcrunch.com){: target="_blank" rel="noopener"} | Teleport to a random spot on Earth |
+| 18 | [atlasobscura.com](https://atlasobscura.com){: target="_blank" rel="noopener"} | A catalogue of the world's strangest places |
+
+### Space and Scale
+
+| # | Site | What you will find |
+| --- | --- | --- |
+| 19 | [neal.fun](https://neal.fun){: target="_blank" rel="noopener"} | Interactive experiments that make big ideas click |
+| 20 | [htwins.net/scale2](https://htwins.net/scale2){: target="_blank" rel="noopener"} | Zoom from an atom to the edge of the universe |
+| 21 | [eyes.nasa.gov](https://eyes.nasa.gov){: target="_blank" rel="noopener"} | Fly through the solar system in 3D |
+| 22 | [stellarium-web.org](https://stellarium-web.org){: target="_blank" rel="noopener"} | The real night sky in your browser |
+| 23 | [apod.nasa.gov](https://apod.nasa.gov){: target="_blank" rel="noopener"} | NASA's Astronomy Picture of the Day |
+| 24 | [images.nasa.gov](https://images.nasa.gov){: target="_blank" rel="noopener"} | NASA's whole image and video archive, free |
+
+### Data That Tells Stories
+
+| # | Site | What you will find |
+| --- | --- | --- |
+| 25 | [pudding.cool](https://pudding.cool){: target="_blank" rel="noopener"} | Visual essays built on data |
+| 26 | [ourworldindata.org](https://ourworldindata.org){: target="_blank" rel="noopener"} | The state of the world, backed by real data |
+| 27 | [gapminder.org](https://gapminder.org){: target="_blank" rel="noopener"} | What we get wrong about the world, and why |
+| 28 | [informationisbeautiful.net](https://informationisbeautiful.net){: target="_blank" rel="noopener"} | Complex data, beautifully visualised |
+| 29 | [data.worldbank.org](https://data.worldbank.org){: target="_blank" rel="noopener"} | The World Bank's open data |
+| 30 | [data.tuik.gov.tr](https://data.tuik.gov.tr){: target="_blank" rel="noopener"} | Turkey's official statistics database |
+
+### Libraries and Archives
+
+| # | Site | What you will find |
+| --- | --- | --- |
+| 31 | [archive.org](https://archive.org){: target="_blank" rel="noopener"} | Millions of free books, films and software |
+| 32 | [gutenberg.org](https://gutenberg.org){: target="_blank" rel="noopener"} | 70,000 free books out of copyright |
+| 33 | [openlibrary.org](https://openlibrary.org){: target="_blank" rel="noopener"} | A page for every book ever published |
+| 34 | [loc.gov](https://loc.gov){: target="_blank" rel="noopener"} | The US Library of Congress digital archive |
+| 35 | [europeana.eu](https://europeana.eu){: target="_blank" rel="noopener"} | Europe's cultural heritage, digitised |
+| 36 | [dp.la](https://dp.la){: target="_blank" rel="noopener"} | America's digital library collection |
+
+### Art and Museums
+
+| # | Site | What you will find |
+| --- | --- | --- |
+| 37 | [artsandculture.google.com](https://artsandculture.google.com){: target="_blank" rel="noopener"} | Tour the world's museums from home |
+| 38 | [rijksmuseum.nl](https://rijksmuseum.nl){: target="_blank" rel="noopener"} | Download masterpieces in high resolution |
+| 39 | [wikiart.org](https://wikiart.org){: target="_blank" rel="noopener"} | An archive of 250,000 artworks |
+| 40 | [publicdomainreview.org](https://publicdomainreview.org){: target="_blank" rel="noopener"} | Forgotten visual treasures from history |
+| 41 | [openculture.com](https://openculture.com){: target="_blank" rel="noopener"} | Free culture and education, collected |
+| 42 | [metmuseum.org](https://metmuseum.org){: target="_blank" rel="noopener"} | The Met's open collection |
+
+### Sound and Music
+
+| # | Site | What you will find |
+| --- | --- | --- |
+| 43 | [musicmap.info](https://musicmap.info){: target="_blank" rel="noopener"} | The family tree of music genres |
+| 44 | [radiooooo.com](https://radiooooo.com){: target="_blank" rel="noopener"} | Pick a country and a decade, hear its music |
+| 45 | [listen.hatnote.com](https://listen.hatnote.com){: target="_blank" rel="noopener"} | Wikipedia edits turned into sound |
+
+### Endless Knowledge
+
+| # | Site | What you will find |
+| --- | --- | --- |
+| 46 | [wikipedia.org](https://wikipedia.org){: target="_blank" rel="noopener"} | The original rabbit hole: hit Random article |
+| 47 | [timeanddate.com](https://timeanddate.com){: target="_blank" rel="noopener"} | Time zones, sunrises and sky events |
+| 48 | [sciencedaily.com](https://sciencedaily.com){: target="_blank" rel="noopener"} | A running stream of science news |
+| 49 | [arxiv.org](https://arxiv.org){: target="_blank" rel="noopener"} | Free preprints of scientific papers |
+| 50 | [observablehq.com](https://observablehq.com){: target="_blank" rel="noopener"} | Explore and visualise data with live code |
+
+List via Tech Logic ([@The_techAI](https://x.com/The_techAI){: target="_blank" rel="noopener"}) on X.
+
+  </div>
+</dialog>

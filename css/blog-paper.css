@@ -533,6 +533,23 @@ body.theme-typesafe.ts-paper .post-content .nl-modal-body table {
   width: 100%;
 }
 
+/* Rabbit-holes list: eight themed tables, so pin the columns to line up. */
+body.theme-typesafe.ts-paper #rabbit-holes table {
+  table-layout: fixed;
+}
+
+body.theme-typesafe.ts-paper #rabbit-holes th:nth-child(1) {
+  width: 3rem;
+}
+
+body.theme-typesafe.ts-paper #rabbit-holes th:nth-child(2) {
+  width: 38%;
+}
+
+body.theme-typesafe.ts-paper #rabbit-holes td {
+  overflow-wrap: anywhere;
+}
+
 body.theme-typesafe.ts-paper .nl-modal-body h3 {
   margin: 1.4rem 0 0.5rem;
 }
