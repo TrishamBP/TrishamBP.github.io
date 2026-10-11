@@ -1,7 +1,8 @@
 {%- comment -%}
   Subscribe box for The Weekly Tech Brew (used on /newsletter/ and at the end
   of every issue). Two modes, set in _config.yml:
-  - `newsletter_signup_url` set: a button to the Google Form (manual list);
+  - `newsletter_signup_url` set: a button to the Google Form (manual list),
+    plus an unsubscribe link if `newsletter_unsubscribe_url` is set;
   - otherwise `buttondown_username` set: posts straight to Buttondown, which
     sends the confirmation email and adds an unsubscribe link to every issue.
   Renders nothing if neither is set.
@@ -19,7 +20,9 @@
     Subscribe with your email &rarr;
   </a>
   <p class="nl-subscribe-fine">
-    Opens a short Google Form. To unsubscribe, just reply "unsubscribe" to any issue.
+    Opens a short Google Form.
+    {%- if site.newsletter_unsubscribe_url %} Want out? <a class="nl-unsubscribe-link" href="{{ site.newsletter_unsubscribe_url }}" target="_blank" rel="noopener">Unsubscribe here</a>.
+    {%- else %} To unsubscribe, just reply "unsubscribe" to any issue.{% endif %}
   </p>
   {%- else %}
   <form

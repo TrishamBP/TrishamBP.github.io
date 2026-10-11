@@ -436,6 +436,12 @@ body.theme-typesafe.ts-paper .nl-subscribe-button:focus-visible {
   outline: none;
 }
 
+body.theme-typesafe.ts-paper .nl-unsubscribe-link {
+  color: var(--ts-fg);
+  text-decoration: underline;
+  text-decoration-color: var(--ts-green);
+}
+
 /* Google Form mode: the same ink button, as a link. */
 body.theme-typesafe.ts-paper a.nl-subscribe-link {
   display: inline-block;
