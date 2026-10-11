@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Newsletter
-seo_title: "The Weekly Tech Brew by Trisham — Weekly AI Engineering Newsletter"
-description: "The Weekly Tech Brew by Trisham: a weekly AI engineering newsletter on LLMs, AI agents, GPU systems and production AI. Browse every edition in the archive."
+seo_title: "The Weekly Tech Brew by Trisham Patil — Weekly AI Engineering Newsletter"
+description: "The Weekly Tech Brew by Trisham Patil: a weekly AI engineering newsletter on LLMs, AI agents, GPU systems and production AI. Browse every past edition."
 keywords: "The Weekly Tech Brew, AI engineering newsletter, weekly AI newsletter, LLM newsletter, AI agents newsletter, production AI, Trisham Patil"
 permalink: /newsletter/
 ---
@@ -19,7 +19,9 @@ permalink: /newsletter/
     {% for edition in editions %}
       <article class="article-card newsletter-item">
         <h2 class="article-title">
-          <a href="{{ edition.url | relative_url }}">{{ edition.title }}</a>
+          <a href="{{ edition.url | relative_url }}">{{ edition.title }}
+            {%- if edition.subtitle %}<span class="article-subtitle">{{ edition.subtitle }}</span>{% endif -%}
+          </a>
         </h2>
         <p class="article-date">
           <time datetime="{{ edition.date | date: '%Y-%m-%d' }}">{{ edition.date | date: "%B %-d, %Y" }}</time>

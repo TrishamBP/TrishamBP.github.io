@@ -258,8 +258,128 @@ body.theme-typesafe.ts-paper .newsletter-grid .article-card:focus-within {
   outline-offset: 3px;
 }
 
+/* Byline under the title ("by Trisham Patil"): its own line, smaller. */
+body.theme-typesafe.ts-paper .article-subtitle,
+body.theme-typesafe.ts-paper .post-header .post-subtitle {
+  display: block;
+  margin-top: 0.35em;
+  font-size: 0.5em;
+}
+
 body.theme-typesafe.ts-paper .newsletter-grid .article-date {
   margin: 0;
+}
+
+/* -----------------------------------------------------------------------------
+   Newsletter modal (assets/js/newsletter-modal.js): the same hard-bordered,
+   offset-shadow box as the listing cards, opened from an ink button.
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.ts-paper .nl-modal-open {
+  font-family: var(--ts-term);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.1rem;
+  background: var(--ts-bg);
+  color: var(--ts-ink);
+  border: 2px solid var(--ts-ink);
+  border-radius: 0;
+  box-shadow: 4px 4px 0 var(--ts-ink);
+  cursor: pointer;
+  transition: transform 0.2s var(--ts-ease), box-shadow 0.2s var(--ts-ease),
+    background-color 0.2s var(--ts-ease);
+}
+
+body.theme-typesafe.ts-paper .nl-modal-open:hover,
+body.theme-typesafe.ts-paper .nl-modal-open:focus-visible {
+  background: var(--ts-surface);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ts-green);
+  outline: none;
+}
+
+/* Source link under a news item: small terminal caps, like the dates. */
+body.theme-typesafe.ts-paper .post-content .nl-source {
+  display: inline-block;
+  font-family: var(--ts-term);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ts-ink);
+  border-bottom: 2px solid var(--ts-green);
+  text-decoration: none;
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-source:hover {
+  color: var(--ts-green);
+}
+
+/* Padding lives on the children, so a click on the <dialog> element itself
+   can only be a backdrop click (the script closes on that). */
+body.theme-typesafe.ts-paper .nl-modal {
+  width: min(46rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 3rem);
+  padding: 0;
+  background: var(--ts-paper);
+  color: var(--ts-fg);
+  border: 2px solid var(--ts-ink);
+  border-radius: 0;
+  box-shadow: 8px 8px 0 var(--ts-ink);
+}
+
+body.theme-typesafe.ts-paper .nl-modal::backdrop {
+  background: rgba(30, 30, 30, 0.55);
+}
+
+body.theme-typesafe.ts-paper .nl-modal-head {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.4rem;
+  background: var(--ts-paper);
+  border-bottom: 2px solid var(--ts-ink);
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-modal-head h2 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family: var(--ts-display);
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  line-height: 1.05;
+  color: var(--ts-fg-soft);
+}
+
+body.theme-typesafe.ts-paper .nl-modal-close {
+  flex: none;
+  width: 2.2rem;
+  height: 2.2rem;
+  font-size: 1.4rem;
+  line-height: 1;
+  background: transparent;
+  color: var(--ts-ink);
+  border: 2px solid var(--ts-ink);
+  border-radius: 0;
+  cursor: pointer;
+}
+
+body.theme-typesafe.ts-paper .nl-modal-close:hover,
+body.theme-typesafe.ts-paper .nl-modal-close:focus-visible {
+  background: var(--ts-ink);
+  color: var(--ts-light);
+  outline: none;
+}
+
+body.theme-typesafe.ts-paper .nl-modal-body {
+  padding: 0.4rem 1.4rem 1.4rem;
+}
+
+body.theme-typesafe.ts-paper .nl-modal-body h3 {
+  margin: 1.4rem 0 0.5rem;
 }
 
 /* -----------------------------------------------------------------------------
