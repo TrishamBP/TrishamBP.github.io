@@ -1,0 +1,42 @@
+---
+layout: none
+permalink: /newsletter/feed.xml
+---
+{%- comment -%}
+  The Weekly Tech Brew feed. Buttondown's RSS-to-email polls this and emails
+  each new item to subscribers, so the HTML is rewritten for email clients:
+  - <dialog> pop-ups become plain <div>s, so their content reads inline;
+  - the open/close buttons and Mermaid diagrams (which need JS) are hidden
+    with inline display:none;
+  - root-relative src/href become absolute, since email has no base URL.
+{%- endcomment -%}
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>The Weekly Tech Brew by Trisham Patil</title>
+    <description>A weekly AI engineering newsletter on LLMs, AI agents, defence tech and production AI.</description>
+    <link>{{ '/newsletter/' | absolute_url }}</link>
+    <atom:link href="{{ '/newsletter/feed.xml' | absolute_url }}" rel="self" type="application/rss+xml" />
+    <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
+    {%- assign base = site.url | append: site.baseurl | append: '/' %}
+    {%- assign editions = site.newsletters | sort: "date" | reverse %}
+    {%- for edition in editions limit:10 %}
+    {%- assign email_html = edition.content
+      | replace: '<dialog', '<div'
+      | replace: '</dialog>', '</div>'
+      | replace: 'class="nl-modal-open"', 'class="nl-modal-open" style="display:none"'
+      | replace: 'class="nl-modal-close"', 'class="nl-modal-close" style="display:none"'
+      | replace: '<pre><code class="language-mermaid"', '<pre style="display:none"><code class="language-mermaid"'
+      | replace: 'src="/', 'src="BASE/'
+      | replace: 'href="/', 'href="BASE/'
+      | replace: 'BASE/', base %}
+      <item>
+        <title>{{ edition.seo_title | default: edition.title | xml_escape }}</title>
+        <link>{{ edition.url | absolute_url }}</link>
+        <guid isPermaLink="true">{{ edition.url | absolute_url }}</guid>
+        <pubDate>{{ edition.date | date_to_rfc822 }}</pubDate>
+        <description>{{ email_html | xml_escape }}</description>
+      </item>
+    {%- endfor %}
+  </channel>
+</rss>

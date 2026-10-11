@@ -315,15 +315,16 @@ body.theme-typesafe.ts-paper .post-content .nl-source:hover {
   color: var(--ts-green);
 }
 
-/* Company logo in the spotlight section: sized down, no frame. */
+/* Company logo in the spotlight section: a white panel (so it survives
+   dark-mode email clients) framed like the cards. */
 body.theme-typesafe.ts-paper .post-content img.nl-logo {
   display: block;
   width: min(16rem, 70%);
   height: auto;
   margin: 0.6rem 0 1.2rem;
-  border: 0;
-  box-shadow: none;
-  background: transparent;
+  border: 2px solid var(--ts-ink);
+  box-shadow: 4px 4px 0 var(--ts-ink);
+  background: #fff;
 }
 
 /* Star count / language / licence line under each GitHub repo heading. */
@@ -348,6 +349,100 @@ body.theme-typesafe.ts-paper .post--newsletter .post-content h4 {
   color: var(--ts-fg);
   margin-top: 1.6rem;
   margin-bottom: 0.45rem;
+}
+
+/* Subscribe box (_includes/newsletter-subscribe.html): the same hard ink
+   border and offset shadow as the edition cards. */
+body.theme-typesafe.ts-paper .nl-subscribe {
+  margin: 2rem 0 2.4rem;
+  padding: 1.5rem 1.4rem 1.3rem;
+  background: var(--ts-surface);
+  border: 2px solid var(--ts-ink);
+  box-shadow: 6px 6px 0 var(--ts-ink);
+}
+
+body.theme-typesafe.ts-paper .post--newsletter .nl-subscribe {
+  margin-top: 3.4rem;
+}
+
+body.theme-typesafe.ts-paper .nl-subscribe .nl-subscribe-title {
+  margin: 0 0 0.5rem;
+  padding: 0;
+  border: 0;
+  font-family: var(--ts-display);
+  font-weight: 500;
+  font-size: clamp(1.3rem, 3vw, 1.75rem);
+  line-height: 1.05;
+  color: var(--ts-fg-soft);
+}
+
+body.theme-typesafe.ts-paper .nl-subscribe-text {
+  margin: 0 0 1rem;
+  max-width: 60ch;
+  color: var(--ts-fg-soft);
+}
+
+body.theme-typesafe.ts-paper .nl-subscribe-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+/* Visually hidden, still read by screen readers. */
+body.theme-typesafe.ts-paper .nl-subscribe-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+body.theme-typesafe.ts-paper .nl-subscribe-input {
+  flex: 1 1 16rem;
+  min-width: 0;
+  padding: 0.75rem 0.9rem;
+  font: inherit;
+  color: var(--ts-ink);
+  background: var(--ts-light);
+  border: 2px solid var(--ts-ink);
+  border-radius: 0;
+}
+
+body.theme-typesafe.ts-paper .nl-subscribe-input:focus {
+  outline: 2px solid var(--ts-green);
+  outline-offset: 2px;
+}
+
+body.theme-typesafe.ts-paper .nl-subscribe-button {
+  flex: 0 0 auto;
+  padding: 0.75rem 1.3rem;
+  font-family: var(--ts-term);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ts-light);
+  background: var(--ts-ink);
+  border: 2px solid var(--ts-ink);
+  border-radius: 0;
+  cursor: pointer;
+  transition: background-color 0.2s var(--ts-ease), border-color 0.2s var(--ts-ease);
+}
+
+body.theme-typesafe.ts-paper .nl-subscribe-button:hover,
+body.theme-typesafe.ts-paper .nl-subscribe-button:focus-visible {
+  background: var(--ts-green);
+  border-color: var(--ts-green);
+  outline: none;
+}
+
+body.theme-typesafe.ts-paper .nl-subscribe-fine {
+  margin: 0.8rem 0 0;
+  font-family: var(--ts-term);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ts-fg-faint);
 }
 
 /* Padding lives on the children, so a click on the <dialog> element itself

@@ -13,6 +13,8 @@ permalink: /newsletter/
     The Weekly Tech Brew &middot; a weekly read on AI systems engineering, LLMs, and production AI.
   </p>
 
+  {% include newsletter-subscribe.html id="top" %}
+
   {%- assign editions = site.newsletters | sort: "date" | reverse -%}
 
   <div id="newsletter-list" class="articles-grid newsletter-grid">

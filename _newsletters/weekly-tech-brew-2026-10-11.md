@@ -88,7 +88,7 @@ The economics favour the attacker. A cheap drone forces the defender to fire exp
 
 ### Anduril Industries
 
-![Anduril Industries logo, the defence technology company behind the Fury autonomous air vehicle](/assets/newsletter/weekly-tech-brew-2026-10-11/anduril-logo.svg){: .nl-logo}
+![Anduril Industries logo, the defence technology company behind the Fury autonomous air vehicle](/assets/newsletter/weekly-tech-brew-2026-10-11/anduril-logo.png){: .nl-logo}
 
 Anduril is a defence technology company that builds autonomous systems across sea, land, air and space. What ties them together is **Lattice**, its software layer for sensing, autonomy and command.
 

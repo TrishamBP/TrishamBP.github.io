@@ -1,11 +1,16 @@
 # Site settings
-title: Andrej Karpathy blog
+title: Trisham Patil
 email: 
-description: "Musings of a Computer Scientist."
+description: "AI systems engineering, LLMs and production AI by Trisham Patil."
 baseurl: ""
-url: "http://karpathy.github.io"
+url: "https://trishampatil.com"
 twitter_username: karpathy
 github_username:  karpathy
+
+# Newsletter (The Weekly Tech Brew). Your Buttondown username, as in
+# buttondown.com/<username>. The subscribe form renders only once this is set;
+# Buttondown emails each new issue from /newsletter/feed.xml (RSS-to-email).
+buttondown_username: ""
 
 # Build settings
 markdown: kramdown
