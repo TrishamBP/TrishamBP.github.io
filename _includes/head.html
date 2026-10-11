@@ -93,6 +93,13 @@
   <link rel="stylesheet" href="{{ '/css/research-cinema.css' | relative_url }}" />
   {%- endif %}
   {%- comment -%}
+    Physical Systems: procedural turbine/flow backdrop. Same gate as the
+    `ps-systems` body class in _layouts/default.html.
+  {%- endcomment -%}
+  {%- if page.url == '/physical-systems/' %}
+  <link rel="stylesheet" href="{{ '/css/physical-systems.css' | relative_url }}?v={{ site.time | date: '%s' }}" />
+  {%- endif %}
+  {%- comment -%}
     Certifications: neon grid skin with light racers. Same gate as the
     `grid-neon` body class in _layouts/default.html.
   {%- endcomment -%}

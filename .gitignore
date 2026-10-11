@@ -7,3 +7,5 @@ raw_data/
 # Newsletter email generator and its output (kept local)
 scripts/newsletter_email.py
 newsletter_emails/
+# Local paper library (downloaded PDFs, not for the site)
+mech papers/

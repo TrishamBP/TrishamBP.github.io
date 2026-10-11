@@ -1,0 +1,200 @@
+/* =============================================================================
+   PHYSICAL SYSTEMS SKIN
+   -----------------------------------------------------------------------------
+   Applied to /physical-systems/. `_includes/head.html` loads this file and
+   `_layouts/default.html` adds `ps-systems` to <body>, both gated on the same
+   condition. The backdrop is drawn by assets/js/physical-systems.js.
+
+   Palette: a near-black blueprint void lit by cyan/blue wireframe (propulsion)
+   and warm orange/amber flow with violet haze (fluid + embodied intelligence).
+   ========================================================================== */
+
+body.theme-typesafe.ps-systems {
+  --ps-void: #03050b;
+  --ps-panel: rgba(5, 9, 20, 0.72);
+  --ps-cyan: #4fd2ff;
+  --ps-blue: #2f7dff;
+  --ps-cyan-dim: rgba(79, 210, 255, 0.35);
+  --ps-cyan-faint: rgba(79, 210, 255, 0.12);
+  --ps-orange: #ff8a3d;
+  --ps-amber: #ffb54d;
+  --ps-orange-dim: rgba(255, 138, 61, 0.4);
+  --ps-violet: #9b6bff;
+  --ps-white: #eef6ff;
+
+  background: var(--ps-void);
+  color: var(--ps-white);
+}
+
+/* Fixed full-screen backdrop behind all content. */
+.ps-systems .ps-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  display: block;
+  pointer-events: none;
+  background: var(--ps-void);
+}
+
+/* -----------------------------------------------------------------------------
+   Nav
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.ps-systems .topnav {
+  background: rgba(3, 5, 11, 0.8);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--ps-cyan-dim);
+  box-shadow: 0 1px 16px rgba(79, 210, 255, 0.16);
+}
+
+body.theme-typesafe.ps-systems .topnav-brand {
+  color: var(--ps-white);
+  text-shadow: 0 0 8px var(--ps-cyan-dim);
+}
+
+body.theme-typesafe.ps-systems .topnav-link {
+  border-radius: 0;
+  color: rgba(238, 246, 255, 0.72);
+}
+
+body.theme-typesafe.ps-systems.dark-mode .topnav-link:hover {
+  background: var(--ps-cyan-faint);
+  color: var(--ps-cyan);
+}
+
+body.theme-typesafe.ps-systems.dark-mode .topnav-link.active {
+  background: transparent;
+  color: var(--ps-cyan);
+  box-shadow: inset 0 -2px 0 var(--ps-orange), 0 6px 12px -6px var(--ps-orange);
+  text-shadow: 0 0 8px var(--ps-cyan-dim);
+}
+
+body.theme-typesafe.ps-systems .topnav-links.open {
+  background: rgba(3, 5, 11, 0.95);
+  border: 1px solid var(--ps-cyan-dim);
+}
+
+/* -----------------------------------------------------------------------------
+   Heading block
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.ps-systems .site-shell .ps-section {
+  padding-top: clamp(3rem, 12vh, 8rem);
+  min-height: 82vh;
+}
+
+body.theme-typesafe.ps-systems .site-shell .ps-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 1rem;
+  font-family: var(--ts-term);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ps-amber);
+  text-shadow: 0 0 8px var(--ps-orange-dim);
+}
+
+.ps-systems .ps-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--ps-orange);
+  box-shadow: 0 0 10px var(--ps-orange);
+  animation: ps-blink 1.8s steps(2, jump-none) infinite;
+}
+
+@keyframes ps-blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+body.theme-typesafe.ps-systems .site-shell .ps-section .section-title {
+  margin-bottom: 1.2rem;
+  font-family: var(--ts-display);
+  font-weight: 700;
+  font-size: clamp(2.6rem, 8vw, 6rem);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  color: var(--ps-white);
+  -webkit-text-stroke: 0;
+  background: linear-gradient(100deg, #ffffff 0%, var(--ps-cyan) 45%, var(--ps-amber) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 18px rgba(79, 210, 255, 0.35));
+}
+
+body.theme-typesafe.ps-systems .site-shell .ps-section .research-intro {
+  max-width: 58ch;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: rgba(238, 246, 255, 0.82);
+  border: 0;
+  padding: 0;
+}
+
+/* -----------------------------------------------------------------------------
+   Topic tracks: dark glass panels, each edged in one of the palette's lights.
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.ps-systems .ps-tracks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin-top: clamp(2.5rem, 10vh, 6rem);
+}
+
+body.theme-typesafe.ps-systems .ps-track {
+  padding: 1.3rem 1.3rem 1.2rem;
+  background: var(--ps-panel);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(238, 246, 255, 0.14);
+  border-top: 2px solid var(--ps-track, var(--ps-cyan));
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3), 0 12px 30px -18px var(--ps-track, var(--ps-cyan));
+  transition: transform 0.25s var(--ts-ease), box-shadow 0.25s var(--ts-ease);
+}
+
+body.theme-typesafe.ps-systems .ps-track:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3), 0 18px 40px -16px var(--ps-track, var(--ps-cyan));
+}
+
+.ps-systems .ps-track--blue {
+  --ps-track: var(--ps-cyan);
+}
+
+.ps-systems .ps-track--orange {
+  --ps-track: var(--ps-orange);
+}
+
+.ps-systems .ps-track--violet {
+  --ps-track: var(--ps-violet);
+}
+
+body.theme-typesafe.ps-systems .ps-track h2 {
+  margin: 0 0 0.5rem;
+  padding: 0;
+  border: 0;
+  font-family: var(--ts-display);
+  font-size: 1.15rem;
+  line-height: 1.2;
+  color: var(--ps-white);
+}
+
+body.theme-typesafe.ps-systems .ps-track p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: rgba(238, 246, 255, 0.72);
+}
+
+/* Footer and other chrome sit on the dark void. */
+body.theme-typesafe.ps-systems .site-footer,
+body.theme-typesafe.ps-systems footer {
+  background: transparent;
+  color: rgba(238, 246, 255, 0.6);
+}

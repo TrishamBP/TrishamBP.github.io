@@ -32,6 +32,7 @@ exclude:
   - harness_engineering
   - scripts
   - newsletter_emails
+  - "mech papers"
 
 highlighter: rouge
 kramdown:
