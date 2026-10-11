@@ -326,6 +326,30 @@ body.theme-typesafe.ts-paper .post-content img.nl-logo {
   background: transparent;
 }
 
+/* Star count / language / licence line under each GitHub repo heading. */
+body.theme-typesafe.ts-paper .post-content .nl-repo-meta {
+  font-family: var(--ts-term);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ts-green);
+  margin: -0.2rem 0 0.8rem;
+}
+
+/* Newsletter story headlines (H4 under a theme H3) read as headlines, not
+   as the small terminal labels H4 is in articles. */
+body.theme-typesafe.ts-paper .post--newsletter .post-content h4 {
+  font-family: var(--ts-display);
+  font-size: 1.12rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1.25;
+  color: var(--ts-fg);
+  margin-top: 1.6rem;
+  margin-bottom: 0.45rem;
+}
+
 /* Padding lives on the children, so a click on the <dialog> element itself
    can only be a backdrop click (the script closes on that). */
 body.theme-typesafe.ts-paper .nl-modal {
@@ -387,6 +411,13 @@ body.theme-typesafe.ts-paper .nl-modal-close:focus-visible {
 
 body.theme-typesafe.ts-paper .nl-modal-body {
   padding: 0.4rem 1.4rem 1.4rem;
+}
+
+/* Tables in a modal span the full body width (the post default is a
+   shrink-to-fit block). */
+body.theme-typesafe.ts-paper .post-content .nl-modal-body table {
+  display: table;
+  width: 100%;
 }
 
 body.theme-typesafe.ts-paper .nl-modal-body h3 {

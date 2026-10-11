@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-<div class="post">
+<div class="post{% if page.collection == 'newsletters' %} post--newsletter{% endif %}">
 
   <header class="post-header">
     <h1>{{ page.title }}{% if page.subtitle %}<span class="post-subtitle">{{ page.subtitle }}</span>{% endif %}</h1>
