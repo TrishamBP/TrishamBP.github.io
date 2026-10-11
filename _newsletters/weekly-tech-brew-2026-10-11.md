@@ -6,7 +6,7 @@ seo_title: "Starlink in India, Anti-Drone Lasers & Anduril Fury Drone | The Week
 date: 2026-10-11
 author: Trisham Patil
 description: "Why Starlink won't work for India, US anti-drone lasers, a deadly Houthi strike on a Saudi airport, and Anduril's Fury loyal wingman drone flying with fighters."
-keywords: "Starlink India, Elon Musk oligarchy, Starlink national security, satellite internet India, Starlink Arunachal Pradesh, Starlink LoC, India communication sovereignty, military satellite communications, Telecommunications Act 2023, anti-drone laser, directed energy weapon, drone defence, Houthi drone attack, Saudi airport attack, cheap drone warfare, Anduril, Anduril Fury, YFQ-44A, Collaborative Combat Aircraft, loyal wingman drone, Lattice software, top GitHub repos, REA reverse engineering, Strix AI pentesting, AnyPS5, ArtCraft, Adobe alternative, open-source Photoshop alternative, PhotoCraft, open-source Adobe suite, LLM router, Claude model routing, agent harness, AI news, AI research agents, Epoch AI, AI governance, AI in warfare, on-device AI, OpenAI Decisions API, JEV, TypeSafe AI, decision models, internet rabbit holes, best websites to explore, trending AI papers, AgentGarten, UltraText Bench, on-policy distillation, Kandinsky 6.0 Video, RealCompanion, LLM inference, LLM serving, vLLM, SGLang, KV cache, prompt engineering, AI agents, agentic evals, pass^k, AI agent cost, best AI model October 2026, AI model pricing, Claude Opus 5.5, GPT-6 Astra, Kimi K3, Grok Bot, The Weekly Tech Brew"
+keywords: "Starlink India, Elon Musk oligarchy, Starlink national security, satellite internet India, Starlink Arunachal Pradesh, Starlink LoC, India communication sovereignty, military satellite communications, Telecommunications Act 2023, anti-drone laser, directed energy weapon, drone defence, Houthi drone attack, Saudi airport attack, cheap drone warfare, Anduril, Anduril Fury, YFQ-44A, Collaborative Combat Aircraft, loyal wingman drone, Lattice software, top GitHub repos, REA reverse engineering, Strix AI pentesting, AnyPS5, ArtCraft, Adobe alternative, open-source Photoshop alternative, PhotoCraft, open-source Adobe suite, LLM router, Claude model routing, agent harness, AI news, AI research agents, Epoch AI, AI governance, AI in warfare, on-device AI, OpenAI Decisions API, JEV, TypeSafe AI, decision models, internet rabbit holes, best websites to explore, trending AI papers, AgentGarten, UltraText Bench, on-policy distillation, Kandinsky 6.0 Video, RealCompanion, LLM inference, LLM serving, vLLM, SGLang, KV cache, prompt engineering, AI agents, agentic evals, pass^k, AI agent cost, best AI model October 2026, AI model pricing, Claude Opus 5.5, GPT-6 Astra, Kimi K3, Grok Bot, DeepSeek-V4.1-Flash, KV cache compression, LLM inference memory, The Weekly Tech Brew"
 ---
 
 ## News Around the World
@@ -494,6 +494,72 @@ RealCompanion releases **ten real relationships** with an AI companion: **27,218
 
   </div>
 </dialog>
+
+## Paper Deep Dive
+
+### DeepSeek-V4.1-Flash: Pushing KV Cache Compression to 890 Bytes per Token
+
+Paper of the week · DeepSeek-AI · arXiv:2609.19969
+{: .nl-repo-meta}
+
+![DeepSeek-V4.1-Flash KV cache compression: global KV cache per token falling from 389,120 bytes in DeepSeek-V1 to 890 bytes in V4.1-Flash](/assets/blogs/deepseek-v41-flash/fig1b-kv-cache-per-token.png){: .nl-hero}
+
+Most model releases matter for what the model can do. DeepSeek-V4.1-Flash matters for what it costs to *serve*: 890 bytes of KV cache per token, 437x less than DeepSeek-V1, while staying in the frontier band on agentic benchmarks.
+
+<button type="button" class="nl-modal-open" data-modal-open="deepdive-deepseek" aria-haspopup="dialog">
+  Read more &rarr;
+</button>
+
+<dialog id="deepdive-deepseek" class="nl-modal nl-modal--wide" aria-labelledby="deepdive-deepseek-title">
+  <div class="nl-modal-head">
+    <h2 id="deepdive-deepseek-title">DeepSeek-V4.1-Flash: KV Cache Compression for Agentic LLM Inference</h2>
+    <button type="button" class="nl-modal-close" data-modal-close aria-label="Close">&times;</button>
+  </div>
+
+  <div class="nl-modal-body" markdown="1">
+
+**Paper:** DeepSeek-V4.1-Flash technical report · DeepSeek-AI · arXiv:2609.19969
+
+### The Abstract, in My Words
+
+Long-horizon agents read far more than they write: every tool result, file and stack trace piles onto a context that can reach a million tokens. At that scale the bottleneck stops being compute and becomes the **KV cache**: the memory each request must hold in GPU HBM, persist to disk for reuse, and move between machines.
+
+Every serving trick I've studied (PagedAttention, RadixAttention, Mooncake, Strata) treats the cache's size as fixed and optimises where it lives. DeepSeek-V4.1-Flash attacks the size itself, in the architecture.
+
+It's a multimodal Mixture-of-Experts model with 552B backbone parameters (plus 196B in an Engram lookup table), 1M-token context, and 8B activated parameters per token in prefill versus 16B in decode. Against its predecessor V4-Flash, it holds about **1/4 of the runtime KV cache** and **1/8 of the persistent cache** at the same sequence length, while scoring better.
+
+### How It Gets to 890 Bytes
+
+- **CSA2, sharing the cache across layers:** only 4 of 38 global-attention layers write a KV cache. Thirty layers store nothing and copy a shortlist; four "re-choosers" reuse the cache but pick their own entries. Every layer still asks its own query.
+- **Causal encoder-decoder:** the top 20 layers get their long-term KV projected in one shot from the bottom half's output, so a prompt only climbs half the stack. That's why prefill uses 8B parameters and decode 16B.
+- **Hierarchical Sparse Indexer:** one layer scans the full context and leaves a 16,384-position candidate pool; later layers search only the pool, so their selection cost stops growing with context length.
+- **FP4 KV cache:** cache entries are stored in 4 bits, with a norm bound proving the format can't overflow.
+- **SWA Bounded Replay:** short-lived sliding-window state is dropped from disk entirely and cheaply recomputed on a miss. That's where the 1/8 persistent-cache figure comes from.
+
+### What I Verified
+
+I rebuilt the cache budget from the published configuration alone, and it lands on **exactly 890 bytes per token**: 720 bytes of main KV plus 170 bytes of indexer keys.
+
+The surprise is the split. Against a per-layer FP8 baseline, **cross-layer sharing delivers 11.6x and FP4 only 1.8x** of a 20.9x total. Structure beats precision by an order of magnitude.
+
+In practice: with 40 GB of HBM set aside for KV cache, DeepSeek-V1 couldn't fit a single 1M-token agent session; V4.1-Flash fits about **48**. And going from 4K to 1M context, 256x longer, raises per-token decode cost by only about a quarter.
+
+### The Caveats
+
+- Every benchmark number is DeepSeek's own; I verified the memory arithmetic, not the model's capability.
+- Bounded replay is approximate inference in production. DeepSeek reports negligible quality impact, but four stacked approximations haven't been characterised together.
+- The training framework had to be rebuilt to support cross-layer sharing, a cost the paper never budgets.
+
+My full engineering breakdown covers the byte-budget model, every mechanism, the serving infrastructure, pre-training and post-training, and what's still left to prove.
+
+<a class="nl-source" href="/engineering/deepseek-v41-flash-kv-cache-compression-agentic-llm-inference/">Read my full engineering deep dive &rarr;</a>
+
+<a class="nl-source" href="https://arxiv.org/abs/2609.19969" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+  </div>
+</dialog>
+
+<a class="nl-source" href="/engineering/deepseek-v41-flash-kv-cache-compression-agentic-llm-inference/">Read my engineering deep dive &rarr;</a>
 
 ## All About AI Agents
 
