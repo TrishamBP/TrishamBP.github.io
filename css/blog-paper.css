@@ -327,6 +327,22 @@ body.theme-typesafe.ts-paper .post-content img.nl-logo {
   background: #fff;
 }
 
+/* YouTube thumbnail linking to the video (works in email, unlike iframes). */
+body.theme-typesafe.ts-paper .post-content img.nl-video-thumb {
+  display: block;
+  width: min(32rem, 100%);
+  height: auto;
+  margin: 0.4rem 0 1rem;
+  border: 2px solid var(--ts-ink);
+  box-shadow: 6px 6px 0 var(--ts-ink);
+  transition: box-shadow 0.2s var(--ts-ease), transform 0.2s var(--ts-ease);
+}
+
+body.theme-typesafe.ts-paper .post-content a:hover img.nl-video-thumb {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 var(--ts-green);
+}
+
 /* Star count / language / licence line under each GitHub repo heading. */
 body.theme-typesafe.ts-paper .post-content .nl-repo-meta {
   font-family: var(--ts-term);

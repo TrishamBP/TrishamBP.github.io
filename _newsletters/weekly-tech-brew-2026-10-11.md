@@ -6,7 +6,7 @@ seo_title: "Starlink in India, Anti-Drone Lasers & Anduril Fury Drone | The Week
 date: 2026-10-11
 author: Trisham Patil
 description: "Why Starlink won't work for India, US anti-drone lasers, a deadly Houthi strike on a Saudi airport, and Anduril's Fury loyal wingman drone flying with fighters."
-keywords: "Starlink India, Elon Musk oligarchy, Starlink national security, satellite internet India, Starlink Arunachal Pradesh, Starlink LoC, India communication sovereignty, military satellite communications, Telecommunications Act 2023, anti-drone laser, directed energy weapon, drone defence, Houthi drone attack, Saudi airport attack, cheap drone warfare, Anduril, Anduril Fury, YFQ-44A, Collaborative Combat Aircraft, loyal wingman drone, Lattice software, top GitHub repos, REA reverse engineering, Strix AI pentesting, AnyPS5, ArtCraft, Adobe alternative, open-source Photoshop alternative, PhotoCraft, open-source Adobe suite, LLM router, Claude model routing, agent harness, AI news, AI research agents, Epoch AI, AI governance, AI in warfare, on-device AI, OpenAI Decisions API, JEV, TypeSafe AI, decision models, internet rabbit holes, best websites to explore, The Weekly Tech Brew"
+keywords: "Starlink India, Elon Musk oligarchy, Starlink national security, satellite internet India, Starlink Arunachal Pradesh, Starlink LoC, India communication sovereignty, military satellite communications, Telecommunications Act 2023, anti-drone laser, directed energy weapon, drone defence, Houthi drone attack, Saudi airport attack, cheap drone warfare, Anduril, Anduril Fury, YFQ-44A, Collaborative Combat Aircraft, loyal wingman drone, Lattice software, top GitHub repos, REA reverse engineering, Strix AI pentesting, AnyPS5, ArtCraft, Adobe alternative, open-source Photoshop alternative, PhotoCraft, open-source Adobe suite, LLM router, Claude model routing, agent harness, AI news, AI research agents, Epoch AI, AI governance, AI in warfare, on-device AI, OpenAI Decisions API, JEV, TypeSafe AI, decision models, internet rabbit holes, best websites to explore, trending AI papers, AgentGarten, UltraText Bench, on-policy distillation, Kandinsky 6.0 Video, RealCompanion, LLM inference, LLM serving, vLLM, SGLang, KV cache, prompt engineering, The Weekly Tech Brew"
 ---
 
 ## News Around the World
@@ -251,6 +251,249 @@ Each subsystem is its own tested module: the agent loop, typed tool registry, co
 Read the full breakdown in [Harness Engineering: Inside the Runtime of Production Coding Agents](/engineering/harness-engineering/).
 
 <a class="nl-source" href="https://github.com/TrishamBP/harness-engineering" target="_blank" rel="noopener">TrishamBP/harness-engineering on GitHub &rarr;</a>
+
+## Trending AI Papers
+
+### 1. AgentGarten: Code Worlds for Evolving Agents
+
+Oct 8 · MirroS-Lab · #1 Paper of the Day
+{: .nl-repo-meta}
+
+Agents learn from the worlds they practise in. AgentGarten builds those worlds as code, then renders them in real time with a neural renderer, so new environments can scale alongside the agents.
+
+<button type="button" class="nl-modal-open" data-modal-open="paper-agentgarten" aria-haspopup="dialog">
+  Read more &rarr;
+</button>
+
+<dialog id="paper-agentgarten" class="nl-modal" aria-labelledby="paper-agentgarten-title">
+  <div class="nl-modal-head">
+    <h2 id="paper-agentgarten-title">AgentGarten: Code Worlds for Evolving Agents</h2>
+    <button type="button" class="nl-modal-close" data-modal-close aria-label="Close">&times;</button>
+  </div>
+
+  <div class="nl-modal-body" markdown="1">
+
+**Authors:** Jiawei Chi, Shangchen Miao, Zhiyuan Shi and 11 others · MirroS-Lab · Oct 8
+
+### The Problem
+
+An agent can only learn what its practice world can teach. That world has to be **faithful** (consistent state, rules and physics) and **realistic** (it has to look like the real world). Getting both, across many different worlds, is the bottleneck.
+
+### The Idea
+
+AgentGarten splits the job in two:
+
+- **Simulators and game engines** own the truth. They keep a persistent world state and run interaction rules written as code.
+- **A shared neural renderer** owns the look. It turns structured scene data from the simulator into realistic video frames, through one common interface.
+
+### How the Renderer Is Built
+
+The team adapts a pretrained video model to follow geometry, then distils it with a new technique, **Adversarial Forcing**, and optimises it to run in real time.
+
+Adversarial Forcing does two things. It makes the "history" the renderer has already seen differentiable through exact replay, so errors in later frames can correct how earlier frames were encoded. It also adds adversarial training on real data to make frames look better.
+
+### How Agents Improve
+
+Agents see the world only through these rendered frames and act in real time. After each round, they distil what they learned into a **playbook** that the next agents inherit and refine.
+
+### Results
+
+Agents learned in just **4 rounds**, compared with **millions** of steps for a conventional reinforcement learning baseline.
+
+### Why It Matters
+
+Because a new world is just code rendered through the same interface, environments can grow in number and difficulty as the agents get better: a path to agents that keep evolving through experience.
+
+<a class="nl-source" href="https://arxiv.org/pdf/2610.12374" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+  </div>
+</dialog>
+
+### 2. UltraText Bench: Testing How Well Image Models Write Text
+
+Oct 7 · Westlake University · #1 Paper of the Day
+{: .nl-repo-meta}
+
+Image generators are getting good at short text, but can they fill a poster or menu with dense, correct text? UltraText Bench tests that in English and Chinese.
+
+<button type="button" class="nl-modal-open" data-modal-open="paper-ultratext" aria-haspopup="dialog">
+  Read more &rarr;
+</button>
+
+<dialog id="paper-ultratext" class="nl-modal" aria-labelledby="paper-ultratext-title">
+  <div class="nl-modal-head">
+    <h2 id="paper-ultratext-title">UltraText Bench: A Bilingual Benchmark for Visual Text Rendering</h2>
+    <button type="button" class="nl-modal-close" data-modal-close aria-label="Close">&times;</button>
+  </div>
+
+  <div class="nl-modal-body" markdown="1">
+
+**Authors:** Deyuan Liu, Yihao Hu, Jingxuan Zhang and 13 others · Westlake University · Oct 7
+
+### The Problem
+
+Rendering one short word in an image is mostly solved. The hard case is **dense text**: long strings spread across several regions, each in the right place and readable. Benchmarks need to test that harder workload.
+
+### The Benchmark
+
+- **432 prompts** across **24 real-world scene types** and **3 difficulty levels**, split evenly between English and Chinese.
+- Each prompt is human-reviewed and specifies the exact text for **4 to 12 regions**, with references for content, placement and visual style.
+- The **Q-Judger** vision-language model scores each image on four axes: text fidelity, text clarity, spatial quality and scene quality.
+
+### What They Found
+
+Testing 24 model setups shows the axes really do pull apart:
+
+- **Clearer isn't the same as correct:** Z-Image-Turbo gains 3.81 points on clarity over Z-Image-Base but loses 14.76 points on fidelity.
+- **Models crack under load:** Qwen-Image-2512's English score drops from 86.50 on the easiest level to 42.86 on the hardest.
+
+Ten people took part in a human evaluation to check the automatic scores.
+
+<a class="nl-source" href="https://arxiv.org/abs/2610.09823" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+<a class="nl-source" href="https://github.com/LINs-lab/UltraText_Bench" target="_blank" rel="noopener">Benchmark code on GitHub &rarr;</a>
+
+  </div>
+</dialog>
+
+### 3. Rethinking Cross-Tokenizer On-Policy Distillation
+
+Oct 6 · #1 Paper of the Day
+{: .nl-repo-meta}
+
+When teacher and student models use different tokenizers, the instinct is to align as much as possible. This paper finds that fewer, more reliable training signals beat broader coverage.
+
+<button type="button" class="nl-modal-open" data-modal-open="paper-cross-tokenizer" aria-haspopup="dialog">
+  Read more &rarr;
+</button>
+
+<dialog id="paper-cross-tokenizer" class="nl-modal" aria-labelledby="paper-cross-tokenizer-title">
+  <div class="nl-modal-head">
+    <h2 id="paper-cross-tokenizer-title">Rethinking Cross-Tokenizer On-Policy Distillation</h2>
+    <button type="button" class="nl-modal-close" data-modal-close aria-label="Close">&times;</button>
+  </div>
+
+  <div class="nl-modal-body" markdown="1">
+
+**Authors:** Bingxi Hou, Guochao Jiang, Guofeng Quan, Weiqing Li, Wenfeng Feng, Guohua Liu, Yuewei Zhang · Oct 6
+
+### The Setup
+
+**On-policy distillation (OPD)** trains a small student model on its own outputs, with a bigger teacher scoring them. If the two use different tokenizers, you have to line up their predictions at both the sequence and vocabulary level before you can compare them.
+
+The obvious move is to align as much as possible. The authors test whether that actually helps.
+
+### What They Found
+
+They tested three mismatched teacher–student pairs on maths reasoning and code generation:
+
+- **Strict 1:1 matches already cover most tokens,** even when the vocabularies differ a lot. At those positions, the shared vocabulary holds nearly all of both models' probability mass.
+- **A small subset is enough:** limiting the loss (reverse KL) to the student's top-16 shared tokens at each strict position matches full shared-vocabulary OPD and beats the other cross-tokenizer methods they tested.
+- **More coverage hurt:** adding a loss on the mismatched spans gave complete coverage but *lowered* accuracy. The gradients from those spans weakly agreed, or even conflicted, with the strict ones, and grew larger over training.
+
+### The Takeaway
+
+Stop maximising alignment coverage and prioritise **supervision reliability**. A compact signal at well-aligned positions beats broad coverage full of weak or conflicting signals.
+
+<a class="nl-source" href="https://arxiv.org/abs/2610.08448" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+  </div>
+</dialog>
+
+### 4. Kandinsky 6.0 Video: Open Models for Video With Sound
+
+Oct 4 · Kandinsky Lab · #1 Paper of the Day
+{: .nl-repo-meta}
+
+An open family of models that generate 5-second video clips with synchronised audio, including lip-sync, from text or an image. Code and weights are released under the MIT licence.
+
+<button type="button" class="nl-modal-open" data-modal-open="paper-kandinsky" aria-haspopup="dialog">
+  Read more &rarr;
+</button>
+
+<dialog id="paper-kandinsky" class="nl-modal" aria-labelledby="paper-kandinsky-title">
+  <div class="nl-modal-head">
+    <h2 id="paper-kandinsky-title">Kandinsky 6.0 Video: Synchronised Video and Audio Generation</h2>
+    <button type="button" class="nl-modal-close" data-modal-close aria-label="Close">&times;</button>
+  </div>
+
+  <div class="nl-modal-body" markdown="1">
+
+**Authors:** Team Kandinsky (Julia Agafonova, Bulat Akhmatov, Mikhail Aksyutin and 85+ others) · Kandinsky Lab · Oct 4
+
+### What It Is
+
+A family of diffusion models that generate video and matching sound together:
+
+- **Kandinsky 6.0 Video Lite:** 3B parameters.
+- **Kandinsky 6.0 Video Pro:** 29B parameters.
+
+Both make **5-second clips with synchronised 44 kHz audio**, including lip-sync, from text (T2AV) or from an image (I2AV). A built-in super-resolution model upscales the output to Full HD (1920×1080).
+
+### How It Works
+
+It builds on Kandinsky 5.0's video model with a **dual-stream CrossDiT** architecture: a pretrained video stream and a new audio stream, connected by two-way cross-attention so sound and picture stay aligned in time and meaning.
+
+### How It Was Trained
+
+1. Train the audio stream from scratch on large audio datasets.
+2. Train both streams together on paired audio-video data, without losing quality in either one.
+3. Finish with supervised fine-tuning, reinforcement-learning post-training and distillation.
+
+### Results
+
+In side-by-side human evaluations, Video Pro clearly beats Kandinsky 5.0 Video Pro and holds up against leading audio-video models, especially on speech quality.
+
+### Why It Matters
+
+Code, checkpoints and a diffusers integration are all released under the **MIT licence**, which is rare for a model of this class.
+
+<a class="nl-source" href="https://arxiv.org/abs/2610.05608" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+  </div>
+</dialog>
+
+### 5. RealCompanion: Can AI Companions Really Understand You?
+
+Oct 1 · Quis Lab · #1 Paper of the Day
+{: .nl-repo-meta}
+
+A benchmark built from ten real, months-long relationships with an AI companion. Its findings challenge how memory in AI companions is usually measured.
+
+<button type="button" class="nl-modal-open" data-modal-open="paper-realcompanion" aria-haspopup="dialog">
+  Read more &rarr;
+</button>
+
+<dialog id="paper-realcompanion" class="nl-modal" aria-labelledby="paper-realcompanion-title">
+  <div class="nl-modal-head">
+    <h2 id="paper-realcompanion-title">RealCompanion: Benchmarking Human Understanding Over Real Conversations</h2>
+    <button type="button" class="nl-modal-close" data-modal-close aria-label="Close">&times;</button>
+  </div>
+
+  <div class="nl-modal-body" markdown="1">
+
+**Authors:** Arman Behnam, Sunglyoung Kim, Liangwei Yang · Quis Lab · Oct 1
+
+### The Problem
+
+An AI companion that talks with someone for months should get to know them: remember what they said, infer who they are, and know when the past matters for the current message.
+
+Testing that needs a real person's history, which is private. So existing benchmarks invent the person and the questions, and decide in advance what matters.
+
+### The Benchmark
+
+RealCompanion releases **ten real relationships** with an AI companion: **27,218 messages over up to 120 days**. Each comes with four derived files (a profile, a persona, chat ground truth and a question set), each citing the messages it is based on. Every label includes the reasoning that produced it, checked step by step against the conversation.
+
+### Three Findings
+
+1. **The past is rarely needed, and when it is, it's far back.** Pooled scores mislead: just looking at recent messages finds the needed message for 95.9% of probes, but only 2.2% of the ones that truly need memory. At natural rates, 96% of the gain from supplying past evidence comes from messages that didn't need it.
+2. **No one can tell when memory is needed.** None of the detectors they tried could spot it on real messages. Hand-written questions about the same histories leak the cue, and labelling the same messages as "memories" raises their use by 10 to 14 points.
+3. **Cost varies wildly for the same result.** Three agent systems rebuilt the user's persona with the same F1 score, at a 31x difference in cost.
+
+<a class="nl-source" href="https://arxiv.org/abs/2610.01780" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+  </div>
+</dialog>
 
 ## AI News
 
@@ -554,3 +797,47 @@ List via Tech Logic ([@The_techAI](https://x.com/The_techAI){: target="_blank" r
 
   </div>
 </dialog>
+
+## Videos of the Week
+
+### 1. Prompt Engineering Playbook by Anthropic
+
+Video · Shared by @ZaraAi56190 on X
+{: .nl-repo-meta}
+
+A walkthrough of Anthropic's playbook for writing prompts that get reliable results from Claude, from structuring instructions to giving the model the right context.
+
+<a class="nl-source" href="https://x.com/ZaraAi56190/status/2108912356688617797/video/1" target="_blank" rel="noopener">Watch on X &rarr;</a>
+
+### 2. Agentic Knowledge Graphs, Explained
+
+Video · Shared by @Grow_withAI on X
+{: .nl-repo-meta}
+
+How agents can build and use knowledge graphs: connecting entities and relationships so an agent can reason over structured memory instead of loose text chunks.
+
+<a class="nl-source" href="https://x.com/Grow_withAI/status/2108904705854411211/video/1" target="_blank" rel="noopener">Watch on X &rarr;</a>
+
+### 3. LLM Inference & Serving Deep Dive: vLLM, SGLang, TensorRT-LLM & KV Cache Optimization
+
+Video · by Trisham Patil · Tech Syndicate on YouTube
+{: .nl-repo-meta}
+
+[![LLM Inference and Serving deep dive video on vLLM, SGLang, TensorRT-LLM and KV cache optimization](https://i.ytimg.com/vi/Vfg0x0f_1kk/maxresdefault.jpg){: .nl-video-thumb}](https://www.youtube.com/watch?v=Vfg0x0f_1kk){: target="_blank" rel="noopener"}
+
+My deep dive into how modern inference engines cut memory, latency and cost when serving LLMs at scale.
+
+It covers attention variants (MHA, MQA, GQA, MLA), KV cache sizing, prefill vs decode, vLLM's PagedAttention, SGLang's RadixAttention and prefix caching, TensorRT-LLM, FlashInfer and continuous batching. It also goes into Mooncake's disaggregated KV cache, Strata's hierarchical KV cache, prefill/decode disaggregation, quantization and multi-GPU serving.
+
+<a class="nl-source" href="https://www.youtube.com/watch?v=Vfg0x0f_1kk" target="_blank" rel="noopener">Watch on YouTube &rarr;</a>
+
+### 4. Andrej Karpathy's Free Lecture: Agents, Loops, Harnesses and Self-Improving Systems
+
+Video · Shared by @HeyShobhan on X
+{: .nl-repo-meta}
+
+A free two-hour lecture from Andrej Karpathy, who spent years at OpenAI and Tesla, building up from agents to loops, harnesses and self-improving systems. It's a strong free alternative to a paid AI engineering course.
+
+If the harness part clicks, my [Harness Engineering breakdown](/engineering/harness-engineering/) goes deep on the runtime inside production coding agents.
+
+<a class="nl-source" href="https://x.com/HeyShobhan/status/2108897725635006891/video/1" target="_blank" rel="noopener">Watch on X &rarr;</a>
