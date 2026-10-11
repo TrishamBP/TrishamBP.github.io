@@ -3,10 +3,13 @@
    -----------------------------------------------------------------------------
    Applied to /physical-systems/. `_includes/head.html` loads this file and
    `_layouts/default.html` adds `ps-systems` to <body>, both gated on the same
-   condition. The backdrop is drawn by assets/js/physical-systems.js.
+   condition. The backdrop is static CSS — no canvas, no animation.
 
-   Palette: a near-black blueprint void lit by cyan/blue wireframe (propulsion)
-   and warm orange/amber flow with violet haze (fluid + embodied intelligence).
+   Palette: a near-black blueprint void lit by cyan/blue (propulsion) and warm
+   orange/amber with violet haze (fluid + embodied intelligence).
+
+   Typography follows the blog skin (css/blog-paper.css): --ts-display for the
+   title, --ts-term uppercase for the eyebrow/intro, --ts-body for copy.
    ========================================================================== */
 
 body.theme-typesafe.ps-systems {
@@ -22,20 +25,33 @@ body.theme-typesafe.ps-systems {
   --ps-violet: #9b6bff;
   --ps-white: #eef6ff;
 
-  background: var(--ps-void);
   color: var(--ps-white);
-}
 
-/* Fixed full-screen backdrop behind all content. */
-.ps-systems .ps-canvas {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1;
-  display: block;
-  pointer-events: none;
-  background: var(--ps-void);
+  /* Static glow backdrop: same cyan / amber / violet lights as before, laid
+     down as fixed gradients instead of an animated scene. */
+  background-color: var(--ps-void);
+  background-image: radial-gradient(
+      ellipse 70% 55% at 18% 8%,
+      rgba(47, 125, 255, 0.22),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 60% 50% at 88% 22%,
+      rgba(79, 210, 255, 0.14),
+      transparent 72%
+    ),
+    radial-gradient(
+      ellipse 85% 55% at 72% 100%,
+      rgba(255, 138, 61, 0.16),
+      transparent 72%
+    ),
+    radial-gradient(
+      ellipse 70% 60% at 8% 92%,
+      rgba(155, 107, 255, 0.16),
+      transparent 72%
+    );
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 
 /* -----------------------------------------------------------------------------
@@ -95,46 +111,39 @@ body.theme-typesafe.ps-systems .site-shell .ps-eyebrow {
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--ps-amber);
-  text-shadow: 0 0 8px var(--ps-orange-dim);
 }
 
 .ps-systems .ps-dot {
   width: 7px;
   height: 7px;
   background: var(--ps-orange);
-  box-shadow: 0 0 10px var(--ps-orange);
-  animation: ps-blink 1.8s steps(2, jump-none) infinite;
 }
 
-@keyframes ps-blink {
-  50% {
-    opacity: 0.25;
-  }
-}
-
+/* Title in the blog skin's display face: same weight, scale and hairline
+   stroke, recoloured onto the Physical Systems palette. */
 body.theme-typesafe.ps-systems .site-shell .ps-section .section-title {
-  margin-bottom: 1.2rem;
+  margin-bottom: 0.8rem;
   font-family: var(--ts-display);
-  font-weight: 700;
-  font-size: clamp(2.6rem, 8vw, 6rem);
-  line-height: 0.95;
-  letter-spacing: -0.01em;
+  font-weight: 500;
+  font-size: clamp(3rem, 9vw, 5.8rem);
+  line-height: 0.9;
   color: var(--ps-white);
-  -webkit-text-stroke: 0;
-  background: linear-gradient(100deg, #ffffff 0%, var(--ps-cyan) 45%, var(--ps-amber) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 18px rgba(79, 210, 255, 0.35));
+  -webkit-text-stroke: 0.5px var(--ps-white);
 }
 
+/* Intro as the blog skin's monospace standfirst, ruled off below. */
 body.theme-typesafe.ps-systems .site-shell .ps-section .research-intro {
-  max-width: 58ch;
-  font-size: 1.05rem;
-  line-height: 1.6;
-  color: rgba(238, 246, 255, 0.82);
+  max-width: 68ch;
+  font-family: var(--ts-term);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  line-height: 1.7;
+  text-transform: uppercase;
+  color: rgba(238, 246, 255, 0.68);
+  padding: 0 0 1.6rem;
   border: 0;
-  padding: 0;
+  border-bottom: var(--ts-rule) solid var(--ps-cyan-dim);
+  margin-bottom: 0;
 }
 
 /* -----------------------------------------------------------------------------

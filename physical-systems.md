@@ -8,14 +8,10 @@ permalink: /physical-systems/
 ---
 
 {%- comment -%}
-  Physical Systems skin (css/physical-systems.css + assets/js/physical-systems.js):
-  the canvas below is a fixed full-screen backdrop, an original scene drawn
-  in code: cyan wireframe turbines on a blueprint floor (propulsion) crossed
-  by orange flow streamlines and violet planes (fluid dynamics / embodied
-  intelligence). No images or text are used in it.
+  Physical Systems skin (css/physical-systems.css): static backdrop only — the
+  near-black blueprint void lit by cyan/blue, orange/amber and violet glows.
+  Typography follows the blog skin (--ts-display titles, --ts-term meta).
 {%- endcomment -%}
-<canvas class="ps-canvas" aria-hidden="true"></canvas>
-
 <section class="content-section ps-section" aria-labelledby="ps-heading">
   <p class="ps-eyebrow"><span class="ps-dot" aria-hidden="true"></span>Propulsion &middot; Thermal Systems &middot; Embodied Intelligence</p>
   <h1 id="ps-heading" class="section-title">Physical Systems</h1>
@@ -39,5 +35,3 @@ permalink: /physical-systems/
     </article>
   </div>
 </section>
-
-<script src="{{ '/assets/js/physical-systems.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
