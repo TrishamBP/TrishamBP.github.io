@@ -6,7 +6,7 @@ seo_title: "Starlink in India, Anti-Drone Lasers & Anduril Fury Drone | The Week
 date: 2026-10-11
 author: Trisham Patil
 description: "Why Starlink won't work for India, US anti-drone lasers, a deadly Houthi strike on a Saudi airport, and Anduril's Fury loyal wingman drone flying with fighters."
-keywords: "Starlink India, Elon Musk oligarchy, Starlink national security, satellite internet India, Starlink Arunachal Pradesh, Starlink LoC, India communication sovereignty, military satellite communications, Telecommunications Act 2023, anti-drone laser, directed energy weapon, drone defence, Houthi drone attack, Saudi airport attack, cheap drone warfare, Anduril, Anduril Fury, YFQ-44A, Collaborative Combat Aircraft, loyal wingman drone, Lattice software, top GitHub repos, REA reverse engineering, Strix AI pentesting, AnyPS5, ArtCraft, Adobe alternative, open-source Photoshop alternative, PhotoCraft, open-source Adobe suite, LLM router, Claude model routing, agent harness, AI news, AI research agents, Epoch AI, AI governance, AI in warfare, on-device AI, The Weekly Tech Brew"
+keywords: "Starlink India, Elon Musk oligarchy, Starlink national security, satellite internet India, Starlink Arunachal Pradesh, Starlink LoC, India communication sovereignty, military satellite communications, Telecommunications Act 2023, anti-drone laser, directed energy weapon, drone defence, Houthi drone attack, Saudi airport attack, cheap drone warfare, Anduril, Anduril Fury, YFQ-44A, Collaborative Combat Aircraft, loyal wingman drone, Lattice software, top GitHub repos, REA reverse engineering, Strix AI pentesting, AnyPS5, ArtCraft, Adobe alternative, open-source Photoshop alternative, PhotoCraft, open-source Adobe suite, LLM router, Claude model routing, agent harness, AI news, AI research agents, Epoch AI, AI governance, AI in warfare, on-device AI, OpenAI Decisions API, JEV, TypeSafe AI, decision models, The Weekly Tech Brew"
 ---
 
 ## News Around the World
@@ -376,7 +376,66 @@ At first, a licensed clinician signs off on every prescription; later, the compa
 
 San Francisco's Board of Supervisors unanimously approved a 45-day ban on new data centres, effective immediately. The city can stretch it to about two years while it works out permanent rules, in the hometown of many of the world's most valuable AI companies.
 
-### 6. Wait, What?
+### 6. Decision APIs Go Mainstream
+
+#### OpenAI Launches Decisions (Beta), and It Looks a Lot Like JEV
+
+OpenAI has opened a public beta of the **Decisions API**: send it text or images plus a list of questions, and it returns typed answers with probabilities instead of free-form text. OpenAI says it is about 10x faster than the Responses API, and it costs $0.10 per million input tokens with no charge for output.
+
+If that sounds familiar, it should. It is almost exactly the "System One" decision model that TypeSafe AI built with JEV, which I broke down earlier this week.
+
+<button type="button" class="nl-modal-open" data-modal-open="decisions-vs-jev" aria-haspopup="dialog">
+  Read more: OpenAI Decisions vs JEV &rarr;
+</button>
+
+<dialog id="decisions-vs-jev" class="nl-modal" aria-labelledby="decisions-vs-jev-title">
+  <div class="nl-modal-head">
+    <h2 id="decisions-vs-jev-title">OpenAI Decisions (Beta) vs JEV by TypeSafe AI</h2>
+    <button type="button" class="nl-modal-close" data-modal-close aria-label="Close">&times;</button>
+  </div>
+
+  <div class="nl-modal-body" markdown="1">
+
+Both are built for the same job: the fast, cheap decisions an agent or app makes thousands of times. Is this urgent? Which team should handle it? How severe is it? Neither one writes text. They return answers your code can branch on.
+
+### Side-by-Side Comparison
+
+| | OpenAI Decisions | JEV (TypeSafe AI) |
+| --- | --- | --- |
+| Status | Public beta, GA "in the coming weeks" | Released |
+| Model | `gpt-6-luna` (the only one) | `jev-latest`, a System One model trained with RLCD |
+| Endpoint | `POST /v1/decisions` | `POST /v1/systemone` |
+| What it reads | `input`: text, or messages with text and base64 images | `state`: a snapshot of the context |
+| Yes / no | **Predicate** → `probability` (0–1) | **Noul** → `noul` (0–1) |
+| Pick one | **Choice** → `choice`, `probabilities`, `confidence` | **Choice** → `choice`, `probabilities`, `confidence` |
+| Rate a level | **Score** → probability-weighted `score`, `probabilities` | **Score** → `score`, `legend`, `probabilities`, `confidence` |
+| Many questions, one call | Yes | Yes, evaluated in parallel |
+| Speed claim | ~10x faster than the Responses API | Up to 200x faster and 400x cheaper than comparable LLMs (company-reported) |
+| Price | $0.10 / 1M input tokens, output free | Per model, on TypeSafe's Models page |
+
+### Where They Differ
+
+- **Images:** OpenAI's beta takes images alongside text in the same request (inline base64 only, no URLs or file IDs).
+- **Ecosystem:** Decisions sits inside the OpenAI platform and SDKs you may already use, including voice via the Live API.
+- **Focus:** JEV is built around calibrated confidence. TypeSafe trains it with reinforcement learning for calibrated decisions, so "I'm not sure" is a signal you can route on: act, ask a human, or fall back.
+- **Limits:** OpenAI's beta runs one model, can't chain dependent decisions in a single call, and isn't meant for structured objects or function calls.
+
+### My Take: A New Primitive Is Being Standardised
+
+When OpenAI ships an API with the same shape as JEV (three typed question types, probabilities on every answer, many questions per call), the category is real. Decision models are becoming a standard building block, next to tool calling and structured outputs.
+
+For builders, the patterns carry over: confidence-gated autonomy, human-in-the-loop gates, model routing, guardrails and tool-call gating work the same way on either API. The choice comes down to modality, ecosystem, price and how much you trust each model's calibration on your own data.
+
+<a class="nl-source" href="https://developers.openai.com/api/docs/guides/decisions" target="_blank" rel="noopener">Read OpenAI's Decisions guide &rarr;</a>
+
+Want the full breakdown of JEV: architecture, confidence, LangGraph and Langfuse integration, and seven production use cases? Read my deep dive, [JEV Decoded: What It Is and What Are the Use Cases?]({% post_url 2026-10-06-jev-decoded %}).
+
+  </div>
+</dialog>
+
+<a class="nl-source" href="{% post_url 2026-10-06-jev-decoded %}">Read my JEV deep dive &rarr;</a>
+
+### 7. Wait, What?
 
 **AI songs outstreamed Taylor Swift.** A North Carolina man was sentenced to 18 months in prison for using bots to stream hundreds of thousands of AI-generated songs.
 
