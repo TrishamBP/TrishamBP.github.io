@@ -4,3 +4,6 @@ articles/
 track_task.md
 assets/notes/
 raw_data/
+# Newsletter email generator and its output (kept local)
+scripts/newsletter_email.py
+newsletter_emails/

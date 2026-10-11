@@ -2,6 +2,7 @@
 layout: post
 title: "The Weekly Tech Brew"
 subtitle: "by Trisham Patil"
+email_subject: "The Weekly Tech Brew #1: Starlink in India, Anduril's Fury Drone, DeepSeek's 890-Byte KV Cache & More"
 seo_title: "Starlink in India, Anti-Drone Lasers & Anduril Fury Drone | The Weekly Tech Brew"
 date: 2026-10-11
 author: Trisham Patil

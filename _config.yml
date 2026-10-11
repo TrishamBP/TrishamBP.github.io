@@ -30,6 +30,8 @@ exclude:
   - raw_data
   - eagle_three
   - harness_engineering
+  - scripts
+  - newsletter_emails
 
 highlighter: rouge
 kramdown:
