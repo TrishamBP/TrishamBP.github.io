@@ -15,6 +15,10 @@ keywords: "Starlink India, Elon Musk oligarchy, Starlink national security, sate
 
 Elon Musk has accused an Indian billionaire of oligarchy, the latest flare-up in the fight over who gets to sell satellite internet in India.
 
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 The background: Starlink wants to enter India, and the country's incumbent telecom giants see it as a direct threat to their broadband business.
 
 Whatever you think of the spat, it hides a bigger question. Should India let Starlink become the internet for the places that matter most?
@@ -22,6 +26,9 @@ Whatever you think of the spat, it hides a bigger question. Should India let Sta
 <button type="button" class="nl-modal-open" data-modal-open="why-starlink-wont-work" aria-haspopup="dialog">
   Why Starlink won't work for India &rarr;
 </button>
+
+</div>
+</details>
 
 <dialog id="why-starlink-wont-work" class="nl-modal" aria-labelledby="why-starlink-wont-work-title">
   <div class="nl-modal-head">
@@ -66,6 +73,10 @@ India cannot be sovereign, whether on the offensive or the defensive, if its com
 
 A new anti-drone defence system, including a directed energy weapon (a laser-based interceptor), has reportedly been installed near Palm Beach International Airport in Florida.
 
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 It is meant to protect Pete Hegseth, Marco Rubio and President Donald Trump, along with civilian aircraft and high-value sites such as Mar-a-Lago.
 
 Military experts quoted in the report say it is built to counter drone attacks in sensitive civilian and political zones. That marks a shift: drones are now treated as a threat to home airspace, not just a battlefield problem from Ukraine to Iran.
@@ -74,15 +85,25 @@ The reason lasers matter is cost. A missile interceptor can cost far more than t
 
 <a class="nl-source" href="https://timesofindia.indiatimes.com/defence/international/anti-drone-laser-defence-system-in-washington-to-protect-hegseth-rubio-how-it-works/articleshow/129945466.cms" target="_blank" rel="noopener">Read the full report on Times of India &rarr;</a>
 
+</div>
+</details>
+
 ### 3. Houthi Strike on Saudi Airport Kills 12, Worst Attack on the Kingdom in a Decade
 
 A Houthi strike on a Saudi airport has killed 12 people, the worst attack on the kingdom in a decade. Reuters also reports a loud blast heard at Riyadh airport, with airlines cancelling more flights.
+
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
 
 This is what cheap drone warfare looks like. The Houthis have built their campaign on low-cost drones and missiles, and they can still hit an airport in one of the region's best-defended states.
 
 The economics favour the attacker. A cheap drone forces the defender to fire expensive interceptors or simply absorb the hit. That is exactly the gap laser systems like the one above are trying to close.
 
 <a class="nl-source" href="https://www.reuters.com/world/middle-east/loud-blast-heard-riyadh-airport-airlines-cancel-more-flights-2026-10-10/" target="_blank" rel="noopener">Read the full report on Reuters &rarr;</a>
+
+</div>
+</details>
 
 ## Company Under Spotlight This Week
 
@@ -97,6 +118,10 @@ The pitch is simple: software-first weapons, built fast and cheap enough to fiel
 ### Fury: Anduril's Autonomous Air Vehicle (AAV)
 
 Fury is an uncrewed, jet-powered aircraft that runs on Lattice. Its job is to turn mission autonomy from a lab demo into something pilots can actually fly with.
+
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full breakdown</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
 
 Anduril highlights four build qualities:
 
@@ -130,6 +155,9 @@ Here is how that helps the pilot:
 This connects to this week's drone stories. Cheap mass is changing who wins in the air, and Fury is the US bet that it can be on the winning side.
 
 <a class="nl-source" href="https://www.anduril.com/fury/" target="_blank" rel="noopener">See Fury on Anduril's website &rarr;</a>
+
+</div>
+</details>
 
 ## Top GitHub Repos This Week
 
@@ -911,27 +939,55 @@ If you want to see how that runtime works under the hood, my [Harness Engineerin
 
 Epoch AI checked whether AI agents can invent a new machine learning technique by themselves. Each agent had to improve a small open model and match a training method from a human research paper it had never seen, with a budget of 3,000 GPU-hours.
 
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 The verdict, for now, is no. GPT-5.6 Sol did best, recovering about 35% of the human method's gains even on the most generous reading.
 
 Claude Fable 5 looked better at first, but only because it picked the best of several runs, which broke the rules, so Epoch threw those results out. Epoch also found the agents' own write-ups overstated what they had achieved.
+
+</div>
+</details>
 
 #### Agents Also Struggle to Train Better Models
 
 The new MMPostTrainBench benchmark set agents eight tasks: improve a model on images, audio, video or code repair.
 
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 In 52.1% of model–task pairs, the agent finished with a *worse* model than it started with. Agents also often failed to submit their own best attempt.
+
+</div>
+</details>
 
 #### Labs Are Spending as If That Will Change
 
 OpenAI researchers are using coding agents at a rapidly growing rate. Working from charts OpenAI published in September, Epoch estimates the median researcher was using about $601 a day of coding agents by mid-August (at list prices), up from under $1 in January.
 
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 The top 10% were above $7,000 a day, and both numbers have roughly doubled every month. The caveats: the data are self-reported by OpenAI and priced at list rates, not what OpenAI really pays. Epoch calls the trend "probably unsustainable."
+
+</div>
+</details>
 
 #### A New Way to Measure How Close Models Are to New Ideas
 
 Kaiyue Wen, Tengyu Ma and Percy Liang asked five models to reconstruct the core ideas of 87 recent deep learning papers. Rather than marking each answer right or wrong, they counted how many hints a model needed to get there.
 
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 The best model, Claude Fable 5.1, needed the equivalent of about 70 yes-or-no hints per idea. Watching that number fall over time shows how close models are to coming up with research ideas on their own.
+
+</div>
+</details>
 
 ### 2. Who Gets a Say in Governing AI
 
@@ -939,37 +995,79 @@ The best model, Claude Fable 5.1, needed the equivalent of about 70 yes-or-no hi
 
 Tech leaders recently signed a voluntary White House accord to police their own AI development, which President Trump described as "morally" binding.
 
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 Former FTC chair Lina Khan dismissed it on ABC's *This Week*: "Self-regulation efforts by big tech have been a proven failure." She compared it to the promises social media companies made a decade ago.
+
+</div>
+</details>
 
 #### New York City Puts AI Labs Under Oath
 
 Policy leads from Anthropic, OpenAI, Google and Meta testified under oath about the risks of their technology at a New York City Council hearing. Council Speaker Julie Menin seemed frustrated at times by how few direct answers she got.
 
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 Former Google DeepMind researcher Alex Turner told the council that misaligned AI "may be more powerful than China" one day.
+
+</div>
+</details>
 
 #### African Governments Want a Hand in Setting Safety Standards
 
 At a UN Security Council meeting on AI, African leaders pushed for a bigger role in setting global AI standards. Companies and governments across Africa are adopting American and Chinese AI fast, but many countries have no way to test whether those systems are safe for their own people.
 
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 "There's essentially no real discussion about AI safety. So, there's a real vacuum," associate professor Jonathan Shock told *Rest of World*.
+
+</div>
+</details>
 
 #### Britain's AI Minister Says the UK Has "Effectively Banned" Superintelligence
 
 UK AI minister Kanishka Narayan argued against a new frontier AI law. His reasoning: Britain lacks the energy and data centres to build superintelligence, and its copyright rules already make training a frontier transformer model illegal.
 
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 Meanwhile, Prime Minister Andy Burnham says he will put AI "center stage" when the UK holds the G20 presidency next year.
+
+</div>
+</details>
 
 #### Utah Asked 40 Residents What AI Rules They Want
 
 *Lawfare* sat in on a Utah citizens' assembly: 40 residents, picked to mirror the population of three counties, learned about AI and worked out which policies could win broad support.
 
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 The piece also interviews Audrey Tang, Taiwan's former digital minister, on using assemblies like this to break deadlocks over AI regulation.
+
+</div>
+</details>
 
 #### Critics Say the UN's AI Panel Is Asking the Wrong Question
 
 The UN's new scientific panel on AI picked the OpenAI and Hugging Face agent breach as its first case study and framed it as a model alignment failure.
 
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 Three AI governance researchers push back. Calling it a technical mystery, they argue, lets the companies off the hook. The real issue is corporate conduct and accountability.
+
+</div>
+</details>
 
 ### 3. AI Is Moving Into War Planning
 
@@ -977,19 +1075,40 @@ Three AI governance researchers push back. Calling it a technical mystery, they 
 
 *Wired* reports on Tradewinds, a Defense Department programme where companies pitch AI products in videos of five minutes or less. A panel reviews submissions at least once a month, and accepted companies can then be bought from faster.
 
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 OpenAI, Anthropic and Google are among the newer contractors the programme has made easier to fund.
+
+</div>
+</details>
 
 #### Researchers Warn Against AI-Run War Games
 
 Mark Riedl and Glenn Matlin argue that AI-driven war games shouldn't shape military planning, doctrine or crisis response without an auditable safety case.
 
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 In these simulations, language models both play the actors and decide what happens next, which can quietly nudge a game toward escalation. Standard benchmarks, they say, can't prove the models are safe for this job.
+
+</div>
+</details>
 
 #### Today's AI Could Make a Nuclear Crisis Worse
 
 In the *Bulletin of the Atomic Scientists*, Paul Slovic and Herbert Lin warn that AI doesn't need to be superintelligent to help start a nuclear war.
 
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 Current systems could amplify human blind spots, speed up escalation and bury decision-makers in information in the middle of a crisis.
+
+</div>
+</details>
 
 #### Tech Companies Are Becoming Defence Suppliers
 
@@ -1001,19 +1120,40 @@ A *Nature* review of two new books looks at power over warfare shifting from gov
 
 Microsoft and GitHub are rolling out local models in GitHub Copilot. The first is an on-device version of Microsoft's MAI Code 1.1 Flash, shrunk to about 53 GB so it runs on the Surface Laptop Ultra.
 
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 Microsoft says it scores 70.8% on SWE-Bench Verified, close to the cloud version's 72.6%. By the end of October, Copilot will decide by itself whether a task runs locally or in the cloud. Commands the agent runs are also moving into a sandbox that limits which files, networks and passwords it can touch.
+
+</div>
+</details>
 
 #### A $3,499 Box Built to Run Personal Agents
 
 Ghost, a startup founded by 19-year-old Zain Javaid, raised an $11 million seed round led by Andreessen Horowitz.
 
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 Its first device, Core, costs $3,499, packs an Nvidia GPU and has no screen; you use it from your phone. Ghost says the models and your personal memory stay on the device, so not even the company can read them.
+
+</div>
+</details>
 
 #### Models That Read Raw Text Instead of Word Pieces
 
 Most language models chop text into fixed chunks called tokens, which is why they trip over spelling, rare words and some writing systems.
 
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 Ai2 published research in *Nature* on converting existing models to read raw bytes instead, using a short extra training run rather than training from scratch. Its converted Qwen 3 8B comes close to the original, and the checkpoints are free to download.
+
+</div>
+</details>
 
 ### 5. Rules Arriving on the Ground
 
@@ -1021,7 +1161,14 @@ Ai2 published research in *Nature* on converting existing models to read raw byt
 
 Utah approved a pilot, run by startup Nolla Health, in which AI assesses acne patients and writes prescriptions. It uses a patient questionnaire and skin photos to choose from a list of low-risk drugs.
 
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 At first, a licensed clinician signs off on every prescription; later, the company may be allowed to prescribe without that check. The state will require outside audits of the company's claims.
+
+</div>
+</details>
 
 #### San Francisco Pauses New Data Centres
 
@@ -1033,11 +1180,18 @@ San Francisco's Board of Supervisors unanimously approved a 45-day ban on new da
 
 OpenAI has opened a public beta of the **Decisions API**: send it text or images plus a list of questions, and it returns typed answers with probabilities instead of free-form text. OpenAI says it is about 10x faster than the Responses API, and it costs $0.10 per million input tokens with no charge for output.
 
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 If that sounds familiar, it should. It is almost exactly the "System One" decision model that TypeSafe AI built with JEV, which I broke down earlier this week.
 
 <button type="button" class="nl-modal-open" data-modal-open="decisions-vs-jev" aria-haspopup="dialog">
   Read more: OpenAI Decisions vs JEV &rarr;
 </button>
+
+</div>
+</details>
 
 <dialog id="decisions-vs-jev" class="nl-modal" aria-labelledby="decisions-vs-jev-title">
   <div class="nl-modal-head">
@@ -1090,7 +1244,14 @@ Want the full breakdown of JEV: architecture, confidence, LangGraph and Langfuse
 
 **AI songs outstreamed Taylor Swift.** A North Carolina man was sentenced to 18 months in prison for using bots to stream hundreds of thousands of AI-generated songs.
 
+<details class="nl-expand">
+<summary><span class="nl-expand-more">Read the full story</span><span class="nl-expand-less">Show less</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 In April 2023 alone, his fake songs racked up 80.9 million streams, against 9.3 million for Taylor Swift's entire catalogue that month. The Justice Department says he is the first American criminally charged with AI-assisted streaming fraud.
+
+</div>
+</details>
 
 ## Rabbit Holes to Deep Dive
 

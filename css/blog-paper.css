@@ -490,6 +490,131 @@ body.theme-typesafe.ts-paper .post-content img.nl-hero {
   box-shadow: none;
 }
 
+/* Expandable story (<details class="nl-expand">): the first paragraph stays
+   visible, the rest opens in place. The toggle uses the card language (ink
+   border, offset shadow); "+" becomes "×" when open. */
+body.theme-typesafe.ts-paper .post-content .nl-expand {
+  margin: 0.4rem 0 1.6rem;
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-expand > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  list-style: none;
+  padding: 0.5rem 0.95rem 0.5rem 0.6rem;
+  font-family: var(--ts-term);
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ts-ink);
+  background: var(--ts-bg);
+  border: 2px solid var(--ts-ink);
+  box-shadow: 3px 3px 0 var(--ts-ink);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s var(--ts-ease), box-shadow 0.2s var(--ts-ease),
+    background-color 0.2s var(--ts-ease), color 0.2s var(--ts-ease);
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-expand > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* The +/x badge. */
+body.theme-typesafe.ts-paper .post-content .nl-expand > summary::before {
+  content: "+";
+  display: inline-grid;
+  place-items: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  font-size: 1.05rem;
+  line-height: 1;
+  color: var(--ts-light);
+  background: var(--ts-green);
+  transition: background-color 0.2s var(--ts-ease);
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-expand > summary:hover,
+body.theme-typesafe.ts-paper .post-content .nl-expand > summary:focus-visible {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--ts-green);
+  outline: none;
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-expand[open] > summary {
+  color: var(--ts-light);
+  background: var(--ts-ink);
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-expand[open] > summary::before {
+  content: "\00d7";
+  background: var(--ts-light);
+  color: var(--ts-ink);
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-expand .nl-expand-less,
+body.theme-typesafe.ts-paper .post-content .nl-expand[open] .nl-expand-more {
+  display: none;
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-expand[open] .nl-expand-less {
+  display: inline;
+}
+
+/* The opened text: a green rule ties it to its story. */
+body.theme-typesafe.ts-paper .post-content .nl-expand-body {
+  margin-top: 1.1rem;
+  padding-left: 1.1rem;
+  border-left: 3px solid var(--ts-green);
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-expand-body > :first-child {
+  margin-top: 0;
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-expand[open] .nl-expand-body {
+  animation: nl-expand-in 0.35s var(--ts-ease);
+}
+
+@keyframes nl-expand-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Smooth height where the browser can animate to auto. */
+@supports (interpolate-size: allow-keywords) {
+  body.theme-typesafe.ts-paper .post-content .nl-expand {
+    interpolate-size: allow-keywords;
+  }
+
+  body.theme-typesafe.ts-paper .post-content .nl-expand::details-content {
+    height: 0;
+    overflow: clip;
+    transition: height 0.35s var(--ts-ease);
+  }
+
+  body.theme-typesafe.ts-paper .post-content .nl-expand[open]::details-content {
+    height: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.theme-typesafe.ts-paper .post-content .nl-expand[open] .nl-expand-body {
+    animation: none;
+  }
+
+  body.theme-typesafe.ts-paper .post-content .nl-expand::details-content {
+    transition: none;
+  }
+}
+
 /* Padding lives on the children, so a click on the <dialog> element itself
    can only be a backdrop click (the script closes on that). */
 body.theme-typesafe.ts-paper .nl-modal {

@@ -5,7 +5,8 @@ permalink: /newsletter/feed.xml
 {%- comment -%}
   The Weekly Tech Brew feed. Buttondown's RSS-to-email polls this and emails
   each new item to subscribers, so the HTML is rewritten for email clients:
-  - <dialog> pop-ups become plain <div>s, so their content reads inline;
+  - <dialog> pop-ups and <details> expanders become plain <div>s, so their
+    content reads inline (the expander toggle is hidden);
   - the open/close buttons and Mermaid diagrams (which need JS) are hidden
     with inline display:none;
   - root-relative src/href become absolute, since email has no base URL.
@@ -24,6 +25,10 @@ permalink: /newsletter/feed.xml
     {%- assign email_html = edition.content
       | replace: '<dialog', '<div'
       | replace: '</dialog>', '</div>'
+      | replace: '<details class="nl-expand">', '<div class="nl-expand">'
+      | replace: '</details>', '</div>'
+      | replace: '<summary>', '<div style="display:none">'
+      | replace: '</summary>', '</div>'
       | replace: 'class="nl-modal-open"', 'class="nl-modal-open" style="display:none"'
       | replace: 'class="nl-modal-close"', 'class="nl-modal-close" style="display:none"'
       | replace: '<pre><code class="language-mermaid"', '<pre style="display:none"><code class="language-mermaid"'
