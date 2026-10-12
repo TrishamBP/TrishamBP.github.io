@@ -7,6 +7,7 @@ seo_title: "Being Mean to Claude Can Get You Banned: What It Really Means"
 date: 2026-10-12
 # last_modified_at: YYYY-MM-DD  # optional; JSON-LD dateModified falls back to `date`
 author: Trisham Bharat Patil
+excerpt: "Can being mean to Claude get you banned? What Anthropic's new rule actually covers, how Claude's constitution shapes training, and why insults don't feed RLHF."
 meta: "Artificial Intelligence • Claude AI • AI Policies"
 category: "Artificial Intelligence"
 description: "Can being rude to Claude AI get your account banned? Explore what Anthropic's policies and account enforcement rules actually mean."
