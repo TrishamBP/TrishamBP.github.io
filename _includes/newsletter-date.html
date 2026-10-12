@@ -1,0 +1,10 @@
+{%- comment -%} Renders a newsletter date as "12th October 2026 Monday". Pass date=... {%- endcomment -%}
+{%- assign nl_day = include.date | date: "%-d" | plus: 0 -%}
+{%- assign nl_mod100 = nl_day | modulo: 100 -%}
+{%- assign nl_mod10 = nl_day | modulo: 10 -%}
+{%- if nl_mod100 >= 11 and nl_mod100 <= 13 -%}{%- assign nl_suffix = "th" -%}
+{%- elsif nl_mod10 == 1 -%}{%- assign nl_suffix = "st" -%}
+{%- elsif nl_mod10 == 2 -%}{%- assign nl_suffix = "nd" -%}
+{%- elsif nl_mod10 == 3 -%}{%- assign nl_suffix = "rd" -%}
+{%- else -%}{%- assign nl_suffix = "th" -%}{%- endif -%}
+{{ nl_day }}{{ nl_suffix }} {{ include.date | date: "%B %Y %A" }}

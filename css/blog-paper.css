@@ -353,6 +353,14 @@ body.theme-typesafe.ts-paper .post-content .nl-repo-meta {
   margin: -0.2rem 0 0.8rem;
 }
 
+/* Tech Brew badge above the newsletter issue title. */
+body.theme-typesafe.ts-paper .post--newsletter .post-header .nl-masthead-logo {
+  display: block;
+  width: 120px;
+  height: 120px;
+  margin: 0 0 1rem;
+}
+
 /* Newsletter story headlines (H4 under a theme H3) read as headlines, not
    as the small terminal labels H4 is in articles. */
 body.theme-typesafe.ts-paper .post--newsletter .post-content h4 {

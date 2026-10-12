@@ -26,7 +26,7 @@ permalink: /newsletter/
           </a>
         </h2>
         <p class="article-date">
-          <time datetime="{{ edition.date | date: '%Y-%m-%d' }}">{{ edition.date | date: "%B %-d, %Y" }}</time>
+          <time datetime="{{ edition.date | date: '%Y-%m-%d' }}">{% include newsletter-date.html date=edition.date %}</time>
         </p>
       </article>
     {% endfor %}
