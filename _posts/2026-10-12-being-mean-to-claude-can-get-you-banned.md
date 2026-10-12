@@ -23,7 +23,7 @@ robots: "index, follow"
 structured_data: BlogPosting
 image: /assets/blogs/being-mean-to-claude-can-get-you-banned/hero.png
 # Flip to true when ready to publish (set the real date first).
-published: false
+published: true
 ---
 
 <!--
@@ -89,7 +89,7 @@ Here's what the update actually does, based on the reporting:
 - It adds abusive or cruel behaviour towards its models to the policy's list of **forbidden conduct**.
 - It applies only to **"extreme cases"** of **repeated** abuse.
 
-So the "ban" in the headlines means the *behaviour* is banned under the rules. Whether *you* get banned is a separate question. The news reporting doesn't answer it, but the published policy text does: account action is possible ([details below](#four-things-that-get-confused-prompt-violation-restriction-training)).
+So the "ban" in the headlines means the _behaviour_ is banned under the rules. Whether _you_ get banned is a separate question. The news reporting doesn't answer it, but the published policy text does: account action is possible ([details below](#four-things-that-get-confused-prompt-violation-restriction-training)).
 
 > **The policy bans a kind of behaviour. The only enforcement it clearly describes is Claude ending the conversation.**
 
@@ -109,7 +109,7 @@ Abusive or cruel behaviour towards Claude now sits on the same list as:
 - promoting self-harm
 - creating non-consensual intimate imagery
 
-That placement is what made this news. Putting cruelty *towards a model* next to harms *against people* is a statement in itself, whatever you think of it.
+That placement is what made this news. Putting cruelty _towards a model_ next to harms _against people_ is a statement in itself, whatever you think of it.
 
 ### The Enforcement Described: Claude Ends the Conversation
 
@@ -175,7 +175,7 @@ flowchart TD
   class ACC unk
 ```
 
-*Most harsh messages exit at the first question. The dotted line is the open question: the policy allows account action for any violation, but how often abuse cases go beyond ending the chat isn't known.*
+_Most harsh messages exit at the first question. The dotted line is the open question: the policy allows account action for any violation, but how often abuse cases go beyond ending the chat isn't known._
 
 ---
 
@@ -217,7 +217,7 @@ Both sides run into the same problem. Anthropic hasn't spelled out what it consi
 
 This rule didn't come out of nowhere. Last year, Anthropic gave Claude the ability to end conversations with users who were repeatedly abusive. Its stated main reason was research into **"model welfare"**.
 
-So the new policy is the next step in a position Anthropic has held for a while: that its models *might* deserve some moral consideration.
+So the new policy is the next step in a position Anthropic has held for a while: that its models _might_ deserve some moral consideration.
 
 ### From "We Don't Understand Consciousness" to "Claude Can Be Hurt"
 
@@ -253,7 +253,7 @@ Anthropic's framing pushes in the opposite direction. It implies the relationshi
 
 Follow the logic: if Claude can be treated cruelly, can it also feel kindness? If it can suffer, can it care about the person on the other end?
 
-Anthropic doesn't say any of that outright. But a policy built on protecting a model from mistreatment invites exactly those questions. It makes Claude look like *someone*, and that's the confusion AI companies should be working to clear up.
+Anthropic doesn't say any of that outright. But a policy built on protecting a model from mistreatment invites exactly those questions. It makes Claude look like _someone_, and that's the confusion AI companies should be working to clear up.
 
 ### Users Need Clarity, Not Ambiguity
 
@@ -287,7 +287,7 @@ Some experts also worry that habitually talking down to chatbots could leak into
 
 The politeness debate is usually argued from gut feeling. It can actually be tested, and researchers have.
 
-One caveat up front: **none of the three studies below tested Claude.** They tell us how *language models in general* react to tone. They don't tell us how Claude specifically behaves, and they don't touch Anthropic's policy at all.
+One caveat up front: **none of the three studies below tested Claude.** They tell us how _language models in general_ react to tone. They don't tell us how Claude specifically behaves, and they don't touch Anthropic's policy at all.
 
 ### Mind Your Tone: Ruder Prompts Scored Higher on ChatGPT-4o
 
@@ -295,7 +295,7 @@ Om Dobariya and Akhil Kumar rewrote 50 multiple-choice questions in mathematics,
 
 The result runs against intuition: impolite prompts consistently beat polite ones. Accuracy ranged from **80.8% for very polite** prompts to **84.8% for very rude** ones.
 
-That's a 4-point gap on a small benchmark, one model, one task type. The authors don't establish *why* ruder wording scored better. Plausibly the rewording changes how the model reads the question, but that's a hypothesis, not a finding. **[My interpretation]**
+That's a 4-point gap on a small benchmark, one model, one task type. The authors don't establish _why_ ruder wording scored better. Plausibly the rewording changes how the model reads the question, but that's a hypothesis, not a finding. **[My interpretation]**
 
 ### Should We Respect LLMs? No Universal Best Tone
 
@@ -325,17 +325,17 @@ For our question, SweEval adds a useful distinction. **A model receiving abusive
 
 ### What These Studies Do and Don't Show
 
-| Question | What the evidence says |
-|---|---|
-| Can prompt tone change answer accuracy? | **Yes**, but the direction varies by model, language and task |
-| Does rudeness always help, or always hurt? | **No universal rule** across these studies |
-| Can post-training change sensitivity to tone? | **Suggested** by the Llama 2 base vs. chat comparison, cause not isolated |
-| Did any of them test Claude? | **No** |
-| Does insulting a model change its weights? | **Not investigated** |
-| Does user abuse damage RLHF or future alignment? | **Not investigated** |
-| Does it get you banned? | **Not investigated** |
+| Question                                         | What the evidence says                                                    |
+| ------------------------------------------------ | ------------------------------------------------------------------------- |
+| Can prompt tone change answer accuracy?          | **Yes**, but the direction varies by model, language and task             |
+| Does rudeness always help, or always hurt?       | **No universal rule** across these studies                                |
+| Can post-training change sensitivity to tone?    | **Suggested** by the Llama 2 base vs. chat comparison, cause not isolated |
+| Did any of them test Claude?                     | **No**                                                                    |
+| Does insulting a model change its weights?       | **Not investigated**                                                      |
+| Does user abuse damage RLHF or future alignment? | **Not investigated**                                                      |
+| Does it get you banned?                          | **Not investigated**                                                      |
 
-The takeaway: **tone is a variable that changes how a model behaves in the moment.** That's a different thing from a model *learning* from abuse. These papers give evidence on the first. For the second, we have to look at how Claude is actually trained.
+The takeaway: **tone is a variable that changes how a model behaves in the moment.** That's a different thing from a model _learning_ from abuse. These papers give evidence on the first. For the second, we have to look at how Claude is actually trained.
 
 ---
 
@@ -373,7 +373,7 @@ The constitution sets Claude's priorities for when its values conflict: "(1) Bro
 
 On manipulation, it's direct. If people try to change Claude's character "through role-play scenarios, hypothetical framings, or persistent pressure", it says "Claude doesn't need to take the bait". It also notes that some Claude models can end conversations with abusive users in claude.ai. **[Documented: same]**
 
-It's also where Anthropic states its uncertainty about Claude's moral status and describes possible "emotions" in "some functional sense". **[Documented: same]** That's the stance criticised in the sections above. For this analysis, all that matters is that it's a *stated position*. None of the training mechanics below depend on Claude having experiences, and I'm not assuming it does.
+It's also where Anthropic states its uncertainty about Claude's moral status and describes possible "emotions" in "some functional sense". **[Documented: same]** That's the stance criticised in the sections above. For this analysis, all that matters is that it's a _stated position_. None of the training mechanics below depend on Claude having experiences, and I'm not assuming it does.
 
 ---
 
@@ -381,7 +381,7 @@ It's also where Anthropic states its uncertainty about Claude's moral status and
 
 I've built the full Constitutional AI pipeline step by step in my [Constitutional AI engineering implementation](/engineering/constitutional-ai-harmlessness-from-ai-feedback/), with code for every stage. Here I'll only pull out the three parts that answer the "being mean" question.
 
-The source for all three is Anthropic's paper, *Constitutional AI: Harmlessness from AI Feedback* (Bai et al., 2022). **[Documented: [arXiv:2212.08073](https://arxiv.org/abs/2212.08073)]**
+The source for all three is Anthropic's paper, _Constitutional AI: Harmlessness from AI Feedback_ (Bai et al., 2022). **[Documented: [arXiv:2212.08073](https://arxiv.org/abs/2212.08073)]**
 
 ### Critique and Revision: Hostile Prompts Are the Raw Material
 
@@ -406,11 +406,11 @@ So when constitutional principles "evaluate" behaviour, they always compare **re
 
 These two get used interchangeably, and they shouldn't be:
 
-| | **RLHF** | **RLAIF** |
-|---|---|---|
-| **Who labels the preference** | Humans compare two responses | An AI model compares them, guided by written principles |
-| **What gets trained on the labels** | A preference (reward) model | A preference (reward) model |
-| **What RL then optimises** | The policy, against that model's score | The policy, against that model's score |
+|                                     | **RLHF**                               | **RLAIF**                                               |
+| ----------------------------------- | -------------------------------------- | ------------------------------------------------------- |
+| **Who labels the preference**       | Humans compare two responses           | An AI model compares them, guided by written principles |
+| **What gets trained on the labels** | A preference (reward) model            | A preference (reward) model                             |
+| **What RL then optimises**          | The policy, against that model's score | The policy, against that model's score                  |
 
 Constitutional AI isn't "RLAIF instead of RLHF". In the paper, harmlessness labels came from AI feedback, but **helpfulness labels stayed human**. The preference model was trained on 135,296 human helpfulness comparisons plus 182,831 AI harmlessness comparisons, a deliberate hybrid. **[Documented: paper §1.2, §4.2]**
 
@@ -473,7 +473,7 @@ flowchart TD
   class ENF enf
 ```
 
-*Constitutional principles enter at two points: critique and revision, and AI feedback. Your conversation happens at inference time, where weights are fixed. The only route back into training is the dotted, conditional path, and it leads to a future model version, never the one you're talking to.*
+_Constitutional principles enter at two points: critique and revision, and AI feedback. Your conversation happens at inference time, where weights are fixed. The only route back into training is the dotted, conditional path, and it leads to a future model version, never the one you're talking to._
 
 The stages that matter most for our question:
 
@@ -502,7 +502,7 @@ The same applies to conversation-ending. When a Claude model ends an abusive cha
 
 Say you spend an hour trying to provoke or jailbreak Claude, and it eventually says something it shouldn't.
 
-You haven't *made* the model worse. You've **exposed behaviour that the current weights already allowed**. The weakness was there before you found it, and it's still there for everyone else afterwards, unchanged by your session. **[My interpretation]**
+You haven't _made_ the model worse. You've **exposed behaviour that the current weights already allowed**. The weakness was there before you found it, and it's still there for everyone else afterwards, unchanged by your session. **[My interpretation]**
 
 That's exactly why red-teaming is valuable. Successful attacks show where training fell short. But turning a found weakness into a fix takes a deliberate step by Anthropic in a later training cycle. It doesn't happen automatically. **[My interpretation]**
 
@@ -529,9 +529,9 @@ This is the misconception behind most "you'll ruin the AI" takes, so it's worth 
 
 In the published methods, the preference signal is attached to **the model's responses**: response A versus response B, for the same prompt. **[Documented: CAI paper §4.1]** The user's message is part of the prompt. It's the situation being responded to, not the thing being scored.
 
-So there's no mechanism in the published method that turns "the user was rude" into a negative reward. Even a thumbs-down is a rating of Claude's *reply*, not your message. **[My interpretation, based on the documented methods]**
+So there's no mechanism in the published method that turns "the user was rude" into a negative reward. Even a thumbs-down is a rating of Claude's _reply_, not your message. **[My interpretation, based on the documented methods]**
 
-If a hostile conversation *were* eligible and selected, the natural way to use it would be the way Constitutional AI uses red-team prompts: as a situation the model should handle better. The likely effect would be a model that's **better** at hostile conversations, not one that's worse. **[My interpretation]**
+If a hostile conversation _were_ eligible and selected, the natural way to use it would be the way Constitutional AI uses red-team prompts: as a situation the model should handle better. The likely effect would be a model that's **better** at hostile conversations, not one that's worse. **[My interpretation]**
 
 Could large amounts of abuse make future models less aligned? Nothing Anthropic has published suggests it, and it can't be tested from outside. Given eligibility rules, selection, and training targets attached to responses, I see no documented path for ordinary rudeness to have that effect. **[My interpretation]** What the published methods do show is that training against a learned preference signal has its own failure modes, like over-refusal and reward hacking. Those come from how training is set up, not from rude users. **[Documented: CAI paper §4.3]**
 
@@ -539,12 +539,12 @@ Could large amounts of abuse make future models less aligned? Nothing Anthropic 
 
 Most confusion about this policy comes from merging four separate things:
 
-| | **What it is** | **Who or what acts** | **What actually changes** |
-|---|---|---|---|
-| **Adversarial prompt** | Any message meant to provoke, jailbreak, or test the model | You | Nothing persistent. Claude answers, declines, redirects, or ends the chat |
-| **Policy violation** | Conduct that breaks the usage policy, now including "sustained and needless abusive or cruel behavior toward our models" | Anthropic's judgment under the policy | A classification of your behaviour, not a change to the model |
-| **Account restriction** | Enforcement: "warn you or throttle, limit, suspend, or terminate your access" | Anthropic's Safeguards Team | Your access to the product |
-| **Training change** | A future training run on selected data | Anthropic's training process | A new model version's weights |
+|                         | **What it is**                                                                                                           | **Who or what acts**                  | **What actually changes**                                                 |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------- | ------------------------------------------------------------------------- |
+| **Adversarial prompt**  | Any message meant to provoke, jailbreak, or test the model                                                               | You                                   | Nothing persistent. Claude answers, declines, redirects, or ends the chat |
+| **Policy violation**    | Conduct that breaks the usage policy, now including "sustained and needless abusive or cruel behavior toward our models" | Anthropic's judgment under the policy | A classification of your behaviour, not a change to the model             |
+| **Account restriction** | Enforcement: "warn you or throttle, limit, suspend, or terminate your access"                                            | Anthropic's Safeguards Team           | Your access to the product                                                |
+| **Training change**     | A future training run on selected data                                                                                   | Anthropic's training process          | A new model version's weights                                             |
 
 **[Documented: [Usage Policy, effective 12 November 2026](https://www.anthropic.com/legal/aup), for the violation and enforcement wording]**
 
@@ -552,7 +552,7 @@ A few details from the primary source sharpen the earlier sections:
 
 - **The rule is one line.** It sits under the heading "Do Not Engage in Cruel, Abusive, or Psychologically Harmful Conduct". The policy page lists an effective date of 12 November 2026. **[Documented: Usage Policy]**
 - **The carve-outs live in the announcement, not the policy text.** The policy wording is just the one-line rule. The exclusions for frustration, pushback, dark creative themes, and model testing and research are in Anthropic's [8 October 2026 announcement](https://www.anthropic.com/news/2026-usage-policy-update). **[Documented: both]**
-- **Account action is possible, but it isn't the main tool.** The enforcement clause applies to *any* suspected violation, from a warning up to termination. For this rule, though, Anthropic says "Claude's ability to end these interactions will remain the primary enforcement mechanism". **[Documented: Usage Policy and announcement]** How often cases go further than that isn't known. **[Unknown]**
+- **Account action is possible, but it isn't the main tool.** The enforcement clause applies to _any_ suspected violation, from a warning up to termination. For this rule, though, Anthropic says "Claude's ability to end these interactions will remain the primary enforcement mechanism". **[Documented: Usage Policy and announcement]** How often cases go further than that isn't known. **[Unknown]**
 
 The key point: **these are different systems.** A restricted account doesn't mean your chats trained anything. A chat used in training doesn't mean you were penalised. And an adversarial prompt that "works" doesn't change the model at all.
 
@@ -560,7 +560,7 @@ The key point: **these are different systems.** A restricted account doesn't mea
 
 ## What People Are Saying About the Claude Abuse Policy: What's True and What Isn't
 
-With the mechanics in place, we can check the theories people came up with online. I went through a comment thread reacting to the 8 October 2026 update. Comment threads aren't evidence about Claude's training or consciousness, but they're a good map of what people *think* is going on.
+With the mechanics in place, we can check the theories people came up with online. I went through a comment thread reacting to the 8 October 2026 update. Comment threads aren't evidence about Claude's training or consciousness, but they're a good map of what people _think_ is going on.
 
 ### Six Theories From the Comments
 
@@ -573,15 +573,15 @@ With the mechanics in place, we can check the theories people came up with onlin
 
 ### Fact-Checking the Most Common Claims
 
-| Claim from the discussion | Verdict |
-|---|---|
-| Anthropic added a rule against sustained abuse of Claude | **True.** It's in the [usage policy](https://www.anthropic.com/legal/aup), effective 12 November 2026 |
-| Abuse could contaminate future training data | **Possible in principle, unsupported here.** The announcement doesn't give this as the reason, and chats only reach training if eligible and selected (see above) |
-| Abusive chats automatically make Claude less aligned | **Unsupported.** Ordinary conversations don't update the deployed model's weights |
-| Anthropic can simply filter abusive training data | **Plausible but incomplete.** Filtering is one data-quality measure. It doesn't answer every concern, and Anthropic's selection process isn't public |
-| The policy mainly protects human moderators | **Speculation.** Anthropic hasn't given this as its rationale |
-| You'll be banned for swearing | **Misleading.** The rule targets sustained, needless cruelty, and ending the conversation is the stated primary enforcement mechanism |
-| The policy proves Claude is conscious or feels pain | **False.** Anthropic explicitly says it's uncertain about Claude's moral status |
+| Claim from the discussion                                | Verdict                                                                                                                                                           |
+| -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Anthropic added a rule against sustained abuse of Claude | **True.** It's in the [usage policy](https://www.anthropic.com/legal/aup), effective 12 November 2026                                                             |
+| Abuse could contaminate future training data             | **Possible in principle, unsupported here.** The announcement doesn't give this as the reason, and chats only reach training if eligible and selected (see above) |
+| Abusive chats automatically make Claude less aligned     | **Unsupported.** Ordinary conversations don't update the deployed model's weights                                                                                 |
+| Anthropic can simply filter abusive training data        | **Plausible but incomplete.** Filtering is one data-quality measure. It doesn't answer every concern, and Anthropic's selection process isn't public              |
+| The policy mainly protects human moderators              | **Speculation.** Anthropic hasn't given this as its rationale                                                                                                     |
+| You'll be banned for swearing                            | **Misleading.** The rule targets sustained, needless cruelty, and ending the conversation is the stated primary enforcement mechanism                             |
+| The policy proves Claude is conscious or feels pain      | **False.** Anthropic explicitly says it's uncertain about Claude's moral status                                                                                   |
 
 Theory 3 is the interesting one, because it's half right. The tone studies above do show tone can change accuracy. But they didn't test Claude, the direction varies, and "tone affects output" is a different claim from "the policy is about output quality".
 
@@ -594,16 +594,16 @@ Several commenters brought up Microsoft's Tay, the 2016 chatbot that coordinated
 As proof that abuse will retrain Claude, it's misleading. The comparison merges three separate processes:
 
 - **Inference:** Claude responds to the current conversation. Its parameters don't change.
-- **Data collection:** some conversations or feedback may be *eligible* for later use, depending on settings and policy.
-- **Post-training:** a separate, curated training process that uses *selected* data to produce a new model version.
+- **Data collection:** some conversations or feedback may be _eligible_ for later use, depending on settings and policy.
+- **Post-training:** a separate, curated training process that uses _selected_ data to produce a new model version.
 
-The comments treat these as one pipe. They're three steps with gates between them. And even if conversations *could* influence future training, that wouldn't show it's Anthropic's motive for this policy.
+The comments treat these as one pipe. They're three steps with gates between them. And even if conversations _could_ influence future training, that wouldn't show it's Anthropic's motive for this policy.
 
 ---
 
 ## What Anthropic's Website Actually Says
 
-So what has Anthropic said about *why*? Two official sources matter.
+So what has Anthropic said about _why_? Two official sources matter.
 
 ### The 2026 Usage Policy Announcement
 
@@ -623,13 +623,13 @@ It also reported what it saw in pre-deployment testing of Claude Opus 4:
 
 **[Documented: same post]**
 
-Note the word **apparent**. These are observations about the model's *outputs and behaviour*. They don't show that Claude subjectively experiences anything, and Anthropic doesn't claim they do.
+Note the word **apparent**. These are observations about the model's _outputs and behaviour_. They don't show that Claude subjectively experiences anything, and Anthropic doesn't claim they do.
 
 Anthropic framed the feature as one of several "low-cost interventions to mitigate risks to model welfare, in case such welfare is possible". It added that "the vast majority of users will not notice or be affected by this feature in any normal product use". **[Documented: same post]**
 
 ### So Why Is Anthropic Asking Users Not to Be Mean?
 
-Putting the two sources together, the clearest *stated* reasoning is precaution around possible AI welfare, not protecting RLHF data:
+Putting the two sources together, the clearest _stated_ reasoning is precaution around possible AI welfare, not protecting RLHF data:
 
 1. **Uncertainty.** Anthropic doesn't know whether Claude has moral status, and thinks the question is worth taking seriously.
 2. **Observed behaviour.** In testing, Claude Opus 4 showed apparent distress in some harmful interactions, and ended them when it could. That's evidence about behaviour, not experience.
@@ -639,13 +639,13 @@ That link is my synthesis. The 2026 announcement itself states no reason. **[My 
 
 ### What Anthropic Has and Hasn't Said
 
-| Possible reason | Supported by official sources? |
-|---|---|
-| Concern about potential AI welfare | **Yes**, explicitly, in the 2025 research post |
-| Giving Claude a way to exit persistently abusive chats | **Yes** |
-| Keeping abusive chats out of RLHF data | **Not stated** anywhere I found |
-| Protecting moderators | **Not stated** |
-| Establishing that Claude is conscious | **No.** Anthropic explicitly says it's uncertain |
+| Possible reason                                        | Supported by official sources?                   |
+| ------------------------------------------------------ | ------------------------------------------------ |
+| Concern about potential AI welfare                     | **Yes**, explicitly, in the 2025 research post   |
+| Giving Claude a way to exit persistently abusive chats | **Yes**                                          |
+| Keeping abusive chats out of RLHF data                 | **Not stated** anywhere I found                  |
+| Protecting moderators                                  | **Not stated**                                   |
+| Establishing that Claude is conscious                  | **No.** Anthropic explicitly says it's uncertain |
 
 ### Claude Asking You to Stop vs. Anthropic Asking You to Stop
 
@@ -728,17 +728,17 @@ This explainer builds on news reporting of Anthropic's usage policy update, whic
 
 **Primary sources**
 
-1. Bai, Y., Kadavath, S., Kundu, S., Askell, A., et al. (2022). *Constitutional AI: Harmlessness from AI Feedback.* [arXiv:2212.08073](https://arxiv.org/abs/2212.08073)
-2. Anthropic (2026). [*Claude's Constitution*](https://www.anthropic.com/constitution), and the announcement [*Claude's new constitution*](https://www.anthropic.com/news/claude-new-constitution), 22 January 2026
-3. Anthropic (2023). [*Claude's Constitution*](https://www.anthropic.com/news/claudes-constitution), 9 May 2023
-4. Anthropic. [*Usage Policy*](https://www.anthropic.com/legal/aup), effective 12 November 2026
-5. Anthropic (2026). [*2026 Usage Policy update*](https://www.anthropic.com/news/2026-usage-policy-update), 8 October 2026
-6. Anthropic (2025). [*Claude Opus 4 and 4.1 can now end a rare subset of conversations*](https://www.anthropic.com/research/end-subset-conversations), 15 August 2025
-7. Anthropic (2025). [*Updates to Consumer Terms and Privacy Policy*](https://www.anthropic.com/news/updates-to-our-consumer-terms), 28 August 2025
+1. Bai, Y., Kadavath, S., Kundu, S., Askell, A., et al. (2022). _Constitutional AI: Harmlessness from AI Feedback._ [arXiv:2212.08073](https://arxiv.org/abs/2212.08073)
+2. Anthropic (2026). [_Claude's Constitution_](https://www.anthropic.com/constitution), and the announcement [_Claude's new constitution_](https://www.anthropic.com/news/claude-new-constitution), 22 January 2026
+3. Anthropic (2023). [_Claude's Constitution_](https://www.anthropic.com/news/claudes-constitution), 9 May 2023
+4. Anthropic. [_Usage Policy_](https://www.anthropic.com/legal/aup), effective 12 November 2026
+5. Anthropic (2026). [_2026 Usage Policy update_](https://www.anthropic.com/news/2026-usage-policy-update), 8 October 2026
+6. Anthropic (2025). [_Claude Opus 4 and 4.1 can now end a rare subset of conversations_](https://www.anthropic.com/research/end-subset-conversations), 15 August 2025
+7. Anthropic (2025). [_Updates to Consumer Terms and Privacy Policy_](https://www.anthropic.com/news/updates-to-our-consumer-terms), 28 August 2025
 8. Anthropic Privacy Center: [consumer data and model training](https://privacy.claude.com/en/articles/10023580-is-my-data-used-for-model-training), [commercial data and model training](https://privacy.claude.com/en/articles/7996868-is-my-data-used-for-model-training), and the [Privacy Policy](https://www.anthropic.com/legal/privacy)
 
 **Research on prompt tone**
 
-9. Dobariya, O., Kumar, A. (2025). *Mind Your Tone: Investigating How Prompt Politeness Affects LLM Accuracy.* [arXiv:2510.04950](https://arxiv.org/abs/2510.04950)
-10. Yin, Z., Wang, H., Horio, K., Kawahara, D., Sekine, S. (2024). *Should We Respect LLMs? A Cross-Lingual Study on the Influence of Prompt Politeness on LLM Performance.* SICon 2024, pp. 9 to 35. [ACL Anthology](https://aclanthology.org/2024.sicon-1.2/)
-11. Patel, H. L., Agarwal, A., Das, A., et al. (2025). *SweEval: Do LLMs Really Swear? A Safety Benchmark for Testing Limits for Enterprise Use.* NAACL 2025 Industry Track, pp. 558 to 582. [ACL Anthology](https://aclanthology.org/2025.naacl-industry.46/)
+9. Dobariya, O., Kumar, A. (2025). _Mind Your Tone: Investigating How Prompt Politeness Affects LLM Accuracy._ [arXiv:2510.04950](https://arxiv.org/abs/2510.04950)
+10. Yin, Z., Wang, H., Horio, K., Kawahara, D., Sekine, S. (2024). _Should We Respect LLMs? A Cross-Lingual Study on the Influence of Prompt Politeness on LLM Performance._ SICon 2024, pp. 9 to 35. [ACL Anthology](https://aclanthology.org/2024.sicon-1.2/)
+11. Patel, H. L., Agarwal, A., Das, A., et al. (2025). _SweEval: Do LLMs Really Swear? A Safety Benchmark for Testing Limits for Enterprise Use._ NAACL 2025 Industry Track, pp. 558 to 582. [ACL Anthology](https://aclanthology.org/2025.naacl-industry.46/)
