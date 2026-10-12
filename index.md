@@ -642,34 +642,31 @@ neural_core: true
         />
         <span>Model Activity</span>
       </div>
+      {%- assign hf_total = 0 -%}
+      {%- for m in site.data.hf_models -%}
+        {%- assign hf_total = hf_total | plus: m.downloads -%}
+      {%- endfor %}
+      <p class="hf-total">Total downloads: <b data-hf-total>{{ hf_total }}</b></p>
       <div class="hf-model-cards">
-        <a class="hf-model-card" href="https://huggingface.co/QuantBridge/energy-news-classifier-ner-multitask" target="_blank" rel="noopener noreferrer">
-          <h4>QuantBridge/energy-news-classifier-ner-multitask</h4>
-          <p>Token Classification | 67M | Updated recently</p>
+        {%- for m in site.data.hf_models %}
+        <a class="hf-model-card" href="https://huggingface.co/{{ m.id }}" target="_blank" rel="noopener noreferrer">
+          <h4>{{ m.id }}</h4>
+          <p>{{ m.task }}{% if m.params %} | {{ m.params }}{% endif %} | Downloads: <span data-hf-downloads="{{ m.id }}" data-count="{{ m.downloads }}">{{ m.downloads }}</span></p>
         </a>
-        <a class="hf-model-card" href="https://huggingface.co/QuantBridge/energy-intelligence-multitask-custom-ner" target="_blank" rel="noopener noreferrer">
-          <h4>QuantBridge/energy-intelligence-multitask-custom-ner</h4>
-          <p>Token Classification | 66.4M | Updated 5 days ago | Downloads: 19</p>
-        </a>
-        <a class="hf-model-card" href="https://huggingface.co/QuantBridge/distilbert-energy-intelligence-multitask" target="_blank" rel="noopener noreferrer">
-          <h4>QuantBridge/distilbert-energy-intelligence-multitask</h4>
-          <p>Token Classification | 66.5M | Updated 5 days ago | Downloads: 24</p>
-        </a>
-        <a class="hf-model-card" href="https://huggingface.co/QuantBridge/energy-news-classifier" target="_blank" rel="noopener noreferrer">
-          <h4>QuantBridge/energy-news-classifier</h4>
-          <p>Text Classification | Updated 6 days ago</p>
-        </a>
+        {%- endfor %}
       </div>
+      <a class="hf-all-models" href="{{ '/models/' | relative_url }}">All models &rarr;</a>
     </article>
   </div>
 
   <nav class="home-index" aria-label="Research and engineering work">
     <a href="{{ '/research-articles/' | relative_url }}"><span>05.1</span>Research Articles</a>
     <a href="{{ '/engineering/' | relative_url }}"><span>05.2</span>Engineering Implementations</a>
-    <a href="{{ '/blog/' | relative_url }}"><span>05.3</span>Blogs</a>
-    <a href="{{ '/sessions/' | relative_url }}"><span>05.4</span>Sessions</a>
-    <a href="{{ '/certifications/' | relative_url }}"><span>05.5</span>Certifications</a>
-    <a href="{{ '/honors/' | relative_url }}"><span>05.6</span>Honors</a>
+    <a href="{{ '/models/' | relative_url }}"><span>05.3</span>Models</a>
+    <a href="{{ '/blog/' | relative_url }}"><span>05.4</span>Blogs</a>
+    <a href="{{ '/sessions/' | relative_url }}"><span>05.5</span>Sessions</a>
+    <a href="{{ '/certifications/' | relative_url }}"><span>05.6</span>Certifications</a>
+    <a href="{{ '/honors/' | relative_url }}"><span>05.7</span>Honors</a>
   </nav>
 </section>
 
@@ -903,6 +900,7 @@ projects, blog, and research sections live on their own pages
 </section>
 
 {% endcomment %}
+<script src="{{ '/assets/js/hf-downloads.js' | relative_url }}" defer></script>
 <script>
   (function () {
     var statsImages = document.querySelectorAll("[data-stats-image]");

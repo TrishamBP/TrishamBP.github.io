@@ -391,6 +391,26 @@
   border-color: var(--hc-lime);
 }
 
+#neural-core ~ .content-section .hf-total {
+  margin: 0 0 12px;
+  color: var(--hc-fg);
+}
+
+#neural-core ~ .content-section .hf-total b {
+  color: var(--hc-lime);
+}
+
+#neural-core ~ .content-section .hf-all-models {
+  display: inline-block;
+  margin-top: 14px;
+  color: var(--hc-lime);
+  text-decoration: none;
+}
+
+#neural-core ~ .content-section .hf-all-models:hover {
+  text-decoration: underline;
+}
+
 /* ------------------------- 05 research / engineering index ----------------- */
 
 #neural-core ~ section .home-index {

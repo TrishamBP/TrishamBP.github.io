@@ -1351,8 +1351,8 @@ body.theme-typesafe .site-shell .cert-id {
 }
 
 /* -----------------------------------------------------------------------------
-   Nav width. Ten links in the terminal face need ~1,200px, so the bar may grow
-   to 1280px, and below 1200px it switches to the hamburger menu (style.css
+   Nav width. Eleven links in the terminal face need ~1,260px, so the bar may
+   grow to 1280px, and below 1280px it switches to the hamburger menu (style.css
    only did that at 740px, which left mid-size screens with clipped links).
    -------------------------------------------------------------------------- */
 
@@ -1365,7 +1365,7 @@ body.theme-typesafe .topnav-link {
   padding-right: 8px;
 }
 
-@media (max-width: 1199px) {
+@media (max-width: 1279px) {
   body.theme-typesafe .topnav-hamburger {
     display: flex;
   }

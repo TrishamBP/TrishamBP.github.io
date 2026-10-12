@@ -1,0 +1,95 @@
+# Models published on Hugging Face. Drives the /models/ page and the
+# "Hugging Face Models" card on the home page.
+#
+# `downloads` is the all-time download count at the last edit (2026-10-12).
+# It is only the no-JS fallback: assets/js/hf-downloads.js replaces it in the
+# browser with the live `downloadsAllTime` from the Hugging Face API, and
+# recomputes the total. Newest model first.
+
+- id: Trisham97/llm-complexity-router
+  name: LLM Complexity Router
+  task: Text Classification
+  training: Trained from scratch
+  params: "4096→256→128→3 MLP"
+  base: "Qwen3-Embedding-8B embeddings"
+  license: CC BY-NC 4.0
+  released: October 2026
+  downloads: 0
+  summary: >-
+    Classifies a prompt as easy, medium or hard and recommends a Claude tier
+    (Haiku, Sonnet or Opus), packaged as a Claude Code plugin with a prompt
+    hook, an MCP tool and per-tier worker subagents.
+  detail: >-
+    Logistic-regression and MLP heads trained on 61K prompts and run locally in
+    pure NumPy (no PyTorch, no pickles). The MLP reaches 72.7% accuracy and
+    0.707 macro F1 on a 7.7K-prompt held-out split.
+  tags: [llm-routing, prompt-complexity, claude-code-plugin, numpy]
+
+- id: QuantBridge/energy-news-classifier-ner-multitask
+  name: Energy News Classifier + NER (Multitask)
+  task: Token + Text Classification
+  training: Multitask fine-tune
+  params: 67M
+  base: DistilBERT
+  license: Apache 2.0
+  released: April 2026
+  downloads: 121
+  summary: >-
+    One DistilBERT encoder with two heads: one forward pass returns BIO named
+    entities and multi-label news topics for energy and financial headlines.
+  detail: >-
+    The encoder and NER head are transferred from the custom NER model; the
+    10-label topic head is trained on AG News, Reuters-21578 and the Kaggle
+    News Category corpus with BCE loss.
+  tags: [multitask, ner, multi-label, energy, finance]
+
+- id: QuantBridge/distilbert-energy-intelligence-multitask-v2
+  name: DistilBERT Energy Intelligence NER v2
+  task: Token Classification
+  training: Supervised fine-tune (SFT)
+  params: 66.5M
+  base: DistilBERT
+  license: Apache 2.0
+  released: April 2026
+  downloads: 77
+  summary: >-
+    Broad-coverage NER for financial and energy intelligence with 59 entity
+    types, from central banks and trading hubs to sanctions and regulators.
+  detail: >-
+    Built for structured extraction from news feeds, earnings transcripts and
+    regulatory filings: knowledge-graph population, trading signals and
+    geopolitical risk monitoring.
+  tags: [ner, finance, energy, geopolitics]
+
+- id: QuantBridge/energy-intelligence-multitask-custom-ner
+  name: Energy Intelligence Custom NER
+  task: Token Classification
+  training: Supervised fine-tune (SFT)
+  params: 66.4M
+  base: DistilBERT
+  license: Apache 2.0
+  released: April 2026
+  downloads: 57
+  summary: >-
+    DistilBERT fine-tuned to tag nine energy-market entity types: companies,
+    commodities, infrastructure, markets, events, countries and more.
+  detail: >-
+    Trained on 11K+ BIO-annotated energy and geopolitics articles. It is the
+    backbone the multitask model reuses.
+  tags: [ner, energy, geopolitics]
+
+- id: QuantBridge/energy-news-classifier
+  name: Energy News Classifier
+  task: Text Classification
+  training: Supervised fine-tune (SFT)
+  base: DistilBERT
+  license: Apache 2.0
+  released: March 2026
+  downloads: 0
+  summary: >-
+    Multi-label classifier that tags news across ten themes (energy, politics,
+    trade, shipping, macro, risk and more) to turn headlines into signals.
+  detail: >-
+    The first model in the QuantBridge energy-intelligence series, later
+    folded into the multitask model's classification head.
+  tags: [multi-label, energy, news]

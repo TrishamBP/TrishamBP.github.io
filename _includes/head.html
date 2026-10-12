@@ -101,13 +101,13 @@
   <link rel="stylesheet" href="{{ '/css/engineering-glossary.css' | relative_url }}" />
   {%- endif %}
   {%- comment -%}
-    Blog + newsletter listings and posts: light typesafe.ai paper skin. Same gate as the
+    Blog, newsletter and models listings and posts: light typesafe.ai paper skin. Same gate as the
     `ts-paper` body class in _layouts/default.html.
   {%- endcomment -%}
   {%- if page.url == '/newsletter/' or page.collection == 'newsletters' %}
   <link rel="alternate" type="application/rss+xml" title="The Weekly Tech Brew" href="{{ '/newsletter/feed.xml' | absolute_url }}" />
   {%- endif %}
-  {%- if page.url == '/blog/' or page.url == '/newsletter/' or page.layout == 'post' %}
+  {%- if page.url == '/blog/' or page.url == '/newsletter/' or page.url == '/models/' or page.layout == 'post' %}
   <link rel="stylesheet" href="{{ '/css/blog-paper.css' | relative_url }}?v={{ site.time | date: '%s' }}" />
   {%- endif %}
   {%- comment -%}

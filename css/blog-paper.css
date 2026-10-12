@@ -1,7 +1,7 @@
 /* =============================================================================
    BLOG PAPER SKIN
    -----------------------------------------------------------------------------
-   Applied to the /blog/ and /newsletter/ listings and every post (`layout: post`,
+   Applied to the /blog/, /newsletter/ and /models/ listings and every post (`layout: post`,
    which newsletter editions also use).
    `_layouts/default.html` adds `ts-paper` to <body> and `_includes/head.html`
    loads this file, both gated on the same condition.
@@ -210,6 +210,101 @@ body.theme-typesafe.ts-paper .article-pagination .active {
 
 body.theme-typesafe.ts-paper .article-pagination .disabled {
   opacity: 0.35;
+}
+
+/* -----------------------------------------------------------------------------
+   Models listing (/models/): the blog's numbered rows, plus a totals strip
+   under the intro and a row of key/value facts on each model.
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.ts-paper .models-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  border-bottom: var(--ts-rule) solid var(--ts-line);
+}
+
+body.theme-typesafe.ts-paper .models-stat {
+  padding: 1.3rem 0.4rem 1.4rem;
+}
+
+body.theme-typesafe.ts-paper .models-stat + .models-stat {
+  padding-left: 1.4rem;
+  border-left: var(--ts-rule) solid var(--ts-line);
+}
+
+body.theme-typesafe.ts-paper .models-stat dt {
+  font-family: var(--ts-term);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ts-fg-faint);
+  margin-bottom: 0.5rem;
+}
+
+body.theme-typesafe.ts-paper .models-stat dd {
+  margin: 0;
+  font-family: var(--ts-display);
+  font-weight: 500;
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  line-height: 1;
+  color: var(--ts-fg-soft);
+}
+
+body.theme-typesafe.ts-paper .models-stat [data-hf-total] {
+  color: var(--ts-green);
+}
+
+body.theme-typesafe.ts-paper .models-grid .model-card::before {
+  grid-row: 1 / span 8;
+}
+
+body.theme-typesafe.ts-paper .model-id {
+  font-family: var(--ts-term);
+  font-size: 0.75rem;
+  color: var(--ts-fg-faint);
+  word-break: break-all;
+}
+
+body.theme-typesafe.ts-paper .model-detail {
+  color: var(--ts-fg-faint);
+}
+
+body.theme-typesafe.ts-paper .model-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 1.6rem;
+  list-style: none;
+  margin: 0 0 1.1rem;
+  padding: 0;
+  font-size: 0.9rem;
+  color: var(--ts-fg);
+}
+
+body.theme-typesafe.ts-paper .model-meta span {
+  font-family: var(--ts-term);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ts-fg-faint);
+  margin-right: 0.45rem;
+}
+
+body.theme-typesafe.ts-paper .model-meta b {
+  font-weight: 600;
+  color: var(--ts-green);
+}
+
+@media (max-width: 640px) {
+  body.theme-typesafe.ts-paper .models-stats {
+    grid-template-columns: 1fr;
+  }
+
+  body.theme-typesafe.ts-paper .models-stat + .models-stat {
+    padding-left: 0.4rem;
+    border-left: 0;
+    border-top: var(--ts-rule) solid var(--ts-line);
+  }
 }
 
 /* -----------------------------------------------------------------------------
