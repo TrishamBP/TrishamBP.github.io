@@ -1,0 +1,596 @@
+/* =============================================================================
+   PROJECTS TERMINAL SKIN
+   -----------------------------------------------------------------------------
+   Applied to /projects/ only. `_layouts/default.html` adds `tx-term` to <body>
+   and `_includes/head.html` loads this file, both gated on the same condition.
+
+   A dark zsh look: every project is a terminal window with traffic-light dots
+   and a file name, and assets/js/projects-terminal.js types the commands.
+
+     page   #0d1117   window #161b22   bar #1c2128   line #2d333b
+     text   #c9d1d9   bright #f0f3f6   muted #768390  comment #636e7b
+     green  #3fb950   blue   #58a6ff   orange #d29922
+     dots   #e5534b / #c69026 / #57ab5a
+
+   Scoped as body.theme-typesafe.tx-term so it outranks both the dark-mode
+   remap and typesafe.css's zero-radius normalisation without !important.
+   ========================================================================== */
+
+body.theme-typesafe.tx-term {
+  --tx-page: #0d1117;
+  --tx-window: #161b22;
+  --tx-bar: #1c2128;
+  --tx-line: #2d333b;
+  --tx-text: #c9d1d9;
+  --tx-bright: #f0f3f6;
+  --tx-muted: #768390;
+  --tx-comment: #636e7b;
+  --tx-green: #3fb950;
+  --tx-blue: #58a6ff;
+  --tx-orange: #d29922;
+  --tx-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
+  --tx-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+
+  /* Re-point the typesafe tokens so the shared nav matches the terminal. */
+  --ts-bg: var(--tx-page);
+  --ts-surface: var(--tx-bar);
+  --ts-surface-2: #22272e;
+  --ts-fg: var(--tx-bright);
+  --ts-fg-soft: var(--tx-text);
+  --ts-fg-faint: var(--tx-muted);
+  --ts-line: var(--tx-line);
+  --ts-accent: var(--tx-green);
+  --ts-rule: 1px;
+  --ts-term: var(--tx-mono);
+
+  background: var(--tx-page);
+  color: var(--tx-text);
+}
+
+body.theme-typesafe.tx-term ::selection {
+  background: rgba(63, 185, 80, 0.35);
+  color: var(--tx-bright);
+}
+
+body.theme-typesafe.tx-term .topnav-brand {
+  color: var(--tx-green);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+body.theme-typesafe.tx-term.dark-mode .topnav-link.active {
+  background: rgba(63, 185, 80, 0.14);
+  color: var(--tx-green);
+}
+
+/* -----------------------------------------------------------------------------
+   Shell + shared type
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.tx-term .site-shell {
+  width: min(1060px, 100%);
+  padding: 0 24px 110px;
+  box-sizing: border-box;
+}
+
+body.theme-typesafe.tx-term .site-shell p,
+body.theme-typesafe.tx-term .site-shell li,
+body.theme-typesafe.tx-term .site-shell a,
+body.theme-typesafe.tx-term .site-shell figcaption {
+  font-family: var(--tx-mono);
+  text-align: left;
+  color: var(--tx-text);
+}
+
+body.theme-typesafe.tx-term .site-shell p {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.7;
+}
+
+body.theme-typesafe.tx-term .tx-user {
+  color: var(--tx-green);
+}
+
+body.theme-typesafe.tx-term .tx-path {
+  color: var(--tx-blue);
+}
+
+body.theme-typesafe.tx-term .tx-cmd {
+  color: var(--tx-bright);
+}
+
+body.theme-typesafe.tx-term .tx-file {
+  color: var(--tx-orange);
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-muted {
+  color: var(--tx-muted);
+}
+
+/* -----------------------------------------------------------------------------
+   Terminal window chrome
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.tx-term .site-shell .tx-window {
+  background: var(--tx-window);
+  border: 1px solid var(--tx-line);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+}
+
+body.theme-typesafe.tx-term .tx-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 42px;
+  padding: 0 16px;
+  background: var(--tx-bar);
+  border-bottom: 1px solid var(--tx-line);
+}
+
+body.theme-typesafe.tx-term .tx-dots {
+  display: inline-flex;
+  gap: 7px;
+  flex: none;
+}
+
+body.theme-typesafe.tx-term .tx-dots i {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #e5534b;
+}
+
+body.theme-typesafe.tx-term .tx-dots i:nth-child(2) {
+  background: #c69026;
+}
+
+body.theme-typesafe.tx-term .tx-dots i:nth-child(3) {
+  background: #57ab5a;
+}
+
+body.theme-typesafe.tx-term .tx-title,
+body.theme-typesafe.tx-term .tx-bar-icon,
+body.theme-typesafe.tx-term .tx-tag-video {
+  font-family: var(--tx-mono);
+  font-size: 0.74rem;
+  color: var(--tx-muted);
+}
+
+body.theme-typesafe.tx-term .tx-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+body.theme-typesafe.tx-term .tx-title--left {
+  position: static;
+  transform: none;
+}
+
+body.theme-typesafe.tx-term .tx-bar-icon {
+  margin-left: auto;
+}
+
+body.theme-typesafe.tx-term .tx-tag-video {
+  margin-left: auto;
+  padding: 2px 8px;
+  color: var(--tx-green);
+  background: rgba(63, 185, 80, 0.12);
+  border: 1px solid rgba(63, 185, 80, 0.3);
+  border-radius: 999px;
+}
+
+body.theme-typesafe.tx-term .tx-screen {
+  padding: 22px 24px 24px;
+}
+
+/* -----------------------------------------------------------------------------
+   Hero terminal
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.tx-term .tx-hero {
+  width: min(780px, 100%);
+  margin: 72px auto 0;
+}
+
+body.theme-typesafe.tx-term .tx-window--hero .tx-screen {
+  padding: 26px 26px 26px;
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-line {
+  margin-top: 14px;
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-screen > .tx-line:first-child {
+  margin-top: 0;
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-out {
+  padding-left: 16px;
+  color: var(--tx-bright);
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-out::first-letter {
+  color: var(--tx-green);
+}
+
+body.theme-typesafe.tx-term .tx-headline {
+  margin: 14px 0 6px;
+  padding: 0;
+  border: 0;
+  font-family: var(--tx-sans);
+  font-weight: 300;
+  font-size: clamp(1.7rem, 4.2vw, 2.25rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--tx-bright);
+}
+
+body.theme-typesafe.tx-term .tx-comment {
+  margin-top: 10px;
+  padding-left: 16px;
+}
+
+/* Hanging indent: wrapped lines sit under the text, not under the `//`. */
+body.theme-typesafe.tx-term .site-shell .tx-comment p {
+  padding-left: 3ch;
+  text-indent: -3ch;
+  font-style: italic;
+  color: var(--tx-comment);
+}
+
+body.theme-typesafe.tx-term .tx-caret {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.15em;
+  margin-left: 2px;
+  vertical-align: -0.2em;
+  background: var(--tx-green);
+  animation: tx-blink 1.05s steps(1) infinite;
+}
+
+/* While a line is being typed it shows its own trailing caret instead. */
+body.theme-typesafe.tx-term .tx-line.is-typing .tx-caret {
+  display: none;
+}
+
+body.theme-typesafe.tx-term .tx-line.is-typing::after {
+  content: "";
+  display: inline-block;
+  width: 0.6em;
+  height: 1.15em;
+  margin-left: 1px;
+  vertical-align: -0.2em;
+  background: var(--tx-green);
+}
+
+@keyframes tx-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-actions,
+body.theme-typesafe.tx-term .site-shell .tx-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+body.theme-typesafe.tx-term .tx-status {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 8px 0;
+  font-family: var(--tx-mono);
+  font-size: 0.7rem;
+  color: var(--tx-muted);
+}
+
+body.theme-typesafe.tx-term .tx-led {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 7px;
+  border-radius: 50%;
+  background: var(--tx-green);
+  box-shadow: 0 0 8px rgba(63, 185, 80, 0.8);
+}
+
+/* -----------------------------------------------------------------------------
+   Buttons: `> command` pills
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.tx-term .site-shell .tx-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 18px;
+  font-family: var(--tx-mono);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--tx-text);
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid var(--tx-line);
+  border-radius: 6px;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-btn > span {
+  color: var(--tx-muted);
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-btn:hover {
+  color: var(--tx-bright);
+  border-color: #444c56;
+  background: var(--tx-bar);
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-btn--go {
+  color: var(--tx-green);
+  background: rgba(63, 185, 80, 0.14);
+  border-color: rgba(63, 185, 80, 0.32);
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-btn--go > span {
+  color: var(--tx-green);
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-btn--go:hover {
+  color: #56d364;
+  background: rgba(63, 185, 80, 0.22);
+  border-color: rgba(63, 185, 80, 0.5);
+}
+
+/* -----------------------------------------------------------------------------
+   Project groups + cards
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.tx-term .tx-group {
+  margin-top: 120px;
+  scroll-margin-top: 70px;
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-kicker {
+  font-size: 0.78rem;
+  color: var(--tx-muted);
+}
+
+body.theme-typesafe.tx-term .tx-heading {
+  margin: 8px 0 34px;
+  padding: 0;
+  border: 0;
+  font-family: var(--tx-sans);
+  font-weight: 300;
+  font-size: clamp(1.9rem, 4.6vw, 2.6rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: var(--tx-bright);
+}
+
+body.theme-typesafe.tx-term .tx-heading span {
+  color: var(--tx-green);
+}
+
+body.theme-typesafe.tx-term .tx-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 34px 28px;
+}
+
+/* Side-by-side cards stretch to the same height. */
+body.theme-typesafe.tx-term .tx-project {
+  display: flex;
+  flex-direction: column;
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-project .tx-window {
+  flex: 1;
+}
+
+body.theme-typesafe.tx-term .tx-project--wide {
+  grid-column: 1 / -1;
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-line--card {
+  margin: 0 0 10px;
+  font-size: 0.8rem;
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-project .tx-window {
+  box-shadow: none;
+  transition: border-color 0.2s ease;
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-project .tx-window:hover {
+  border-color: #444c56;
+}
+
+body.theme-typesafe.tx-term .tx-name {
+  margin: 0;
+  font-family: var(--tx-mono);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--tx-bright);
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-summary {
+  margin: 6px 0 16px;
+  font-style: italic;
+  font-size: 0.82rem;
+  color: var(--tx-comment);
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-detail {
+  margin-bottom: 10px;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: #adbac7;
+}
+
+body.theme-typesafe.tx-term .tx-detail b {
+  font-weight: 500;
+  color: var(--tx-green);
+}
+
+body.theme-typesafe.tx-term .tx-points {
+  margin: 4px 0 12px;
+  padding: 0;
+  list-style: none;
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-points li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--tx-muted);
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-points li::before {
+  content: "\2192";
+  position: absolute;
+  left: 0;
+  color: var(--tx-green);
+}
+
+body.theme-typesafe.tx-term .tx-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 16px 0 0;
+  padding: 16px 0 0;
+  list-style: none;
+  border-top: 1px solid var(--tx-line);
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-chips li {
+  padding: 2px 9px;
+  font-size: 0.72rem;
+  color: var(--tx-muted);
+  background: var(--tx-bar);
+  border: 1px solid var(--tx-line);
+  border-radius: 4px;
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-chips .tx-chip--year {
+  color: var(--tx-orange);
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-project .tx-links {
+  margin-top: 18px;
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-project .tx-btn {
+  padding: 7px 14px;
+  font-size: 0.78rem;
+}
+
+body.theme-typesafe.tx-term .tx-video {
+  margin: 0 0 18px;
+}
+
+body.theme-typesafe.tx-term .tx-video video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border: 1px solid var(--tx-line);
+  border-radius: 6px;
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-video figcaption {
+  margin-top: 8px;
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: var(--tx-comment);
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-shot {
+  display: block;
+  width: 100%;
+  margin: 0 0 16px;
+  border: 1px solid var(--tx-line);
+  border-radius: 6px;
+}
+
+body.theme-typesafe.tx-term .tx-group--end .tx-links {
+  margin-top: 14px;
+}
+
+/* -----------------------------------------------------------------------------
+   Typing states (only when projects-terminal.js has added `tx-anim`)
+   -------------------------------------------------------------------------- */
+
+body.tx-term.tx-anim [data-tx-step] {
+  visibility: hidden;
+}
+
+body.tx-term.tx-anim [data-tx-step].is-shown {
+  visibility: visible;
+}
+
+body.tx-term.tx-anim [data-tx-card] {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+body.tx-term.tx-anim [data-tx-card].is-shown {
+  opacity: 1;
+}
+
+body.tx-term.tx-anim [data-tx-card] [data-tx-body] {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+body.tx-term.tx-anim [data-tx-card].is-open [data-tx-body] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.theme-typesafe.tx-term .tx-caret {
+    animation: none;
+  }
+}
+
+/* -----------------------------------------------------------------------------
+   Narrow screens
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 820px) {
+  body.theme-typesafe.tx-term .tx-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body.theme-typesafe.tx-term .tx-hero {
+    margin-top: 40px;
+  }
+
+  body.theme-typesafe.tx-term .tx-group {
+    margin-top: 84px;
+  }
+
+  body.theme-typesafe.tx-term .tx-screen,
+  body.theme-typesafe.tx-term .tx-window--hero .tx-screen {
+    padding: 18px 16px 20px;
+  }
+
+  body.theme-typesafe.tx-term .tx-title {
+    display: none;
+  }
+
+  body.theme-typesafe.tx-term .tx-title--left {
+    display: inline;
+  }
+}

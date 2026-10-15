@@ -1,64 +1,95 @@
 ---
 layout: default
 title: Projects
-seo_title: "Projects — AI Engineering, RAG and Full-Stack Projects"
-description: "AI engineering and full-stack projects by Trisham Patil: an LLM router, RAG systems, LoRA fine-tuning, computer vision and production React and Node.js sites."
-keywords: "AI engineering projects, machine learning projects, RAG system, LLM router, LoRA fine-tuning, QLoRA, computer vision projects, full-stack projects, FastAPI backend, Trisham Patil"
+seo_title: "Projects — AI Engineering, LLM Agents and Full-Stack Projects"
+description: "AI engineering projects by Trisham Patil: an LLM router, voice and multi-agent systems, RAG, EAGLE-3 speculative decoding and production full-stack sites."
+keywords: "AI engineering projects, LLM projects, LLM router, AI voice agent, multi-agent systems, LangGraph, RAG system, speculative decoding, EAGLE-3, full-stack projects, Trisham Patil"
 permalink: /projects/
 ---
 
 {%- comment -%}
-  Projects listing. Uses its own light "clean" skin (css/projects-clean.css),
+  Projects listing. Uses its own dark terminal skin (css/projects-terminal.css),
   gated on `/projects/` in both _includes/head.html and _layouts/default.html.
-  Rows come from _data/projects.yml, grouped by `group` in file order.
+  Cards come from _data/projects.yml, grouped by `group` in file order.
+
+  Typing: assets/js/projects-terminal.js types out every `[data-type]` element.
+  All text is rendered server-side, so search engines and no-JS visitors get the
+  full page; the script only hides and replays it, and skips the animation
+  entirely under prefers-reduced-motion.
 {%- endcomment -%}
 
 {%- assign projects = site.data.projects -%}
 {%- assign groups = projects | group_by: "group" -%}
-{%- assign live_count = 0 -%}
-{%- for p in projects -%}
-  {%- if p.links and p.links.size > 0 -%}{%- assign live_count = live_count | plus: 1 -%}{%- endif -%}
-{%- endfor -%}
+{%- assign prompt = '<span class="tx-user">trisham@portfolio</span>:<span class="tx-path">~</span>$' -%}
 
-<div class="hs-layout">
-  <div class="hs-main">
-    <header class="hs-hero">
-      <h1>AI engineering and full-stack projects</h1>
-      <p class="hs-sub">
-        Production sites, LLM systems, fine-tuning pipelines and deep learning experiments I have designed, built and shipped.
-      </p>
-      <nav class="hs-panel" aria-label="Project groups">
+<header class="tx-hero">
+  <div class="tx-window tx-window--hero" data-tx-seq>
+    <div class="tx-bar">
+      <span class="tx-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="tx-title">~/projects &mdash; zsh</span>
+      <span class="tx-bar-icon" aria-hidden="true">&gt;_</span>
+    </div>
+    <div class="tx-screen">
+      <p class="tx-line tx-muted" data-tx-step>Last login: <span data-tx-now>{{ site.time | date: "%a %b %d %H:%M:%S %Y" }}</span></p>
+
+      <p class="tx-line" data-tx-step>{{ prompt }} <span class="tx-cmd" data-type>whoami</span></p>
+      <p class="tx-out" data-tx-step>&rarr; AI engineer building LLM systems, agents and production backends</p>
+
+      <p class="tx-line" data-tx-step>{{ prompt }} <span class="tx-cmd" data-type>cat <span class="tx-file">headline.txt</span></span></p>
+      <h1 class="tx-headline" data-tx-step>AI Engineering and Full-Stack Projects</h1>
+
+      <p class="tx-line" data-tx-step>{{ prompt }} <span class="tx-cmd" data-type>cat <span class="tx-file">about.txt</span></span></p>
+      <div class="tx-comment" data-tx-step>
+        <p>// Voice agents, multi-agent systems and LLM routers, plus a</p>
+        <p>// from-scratch EAGLE-3 reproduction for faster LLM inference</p>
+        <p>// and full-stack sites running in production.</p>
+      </div>
+
+      <p class="tx-line" data-tx-step>{{ prompt }} <span class="tx-cmd" data-type>./explore</span><span class="tx-caret" aria-hidden="true"></span></p>
+      <nav class="tx-actions" aria-label="Project groups" data-tx-step>
         {%- for g in groups %}
-        <a class="hs-panel-row" href="#{{ g.name | slugify }}">
-          <span class="hs-dot" aria-hidden="true"></span>
-          <span class="hs-panel-text">
-            <b>{{ g.name }}</b>
-            <small>{{ g.items.size }} project{% if g.items.size != 1 %}s{% endif %}</small>
-          </span>
-          <svg class="hs-chev hs-chev--right" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" /></svg>
-        </a>
+        <a class="tx-btn{% if forloop.first %} tx-btn--go{% endif %}" href="#{{ g.name | slugify }}"><span aria-hidden="true">&gt;</span> {{ g.name | slugify | replace: '-', '_' }}</a>
         {%- endfor %}
       </nav>
-    </header>
+    </div>
+  </div>
+  <div class="tx-status">
+    <span><i class="tx-led" aria-hidden="true"></i>online &middot; {{ projects.size }} projects &middot; {{ groups.size }} areas</span>
+    <span>zsh &middot; 120x40</span>
+  </div>
+</header>
 
-    {%- for g in groups %}
-    <section class="hs-group" id="{{ g.name | slugify }}" aria-labelledby="{{ g.name | slugify }}-heading">
-      <h2 id="{{ g.name | slugify }}-heading">{{ g.name }}</h2>
-      {%- for p in g.items %}
-      <details class="hs-row">
-        <summary>
-          <span class="hs-row-head">
-            <b>{{ p.name }}</b>
-            <small>{{ p.summary }}</small>
-            {%- if p.video %}
-            <span class="hs-badge"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9l7-4.5z" /></svg>Demo video{% if p.video_length %} &middot; {{ p.video_length }}{% endif %}</span>
-            {%- endif %}
-          </span>
-          <svg class="hs-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 6l5 5 5-5" /></svg>
-        </summary>
-        <div class="hs-row-body">
+{%- for g in groups %}
+{%- assign gslug = g.name | slugify -%}
+<section class="tx-group" id="{{ gslug }}" aria-labelledby="{{ gslug }}-heading">
+  <p class="tx-kicker"># {% if forloop.index < 10 %}0{% endif %}{{ forloop.index }} &mdash; {{ gslug | replace: '-', '_' }}</p>
+  <h2 id="{{ gslug }}-heading" class="tx-heading">
+    {%- case g.name -%}
+      {%- when 'Live products' -%}Live products,<br /><span>shipped to real customers.</span>
+      {%- when 'AI and LLM engineering' -%}AI and LLM engineering,<br /><span>from research to running systems.</span>
+      {%- else -%}{{ g.name }}
+    {%- endcase -%}
+  </h2>
+
+  <div class="tx-grid">
+    {%- for p in g.items %}
+    {%- assign file = p.name | slugify | append: '.md' -%}
+    <article class="tx-project{% if p.video %} tx-project--wide{% endif %}" data-tx-card>
+      <p class="tx-line tx-line--card">{{ prompt }} <span class="tx-cmd" data-type>cat <span class="tx-file">{{ file }}</span></span></p>
+      <div class="tx-window" data-tx-body>
+        <div class="tx-bar">
+          <span class="tx-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="tx-title tx-title--left">{{ file }}</span>
           {%- if p.video %}
-          <figure class="hs-video">
+          <span class="tx-tag-video"><span aria-hidden="true">&#9654;</span> demo{% if p.video_length %} &middot; {{ p.video_length }}{% endif %}</span>
+          {%- endif %}
+        </div>
+        <div class="tx-screen">
+          <h3 class="tx-name">{{ p.name }}</h3>
+          <p class="tx-summary">// {{ p.summary }}</p>
+
+          {%- if p.video %}
+          <figure class="tx-video">
             <video controls playsinline preload="none"{% if p.video_poster %} poster="{{ p.video_poster | relative_url }}"{% endif %} aria-label="{{ p.name }} demo video">
               <source src="{{ p.video | relative_url }}" type="video/mp4" />
               <a href="{{ p.video | relative_url }}">Download the {{ p.name }} demo video</a>
@@ -69,67 +100,53 @@ permalink: /projects/
           </figure>
           {%- endif %}
           {%- if p.image %}
-          <img class="hs-shot" src="{{ p.image | relative_url }}" alt="{{ p.image_alt | default: p.name }}" loading="lazy" />
+          <img class="tx-shot" src="{{ p.image | relative_url }}" alt="{{ p.image_alt | default: p.name }}" loading="lazy" />
           {%- endif %}
-          {%- if p.stack %}
-          <ul class="hs-chips" aria-label="Tech stack">
-            {%- if p.year %}<li class="hs-chip--year">{{ p.year }}</li>{% endif %}
-            {%- for s in p.stack %}<li>{{ s }}</li>{% endfor %}
-          </ul>
-          {%- endif %}
+
           {%- for d in p.details %}
-          <p><b>{{ d.label }}.</b> {{ d.text }}</p>
+          <p class="tx-detail"><b>{{ d.label }}:</b> {{ d.text }}</p>
           {%- endfor %}
           {%- if p.highlights %}
-          <ul class="hs-points">
+          <ul class="tx-points">
             {%- for h in p.highlights %}<li>{{ h }}</li>{% endfor %}
           </ul>
           {%- endif %}
+
+          {%- if p.stack %}
+          <ul class="tx-chips" aria-label="Tech stack">
+            {%- if p.year %}<li class="tx-chip--year">{{ p.year }}</li>{% endif %}
+            {%- for s in p.stack %}<li>{{ s }}</li>{% endfor %}
+          </ul>
+          {%- endif %}
+
           {%- if p.links %}
-          <p class="hs-actions">
+          <p class="tx-links">
             {%- for l in p.links %}
             {%- assign external = l.url | slice: 0, 4 -%}
+            {%- assign cmd = l.label | downcase | replace: ' ', '_' -%}
             {%- if external == 'http' %}
-            <a class="hs-btn{% if forloop.first %} hs-btn--primary{% endif %}" href="{{ l.url }}" target="_blank" rel="noopener noreferrer">{{ l.label }}</a>
+            <a class="tx-btn{% if forloop.first %} tx-btn--go{% endif %}" href="{{ l.url }}" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">&gt;</span> {{ cmd }}</a>
             {%- else %}
-            <a class="hs-btn{% if forloop.first %} hs-btn--primary{% endif %}" href="{{ l.url | relative_url }}">{{ l.label }}</a>
+            <a class="tx-btn{% if forloop.first %} tx-btn--go{% endif %}" href="{{ l.url | relative_url }}"><span aria-hidden="true">&gt;</span> {{ cmd }}</a>
             {%- endif %}
             {%- endfor %}
           </p>
           {%- endif %}
         </div>
-      </details>
-      {%- endfor %}
-    </section>
+      </div>
+    </article>
     {%- endfor %}
   </div>
+</section>
+{%- endfor %}
 
-  <aside class="hs-side" aria-label="Project stats">
-    <dl class="hs-stats">
-      <div><dt>Projects</dt><dd>{{ projects.size }}</dd></div>
-      <div><dt>With live links</dt><dd>{{ live_count }}</dd></div>
-      <div><dt>Areas</dt><dd>{{ groups.size }}</dd></div>
-      <div><dt>Models on HF</dt><dd>{{ site.data.hf_models.size }}</dd></div>
-    </dl>
-    <hr />
-    <div class="hs-promo">
-      <span class="hs-promo-mark" aria-hidden="true"></span>
-      <div>
-        <b>Read how they were built</b>
-        <p>Engineering write-ups and paper implementations behind the projects. <a href="{{ '/engineering/' | relative_url }}">Browse</a></p>
-      </div>
-    </div>
-    <a class="hs-btn hs-btn--block" href="https://github.com/TrishamBP" target="_blank" rel="noopener noreferrer">View GitHub</a>
-    <a class="hs-btn hs-btn--block" href="{{ '/models/' | relative_url }}">See published models</a>
-  </aside>
-</div>
+<section class="tx-group tx-group--end" aria-label="More work">
+  <p class="tx-line">{{ prompt }} <span class="tx-cmd">ls <span class="tx-file">~/more</span></span></p>
+  <p class="tx-links">
+    <a class="tx-btn tx-btn--go" href="https://github.com/TrishamBP" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">&gt;</span> github</a>
+    <a class="tx-btn" href="{{ '/models/' | relative_url }}"><span aria-hidden="true">&gt;</span> hugging_face_models</a>
+    <a class="tx-btn" href="{{ '/engineering/' | relative_url }}"><span aria-hidden="true">&gt;</span> engineering_writeups</a>
+  </p>
+</section>
 
-<script>
-  /* Pause a project's demo video when its row is collapsed. */
-  document.querySelectorAll(".hs-row").forEach(function (row) {
-    row.addEventListener("toggle", function () {
-      if (row.open) return;
-      row.querySelectorAll("video").forEach(function (v) { v.pause(); });
-    });
-  });
-</script>
+<script src="{{ '/assets/js/projects-terminal.js' | relative_url }}" defer></script>

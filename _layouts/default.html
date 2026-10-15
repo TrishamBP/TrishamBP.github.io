@@ -15,10 +15,10 @@
     The blog listing and posts get the light paper skin (css/blog-paper.css).
     The research page gets the full-screen cinema skin (css/research-cinema.css).
     Certifications get the neon grid skin (css/certs-neon.css).
-    Projects get the light clean skin (css/projects-clean.css).
+    Projects get the dark terminal skin (css/projects-terminal.css).
   {%- endcomment -%}
   {%- assign url_prefix = page.url | slice: 0, 13 -%}
-  <body class="{% unless page_theme == 'none' %}theme-{{ page_theme }} {% endunless %}{% if url_prefix == '/engineering/' or page.collection == 'implementations' %}eng-glossary {% endif %}{% if page.url == '/blog/' or page.url == '/newsletter/' or page.url == '/models/' or page.layout == 'post' %}ts-paper {% endif %}{% if page.url == '/research-articles/' %}spx-cinema {% endif %}{% if page.url == '/certifications/' %}grid-neon {% endif %}{% if page.url == '/physical-systems/' %}ps-systems {% endif %}{% if page.url == '/projects/' %}hs-clean {% endif %}dark-mode">
+  <body class="{% unless page_theme == 'none' %}theme-{{ page_theme }} {% endunless %}{% if url_prefix == '/engineering/' or page.collection == 'implementations' %}eng-glossary {% endif %}{% if page.url == '/blog/' or page.url == '/newsletter/' or page.url == '/models/' or page.layout == 'post' %}ts-paper {% endif %}{% if page.url == '/research-articles/' %}spx-cinema {% endif %}{% if page.url == '/certifications/' %}grid-neon {% endif %}{% if page.url == '/physical-systems/' %}ps-systems {% endif %}{% if page.url == '/projects/' %}tx-term {% endif %}dark-mode">
     <nav class="topnav" id="topnav">
       <div class="topnav-inner">
         <a class="topnav-brand" href="{{ '/' | relative_url }}">Trisham Patil</a>
@@ -379,7 +379,7 @@
                 ".site-shell .eng-filter-bar, .site-shell .blog-post-item," +
                 ".site-shell .research-article-item," +
                 ".site-shell .paper-explainer-item," +
-                ".site-shell .implementation-item, .site-shell .hs-group"
+                ".site-shell .implementation-item"
             )
           );
         }
