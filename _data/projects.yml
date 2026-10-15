@@ -1,0 +1,107 @@
+# Projects shown on /projects/. Grouped by `group` (order of first appearance
+# sets the section order). Every field except `name`, `group` and `summary` is
+# optional: rows without `details`, `highlights` or `links` simply render less.
+#
+#   summary     one line under the title in the collapsed row
+#   stack       tech chips
+#   details     list of { label, text } paragraphs shown when expanded
+#   highlights  bullet points shown when expanded
+#   links       list of { label, url } buttons; the first one is the primary
+#   image       optional preview image (path from site root) + image_alt
+
+- name: Dhokla House
+  group: Live products
+  year: "2022–2023"
+  summary: Production food-ordering and brand platform built for menu discovery and fast checkout.
+  stack: [React.js, Node.js, Express.js, PostgreSQL, MongoDB]
+  details:
+    - label: Frontend
+      text: >-
+        React.js with modular UI components and responsive layouts, so browsing,
+        add-to-cart and checkout stay fast on mobile and desktop.
+    - label: Backend
+      text: >-
+        Node.js and Express.js APIs for menu retrieval, customer interaction flows
+        and transactional order endpoints, with route and service layers kept apart.
+    - label: Data layer
+      text: >-
+        PostgreSQL holds the order lifecycle and reporting data. MongoDB stores
+        content and interaction metadata whose schema changes often.
+  links:
+    - label: Visit site
+      url: https://dhoklahouse.com/
+
+- name: Apni Dukaan
+  group: Live products
+  year: "2022–2023"
+  summary: E-commerce platform covering catalog browsing, checkout and order management.
+  stack: [React.js, Node.js, Express.js, PostgreSQL, MongoDB]
+  details:
+    - label: Frontend
+      text: >-
+        Reusable catalog, product-detail and checkout components in React.js,
+        designed to remove friction from the purchase flow.
+    - label: Backend
+      text: >-
+        Express APIs for products, cart and orders, with read-heavy catalog routes
+        separated from transactional checkout and order-update routes.
+    - label: Data and scaling
+      text: >-
+        PostgreSQL for consistency-sensitive orders and reporting, MongoDB for
+        flexible product metadata, so each side scales as volume grows.
+  links:
+    - label: Visit site
+      url: https://apnidukaan.com/
+
+- name: LLM Complexity Router
+  group: AI and LLM engineering
+  year: "2026"
+  summary: Classifies a prompt as easy, medium or hard and routes it to Claude Haiku, Sonnet or Opus.
+  stack: [Python, NumPy, Qwen3 embeddings, MCP, Claude Code plugin]
+  details:
+    - label: What it does
+      text: >-
+        Packaged as a Claude Code plugin with a prompt hook, an MCP tool and
+        per-tier worker subagents, so every prompt goes to the cheapest model
+        that can handle it.
+    - label: Model
+      text: >-
+        Logistic-regression and MLP heads trained on 61K prompts and run locally
+        in pure NumPy. The MLP reaches 72.7% accuracy and 0.707 macro F1 on a
+        7.7K-prompt held-out split.
+  links:
+    - label: Model card
+      url: https://huggingface.co/Trisham97/llm-complexity-router
+
+- name: Drug Information RAG System
+  group: AI and LLM engineering
+  summary: FDA-aware retrieval-augmented generation with semantic search and source-grounded answers.
+  stack: [RAG, Semantic retrieval, LLMs]
+  highlights:
+    - Semantic retrieval over drug information sources.
+    - Structured responses that cite the source passages they are grounded in.
+
+- name: LoRA and QLoRA Fine-Tuning Pipelines
+  group: AI and LLM engineering
+  summary: End-to-end parameter-efficient fine-tuning workflows for adapting LLMs to domain datasets.
+  stack: [PyTorch, LoRA, QLoRA, Hugging Face]
+
+- name: Distributed MLP Training
+  group: AI and LLM engineering
+  summary: Distributed data-parallel training with GPU-aware optimization.
+  stack: [PyTorch, Horovod, CUDA]
+
+- name: Football Match Analysis
+  group: Computer vision and deep learning
+  summary: Game-event analysis from match footage with object detection and deep learning.
+  stack: [YOLO, OpenCV, Deep learning]
+
+- name: MRI-Based Alzheimer's Classification
+  group: Computer vision and deep learning
+  summary: Deep learning image classification of brain MRI scans into NC, MCI and AD.
+  stack: [Deep learning, Medical imaging, CNNs]
+
+- name: Movie Reservation System Backend
+  group: Backend systems
+  summary: Complete FastAPI backend for auth, scheduling, booking and ticketing.
+  stack: [FastAPI, Python, REST APIs]

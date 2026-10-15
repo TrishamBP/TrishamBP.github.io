@@ -129,6 +129,13 @@
   <link rel="stylesheet" href="{{ '/css/physical-systems.css' | relative_url }}?v={{ site.time | date: '%s' }}" />
   {%- endif %}
   {%- comment -%}
+    Projects: light clean skin (white panels, mint glow, Inter). Same gate as
+    the `hs-clean` body class in _layouts/default.html.
+  {%- endcomment -%}
+  {%- if page.url == '/projects/' %}
+  <link rel="stylesheet" href="{{ '/css/projects-clean.css' | relative_url }}?v={{ site.time | date: '%s' }}" />
+  {%- endif %}
+  {%- comment -%}
     Certifications: neon grid skin with light racers. Same gate as the
     `grid-neon` body class in _layouts/default.html.
   {%- endcomment -%}
