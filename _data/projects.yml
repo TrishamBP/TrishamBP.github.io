@@ -53,43 +53,98 @@
     - label: Visit site
       url: https://apnidukaan.com/
 
-- name: LLM Complexity Router
+- name: ThermaCore
   group: AI and LLM engineering
-  year: "2026"
-  summary: Classifies a prompt as easy, medium or hard and routes it to Claude Haiku, Sonnet or Opus.
-  stack: [Python, NumPy, Qwen3 embeddings, MCP, Claude Code plugin]
+  summary: AI for data center operations, built for the AMD ACT III Hackathon.
+  stack: [Python, Apache Kafka, XGBoost, LangGraph, DuckDB, FastAPI]
   details:
     - label: What it does
       text: >-
-        Packaged as a Claude Code plugin with a prompt hook, an MCP tool and
-        per-tier worker subagents, so every prompt goes to the cheapest model
-        that can handle it.
-    - label: Model
+        Ingests server telemetry through Kafka, assesses each server's thermal
+        and cooling state with deterministic rules, and forecasts inlet
+        temperature with XGBoost.
+    - label: Agents
       text: >-
-        Logistic-regression and MLP heads trained on 61K prompts and run locally
-        in pure NumPy. The MLP reaches 72.7% accuracy and 0.707 macro F1 on a
-        7.7K-prompt held-out split.
+        Operators investigate through a LangGraph multi-agent recommendation
+        workflow, a natural-language copilot and a digital-twin API built for a
+        Three.js frontend. The system only recommends; it never controls hardware.
+  highlights:
+    - All telemetry is simulated from a synthetic Kaggle dataset and labelled as such.
   links:
+    - label: View on GitHub
+      url: https://github.com/TrishamBP/ThermaCore
+
+- name: Autopay Recovery Voice Agent
+  group: AI and LLM engineering
+  summary: FastAPI backend for a simulated autopay and EMI payment-recovery voice agent.
+  stack: [Python, FastAPI, SQLAlchemy, SQLite, Twilio, Fireworks AI]
+  details:
+    - label: What it does
+      text: >-
+        A virtual clock and event ledger drive payment and recovery state
+        machines. Recovery calls go through an approval queue, and no call is
+        placed without explicit human approval.
+    - label: Voice and data
+      text: >-
+        Twilio webhooks, a conversation engine with transcripts and audit logs,
+        and a read-only natural-language-to-SQL tool. All data is synthetic and
+        payments are simulated.
+  links:
+    - label: View on GitHub
+      url: https://github.com/TrishamBP/Autopay-Recovery-Voice-Agent
+
+- name: LLM Router
+  group: AI and LLM engineering
+  summary: Hybrid neural network and XGBoost router that picks a Claude model version for each query.
+  stack: [Python, PyTorch, XGBoost, scikit-learn, Fireworks AI]
+  details:
+    - label: What it does
+      text: >-
+        Sends every prompt to the cheapest Claude model that can handle it,
+        trading off predicted quality, latency and cost. Prompts are embedded,
+        classified as easy, medium or hard, and routed to Haiku, Sonnet or Opus.
+  links:
+    - label: View on GitHub
+      url: https://github.com/TrishamBP/llm-router
     - label: Model card
       url: https://huggingface.co/Trisham97/llm-complexity-router
 
-- name: Drug Information RAG System
+- name: EAGLE-3 Reproduction
   group: AI and LLM engineering
-  summary: FDA-aware retrieval-augmented generation with semantic search and source-grounded answers.
-  stack: [RAG, Semantic retrieval, LLMs]
+  summary: Runnable PyTorch reconstruction of EAGLE-3 speculative decoding for faster LLM inference.
+  stack: [Python, PyTorch, Speculative decoding]
+  details:
+    - label: What it does
+      text: >-
+        Rebuilds the EAGLE-3 draft model, multi-layer feature fusion,
+        training-time test and lossless verification, with a chain-draft
+        inference engine and one script per correctness experiment.
   highlights:
-    - Semantic retrieval over drug information sources.
-    - Structured responses that cite the source passages they are grounded in.
+    - Greedy EAGLE-3 output matches the target model token for token.
+    - Not the official implementation, and it does not measure the paper's GPU speedups.
+  links:
+    - label: View on GitHub
+      url: https://github.com/TrishamBP/eagle_3
+    - label: Read the write-up
+      url: /engineering/eagle-3-speculative-decoding-llm-inference-acceleration/
 
-- name: LoRA and QLoRA Fine-Tuning Pipelines
+- name: ACME Onboard
   group: AI and LLM engineering
-  summary: End-to-end parameter-efficient fine-tuning workflows for adapting LLMs to domain datasets.
-  stack: [PyTorch, LoRA, QLoRA, Hugging Face]
-
-- name: Distributed MLP Training
-  group: AI and LLM engineering
-  summary: Distributed data-parallel training with GPU-aware optimization.
-  stack: [PyTorch, Horovod, CUDA]
+  summary: AI employee-onboarding platform with RAG over company documents, built for the IBM Bob 2.0 Hackathon.
+  stack: [Next.js, TypeScript, FastAPI, ChromaDB, RAG, Fireworks AI]
+  details:
+    - label: What it does
+      text: >-
+        HR uploads onboarding documents by department through a management
+        portal. Employees ask an AI knowledge assistant that answers with
+        department-aware retrieval-augmented generation.
+    - label: Retrieval
+      text: >-
+        Hybrid search with BM25 and embeddings, fused with RRF, plus HyDE query
+        expansion, MMR diversification and Qwen3 reranking.
+  links:
+    - label: View on GitHub
+      url: https://github.com/TrishamBP/IBM_Bob_2.0_Hackathon
 
 - name: Football Match Analysis
   group: Computer vision and deep learning

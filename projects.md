@@ -74,7 +74,12 @@ permalink: /projects/
           {%- if p.links %}
           <p class="hs-actions">
             {%- for l in p.links %}
+            {%- assign external = l.url | slice: 0, 4 -%}
+            {%- if external == 'http' %}
             <a class="hs-btn{% if forloop.first %} hs-btn--primary{% endif %}" href="{{ l.url }}" target="_blank" rel="noopener noreferrer">{{ l.label }}</a>
+            {%- else %}
+            <a class="hs-btn{% if forloop.first %} hs-btn--primary{% endif %}" href="{{ l.url | relative_url }}">{{ l.label }}</a>
+            {%- endif %}
             {%- endfor %}
           </p>
           {%- endif %}
