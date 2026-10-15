@@ -145,18 +145,3 @@
   links:
     - label: View on GitHub
       url: https://github.com/TrishamBP/IBM_Bob_2.0_Hackathon
-
-- name: Football Match Analysis
-  group: Computer vision and deep learning
-  summary: Game-event analysis from match footage with object detection and deep learning.
-  stack: [YOLO, OpenCV, Deep learning]
-
-- name: MRI-Based Alzheimer's Classification
-  group: Computer vision and deep learning
-  summary: Deep learning image classification of brain MRI scans into NC, MCI and AD.
-  stack: [Deep learning, Medical imaging, CNNs]
-
-- name: Movie Reservation System Backend
-  group: Backend systems
-  summary: Complete FastAPI backend for auth, scheduling, booking and ticketing.
-  stack: [FastAPI, Python, REST APIs]
