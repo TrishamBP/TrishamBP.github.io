@@ -21,6 +21,9 @@ buttondown_username: "trisham"
 # Build settings
 markdown: kramdown
 permalink: pretty
+# Publish future-dated documents. Newsletter issues carry their send date
+# (always a Monday) and go up on the site while still being written.
+future: true
 
 # raw_data/ holds third-party source material kept locally for reference while
 # writing. Its files carry frontmatter, so Jekyll was rendering and publishing

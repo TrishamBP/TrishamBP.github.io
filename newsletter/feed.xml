@@ -20,7 +20,8 @@ permalink: /newsletter/feed.xml
     <atom:link href="{{ '/newsletter/feed.xml' | absolute_url }}" rel="self" type="application/rss+xml" />
     <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
     {%- assign base = site.url | append: site.baseurl | append: '/' %}
-    {%- assign editions = site.newsletters | sort: "date" | reverse %}
+    {%- comment -%} Issues marked `wip: true` are still being written: keep them out of the feed. {%- endcomment -%}
+    {%- assign editions = site.newsletters | where_exp: "e", "e.wip != true" | sort: "date" | reverse %}
     {%- for edition in editions limit:10 %}
     {%- assign email_html = edition.content
       | replace: '<dialog', '<div'
