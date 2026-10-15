@@ -8,6 +8,8 @@
 #   highlights  bullet points shown when expanded
 #   links       list of { label, url } buttons; the first one is the primary
 #   image       optional preview image (path from site root) + image_alt
+#   video       optional demo video (mp4, H.264) shown first when expanded, with
+#               video_poster, video_length ("0:22") and video_caption
 
 - name: Dhokla House
   group: Live products
@@ -55,6 +57,12 @@
 
 - name: ThermaCore
   group: AI and LLM engineering
+  video: /assets/thermacore.mp4
+  video_poster: /assets/images/projects/thermacore-poster.jpg
+  video_length: "0:22"
+  video_caption: >-
+    ThermaCore launch video: the 3D data center digital twin on simulated
+    telemetry.
   summary: AI for data center operations, built for the AMD ACT III Hackathon.
   stack: [Python, Apache Kafka, XGBoost, LangGraph, DuckDB, FastAPI]
   details:
@@ -76,6 +84,12 @@
 
 - name: Autopay Recovery Voice Agent
   group: AI and LLM engineering
+  video: /assets/voice.mp4
+  video_poster: /assets/images/projects/voice-agent-poster.jpg
+  video_length: "0:23"
+  video_caption: >-
+    Voice agent demo: the LLM drafts each reply, and the backend blocks any
+    claim it cannot verify, such as confirming an unconfirmed payment.
   summary: FastAPI backend for a simulated autopay and EMI payment-recovery voice agent.
   stack: [Python, FastAPI, SQLAlchemy, SQLite, Twilio, Fireworks AI]
   details:

@@ -50,10 +50,24 @@ permalink: /projects/
           <span class="hs-row-head">
             <b>{{ p.name }}</b>
             <small>{{ p.summary }}</small>
+            {%- if p.video %}
+            <span class="hs-badge"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9l7-4.5z" /></svg>Demo video{% if p.video_length %} &middot; {{ p.video_length }}{% endif %}</span>
+            {%- endif %}
           </span>
           <svg class="hs-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 6l5 5 5-5" /></svg>
         </summary>
         <div class="hs-row-body">
+          {%- if p.video %}
+          <figure class="hs-video">
+            <video controls playsinline preload="none"{% if p.video_poster %} poster="{{ p.video_poster | relative_url }}"{% endif %} aria-label="{{ p.name }} demo video">
+              <source src="{{ p.video | relative_url }}" type="video/mp4" />
+              <a href="{{ p.video | relative_url }}">Download the {{ p.name }} demo video</a>
+            </video>
+            {%- if p.video_caption %}
+            <figcaption>{{ p.video_caption }}</figcaption>
+            {%- endif %}
+          </figure>
+          {%- endif %}
           {%- if p.image %}
           <img class="hs-shot" src="{{ p.image | relative_url }}" alt="{{ p.image_alt | default: p.name }}" loading="lazy" />
           {%- endif %}
@@ -109,3 +123,13 @@ permalink: /projects/
     <a class="hs-btn hs-btn--block" href="{{ '/models/' | relative_url }}">See published models</a>
   </aside>
 </div>
+
+<script>
+  /* Pause a project's demo video when its row is collapsed. */
+  document.querySelectorAll(".hs-row").forEach(function (row) {
+    row.addEventListener("toggle", function () {
+      if (row.open) return;
+      row.querySelectorAll("video").forEach(function (v) { v.pause(); });
+    });
+  });
+</script>
