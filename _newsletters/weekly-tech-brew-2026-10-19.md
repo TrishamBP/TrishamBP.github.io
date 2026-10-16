@@ -553,3 +553,99 @@ The weights use Liquid AI's own LFM 1.0 licence, so check its terms before comme
 
   </div>
 </dialog>
+
+
+## Company Under the Spotlight
+
+### Colossal Biosciences: Bringing Back the Woolly Mammoth With CRISPR
+
+![Colossal Biosciences logo, the de-extinction company bringing back the woolly mammoth](/assets/newsletter/weekly-tech-brew-2026-10-19/colossal-biosciences-logo.png){: .nl-hero}
+
+What if extinction didn't have to be forever? Colossal Biosciences is betting it doesn't. The company is using CRISPR gene editing to write core woolly mammoth traits, such as thick hair, large fat deposits and small ears, into the genome of the Asian elephant, the mammoth's closest living relative. The goal isn't a perfect clone. It's a functional mammoth-elephant hybrid that can survive the Arctic tundra. Return enough of these cold-adapted giants to the wild, Colossal argues, and they could restore ancient grasslands, slow the thaw of the Arctic permafrost and help fight climate change. Call it de-extinction or call it playing god: either way, it's one of the boldest bets in biotech.
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+#### The Species Colossal Is Trying to Revive
+
+Colossal is working on six species. The approach is the same each time: read the extinct animal's DNA, find where it differs from its closest living relative, edit those traits into the relative's cells, then grow an animal from those cells. Mammals need a surrogate mother. Birds need a different route, through germ cells and eggs.
+
+#### 1. Woolly Mammoth
+
+The last mammoths died out about 4,000 years ago on Wrangel Island, through hunting and a changing climate. Colossal wants a cold-resistant elephant with mammoth traits to graze the Arctic again and help protect the permafrost.
+
+1. Collect well-preserved mammoth samples from Alaska and Siberia.
+2. Sequence several mammoth genomes, plus the genome of the Asian elephant, its closest living relative.
+3. Find the genes behind cold adaptation.
+4. Grow elephant cells and make about 65 gene edits to create cold-adapted cell lines.
+5. Test the edits using stem cells and animal models.
+6. Move the edited nucleus into an elephant egg and implant the embryo in an Asian or African elephant surrogate.
+7. Wait out a 22-month pregnancy for the first calves.
+
+<a class="nl-source" href="https://colossal.com/mammoth/" target="_blank" rel="noopener">Read more about the woolly mammoth at Colossal &rarr;</a>
+
+#### 2. Thylacine (Tasmanian Tiger)
+
+Settlers hunted the thylacine for preying on livestock, with bounties on its head from 1830. The last known one died in a Hobart zoo in September 1936. As an apex predator, Colossal says its return would help stabilise Tasmania's ecosystem.
+
+1. Sequence the thylacine genome (done in 2018, updated in April 2022) and those of its closest living relatives.
+2. Build computational biology pipelines to compare them.
+3. Create marsupial cell lines and stem cells (iPSCs).
+4. Use CRISPR to edit thylacine traits into the genome of a dasyurid, a small living marsupial relative.
+5. Transfer the edited nucleus into a dasyurid egg (somatic cell nuclear transfer, or SCNT) and grow the embryo.
+6. Implant it in a surrogate for a pregnancy of up to 42 days.
+
+<a class="nl-source" href="https://colossal.com/thylacine/" target="_blank" rel="noopener">Read more about the thylacine at Colossal &rarr;</a>
+
+#### 3. Dodo
+
+The flightless dodo lived only on Mauritius. After Dutch settlers arrived in 1598, the rats, pigs and macaques they brought ate the birds and their eggs, and the dodo was gone by around 1690. Colossal is working with the government of Mauritius to bring it back and rewild it.
+
+1. Build high-quality reference genomes to compare.
+2. Grow primordial germ cells (PGCs, the cells that become eggs and sperm) from the Nicobar pigeon, the dodo's closest living relative.
+3. Transfer those pigeon PGCs into chicken hosts.
+4. Use the Nicobar pigeon and Rodrigues solitaire genomes to guide the edits.
+5. Improve multiplex gene editing (many edits at once) and automate the pipeline.
+6. Incubate and hatch the eggs.
+
+<a class="nl-source" href="https://colossal.com/dodo/" target="_blank" rel="noopener">Read more about the dodo at Colossal &rarr;</a>
+
+#### 4. Dire Wolf
+
+The dire wolf, an Ice Age apex predator, has been gone for more than 10,000 years. It is the species where Colossal says it has already succeeded.
+
+1. Recover and read ancient dire wolf DNA.
+2. Make 20 targeted edits across 14 genetic loci to give living canids dire wolf traits.
+3. Raise the pups: three so far, named Romulus, Remus and Khaleesi.
+
+Colossal shares the pack's growth through a public development tracker. It also acknowledges the debate over whether this is true de-extinction or "functional de-extinction": animals with dire wolf traits rather than dire wolves themselves.
+
+<a class="nl-source" href="https://colossal.com/direwolf/" target="_blank" rel="noopener">Read more about the dire wolf at Colossal &rarr;</a>
+
+#### 5. Moa
+
+The moa were giant flightless birds from New Zealand, the largest standing 3.6 metres tall. Overhunting by early Māori settlers wiped them out in the 13th to 15th century, in less than 100 years. Colossal wants to restore their role as a key plant-eater and seed spreader.
+
+1. Sequence high-quality and ancient moa genomes.
+2. Grow primordial germ cells (egg and sperm precursors).
+3. Choose a surrogate bird: the tinamou or the emu.
+4. Make multiplex gene edits and automate cell production.
+5. Incubate and hatch the eggs.
+
+<a class="nl-source" href="https://colossal.com/moa/" target="_blank" rel="noopener">Read more about the moa at Colossal &rarr;</a>
+
+#### 6. Bluebuck
+
+The bluebuck, a South African antelope, was last seen in 1799. It was the first large African mammal that humans drove to extinction in recorded history, through overhunting and colonial expansion. Colossal says the work could also help endangered antelopes alive today.
+
+1. Extract DNA from the seven museum specimens that remain.
+2. Find the genetic differences between the bluebuck and its closest living relatives, the roan and sable antelopes.
+3. Create antelope cell lines and edit bluebuck traits into them.
+4. Develop better assisted reproduction for antelopes.
+5. Clone the edited cells using SCNT.
+
+<a class="nl-source" href="https://colossal.com/bluebuck/" target="_blank" rel="noopener">Read more about the bluebuck at Colossal &rarr;</a>
+
+</div>
+</details>
