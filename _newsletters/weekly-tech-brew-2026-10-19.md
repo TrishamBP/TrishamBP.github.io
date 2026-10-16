@@ -660,3 +660,11 @@ The bluebuck, a South African antelope, was last seen in 1799. It was the first 
 Anthropic updated its usage policy to cover "sustained and needless" abuse of Claude, and the headlines made it sound like snapping at a chatbot could cost you your account. The actual policy is much narrower than that, and more interesting. I break down what changed, what the rule does and doesn't cover, how Claude's constitution shapes its training, and why your insults don't feed RLHF.
 
 <a class="nl-read-btn" href="/artificial%20intelligence/2026/10/12/being-mean-to-claude-can-get-you-banned/">Read the blog &rarr;</a>
+
+### Mistral's Sovereign Appeal: Mistral Large 4 "le Chonk"
+
+![Mistral Large 4 "le chonk" launch banner from Mistral AI: a giant pixel-art number 4 next to the text "Introducing Mistral Large 4"](/assets/newsletter/weekly-tech-brew-2026-10-19/mistral-large-4-le-chonk-hero.jpg){: .nl-hero}
+
+Mistral Large 4 is the most powerful model yet from a European company, and it leads every publicly available model at fixing memory-safety bugs. But the full leaderboards tell a more mixed story than Mistral's launch charts. I go through all 20 benchmark charts, compare them with the independent Artificial Analysis rankings, and look at what its sovereign, self-hostable pitch really offers.
+
+<a class="nl-read-btn" href="/artificial%20intelligence/2026/10/16/mistral-large-4-sovereign-ai-le-chonk/">Read the blog &rarr;</a>
