@@ -27,6 +27,7 @@ permalink: /newsletter/feed.xml
       | replace: '<dialog', '<div'
       | replace: '</dialog>', '</div>'
       | replace: '<details class="nl-expand">', '<div class="nl-expand">'
+      | replace: '<details class="nl-expand nl-expand--release">', '<div class="nl-expand">'
       | replace: '</details>', '</div>'
       | replace: '<summary>', '<div style="display:none">'
       | replace: '</summary>', '</div>'

@@ -718,6 +718,36 @@ body.theme-typesafe.ts-paper .post-content .nl-expand[open] .nl-expand-body {
   }
 }
 
+/* Release stack (<details class="nl-expand nl-expand--release">): only the
+   numbered heading shows, with a black Expand button under it that opens the
+   takeaways, story and Dive deep button. Releases sit close together so the
+   list reads as 1, 2, 3, ... */
+body.theme-typesafe.ts-paper .post-content .nl-expand--release {
+  margin: 0.2rem 0 1.4rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px dashed var(--ts-ink);
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-expand--release > summary {
+  color: var(--ts-light);
+  background: var(--ts-ink);
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-expand--release > summary::before {
+  background: var(--ts-light);
+  color: var(--ts-ink);
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-expand--release[open] > summary {
+  color: var(--ts-ink);
+  background: var(--ts-bg);
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-expand--release[open] > summary::before {
+  background: var(--ts-ink);
+  color: var(--ts-light);
+}
+
 /* Padding lives on the children, so a click on the <dialog> element itself
    can only be a backdrop click (the script closes on that). */
 body.theme-typesafe.ts-paper .nl-modal {

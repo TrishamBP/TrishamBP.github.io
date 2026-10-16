@@ -18,6 +18,10 @@ wip: true
 
 ### 1. Muse Wonder and Muse Wonder Full: Frontier Models for Agents
 
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 **Takeaways**
 
 - **Two models, two audiences:** Muse Wonder is open to developers through the Meta Model API and Muse Code. Muse Wonder Full is limited to Muse Code subscribers for now.
@@ -33,6 +37,9 @@ Muse Wonder is available now to developers and builders through the Meta Model A
 <button type="button" class="nl-modal-open" data-modal-open="muse-wonder" aria-haspopup="dialog">
   Dive deep &rarr;
 </button>
+
+</div>
+</details>
 
 <dialog id="muse-wonder" class="nl-modal nl-modal--wide" aria-labelledby="muse-wonder-title">
   <div class="nl-modal-head">
@@ -86,6 +93,10 @@ Meta calls this a major step toward "personal superintelligence for everyone", a
 
 ### 2. Gemini 4 Argon: Google's Enterprise Model for Long-Running Agent Work
 
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 **Takeaways**
 
 **The core idea:** Google is pitching Gemini 4 Argon as an enterprise model that carries out complex, long-running, multi-step tasks on its own, with a focus on accuracy, reliability, coding and security.
@@ -111,6 +122,9 @@ Google has launched Gemini 4 Argon, built for the deep, multi-step work that use
 <button type="button" class="nl-modal-open" data-modal-open="gemini-4-argon" aria-haspopup="dialog">
   Dive deep &rarr;
 </button>
+
+</div>
+</details>
 
 <dialog id="gemini-4-argon" class="nl-modal nl-modal--wide" aria-labelledby="gemini-4-argon-title">
   <div class="nl-modal-head">
@@ -188,6 +202,10 @@ Cached input tokens are 95% off. Google's model card and developer guide cover t
 
 ### 3. Claude Haiku 5.5: Anthropic's Cheapest, Fastest Small Model
 
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 ![Claude Haiku 5.5 launch banner from Anthropic, the new fast and low-cost small Claude model](/assets/newsletter/weekly-tech-brew-2026-10-19/claude-haiku-5-5-hero.jpg){: .nl-hero}
 
 **Takeaways**
@@ -204,6 +222,9 @@ Anthropic has released Claude Haiku 5.5, which it calls the cheapest, fastest an
 <button type="button" class="nl-modal-open" data-modal-open="claude-haiku-5-5" aria-haspopup="dialog">
   Dive deep &rarr;
 </button>
+
+</div>
+</details>
 
 <dialog id="claude-haiku-5-5" class="nl-modal nl-modal--wide" aria-labelledby="claude-haiku-5-5-title">
   <div class="nl-modal-head">
@@ -314,6 +335,10 @@ The idea is to let subscribers experiment with building tools, apps and agents o
 
 ### 4. Mistral Large 4: A 1-Trillion-Parameter Open-Weight Model Led by Cybersecurity
 
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 **Takeaways**
 
 - **Mistral's biggest model yet:** a natively multimodal mixture-of-experts with 1 trillion total parameters (49 billion active per token), a 512K-token context window and up to 256K tokens of output.
@@ -339,7 +364,14 @@ Here is how it scored on Artificial Analysis runs, made before the test harness 
 
 Its Coding Agent Index score puts it ahead of DeepSeek-V4-Pro-0813 and Qwen3.8-Max on Mistral's own chart. On the API, it costs **$0.68 per million input tokens and $2.09 per million output tokens**, or $0.748 and $2.299 in Mistral's EU region.
 
+</div>
+</details>
+
 ### 5. Grok Voice 3.0: xAI's New Realtime Voice Agent Model
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
 
 **Takeaways**
 
@@ -353,7 +385,14 @@ For developers already on Grok Voice 2.0, the upgrade is mostly a model switch, 
 
 Treat the 74% figure as a launch claim until independent speech benchmarks catch up. Text-model leaderboards don't rank voice models like this one either, so expect few side-by-side comparisons for now.
 
+</div>
+</details>
+
 ### 6. Qwen-Image-2.1: One Open-Weight Model for Image Generation and Editing
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
 
 **Takeaways**
 
@@ -381,7 +420,14 @@ One caveat: the weights are released under Qwen's own research licence, not a st
 
 <a class="nl-source" href="https://qwen.ai/blog?id=qwen-image-2.1" target="_blank" rel="noopener">Read more on the Qwen blog &rarr;</a>
 
+</div>
+</details>
+
 ### 7. LFM2.5-24B-A2B: Liquid AI's 2B-Active Reasoning Model for On-Device Agents
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
 
 **Takeaways**
 
@@ -397,6 +443,9 @@ Liquid AI has released LFM2.5-24B-A2B on Hugging Face, along with a base model f
 <button type="button" class="nl-modal-open" data-modal-open="lfm2-5-24b-a2b" aria-haspopup="dialog">
   Dive deep &rarr;
 </button>
+
+</div>
+</details>
 
 <dialog id="lfm2-5-24b-a2b" class="nl-modal nl-modal--wide" aria-labelledby="lfm2-5-24b-a2b-title">
   <div class="nl-modal-head">
