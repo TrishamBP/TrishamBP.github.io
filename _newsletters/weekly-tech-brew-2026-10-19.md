@@ -649,3 +649,14 @@ The bluebuck, a South African antelope, was last seen in 1799. It was the first 
 
 </div>
 </details>
+
+
+## Blogs to Devour Over Breakfast
+
+### Being Mean to Claude Can Get You Banned: A Deeper Dive Into What It Actually Means
+
+![Can being mean to Claude get you banned? A sad orange Claude AI mascot surrounded by angry speech bubbles](/assets/newsletter/weekly-tech-brew-2026-10-19/being-mean-to-claude-hero.jpg){: .nl-hero}
+
+Anthropic updated its usage policy to cover "sustained and needless" abuse of Claude, and the headlines made it sound like snapping at a chatbot could cost you your account. The actual policy is much narrower than that, and more interesting. I break down what changed, what the rule does and doesn't cover, how Claude's constitution shapes its training, and why your insults don't feed RLHF.
+
+<a class="nl-read-btn" href="/artificial%20intelligence/2026/10/12/being-mean-to-claude-can-get-you-banned/">Read the blog &rarr;</a>

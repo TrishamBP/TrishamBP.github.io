@@ -748,6 +748,30 @@ body.theme-typesafe.ts-paper .post-content .nl-expand--release[open] > summary::
   color: var(--ts-light);
 }
 
+/* "Read the blog" link: same black button as the release Expand, but it
+   leaves the newsletter for the full post. */
+body.theme-typesafe.ts-paper .post-content a.nl-read-btn {
+  display: inline-block;
+  padding: 0.5rem 0.95rem;
+  font-family: var(--ts-term);
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ts-light);
+  background: var(--ts-ink);
+  border: 2px solid var(--ts-ink);
+  box-shadow: 3px 3px 0 var(--ts-ink);
+  transition: transform 0.2s var(--ts-ease), box-shadow 0.2s var(--ts-ease);
+}
+
+body.theme-typesafe.ts-paper .post-content a.nl-read-btn:hover,
+body.theme-typesafe.ts-paper .post-content a.nl-read-btn:focus-visible {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--ts-green);
+  outline: none;
+}
+
 /* Padding lives on the children, so a click on the <dialog> element itself
    can only be a backdrop click (the script closes on that). */
 body.theme-typesafe.ts-paper .nl-modal {
