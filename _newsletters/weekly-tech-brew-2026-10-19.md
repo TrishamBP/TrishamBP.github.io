@@ -668,3 +668,33 @@ Anthropic updated its usage policy to cover "sustained and needless" abuse of Cl
 Mistral Large 4 is the most powerful model yet from a European company, and it leads every publicly available model at fixing memory-safety bugs. But the full leaderboards tell a more mixed story than Mistral's launch charts. I go through all 20 benchmark charts, compare them with the independent Artificial Analysis rankings, and look at what its sovereign, self-hostable pitch really offers.
 
 <a class="nl-read-btn" href="/artificial%20intelligence/2026/10/16/mistral-large-4-sovereign-ai-le-chonk/">Read the blog &rarr;</a>
+
+## Research Papers of the Week
+
+### 1. Self-Evolving Agent Harness
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+**TL;DR of the Paper**
+
+This paper formalizes **harness self-evolution**: a paradigm where an AI agent improves its task performance and efficiency by automatically revising its software scaffolding (prompts, memory, workflows, and executable code/plugins) while keeping the underlying LLM weights completely fixed.
+
+- **Core framework and taxonomy:** it organizes harness updates into two main tiers:
+  - **Interpreted state:** prompts, context compaction, dialogue history, and stored memory procedures.
+  - **Executable targets:** tool implementations, repository-level control/runtime logic, and plugin compositions.
+- **Theoretical grounding:** it models harness search through evolutionary algorithms (EAs) and applies continual PAC-learning principles (algorithmic stability and concentration bounds) to prove conditions for expected generalization, bounded cumulative regression (preventing catastrophic forgetting), and statistical admission criteria using fresh validation data.
+- **Practical and societal impact:** it examines real-world deployment across personal workspaces, enterprise automation, scientific discovery, robotics, and clinical systems, and stresses that persistent self-modifying code needs strict external sandboxing, version tracking, and continual re-validation.
+
+**Why You Should Spend Time Reading It**
+
+- **Weight-free, cost-effective agent adaptation:** if fine-tuning large models or managing multiple weight checkpoints is too expensive or impossible (for example, when you work through proprietary APIs like Claude or GPT), this paper lays out a blueprint for making agents keep learning and adapting purely through software scaffolding.
+- **First rigorous theoretical analysis of agent scaffolding:** unlike papers that rely only on benchmark scores, it establishes formal PAC-learning bounds for generalization and retention in self-evolving agents. It offers practical mathematical rules for deciding when a candidate harness edit should be safely accepted or rejected.
+- **A clear taxonomy of modern self-improving systems:** it unifies agentic approaches such as PromptBreeder, SkillOpt, Agentic Context Engineering, and Everything-Is-A-Plugin (EIP) into one structured search framework: local elitism, quality diversity, Pareto selection, and recombination.
+- **Safety and governance guidelines for self-modifying AI:** it highlights realistic engineering risks of persistent updates, such as buggy workarounds becoming permanent rules, reward hacking, and runaway error propagation. It also gives actionable advice on enforcing boundaries, like keeping emergency stops and final evaluation logic outside the editable surface.
+
+<a class="nl-source" href="https://arxiv.org/abs/2610.18813v1" target="_blank" rel="noopener">Read the paper on arXiv (arXiv:2610.18813v1 [cs.AI], 13 Oct 2026) &rarr;</a>
+
+</div>
+</details>
