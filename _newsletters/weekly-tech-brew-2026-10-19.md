@@ -698,3 +698,41 @@ This paper formalizes **harness self-evolution**: a paradigm where an AI agent i
 
 </div>
 </details>
+
+### 2. Waypoint-OPD: Transferring RL-Induced Policy Shifts via Gated On-Policy Distillation
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+**TL;DR of the Paper**
+
+This paper introduces **Waypoint-guided On-Policy Distillation (Waypoint-OPD)**, a method for transferring reinforcement learning (RL)-induced improvements from a teacher model to a student model, on the student's own generated responses.
+
+Standard policy-shift distillation methods like Direct-OPD only look at the endpoint change: the difference in log probabilities between the teacher before RL training (π<sub>0</sub>) and after it (π<sub>1</sub>). Waypoint-OPD shows this endpoint shift can be misleading, because early and late training shifts can oppose or cancel each other out.
+
+By adding an intermediate **waypoint checkpoint** (π<sub>m</sub>) from the teacher's RL run, Waypoint-OPD checks whether the teacher's action-preference shifts were directionally consistent over time. If early and late shifts point the same way, the training signal is kept. If they conflict, it is suppressed.
+
+**Why Is It Important?**
+
+- **Fixes a hidden flaw in direct policy-shift transfer:** earlier state-of-the-art distillation methods transfer the teacher's final policy changes without checking whether those changes were stable during the teacher's RL run. Waypoint-OPD shows that checking directional consistency gives much higher-quality supervision.
+- **No verifier or extra RL rollouts needed:** unlike running RL on the student directly, it needs no ground-truth verifiers or expensive reward-model queries during student training.
+- **Minimal compute overhead:** it uses the same frozen-teacher setup as Direct-OPD and adds only one extra frozen-teacher forward pass for the waypoint checkpoint.
+- **Student outperforms teacher:** students can beat their teacher's final performance on several math and coding benchmarks (for example, a Qwen3-14B student outscoring the Qwen3-4B teacher).
+
+**What Is Novel in the Research?**
+
+- **Temporal agreement as a gate:** it is the first framework to use the directional agreement between consecutive shifts in a teacher's RL trajectory (π<sub>0</sub> → π<sub>m</sub> vs. π<sub>m</sub> → π<sub>1</sub>) as an evidence gate that selectively weights transfer signals on student-visited prefixes.
+- **Student-local top-*k* centered shift gating:** instead of measuring global token likelihoods, it computes q<sub>t</sub>-centered log-probability differences restricted to the top-*k* candidates the student favours, then applies a positive-cosine gate: g<sub>t</sub> = max(0, c<sub>t</sub>).
+- **Batch-scale normalization (κ<sub>B</sub>):** a dynamic batch scaling step keeps the average rescaled gate stable across training batches without distorting relative prefix weights or zeroed-out gates.
+
+**Why You Should Spend Time Reading It**
+
+- **Strong results across scales and domains:** tested on Qwen3-8B, 14B and 30B-A3B (MoE) across hard math reasoning (AIME, HMMT, AMC) and competitive coding (MBPP+, LiveCodeBench), Waypoint-OPD consistently gets the highest average score among all distillation baselines.
+- **Shorter generations and faster training:** gating out noisy signals lowers student truncation rates and mean response length, cutting total GPU training hours by about 3.7% compared with Direct-OPD.
+- **Practical and reproducible:** the paper includes clean mathematical formulations, pseudocode (Algorithm 1), hyperparameter setups, and extensive ablations showing why shuffling or removing the gates hurts performance.
+
+<a class="nl-source" href="https://arxiv.org/abs/2610.21601" target="_blank" rel="noopener">Read the paper on arXiv (arXiv:2610.21601) &rarr;</a>
+
+</div>
+</details>
