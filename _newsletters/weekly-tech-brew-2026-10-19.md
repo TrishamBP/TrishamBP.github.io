@@ -8,11 +8,61 @@ author: Trisham Patil
 # out of /newsletter/feed.xml (so no RSS-to-email send) until this is removed.
 wip: true
 # Fill these in once the stories are written:
-# email_subject: "The Weekly Tech Brew #2: ..."
+email_subject: "The Weekly Tech Brew #2: Muse Wonder, Gemini 4 Argon, Claude Haiku 5.5, Mistral Large 4 & More"
 # seo_title: "... | The Weekly Tech Brew"
 # description: "150-160 characters naming this issue's top stories."
 # keywords: "..."
 ---
+
+## Things That Actually Matter This Week
+
+Here's what moved the needle:
+
+### 1. Grok Voice Now Runs Starlink's Support Line
+
+![Grok Voice 3.0 voice agent: a car's centre touchscreen showing a voice assistant prompt asking "How can I help?"](/assets/newsletter/weekly-tech-brew-2026-10-19/grok-voice-3-starlink-support-car-screen.jpg){: .nl-hero}
+
+SpaceXSI launched **Grok Voice 3.0**, a speech-to-speech model on its Voice Agent API, and says one agent now handles about 20,000 Starlink calls a day across several languages. It verifies customers, troubleshoots hardware, and issues credits or replacement gear, with roughly 70% of calls closed without a human.
+
+It costs $0.08 a minute ($4.80 an hour) and scored 86.9 on Artificial Analysis's Speech-to-Speech Index, ahead of OpenAI's GPT-Live-1 (83.2) and Gemini 3.8 Live (82.6).
+
+Those resolution numbers are company-reported, so treat them as a ceiling. Still, if you sell voice agents, $4.80 an hour is the number your client's call center is about to see.
+
+<a class="nl-source" href="https://siliconangle.com/2026/10/14/grok-voice-3-0-from-spacexsi-outscores-openai-and-google-on-speech-to-speech-index/" target="_blank" rel="noopener">Read the full article on SiliconANGLE &rarr;</a>
+
+### 2. Claude Opus 5.5 Fast Mode Is Open to Everyone
+
+Fast mode for **Claude Opus 5.5** has dropped its waitlist. It streams output up to 2.5x faster than standard mode, with the same model weights and the same behavior, priced at $8 per million input tokens and $40 per million output tokens.
+
+It speeds up output, not time to first token, so it shines on long generations rather than quick replies. If you've got an agent where users sit and watch Claude write, this is the easiest way to make it feel twice as fast.
+
+<a class="nl-source" href="https://platform.claude.com/docs/en/build-with-claude/fast-mode" target="_blank" rel="noopener">Read Anthropic's fast mode docs &rarr;</a>
+
+### 3. Meta's 816B Open Model Runs on Two Mac Studios
+
+![Meta Muse Spark Open launch: a presenter on stage in front of a giant pair of glasses with a plush mascot sitting on the frame](/assets/newsletter/weekly-tech-brew-2026-10-19/meta-muse-spark-open-weight-model.jpg){: .nl-hero}
+
+Meta released **Muse Spark Open**, an 816-billion-parameter open-weight model with 42 billion parameters active per request and a 1M-token context window, built for coding and agent work. It runs locally on a pair of M5 Ultra Mac Studios (you need roughly 1TB of RAM), and it's live on several API platforms today.
+
+There are commercial-use limits, so read the license before you put it in a client product. But a frontier-class model on your own desk is a big deal if your clients don't want their data leaving the building.
+
+<a class="nl-source" href="https://techcrunch.com/2026/10/15/meta-launches-an-open-weight-model-that-runs-on-macs/" target="_blank" rel="noopener">Read the full article on TechCrunch &rarr;</a>
+
+### 4. Microsoft Built a Model That Needs Up to 12x Less Compute
+
+Microsoft AI detailed **MAI-Base-2**, a 2.8-trillion-parameter model with 80B parameters active, trained on 16,000 GB200 GPUs in 38 days. Microsoft says it's 4 to 12x more compute-efficient to pre-train than DeepSeek V4 Pro, and that it beats every open-weight model it tested on held-out evals. Mustafa Suleyman went further and compared it to an OpenAI model using private results.
+
+It's still in post-training, and the weights go to trusted partners through Foundry, not the public. The real story: Microsoft is building so it doesn't have to lean on OpenAI.
+
+<a class="nl-source" href="https://microsoft.ai/news/frontier-pre-training-at-microsoft-ai/" target="_blank" rel="noopener">Read Microsoft AI's full post &rarr;</a>
+
+## More Things Worth Knowing
+
+- **Eight states sued OpenAI over ChatGPT safety.** Arkansas, Arizona, Idaho, Iowa, Kansas, Montana, Nebraska, and West Virginia say it misled users about the risks and failed to protect minors. OpenAI says it has age-specific safeguards.
+- **NVIDIA open-weighted Nemotron 3.5 Super VL.** It's a 120B agent model (12B active) that handles text, images, documents, and video. NVIDIA claims up to 5x throughput.
+- **Bluesky's Attie now lets anyone vibe-code websites and games.** It started as an AI custom-feed builder. Now it builds full interactive projects on the AT Protocol.
+- **OpenCode made DeepSeek V4.1 Flash free.** The free version caps context at 200K tokens. The paid one gets 1M.
+- **GitHub made Agentic Autofix and AI Scan generally available.** Copilot now drafts security fixes and scans every pull request for you.
 
 ## AI Model Releases
 
