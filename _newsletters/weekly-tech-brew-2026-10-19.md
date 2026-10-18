@@ -736,3 +736,89 @@ By adding an intermediate **waypoint checkpoint** (π<sub>m</sub>) from the teac
 
 </div>
 </details>
+
+### 3. Player-1: Learning to Play from Synthetic Experience
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+**TL;DR of the Paper**
+
+**PLAYER-1** is a post-training framework that teaches multimodal computer-use agents to play complex 2D/3D video games through synthetic experience, rather than relying only on human gameplay demonstrations.
+
+The authors extend the standard computer-use action space (adding relative mouse movement, button holds, and multi-button composite actions), fine-tune models on curated gameplay trajectories, and then train them with PPO reinforcement learning inside **PLAYER-1-GYM**: a suite of 16 synthetic, programmatically verifiable game environments.
+
+The resulting models, **Player-1-9B** and **Player-1-35B-A3B**, achieve state-of-the-art results on Minecraft (MineDojo-300), ViZDoom-10, and GameWorld, showing that skills learned in synthetic environments transfer to unseen commercial games.
+
+**Why Is It Important?**
+
+- **Solves the demonstration bottleneck:** traditional game agents lean heavily on huge human video datasets (imitation learning/SFT). But demonstrations cover only a fraction of possible game states and lack the interactive feedback an agent needs to recover from its own mistakes.
+- **Scalable interactive RL without game API lock-in:** training RL agents directly on commercial games is hard because those games rarely expose programmatic, verifiable reward APIs. PLAYER-1 gets around this with synthetic environments built around shared core mechanics (aiming, driving, platforming, combat) that produce exact state-based rewards.
+- **Out-of-distribution generalization:** an agent trained on generic synthetic 2D/3D mini-games carries its motor control, camera management, and timing over to entirely unseen titles such as Watch Dogs 2, ViZDoom, and Minecraft.
+
+**What Is Novel in the Research?**
+
+- **Extended game-control action space:** it adapts standard desktop GUI action spaces for fast-paced games by adding relative pointer motion (Δx, Δy) for camera rotation, sustained inputs (long holds vs. taps/clicks), and composite actions that fire several keyboard/mouse inputs at once (for example, holding W + Shift while clicking).
+- **PLAYER-1-GYM:** a new suite of 16 synthetic 2D/3D games grouped into 5 control-demand families: Aiming, Combat, Driving, Navigation, and UI Interaction.
+- **4D environment randomization:** to prevent overfitting, PLAYER-1-GYM randomizes 4 dimensions across episodes: Appearance (lighting/colours), Camera (angles/FOV), Scene (layouts/spawns), and Control Dynamics (mouse sensitivity/movement acceleration).
+- **Composite actions emerge on their own:** RL naturally pushes the agent toward multi-input actions, which rise from 64.7% to 93.2% of interaction turns during RL, with no explicit reward for combining inputs.
+
+**Why You Should Spend Time Reading It**
+
+- **Big benchmark gains:** on MineDojo-300 (Minecraft), Player-1-9B lifts task success from 10.54% (SFT baseline) to 38.33%, well ahead of external baselines like GameWAM (12.63%) and JARVIS-VLA (6.71%).
+- **A blueprint for general-purpose digital agents:** if you work on Vision-Language-Action (VLA) models, GUI/computer-use agents, or embodied AI, the paper lays out the full post-training recipe (data curation, action mapping, reward design, and advantage normalization) for bridging high-level vision-language reasoning with low-level, real-time spatial control.
+- **Open source:** the codebase, synthetic environments, and project assets are available to the research community.
+
+<a class="nl-source" href="https://arxiv.org/abs/2610.20584" target="_blank" rel="noopener">Read the paper on arXiv (arXiv:2610.20584) &rarr;</a>
+
+</div>
+</details>
+
+### 4. Jeva: System One Models from First Principles
+
+**How Is It Related to Jev?**
+
+Jeva builds directly on, and fixes the structural flaws of, **Jev** (and its open-weights derivative JevK5), a pioneer among System 1 direct decision-making models. Jev introduced direct, non-autoregressive decision extraction from token logits, but it relies on conventional joint text serialization: the request and the candidate options are encoded together in a single prompt.
+
+As a result, Jev can't cache options across requests, has a high decision flip rate (26.17% under option-order permutations), degrades when candidate lists grow large (needing recursive selection passes), and relies on ad-hoc "None" candidates for null detection. Jeva is Jev's architectural successor: it decouples request encoding from option memory, fixes Jev's order sensitivity, enables 20×+ caching speedups, and adds mathematically grounded null awareness.
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+**TL;DR of the Paper**
+
+This paper introduces **Jeva**, a decision-native architecture for "System 1" AI models: models built for fast, direct, non-autoregressive decisions such as tool selection, document reranking, or multiple-choice classification.
+
+Current System 1 models concatenate the request and the candidate options into a single text prompt. The authors argue this design violates four essential properties of decision-making:
+
+- **Null-aware:** telling apart "no candidate applies" from "uncertain among candidates".
+- **Permutation-invariant:** reordering the options should never flip the chosen output.
+- **Option-scalable:** handling large or variable candidate counts without redefining the model's output heads.
+- **Cacheable:** reusing candidate encodings across different user requests.
+
+Jeva fixes this by encoding the request and the options independently with a shared language backbone. A lightweight decision module then refines only the request state against an immutable option memory, using symmetric attention aggregation.
+
+**Why Is It Important?**
+
+- **Eliminates prompt-order bias:** traditional LLMs suffer from position bias (for example, preferring the option labelled "A" or options placed at the start or end). Jeva guarantees permutation equivariance, so shuffling the options never changes the decision.
+- **Big efficiency and latency gains:** because option representations are computed independently of the request, candidate pools (such as a database of 2,000 tools or passages) can be pre-encoded and cached. On long-document candidate sets, cross-request option caching gives Jeva roughly 20× to 28× speedups in median latency.
+- **Better null detection:** a standard softmax forces probability mass onto the given candidates even when all of them are wrong. Jeva has a dedicated coverage gate that detects when "none of the above" applies.
+
+**What Is Novel in the Research?**
+
+- **Decoupled architecture with set-conditioned refinement:** a single shared text encoder processes the request and options independently. A candidate-conditioned state refinement block then updates only the request state, capturing interactions among options without O(K²) option-to-option interaction matrices.
+- **Explicit coverage and conditional competition:** open-set decision-making is factorized as *P*(Outcome) = *P*(Answer Present) × *P*(Candidate *i* \| Answer Present). The coverage gate estimates overall answerability independently of the candidate-set size.
+- **Unified Choice, Noul and Score readout:** one architecture handles categorical choices (Choice), Boolean/verification queries (Noul), and numerical rubric grading (Score), with no extra encoder fields or separate task heads.
+
+**Why You Should Spend Time Reading It**
+
+- **Mathematical and empirical foundations:** the paper gives rigorous proofs that a single decision block can express set-dependent preference reversals while keeping exact candidate permutation invariance.
+- **Strong results across benchmarks:** evaluated on BANKING77, MASSIVE, Mind2Web and ToolRet, Jeva-4B reaches near-perfect null detection (98.66% AUROC), a 0.0% candidate-permutation flip rate, and scales up to 2,048 options.
+- **Practical system design:** if you build agentic workflows, tool-retrieval routing, or low-latency classification systems, Jeva is a practical blueprint for fast, cache-friendly decision models that skip expensive autoregressive LLM decoding.
+
+<a class="nl-source" href="https://arxiv.org/abs/2610.18773" target="_blank" rel="noopener">Read the paper on arXiv (arXiv:2610.18773) &rarr;</a>
+
+</div>
+</details>
