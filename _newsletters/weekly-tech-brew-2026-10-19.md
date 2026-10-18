@@ -822,3 +822,31 @@ Jeva fixes this by encoding the request and the options independently with a sha
 
 </div>
 </details>
+
+## GitHub Repos to Keep an Eye On
+
+### 1. Harness² (google-research/harness2): Recursive Agent Harnessing in an Open World
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+A **harness** is the system around a model that lets it act as an agent: prompts, tools, memory, skills, orchestration, and more. **Harnessing** is the process of optimizing that system.
+
+**Harness²** is a plug-and-play framework for recursive agent harnessing in an open world, where agents meet tasks that were unseen when the harness was designed. It connects two levels of recursion while keeping model weights fixed:
+
+- **Task-level recursion** refines the execution harness for the current task through a contrastive **Propose–Probe–Compose** step: propose edits, probe their effects on the same task, and compose a refined harness from the behavioural contrasts between executions, without ground-truth feedback.
+- **Harnessing-level recursion** updates a persistent improvement harness with the adopted harnesses and evidence-supported lessons from each task, to guide future refinement.
+
+<a class="nl-source" href="https://github.com/google-research/harness2" target="_blank" rel="noopener">View google-research/harness2 on GitHub &rarr;</a>
+
+</div>
+</details>
+
+### 2. /brag (latent-spaces/brag): Turn Your Project Into a Launch Video
+
+**/brag** is an agent skill that turns the project you built into a short, shareable launch video, with music, motion, and share copy included. It's one command, powered by Hyperframes.
+
+The looping video on the launch site was made by /brag on this very repo.
+
+<a class="nl-source" href="https://github.com/latent-spaces/brag" target="_blank" rel="noopener">View latent-spaces/brag on GitHub &rarr;</a>
