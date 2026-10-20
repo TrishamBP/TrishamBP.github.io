@@ -14,6 +14,8 @@ wip: true
 # keywords: "..."
 ---
 
+## Signal Over Breakfast
+
 ## Repo Radar
 
 ### 1. OOMWOO (makerspet/oomwoo): An Open-Source Robot Vacuum You Build Yourself

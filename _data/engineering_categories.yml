@@ -160,11 +160,3 @@
       title: "Emerging Architectures"
     - id: nvidia
       title: "NVIDIA"
-
-- id: interpretable-ml
-  title: "Interpretable Machine Learning"
-  description: "Models humans can read and verify — symbolic regression, equation discovery, and machine learning that returns explicit mathematical laws instead of black-box weights."
-  keywords: ["Symbolic Regression", "Equation Discovery", "Interpretability", "AI for Science"]
-  subcategories:
-    - id: symbolic-regression
-      title: "Symbolic Regression"
