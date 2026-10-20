@@ -18,6 +18,12 @@ wip: true
 
 ### 1. OOMWOO (makerspet/oomwoo): An Open-Source Robot Vacuum You Build Yourself
 
+Your robot vacuum knows the layout of your entire home, and it sends that map to someone else's cloud. What if you could build one that keeps the map to itself, and you can open it, fix it and reprogram it yourself?
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
 A Roomba costs around $500. **OOMWOO** is an open-source robot vacuum you build yourself instead: a Raspberry Pi for the brain, a 3D-printed body, and a cheap 2D lidar that maps your home.
 
 ![OOMWOO open-source robot vacuum: 3D render of the round 3D-printed body from above, next to its charging dock](/assets/newsletter/weekly-tech-brew-2026-10-26/oomwoo-open-source-robot-vacuum-top.png){: .nl-hero}
@@ -33,3 +39,6 @@ It won't match a Dyson. But if you like DIY projects, you get a real robot you c
 One catch: it isn't buildable yet. For now you can run it in simulation while the hardware gets finished.
 
 <a class="nl-source" href="https://github.com/makerspet/oomwoo" target="_blank" rel="noopener">View makerspet/oomwoo on GitHub &rarr;</a>
+
+</div>
+</details>
