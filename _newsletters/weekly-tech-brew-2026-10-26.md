@@ -44,3 +44,30 @@ One catch: it isn't buildable yet. For now you can run it in simulation while th
 
 </div>
 </details>
+
+### 2. Audio Studio MCP (kanaworksai-hue/audio-studio-mcp): A Local AI Sound Studio for Claude Code
+
+Ask Claude Code for "a creaky door in a stone hallway" or "a 60-second lo-fi loop at 85 BPM", and get back a finished audio file. No stock-sound sites, no cloud, no API key: the music and sound effects are generated on your own machine.
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+![Audio Studio MCP: local AI music and sound effects for Claude Code and any MCP client, powered by Stable Audio 3 on Mac and Windows](/assets/newsletter/weekly-tech-brew-2026-10-26/audio-studio-mcp-local-ai-music-sound-effects.png){: .nl-hero}
+
+**Audio Studio MCP** is an MCP server that plugs Stability AI's **Stable Audio 3** model into Claude Code, Claude Desktop, Cursor or any other MCP client. You describe a sound in plain language, and your coding agent generates it, edits it and exports it in the format your project needs.
+
+Why it's useful: every game or video needs dozens of small sounds, and finding, licensing and trimming them by hand is slow. Here the agent handles the whole loop in one conversation:
+
+- **Generate** background music, instrument loops or sound effects from one sentence, with up to 4 candidates per request.
+- **Edit** a clip: re-style it, regenerate just one section, or extend a 20-second track to 40.
+- **Finish** it for production: seamless loops, fades, loudness normalization (LUFS) and 48 kHz WAV, OGG or FLAC export, ready for Godot, Unity or a video editor.
+
+It runs on an Apple Silicon Mac (M1 or later, 16 GB RAM recommended) or a Windows PC with an NVIDIA GPU (8 GB+ VRAM), and nothing is uploaded. It is also fast: on an RTX 3060, 20 seconds of music takes about 1.3 seconds once the model is loaded. Every file gets a `.json` sidecar with its prompt and seed, so you can reproduce any sound later.
+
+One catch: the server code is MIT, but the Stable Audio 3 model weights are under the Stability AI Community License. Read it before shipping generated audio in a commercial product.
+
+<a class="nl-source" href="https://github.com/kanaworksai-hue/audio-studio-mcp" target="_blank" rel="noopener">View kanaworksai-hue/audio-studio-mcp on GitHub &rarr;</a>
+
+</div>
+</details>
