@@ -26,6 +26,38 @@ wip: true
 
 </div>
 
+### 1. What Is PHP, and Why Did It Spark a Global Cybersecurity Scramble?
+
+The latest major incident is **PHP2Shell** (CVE-2026-109618 and CVE-2026-109619): a pair of critical remote code execution (RCE) vulnerabilities found in the core PHP runtime engine.
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+#### Global PHP Vulnerability Crisis
+
+![PHP logo: the official PHP programming language logo, black lowercase php lettering on a purple oval](/assets/newsletter/weekly-tech-brew-2026-10-26/php-programming-language-logo.png){: .nl-logo}
+
+**What is PHP?** It's an open-source scripting language that runs on web servers and builds pages before they reach your browser. It powers an estimated **70% of the world's websites**, including major platforms like Wikipedia and WordPress.
+
+That's why this one is serious. Security researchers have uncovered two critical remote code execution flaws in PHP's core engine, and they're **about a decade old**. A bug at that level puts a huge share of the web's infrastructure at risk of compromise.
+
+**AI sped up the discovery.** Researchers at firms including **Wiz** and **Calif** used advanced AI tools to scan for and pin down these complex bugs far faster than traditional manual review. That's a win for defenders. But experts warn the same tools let attackers generate and scale automated exploits just as quickly.
+
+**The disclosure set off a worldwide scramble.**
+
+- **Cloudflare** reported **millions of automated hacking attempts** within hours of the announcement.
+- The **BBC**, **Wikimedia** and several **government agencies across Europe** temporarily took vulnerable systems offline as a precaution.
+
+**What to do now.** The **PHP Foundation** has released emergency security patches. The US **National Security Agency (NSA)** and the UK's **National Cyber Security Centre (NCSC)** are urging every website operator to update immediately.
+
+If you can't patch right away, the advice is to **take your platform offline temporarily**. An unpatched server risks giving attackers full control of the machine and the databases behind it.
+
+<a class="nl-source" href="https://www.bbc.com/news/articles/c3qjnwye0ep5o" target="_blank" rel="noopener">Read more on BBC News &rarr;</a>
+
+</div>
+</details>
+
 ## Signal Over Breakfast
 
 ## Repo Radar
