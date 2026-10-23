@@ -229,6 +229,51 @@ A public proof-of-concept (PoC) exploit is already out, so update your runtimes 
 </div>
 </details>
 
+### &#9888; PHP2Shell Update: Exploit Attempts Now Number in the Millions
+
+<div class="nl-danger" markdown="1">
+
+<p class="nl-danger-label">&#9888; Active exploitation &middot; Patch or take PHP servers offline</p>
+
+The **PHP2Shell** flaws from story 1 have gone from disclosure to mass exploitation in a matter of hours. Here is where things stand.
+
+#### The Attack Volume Is Exploding
+
+- **Before and after the announcement.** Cloudflare CEO **Matthew Prince** says the company logged thousands of exploit attempts in the 10 hours before disclosure, tens of thousands within 45 minutes of it, and is now seeing "millions."
+- **Attackers are adapting.** Cloudflare says attackers are already tweaking their payloads to get around its web application firewall (WAF) rules.
+
+#### Multiple Attackers Are Involved
+
+- **Amazon's warning.** Amazon says "PHP2Shell is now being broadly exploited in the wild."
+- **Early exploit code.** It found several working proof-of-concept exploits roughly **12 hours before disclosure**, a sign that more than one group was already on the case.
+
+#### More Than a Million Servers Are Exposed
+
+- **Unpatched at scale.** VulnCheck, VirusTotal and Censys all report that more than **1 million PHP servers** were still running unpatched software on October 21.
+- **Censys's count.** About **1.57 million** of the roughly **1.58 million** hosts showing a PHP version were unpatched.
+- **VulnCheck's count.** It saw more than **2.6 million** internet-facing PHP hosts, almost all vulnerable, and at least **1 million** on PHP versions that no longer receive official updates.
+
+#### What We Don't Know Yet
+
+- **No confirmed breaches so far.** No successful break-ins have been reported yet.
+- **Exploits are still immature.** watchTowr says none of the public exploit code it has reviewed achieves full code execution, and VulnCheck observed at least one failed attempt to plant a web shell.
+- **Check your logs anyway.** Amazon recommends investigating suspicious activity on PHP servers going back to at least **October 17**.
+
+#### Governments Pulled Their Sites Offline
+
+Instead of waiting it out, many public bodies switched their websites off until they could patch:
+
+- **Netherlands:** DigiD (the national login for government services), the House of Representatives website and the national cybersecurity centre's site.
+- **France:** local government sites, including the Paris police prefecture.
+- **UK:** the Edinburgh, Bristol and Oxford council websites.
+- **Elsewhere:** Belgium, Finland and Germany also took government sites down, and Australia's cyber agency was briefly affected. **Wikimedia** took several systems offline as a precaution.
+
+The US **NSA** told organizations that can't patch immediately to take their PHP systems offline, warning the flaw could "provide a direct path to the server's file system or database." The UK's **NCSC** gave the same advice and told organizations to check for backdoors.
+
+<a class="nl-source" href="https://www.securityweek.com/" target="_blank" rel="noopener">SecurityWeek, Oct 22 &rarr;</a> &nbsp; <a class="nl-source" href="https://www.theregister.com/" target="_blank" rel="noopener">The Register, Oct 22 &rarr;</a> &nbsp; <a class="nl-source" href="https://www.theguardian.com/" target="_blank" rel="noopener">The Guardian, Oct 21 &rarr;</a>
+
+</div>
+
 ## Signal Over Breakfast
 
 ## Repo Radar

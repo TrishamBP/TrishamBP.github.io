@@ -1097,8 +1097,25 @@ body.theme-typesafe.ts-paper .post-content .nl-danger {
 }
 
 body.theme-typesafe.ts-paper .post-content .nl-danger p,
-body.theme-typesafe.ts-paper .post-content .nl-danger strong {
+body.theme-typesafe.ts-paper .post-content .nl-danger strong,
+body.theme-typesafe.ts-paper .post-content .nl-danger li,
+body.theme-typesafe.ts-paper .post-content .nl-danger h4,
+body.theme-typesafe.ts-paper .post-content .nl-danger .nl-source {
   color: #111111;
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-danger h4 {
+  margin: 1.2rem 0 0.5rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 2px solid #c8102e;
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-danger .nl-source {
+  border-bottom-color: #c8102e;
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-danger .nl-source:hover {
+  color: #c8102e;
 }
 
 body.theme-typesafe.ts-paper .post-content .nl-danger .nl-danger-label {
