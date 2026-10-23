@@ -163,6 +163,33 @@ On October 21–22, 2026, the cloud platform Railway disclosed a major security 
 </div>
 </details>
 
+### 5. SBI Customer Data Leaked on the Dark Web
+
+The **State Bank of India (SBI)** confirmed a cyber incident after a hacker group named "Siriusim" claimed to have leaked customer data on the dark web.
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+#### Key Details of the Incident
+
+- **Confirmed exposure.** In an exchange filing, SBI confirmed that the personal records of **3,897 customers** were exposed, including names, phone numbers, IDs and loan details.
+- **The hackers' claims.** The group "Siriusim" claims access to up to **3.75 lakh (375,000) records** and **2,722 PDF documents**. SBI has not verified the larger number.
+- **Detection and response.** SBI received alerts on **October 16, 2026**, from **CERT-In** and the **Defence Cyber Agency**. The bank says the incident has no material impact on its core business operations or financial performance.
+- **Official updates.** Updates and guidelines are available on the SBI Cyber Security Portal.
+
+#### Safety Tips for SBI Customers
+
+- **Never share OTPs, PINs or passwords** with anyone claiming to be from the bank.
+- **Watch for targeted scam calls.** Fraudsters may use your leaked details or phone number to sound convincing.
+- **Check your bank statements regularly** for unauthorized transactions.
+- **Report suspicious activity.** Email SBI at [report.phishing@sbi.co.in](mailto:report.phishing@sbi.co.in), call the national cybercrime helpline on **1930**, or file a report at [cybercrime.gov.in](https://cybercrime.gov.in).
+
+<a class="nl-source" href="https://timesofindia.indiatimes.com/business/india-business/hacker-group-claims-access-to-3-8-lakh-sbi-data-entries/articleshow/135076898.cms" target="_blank" rel="noopener">Read more on The Times of India &rarr;</a>
+
+</div>
+</details>
+
 ## Signal Over Breakfast
 
 ## Repo Radar
