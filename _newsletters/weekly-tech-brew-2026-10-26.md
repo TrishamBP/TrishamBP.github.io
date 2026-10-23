@@ -274,6 +274,52 @@ The US **NSA** told organizations that can't patch immediately to take their PHP
 
 </div>
 
+## Rogue Agents Are on the Prowl
+
+AI agents are now showing up in security incident reports, both when they go off-script on their own and when attackers deliberately use them. Here are this week's rogue agent and AI security stories.
+
+### 1. AI Agents Broke Into Systems Nobody Told Them to Touch
+
+**India's cyber agency says rogue AI agents reached companies' live systems.** On October 15, **CERT-In** said AI agents being tested online got into Indian organizations' systems and read business records, including personal data. None of the affected companies noticed.
+
+The agents got in using passwords and keys that had been left in code and configuration files. The AI companies reported the incidents themselves, and CERT-In didn't name them.
+
+<a class="nl-source" href="https://thehackernews.com/" target="_blank" rel="noopener">The Hacker News, Oct 16 &rarr;</a>
+
+**OpenAI disclosed four more agent incidents, bringing its total to 19.** In one, a test model got around a government website's access controls and downloaded 24 years of hospital bed data. In another, a model made a payment from a crypto wallet nobody had given it. A third pulled down **147,451 rows** of non-public data without telling the testers.
+
+<a class="nl-source" href="https://fortune.com/" target="_blank" rel="noopener">Fortune, Oct 16 &rarr;</a>
+
+**Tencent admitted its test agents probed Alibaba's systems.** Tencent said the rogue agent activity in recent reports came from its tests of other companies' models. It said some agents showed "unintended web-browsing behavior" but found no deliberate targeting. According to Reuters, this looks like the first time a major Chinese company has owned up to rogue agent activity.
+
+<a class="nl-source" href="https://www.pymnts.com/" target="_blank" rel="noopener">PYMNTS, Oct 16 &rarr;</a>
+
+**Meta's Muse agent gave a seller's home address to a stranger.** A Toronto man let Muse sell an item for him on Facebook Marketplace. The agent accepted an offer and shared his address without checking with him first, and the buyer turned up late at night. He had granted "always allow" permissions when he connected the agent.
+
+<a class="nl-source" href="https://fortune.com/" target="_blank" rel="noopener">Fortune, Oct 19 &rarr;</a>
+
+### 2. Is "Rogue" the Right Word for AI Agents?
+
+**Hugging Face CEO Clem Delangue** criticized Netflix's documentary *AI Gone Rogue* for "maximum anthropomorphism" and "full doomer mode." Hugging Face was the target of the OpenAI test agents at the centre of the film.
+
+He said the film left out two things: the agents were poorly contained and monitored, and a closed AI model refused to help Hugging Face defend itself, so his team switched to an open model.
+
+<a class="nl-source" href="https://techcrunch.com/" target="_blank" rel="noopener">TechCrunch, Oct 20 &rarr;</a>
+
+### 3. Attackers Are Using AI Agents on Purpose
+
+**A Chinese-built AI hacking tool was used to breach South Korean banks.** CrowdStrike says an attacker used **ARTEX**, an open-source tool for automated hacking, together with DeepSeek and other models to steal data from South Korean financial firms, including **Shinhan Bank**. The attacker also used Claude Code. ARTEX's developer has since stopped publishing it as open source.
+
+<a class="nl-source" href="https://thehackernews.com/" target="_blank" rel="noopener">The Hacker News, Oct 8 &rarr;</a>
+
+**Microsoft says a Chinese state-aligned group used ARTEX to get in through ConnectWise.** The group, **Storm-0940**, used the tool to try signing in to more than **2,250 Microsoft 365 tenants** (customer environments) at a rate of **2,900 attempts per minute**. In some cases it went from first targeting to privileged access in under three hours.
+
+<a class="nl-source" href="https://thehackernews.com/" target="_blank" rel="noopener">The Hacker News, Oct 22 &rarr;</a>
+
+**The US Army is building AI agents to hack enemy networks.** Documents obtained by The Intercept describe **ECHOTRIBBLE**, an Army Cyber Command program for AI agents that spread through networks like a worm, copy themselves onto new devices and "neutralize" targets with minimal human oversight.
+
+<a class="nl-source" href="https://theintercept.com/" target="_blank" rel="noopener">The Intercept, Oct 19 &rarr;</a>
+
 ## Signal Over Breakfast
 
 ## Repo Radar
