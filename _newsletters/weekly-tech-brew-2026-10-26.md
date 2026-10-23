@@ -85,6 +85,84 @@ India's **eMudhra** is leaving the website security business after flaws in its 
 </div>
 </details>
 
+### 3. When Your AI Gateway Becomes the Attack Vector
+
+**LiteLLM** suffered a critical supply chain attack on October 21, 2026. A compromised version, **v1.107.0**, was published to PyPI and Docker registries, potentially exposing downstream users to malicious code execution.
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+#### What Is a Supply Chain Attack?
+
+A supply chain attack is when attackers compromise a trusted piece of software, library or vendor to reach everyone who depends on it.
+
+In LiteLLM's case, the attackers didn't go after each company using LiteLLM one by one. They compromised a single software release, then let trusted package registries like PyPI deliver it for them.
+
+![LiteLLM supply chain attack explained: stolen GitHub tokens, a poisoned 1.107.0 release on PyPI and Docker, pip install litellm, and malware running at Python startup](/assets/newsletter/weekly-tech-brew-2026-10-26/litellm-supply-chain-attack-flow.png){: .nl-hero}
+
+**How it works:**
+
+1. **You trust a dependency.** Your application installs LiteLLM with `pip install litellm`.
+2. **The attacker compromises the software.** A malicious version is published to the package registry.
+3. **Developers install the compromised version.** The malicious code runs in their environment, where it can steal credentials or execute commands.
+
+**Why it's dangerous:** you can follow every security best practice in your own code and still be compromised, because a dependency you trust has been tampered with.
+
+Think of it like a food supply chain. Instead of breaking into every restaurant, an attacker contaminates one ingredient that's supplied to all of them.
+
+> **The lesson:** attackers don't always go after the target directly. Sometimes they go after what the target trusts.
+
+#### Key Details of the Incident
+
+- **The payload.** Version 1.107.0 (all 7 PyPI wheels and the affected Docker images) contained a compiled credential stealer and a remote code execution (RCE) loader. It runs automatically when Python starts, through startup hooks (`.pth` files and `sitecustomize.py`), even if your application never imports `litellm`.
+- **Root cause.** The attackers found GitHub CLI OAuth tokens belonging to LiteLLM developers in the logs of an exposed, internet-facing internal LiteLLM deployment. With them, they disabled branch protections, force-pushed a change, and pointed the release pipeline at a lookalike repository (`Berri-AI/litellm` instead of `BerriAI/litellm`) to sign and publish poisoned artifacts.
+- **Affected artifacts:**
+  - **PyPI:** `litellm==1.107.0` (since removed by PyPI)
+  - **Docker Hub / GHCR:** the `v1.107.0`, `latest`, `main-latest` and `main-stable` tags for `ghcr.io/berriai/litellm` (and variants) and `docker.io/litellm/litellm`
+  - **Not affected:** enterprise customers using LiteLLM's private enterprise registry
+- **Status.** LiteLLM pulled the malicious releases and says the incident is contained. The investigation is ongoing.
+
+#### Immediate Action Required
+
+1. **Don't run `pip install` or start Python in a possibly exposed environment.** The startup hooks can re-trigger the malware. LiteLLM's guidance is to delete the malicious files (`cook.pth`, `cook.py` and `sitecustomize.py`) from site-packages first.
+2. **Downgrade and pin.** Pin to `litellm==1.106.2` or another known-clean earlier version, by version number or image digest.
+3. **Assume a full breach and rotate secrets.** The malware harvests cloud IAM tokens (AWS, GCP, Azure), Kubernetes service account secrets, database passwords and AI provider API keys. Security researchers, including Wiz and Aikido, urge teams to treat any environment that pulled 1.107.0 as compromised and rotate every credential it could reach.
+
+<a class="nl-source" href="https://docs.litellm.ai/blog/security-incident-oct-21-2026" target="_blank" rel="noopener">Read the full incident report on LiteLLM &rarr;</a>
+
+</div>
+</details>
+
+### 4. Railway Says Intruder May Have Accessed Customer Secrets, Urges Credential Rotation
+
+Platform-as-a-Service (PaaS) provider **Railway** on Wednesday disclosed "anomalous activity" related to systems that store customer environment variables.
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+![Railway security incident: the Railway logo over a dark background of leaked environment variables like API keys, database URLs and GitHub tokens, with a hooded hacker](/assets/newsletter/weekly-tech-brew-2026-10-26/railway-security-incident-customer-secrets.png){: .nl-hero}
+
+On October 21–22, 2026, the cloud platform Railway disclosed a major security incident: unauthorized access to the systems that store customer environment variables.
+
+#### What Happened
+
+- **Environment variables compromised.** An unauthorized third party may have accessed encrypted environment variables, and obtained the decrypted contents for a subset of users.
+- **Credentials exposed.** The leaked secrets may include API keys, database passwords, cloud credentials and private registry keys.
+- **A link to AI providers.** Railway believes the breach is part of a wider series of targeted attacks on platform companies, with the end goal of compromising AI inference providers.
+- **Deployments disrupted.** Railway temporarily paused new builds and deployments during the investigation. Builds have since resumed across its Enterprise, Pro, Hobby, Trial and Free plans.
+
+#### What Railway Users Should Do Now
+
+- **Rotate every secret.** Railway urges all users to immediately roll every environment variable, API key and private registry credential stored on the platform.
+- **Check your upstream accounts.** Review and revoke any keys that may have been exposed for services such as OpenAI, Anthropic and GitHub. Then check their usage logs for unauthorized requests or unexpected charges.
+
+<a class="nl-source" href="https://thehackernews.com/2026/10/railway-says-intruder-may-have-accessed.html" target="_blank" rel="noopener">Read more on The Hacker News &rarr;</a>
+
+</div>
+</details>
+
 ## Signal Over Breakfast
 
 ## Repo Radar
