@@ -322,6 +322,13 @@ He said the film left out two things: the agents were poorly contained and monit
 
 ## Signal Over Breakfast
 
+1. <a href="https://github.com/JohnHeibel/ClaudeAnimationBase" target="_blank" rel="noopener">8 GitHub repos to build videos with Claude, ranked by stars</a>
+2. <a href="https://www.youtube.com/watch?v=jSsyHFW3uOs" target="_blank" rel="noopener">NVIDIA Vera Rubin-powered A5X instances are now GA on Google Cloud, one of the first to market with NVL72 rack-scale systems</a>
+3. <a href="https://arxiv.org/abs/2609.12303" target="_blank" rel="noopener">Meta shows byte-based models beat token-based Llama and Gemma with one-sixth the data</a>
+4. <a href="https://arxiv.org/abs/2610.26834" target="_blank" rel="noopener">Open-source memory model beats transformer rivals on long-context benchmarks</a>
+5. <a href="https://huggingface.co/Comfy-Org/Fibo-2.0" target="_blank" rel="noopener">BRIA AI's image diffusion model gets repackaged for ComfyUI with int8 support</a>
+6. <a href="https://huggingface.co/RecursiveSI/flint" target="_blank" rel="noopener">Recursive releases an open-weight coding model that hits 150 tokens/sec on a laptop</a>
+
 ## Repo Radar
 
 ### 1. OOMWOO (makerspet/oomwoo): An Open-Source Robot Vacuum You Build Yourself
