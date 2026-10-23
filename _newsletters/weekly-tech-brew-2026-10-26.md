@@ -190,6 +190,45 @@ The **State Bank of India (SBI)** confirmed a cyber incident after a hacker grou
 </div>
 </details>
 
+### 6. Critical Emergency at Node.js
+
+The **Node.js** project released critical emergency security updates on Wednesday, October 21, 2026, patching **10 security flaws**. Four are rated High severity and affect every actively supported version (Node.js 22.x, 24.x and 26.x).
+
+A public proof-of-concept (PoC) exploit is already out, so update your runtimes now to **22.23.4**, **24.22.1** or **26.12.1**.
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+![Node.js emergency security update: the Node.js logo built from glowing green code, with zlib brotliDecompress calls in the background](/assets/newsletter/weekly-tech-brew-2026-10-26/nodejs-emergency-security-update-brotli.png){: .nl-hero}
+
+#### Key Vulnerabilities Fixed
+
+- **Brotli decoder out-of-bounds write, CVE-2026-111497 (High).** A bug in the bundled Brotli decompression code. An attacker who sends malformed compressed input to a Node.js server can crash it (DoS), leak process memory, or potentially run arbitrary code. The public PoC reached code execution only on a deliberately weakened test build. On standard builds it caused crashes and limited memory reads.
+- **TLS hostname verification bypasses (High).** Two separate flaws, CVE-2026-106069 (all three lines) and CVE-2026-105483 (24.x and 26.x), could let a Node.js app open an encrypted connection without properly checking who is on the other end. Attackers could use that to intercept, alter or redirect traffic.
+- **eMudhra certificate blocklist.** The updates block the compromised certificate authority keys of **eMudhra** (the story above), so patched versions reject fraudulent TLS certificate chains built on that breach.
+- **ZipFile attacker-controlled prefix bytes, CVE-2026-106070 (Low).** Affects Node.js 26.x only, after a failed ZIP header check.
+
+#### Affected Versions and Remediation
+
+| Version | Action required | Safe patch version |
+| --- | --- | --- |
+| Node.js 26.x (Current) | Upgrade immediately | v26.12.1 |
+| Node.js 24.x (LTS) | Upgrade immediately | v24.22.1 |
+| Node.js 22.x (LTS) | Upgrade immediately | v22.23.4 |
+| Node.js 18.x / 20.x | Migrate | End-of-life: no fix coming. Move to an active LTS line. |
+
+#### Mitigation Steps
+
+1. **Rebuild your container images.** If you deploy with Docker, update your base images and rebuild so your containers pick up the patched runtime.
+2. **Patch edge-facing services first.** Start with services that fetch data from external APIs or accept compressed request bodies, since those reach the Brotli decoder.
+3. **Lean on your WAF only as a stopgap.** If you can't update right away, make sure your Web Application Firewall rules are current. Providers like Vercel have rolled out rules for known exploit patterns, but they don't cover Brotli responses your app fetches itself. Upgrading is the real fix.
+
+<a class="nl-source" href="https://thehackernews.com/2026/10/nodejs-brotli-decoder-bug-could-allow.html" target="_blank" rel="noopener">Read more on The Hacker News &rarr;</a>
+
+</div>
+</details>
+
 ## Signal Over Breakfast
 
 ## Repo Radar
