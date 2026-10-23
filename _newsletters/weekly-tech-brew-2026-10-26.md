@@ -328,6 +328,8 @@ He said the film left out two things: the agents were poorly contained and monit
 4. <a href="https://arxiv.org/abs/2610.26834" target="_blank" rel="noopener">Open-source memory model beats transformer rivals on long-context benchmarks</a>
 5. <a href="https://huggingface.co/Comfy-Org/Fibo-2.0" target="_blank" rel="noopener">BRIA AI's image diffusion model gets repackaged for ComfyUI with int8 support</a>
 6. <a href="https://huggingface.co/RecursiveSI/flint" target="_blank" rel="noopener">Recursive releases an open-weight coding model that hits 150 tokens/sec on a laptop</a>
+7. **From our Signals:** <a href="/signals/ai-driven-quantum-circuit-optimization/">Quantum Leap: how AI-driven circuit optimization cuts gate counts and depth on noisy quantum hardware</a>
+8. **From our Signals:** <a href="/signals/pysr-symbolic-regression-discover-mathematical-laws-from-data/">PySR: discover mathematical laws from data with symbolic regression</a>
 
 ## Repo Radar
 
