@@ -14,6 +14,18 @@ wip: true
 # keywords: "..."
 ---
 
+## Cybersecurity Armageddon
+
+![Cybersecurity Armageddon warning: a yellow and black nuclear-style hazard placard with a radiation symbol, reading threat level critical for all infrastructure](/assets/newsletter/weekly-tech-brew-2026-10-26/cybersecurity-armageddon-cybergeddon-warning.png){: .nl-hero}
+
+<div class="nl-danger" markdown="1">
+
+<p class="nl-danger-label">&#9762; Threat advisory &middot; Severity: critical</p>
+
+**Cybersecurity Armageddon** (frequently referred to as **cybergeddon**) is a term used by security professionals, policy experts, and the media to describe a hypothetical or catastrophic worst-case scenario in which a coordinated, massive wave of cyberattacks simultaneously cripples critical global infrastructure.
+
+</div>
+
 ## Signal Over Breakfast
 
 ## Repo Radar

@@ -1081,3 +1081,34 @@ body.theme-typesafe.ts-paper .post-content .ts-timeline-tag--pending {
     transition: none;
   }
 }
+
+/* Danger alert box (Cybersecurity Armageddon, 26 Oct issue): a hazard
+   placard with a striped top edge. Colours are fixed (not theme vars) so the
+   warning reads the same in light and dark mode. */
+body.theme-typesafe.ts-paper .post-content .nl-danger {
+  margin: 0.4rem 0 1.6rem;
+  padding: 1.6rem 1.3rem 1.1rem;
+  background:
+    repeating-linear-gradient(-45deg, #111111 0 14px, #f5c400 14px 28px) top / 100% 12px no-repeat,
+    #fff8d6;
+  color: #111111;
+  border: 3px solid #111111;
+  box-shadow: 6px 6px 0 #c8102e;
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-danger p,
+body.theme-typesafe.ts-paper .post-content .nl-danger strong {
+  color: #111111;
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-danger .nl-danger-label {
+  display: inline-block;
+  margin: 0 0 0.8rem;
+  padding: 0.2rem 0.6rem;
+  font-family: var(--ts-term);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: #c8102e;
+}
