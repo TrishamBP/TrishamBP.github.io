@@ -763,9 +763,22 @@ body.theme-typesafe.fn-notes .post-content img {
   border: 1px solid var(--fn-hair);
 }
 
-body.theme-typesafe.fn-notes .post-content p:has(> img:only-child) {
+body.theme-typesafe.fn-notes .post-content p:has(> img:only-child),
+body.theme-typesafe.fn-notes .post-content p:has(> img:first-child + em) {
   max-width: none;
   margin: 0 0 2.2rem;
+}
+
+/* A caption on the line right after the image lands in the same <p>;
+   make it a block so it sits flush under the frame, not after a space.
+   style.css gives every <p> text-align-last:left, which the caption
+   would otherwise inherit. */
+body.theme-typesafe.fn-notes .post-content img + em {
+  display: block;
+  max-width: 70ch;
+  margin: 0.8rem auto 0;
+  text-align: center;
+  text-align-last: center;
 }
 
 body.theme-typesafe.fn-notes .post-content img + em,

@@ -174,3 +174,6 @@ Both systems are answers to the same problem: serving large language models chea
 </div>
 
 > **The short version.** Mooncake makes room for a huge KV cache. DeepSeek makes the KV cache small enough that it rarely needs that much room. For how MLA shrinks the cache, see the [DeepSeek-V2 MLA breakdown](/engineering/deepseek-v2-mixture-of-experts-mla-language-model/) and the [DeepSeek-V4.1-Flash KV cache compression article](/engineering/deepseek-v41-flash-kv-cache-compression-agentic-llm-inference/).
+
+## Inside the DeepInfer Codebase: The Engine Core Files
+{: data-eyebrow="03 / Engine core"}
