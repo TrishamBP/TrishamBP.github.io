@@ -11,6 +11,7 @@ meta: "LLM Inference"
 date: 2026-10-24
 author: Trisham Patil
 tags: ["DeepInfer", "DeepSeek", "LLM Inference", "Expert Parallelism", "Speculative Decoding"]
+image: "/assets/blogs/deepinfer/deepinfer-deepseek-sm100-hero.png"
 logo: "/assets/blogs/deepinfer/deepseek-logo.png"
 logo_alt: "DeepSeek whale logo for the DeepInfer inference framework"
 source_url: "https://github.com/deepseek-ai/DeepInfer"
@@ -43,6 +44,9 @@ structured_data: BlogPosting
 
   Body is written one section at a time, on request only.
 -->
+
+![DeepInfer by DeepSeek hero: a stylized NVIDIA SM100 Blackwell GPU board with two compute dies, a die-to-die link and eight HBM3e stacks, beside the DeepSeek whale logo](/assets/blogs/deepinfer/deepinfer-deepseek-sm100-hero.png)
+*An illustrative SM100-class board, one of the two hardware targets of the DeepInfer release. Drawn for this post; not an NVIDIA floor plan.*
 
 ## DeepInfer Project Overview: DeepSeek's Production Inference Framework
 {: data-eyebrow="01 / Project overview"}
@@ -107,3 +111,66 @@ If requests are distributed blindly, some DP replicas end up overloaded with hea
 **DP load balancing** is the routing and scheduling layer that spreads incoming requests across data-parallel replicas based on load. Per the Q&A, engines pull work according to their remaining compute quota, and each request goes to the DP rank with the lowest current load.
 
 The goal is high hardware utilization across the cluster. DeepSeek reports its balancing reaches **roughly 80% of a perfectly balanced offline benchmark**.
+
+## DeepInfer vs Mooncake: Two Approaches to PD Disaggregation
+{: data-eyebrow="02 / Comparison"}
+
+Moonshot AI's **Mooncake** and DeepSeek's production architecture, which DeepInfer comes from, both use **Prefill-Decode (PD) disaggregation**. They were built to remove different bottlenecks, though.
+
+Mooncake was designed from the start as a **KV-cache-centric** storage and serving platform for the ultra-long-context Kimi models. DeepSeek's inference design is tuned for **compute efficiency in massive Mixture-of-Experts (MoE) models** and for **Multi-head Latent Attention (MLA)**.
+
+### Summary Comparison: Mooncake vs DeepSeek
+
+| Metric / feature | Moonshot AI's Mooncake | DeepSeek's architecture |
+|---|---|---|
+| Primary design goal | Ultra-long-context management and global KV cache reuse | MoE throughput and low-latency execution |
+| Cache hierarchy | Multi-tier pool: GPU VRAM → CPU DRAM → SSD / NVMe | Compact MLA cache moved over GPU-to-GPU and RDMA fabric; the 3FS SSD tier holds the on-disk context cache |
+| Attention mechanism | Attention-agnostic: it stores whatever KV cache the engine produces (Kimi K2 itself uses MLA) | MLA, which compresses the KV cache inside the model |
+| Ecosystem status | Open-source modular middleware that plugs into vLLM and SGLang | Open kernels (FlashMLA, DeepGEMM, DeepEP), 3FS and now the DeepInfer engine; PD and DP-balancing orchestration stays internal |
+
+<div class="fn-cards">
+  <div class="fn-card">
+    <p class="fn-card-tag">Difference 01 / Design focus</p>
+    <h4 class="fn-card-title">Context vs compute</h4>
+    <p class="fn-card-text">Mooncake manages very long contexts and a global key-value (KV) cache store. DeepSeek focuses on compute efficiency for massive MoE models and on fast network transfers.</p>
+  </div>
+  <div class="fn-card">
+    <p class="fn-card-tag">Difference 02 / KV cache</p>
+    <h4 class="fn-card-title">Store more vs store less</h4>
+    <p class="fn-card-text">Mooncake spreads the KV cache across GPU memory, CPU memory and SSDs. DeepSeek shrinks the cache inside the model with MLA, then moves the compressed cache between nodes over high-speed interconnects.</p>
+  </div>
+  <div class="fn-card">
+    <p class="fn-card-tag">Difference 03 / Open source</p>
+    <h4 class="fn-card-title">Middleware vs building blocks</h4>
+    <p class="fn-card-text">Moonshot AI ships Mooncake as open middleware for standard engines like vLLM. DeepSeek releases kernels and now the DeepInfer engine, but keeps production orchestration and data-parallel load balancing private.</p>
+  </div>
+</div>
+
+### Where Mooncake and DeepSeek Agree
+
+Both systems are answers to the same problem: serving large language models cheaply at scale. They share four engineering principles.
+
+<div class="fn-cards fn-cards--two">
+  <div class="fn-card">
+    <p class="fn-card-tag">Shared 01 / Phase split</p>
+    <h4 class="fn-card-title">Prefill and decode separation</h4>
+    <p class="fn-card-text">Both split prefill and decode onto different hardware nodes, so the two phases stop competing for the same processors.</p>
+  </div>
+  <div class="fn-card">
+    <p class="fn-card-tag">Shared 02 / Latency</p>
+    <h4 class="fn-card-title">Lower time to first token</h4>
+    <p class="fn-card-text">Both cut time to first token and keep token generation fast and steady under heavy user traffic.</p>
+  </div>
+  <div class="fn-card">
+    <p class="fn-card-tag">Shared 03 / Data movement</p>
+    <h4 class="fn-card-title">KV transfer and routing</h4>
+    <p class="fn-card-text">Both move large volumes of KV state between nodes over high-speed cluster networks, and route requests to where that state lives.</p>
+  </div>
+  <div class="fn-card">
+    <p class="fn-card-tag">Shared 04 / Utilization</p>
+    <h4 class="fn-card-title">No idle hardware</h4>
+    <p class="fn-card-text">Both balance load across compute units to keep processor utilization high and avoid idle GPUs in the cluster.</p>
+  </div>
+</div>
+
+> **The short version.** Mooncake makes room for a huge KV cache. DeepSeek makes the KV cache small enough that it rarely needs that much room. For how MLA shrinks the cache, see the [DeepSeek-V2 MLA breakdown](/engineering/deepseek-v2-mixture-of-experts-mla-language-model/) and the [DeepSeek-V4.1-Flash KV cache compression article](/engineering/deepseek-v41-flash-kv-cache-compression-agentic-llm-inference/).
