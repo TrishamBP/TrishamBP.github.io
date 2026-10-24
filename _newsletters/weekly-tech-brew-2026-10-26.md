@@ -274,6 +274,42 @@ The US **NSA** told organizations that can't patch immediately to take their PHP
 
 </div>
 
+<div class="nl-safe" markdown="1">
+
+<p class="nl-safe-label">&#128737; Safety guide &middot; Websites, AI tools, accounts, money</p>
+
+### The PHP Crisis: How to Keep Yourself Safe
+
+**The internet is facing a serious security threat. Here's how to protect your websites, AI tools, accounts, and money.**
+
+The PHP crisis has become one of the biggest internet security scares of the year. Everyone who builds, owns, or uses AI-powered websites should be paying attention.
+
+A dangerous weakness that had been hiding in website software for more than a decade is now being tested by hackers across the internet. Cloudflare has seen millions of attack attempts. Governments have taken websites offline. Even some well-protected services have had to act quickly.
+
+The really frightening part? You could have a perfectly normal-looking website, with everything working as usual, and still have no idea that the software behind it needs an urgent security update.
+
+I wouldn't panic. But I certainly wouldn't ignore this.
+
+There are already ways to protect yourself, and some of the newest AI security tools can make the job surprisingly easy.
+
+#### AI Found Something the Internet Had Missed for 14 Years
+
+PHP is the software running behind millions of websites, including many built with WordPress. It helps websites handle payments, accounts, private information, and other important functions.
+
+Researchers found two serious security holes inside PHP itself. Both were rated **9.2 out of 10** for severity.
+
+Under certain conditions, hackers could use them to run harmful code on a website's server without even logging in. Your website could be at risk despite strong passwords and carefully written code.
+
+What makes this story unusual is how the flaws were discovered. Researchers used powerful AI models, including OpenAI's **GPT-5.6 Sol**, to help uncover problems that had gone unnoticed for years.
+
+The same AI technology can help attackers look for weaknesses faster, too. That is why the response has been so urgent.
+
+**Attempts are not breaches.** Millions of attack attempts have been observed, but that doesn't mean millions of websites were hacked.
+
+**The immediate priority:** find out what's exposed and fix it before someone gets in.
+
+</div>
+
 ## Rogue Agents Are on the Prowl
 
 AI agents are now showing up in security incident reports, both when they go off-script on their own and when attackers deliberately use them. Here are this week's rogue agent and AI security stories.

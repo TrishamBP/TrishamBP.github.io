@@ -1129,3 +1129,46 @@ body.theme-typesafe.ts-paper .post-content .nl-danger .nl-danger-label {
   color: #ffffff;
   background: #c8102e;
 }
+
+/* Safety guide box (PHP crisis, 26 Oct issue): the green counterpart to
+   .nl-danger. Fixed colours for the same light/dark-mode reason. */
+body.theme-typesafe.ts-paper .post-content .nl-safe {
+  margin: 0.4rem 0 1.6rem;
+  padding: 1.3rem 1.3rem 1.1rem;
+  background: #e8f6ee;
+  color: #10301f;
+  border: 3px solid #028a4b;
+  border-left-width: 10px;
+  box-shadow: 6px 6px 0 #10301f;
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-safe p,
+body.theme-typesafe.ts-paper .post-content .nl-safe strong,
+body.theme-typesafe.ts-paper .post-content .nl-safe li,
+body.theme-typesafe.ts-paper .post-content .nl-safe h3,
+body.theme-typesafe.ts-paper .post-content .nl-safe h4,
+body.theme-typesafe.ts-paper .post-content .nl-safe .nl-source {
+  color: #10301f;
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-safe h3 {
+  margin-top: 0.2rem;
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-safe h4 {
+  margin: 1.2rem 0 0.5rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 2px solid #028a4b;
+}
+
+body.theme-typesafe.ts-paper .post-content .nl-safe .nl-safe-label {
+  display: inline-block;
+  margin: 0 0 0.8rem;
+  padding: 0.2rem 0.6rem;
+  font-family: var(--ts-term);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: #028a4b;
+}
