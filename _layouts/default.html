@@ -12,13 +12,26 @@
   {%- comment -%}
     Engineering Implementations pages get the green glossary skin
     (css/engineering-glossary.css, loaded by the same gate in head.html).
-    The blog and signals listings and posts get the light paper skin (css/blog-paper.css).
+    The blog listings and posts get the light paper skin (css/blog-paper.css).
+    Signals (listing + posts) get the grid-paper field-notes skin
+    (css/signals-field-notes.css) instead of the paper skin.
     The research page gets the full-screen cinema skin (css/research-cinema.css).
     Certifications get the neon grid skin (css/certs-neon.css).
     Projects get the dark terminal skin (css/projects-terminal.css).
   {%- endcomment -%}
   {%- assign url_prefix = page.url | slice: 0, 13 -%}
-  <body class="{% unless page_theme == 'none' %}theme-{{ page_theme }} {% endunless %}{% if url_prefix == '/engineering/' or page.collection == 'implementations' %}eng-glossary {% endif %}{% if page.url == '/blog/' or page.url == '/newsletter/' or page.url == '/models/' or page.url == '/signals/' or page.layout == 'post' %}ts-paper {% endif %}{% if page.url == '/research-articles/' %}spx-cinema {% endif %}{% if page.url == '/certifications/' %}grid-neon {% endif %}{% if page.url == '/physical-systems/' %}ps-systems {% endif %}{% if page.url == '/projects/' %}tx-term {% endif %}dark-mode">
+  {%- assign is_signals = false -%}
+  {%- if page.url == '/signals/' or page.collection == 'signals' -%}{%- assign is_signals = true -%}{%- endif -%}
+  <body class="{% unless page_theme == 'none' %}theme-{{ page_theme }} {% endunless %}{% if url_prefix == '/engineering/' or page.collection == 'implementations' %}eng-glossary {% endif %}{% if is_signals %}fn-notes {% elsif page.url == '/blog/' or page.url == '/newsletter/' or page.url == '/models/' or page.layout == 'post' %}ts-paper {% endif %}{% if page.url == '/research-articles/' %}spx-cinema {% endif %}{% if page.url == '/certifications/' %}grid-neon {% endif %}{% if page.url == '/physical-systems/' %}ps-systems {% endif %}{% if page.url == '/projects/' %}tx-term {% endif %}dark-mode">
+    {%- if is_signals %}
+    <div class="fn-strip">
+      <span class="fn-strip-label">Signals</span>
+      <span class="fn-strip-sep" aria-hidden="true">&mdash;</span>
+      <span>Field notes on AI releases, papers and tools worth tracking</span>
+      <span class="fn-strip-sep" aria-hidden="true">&mdash;</span>
+      <a href="{{ '/newsletter/' | relative_url }}">Get them in the Weekly Tech Brew <span aria-hidden="true">&rarr;</span></a>
+    </div>
+    {%- endif %}
     <nav class="topnav" id="topnav">
       <div class="topnav-inner">
         <a class="topnav-brand" href="{{ '/' | relative_url }}">Trisham Patil</a>
@@ -282,10 +295,11 @@
             return;
           }
 
-          /* The blog's paper skin is light even though `dark-mode` is set. */
+          /* The blog paper and signals skins are light even though `dark-mode` is set. */
           var isDark =
             document.body.classList.contains("dark-mode") &&
-            !document.body.classList.contains("ts-paper");
+            !document.body.classList.contains("ts-paper") &&
+            !document.body.classList.contains("fn-notes");
           window.mermaid.initialize({
             startOnLoad: false,
             securityLevel: "loose",
@@ -386,7 +400,7 @@
                 ".site-shell .eng-filter-bar, .site-shell .blog-post-item," +
                 ".site-shell .research-article-item," +
                 ".site-shell .paper-explainer-item," +
-                ".site-shell .implementation-item"
+                ".site-shell .implementation-item, .site-shell .fn-card"
             )
           );
         }

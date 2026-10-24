@@ -1,0 +1,64 @@
+{%- comment -%}
+  Field-notes "release dossier" header for signal posts (rendered by
+  _layouts/post.html when page.collection == 'signals').
+
+  Optional frontmatter:
+    highlight:   substring of the title drawn with the mint marker band
+    lede:        hero paragraph (falls back to `description`)
+    source_url / source_label: adds a third button to the primary source
+    logo / logo_alt: small square mark shown beside the eyebrow and on the card
+    specs:       list of { label, value, note } that replaces the default
+                 five-cell spec strip
+  Params: words (word count of the rendered body, for read time).
+{%- endcomment -%}
+{%- assign fn_sorted = site.signals | sort: "date" -%}
+{%- assign fn_no = 1 -%}
+{%- for s in fn_sorted -%}
+  {%- if s.url == page.url -%}{%- assign fn_no = forloop.index -%}{%- endif -%}
+{%- endfor -%}
+{%- capture fn_no_padded -%}{% if fn_no < 10 %}0{% endif %}{{ fn_no }}{%- endcapture -%}
+{%- assign fn_words = include.words | default: 0 -%}
+{%- assign fn_minutes = fn_words | divided_by: 220 | plus: 1 -%}
+
+{%- assign fn_title = page.title | escape -%}
+{%- if page.highlight -%}
+  {%- assign fn_hl = page.highlight | escape -%}
+  {%- capture fn_hl_mark -%}<mark>{{ fn_hl }}</mark>{%- endcapture -%}
+  {%- assign fn_title = fn_title | replace_first: fn_hl, fn_hl_mark -%}
+{%- endif -%}
+
+<header class="fn-dossier" aria-labelledby="fn-title">
+  {%- if page.logo %}<img class="fn-logo" src="{{ page.logo | relative_url }}" alt="{{ page.logo_alt | default: page.title | escape }}" width="40" height="40">{% endif %}
+  <p class="fn-eyebrow"><span class="fn-fig">Fig. {{ fn_no_padded }}</span> &mdash; Signal dossier / {{ page.date | date: "%Y.%m" }}</p>
+  <h1 id="fn-title" class="fn-title">{{ fn_title }}</h1>
+  <p class="fn-lede">{{ page.lede | default: page.description | strip_html | normalize_whitespace }}</p>
+
+  <div class="fn-actions">
+    <a class="fn-button fn-button--solid" href="#signal-body">Read the signal <span aria-hidden="true">&darr;</span></a>
+    {%- if page.source_url %}
+    <a class="fn-button" href="{{ page.source_url }}" rel="noopener" target="_blank">{{ page.source_label | default: "Primary source" }} <span aria-hidden="true">&nearr;</span></a>
+    {%- endif %}
+    <a class="fn-button" href="{{ '/signals/' | relative_url }}">All signals</a>
+  </div>
+
+  <dl class="fn-specs">
+    {%- if page.specs %}
+      {%- for spec in page.specs %}
+      <div class="fn-spec"><dt>{{ spec.label }}</dt><dd><strong>{{ spec.value }}</strong>{% if spec.note %}<span>{{ spec.note }}</span>{% endif %}</dd></div>
+      {%- endfor %}
+    {%- else %}
+      <div class="fn-spec"><dt>Published</dt><dd><strong>{{ page.date | date: "%-d %b %Y" }}</strong><span>signal no. {{ fn_no_padded }}</span></dd></div>
+      <div class="fn-spec"><dt>Category</dt><dd><strong>{{ page.category | default: "Signal" }}</strong><span>field note</span></dd></div>
+      <div class="fn-spec"><dt>Read time</dt><dd><strong>{{ fn_minutes }} min</strong><span>~{{ fn_words }} words</span></dd></div>
+      <div class="fn-spec"><dt>Topics</dt><dd><strong>{{ page.tags | first | default: page.category }}</strong>{% if page.tags.size > 1 %}<span>+ {{ page.tags.size | minus: 1 }} more</span>{% endif %}</dd></div>
+      <div class="fn-spec"><dt>Author</dt><dd><strong>{{ page.author | default: "Trisham Patil" }}</strong><span>independent reading</span></dd></div>
+    {%- endif %}
+  </dl>
+
+  <p class="fn-snapshot">
+    <span>Filed {{ page.date | date: "%Y-%m-%d" }}</span>
+    <span>Signal no. {{ fn_no_padded }}</span>
+    {%- if page.category %}<span>{{ page.category }}</span>{% endif %}
+    <span>Read time: {{ fn_minutes }} min</span>
+  </p>
+</header>

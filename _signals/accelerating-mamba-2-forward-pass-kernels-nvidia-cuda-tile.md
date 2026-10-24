@@ -4,6 +4,7 @@ title: "Accelerating Mamba-2 with High-Performance Forward Pass Kernels in NVIDI
 seo_title: "Accelerating Mamba-2 Forward Pass Kernels in NVIDIA CUDA Tile"
 description: "Accelerate Mamba-2 with high-performance forward pass kernels in NVIDIA CUDA Tile: how the SSD chunked scan maps to GPU tiles for faster training and inference."
 keywords: "Mamba-2 CUDA Tile, Mamba-2 forward pass kernel, NVIDIA CUDA Tile, cuTile, state space duality, SSD kernel, selective state space models, GPU kernel optimization, tile-based programming, chunked scan, Mamba-2 inference"
+highlight: "Mamba-2"
 category: "GPU Kernels"
 meta: "GPU Kernels"
 date: 2026-10-23

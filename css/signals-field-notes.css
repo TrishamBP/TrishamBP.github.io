@@ -1,0 +1,971 @@
+/* =============================================================================
+   SIGNALS — FIELD NOTES SKIN
+   -----------------------------------------------------------------------------
+   Applied to the /signals/ listing and every signal post (collection
+   `signals`). `_layouts/default.html` adds `fn-notes` to <body> (in place of
+   the blog's `ts-paper`) and `_includes/head.html` loads this file plus Inter
+   Tight + IBM Plex Mono, both gated on the same `is_signals` condition.
+
+   Design language: an independent "release dossier" — warm grid paper, a
+   framed hero card with corner ticks, huge tight grotesque headlines, mono
+   eyebrows in burnt orange, hairline-bordered cards and a spec strip.
+
+     paper  #f3f0e8     card   #faf8f3     panel  #f1ede4
+     ink    #141b18     soft   #3a423d     faint  #6e746f
+     hair   #d8d2c4     green  #0d4a3e     mint   #d4ebe1
+     orange #bf4a1a
+
+   Post-body helpers (raw HTML inside a signal post's markdown):
+     <div class="fn-cards"> ... <div class="fn-card">
+       <p class="fn-card-tag">01 / Kernels</p>
+       <h4 class="fn-card-title">Title</h4>
+       <p class="fn-card-text">Body</p>
+     </div> ... </div>
+     ## Heading {: data-eyebrow="Scope"}   -> custom eyebrow over an h2
+                                             (default: "01 / Section")
+
+   Scoped as body.theme-typesafe.fn-notes, which ties the typesafe dark-mode
+   remap and wins on source order (this file is linked last).
+   ========================================================================== */
+
+body.theme-typesafe.fn-notes,
+body.theme-typesafe.fn-notes.dark-mode {
+  --fn-paper: #f3f0e8;
+  --fn-card: #faf8f3;
+  --fn-panel: #f1ede4;
+  --fn-ink: #141b18;
+  --fn-soft: #3a423d;
+  --fn-faint: #6e746f;
+  --fn-hair: #d8d2c4;
+  --fn-grid: rgba(20, 27, 24, 0.055);
+  --fn-green: #0d4a3e;
+  --fn-mint: #d4ebe1;
+  --fn-orange: #bf4a1a;
+
+  --fn-display: "Inter Tight", "Inter", "Helvetica Neue", Arial, sans-serif;
+  --fn-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Arial, sans-serif;
+  --fn-mono: "IBM Plex Mono", "JetBrains Mono", ui-monospace, Consolas,
+    monospace;
+
+  /* Remap the typesafe tokens so inherited rules follow the paper palette. */
+  --ts-bg: var(--fn-paper);
+  --ts-surface: var(--fn-card);
+  --ts-surface-2: var(--fn-panel);
+  --ts-fg: var(--fn-ink);
+  --ts-fg-soft: var(--fn-soft);
+  --ts-fg-faint: var(--fn-faint);
+  --ts-line: var(--fn-hair);
+  --ts-accent: var(--fn-orange);
+  --ts-rule: 1px;
+
+  background-color: var(--fn-paper);
+  background-image: linear-gradient(var(--fn-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--fn-grid) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-attachment: fixed;
+  color: var(--fn-ink);
+}
+
+body.theme-typesafe.fn-notes ::selection {
+  background: var(--fn-mint);
+  color: var(--fn-ink);
+}
+
+/* -----------------------------------------------------------------------------
+   Announcement strip (above the nav)
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.fn-notes .fn-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  padding: 0.55rem 1rem;
+  background: var(--fn-green);
+  color: #e6efe9;
+  font-family: var(--fn-body);
+  font-size: 0.78rem;
+  line-height: 1.3;
+}
+
+body.theme-typesafe.fn-notes .fn-strip-label {
+  font-family: var(--fn-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: var(--fn-card);
+  color: var(--fn-green);
+  padding: 0.22rem 0.5rem;
+}
+
+body.theme-typesafe.fn-notes .fn-strip-sep {
+  opacity: 0.55;
+}
+
+body.theme-typesafe.fn-notes .fn-strip a {
+  color: #ffffff;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+body.theme-typesafe.fn-notes .fn-strip a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* -----------------------------------------------------------------------------
+   Nav: paper bar, ink rule, monogram brand, mono caps links, orange underline
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.fn-notes .topnav {
+  background: rgba(247, 245, 239, 0.95);
+  border-bottom: 1px solid var(--fn-ink);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+body.theme-typesafe.fn-notes .topnav-inner {
+  height: 64px;
+}
+
+body.theme-typesafe.fn-notes .topnav-brand {
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  column-gap: 10px;
+  font-family: var(--fn-display);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  text-transform: none;
+  color: var(--fn-ink);
+}
+
+body.theme-typesafe.fn-notes .topnav-brand::before {
+  content: "TP";
+  grid-column: 1;
+  grid-row: 1 / 3;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(var(--fn-orange), var(--fn-orange)) right bottom /
+      6px 6px no-repeat,
+    var(--fn-green);
+  color: #ffffff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+body.theme-typesafe.fn-notes .topnav-brand::after {
+  content: "Field notes";
+  grid-column: 2;
+  font-family: var(--fn-mono);
+  font-size: 0.56rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fn-faint);
+}
+
+body.theme-typesafe.fn-notes .topnav-link {
+  font-family: var(--fn-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fn-soft);
+  padding: 6px 7px;
+  border-radius: 0;
+}
+
+body.theme-typesafe.fn-notes.dark-mode .topnav-link:hover {
+  background: transparent;
+  color: var(--fn-orange);
+}
+
+body.theme-typesafe.fn-notes.dark-mode .topnav-link.active {
+  background: transparent;
+  color: var(--fn-ink);
+  box-shadow: inset 0 -2px 0 var(--fn-orange);
+}
+
+body.theme-typesafe.fn-notes .topnav-hamburger span {
+  background: var(--fn-ink);
+}
+
+body.theme-typesafe.fn-notes .topnav-links.open {
+  background: var(--fn-card);
+  border-bottom: 1px solid var(--fn-ink);
+}
+
+@media (max-width: 1359px) {
+  body.theme-typesafe.fn-notes .topnav-links {
+    top: 64px;
+  }
+}
+
+/* -----------------------------------------------------------------------------
+   Shared atoms: eyebrows, buttons, marker highlight
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.fn-notes .site-shell .fn-eyebrow,
+body.theme-typesafe.fn-notes .site-shell .fn-kicker {
+  font-family: var(--fn-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fn-ink);
+  margin: 0 0 1.4rem;
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-kicker {
+  color: var(--fn-orange);
+  margin-bottom: 0.55rem;
+}
+
+body.theme-typesafe.fn-notes .fn-fig {
+  color: var(--fn-orange);
+}
+
+body.theme-typesafe.fn-notes mark {
+  background: linear-gradient(
+    transparent 68%,
+    var(--fn-mint) 68%,
+    var(--fn-mint) 94%,
+    transparent 94%
+  );
+  color: inherit;
+  padding: 0;
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.95rem 1.1rem;
+  font-family: var(--fn-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--fn-ink);
+  background: transparent;
+  border: 1px solid var(--fn-ink);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-button:hover {
+  background: var(--fn-ink);
+  color: var(--fn-paper);
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-button--solid {
+  background: var(--fn-ink);
+  color: var(--fn-paper);
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-button--solid:hover {
+  background: var(--fn-green);
+  border-color: var(--fn-green);
+}
+
+/* -----------------------------------------------------------------------------
+   Dossier hero card (post header + listing header)
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.fn-notes .site-shell .fn-dossier {
+  position: relative;
+  margin: 1.4rem 0 4.5rem;
+  padding: clamp(1.6rem, 4.4vw, 3rem) clamp(1.2rem, 4.4vw, 2.75rem)
+    clamp(1.4rem, 3vw, 2.1rem);
+  background: var(--fn-card);
+  border: 1px solid var(--fn-ink);
+  box-shadow: 0 22px 40px -28px rgba(20, 27, 24, 0.35);
+}
+
+/* Registration ticks on two opposite corners. */
+body.theme-typesafe.fn-notes .site-shell .fn-dossier::before,
+body.theme-typesafe.fn-notes .site-shell .fn-dossier::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 0 solid var(--fn-green);
+  pointer-events: none;
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-dossier::before {
+  top: -2px;
+  left: -2px;
+  border-top-width: 3px;
+  border-left-width: 3px;
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-dossier::after {
+  bottom: -2px;
+  right: -2px;
+  border-bottom-width: 3px;
+  border-right-width: 3px;
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-title {
+  font-family: var(--fn-display);
+  font-size: clamp(2.3rem, 5.6vw, 4.25rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--fn-ink);
+  max-width: 13em;
+  margin: 0 0 1.6rem;
+  border: 0;
+  padding: 0;
+  -webkit-text-stroke: 0;
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-lede {
+  font-family: var(--fn-body);
+  font-size: 1.04rem;
+  line-height: 1.72;
+  color: var(--fn-soft);
+  max-width: 37em;
+  margin: 0 0 1.8rem;
+}
+
+body.theme-typesafe.fn-notes .fn-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-bottom: 1.7rem;
+}
+
+body.theme-typesafe.fn-notes .fn-specs {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin: 0 0 1.3rem;
+  border: 1px solid var(--fn-hair);
+  background: var(--fn-panel);
+}
+
+body.theme-typesafe.fn-notes .fn-spec {
+  padding: 0.9rem 0.95rem 1rem;
+  border-left: 1px solid var(--fn-hair);
+  min-width: 0;
+}
+
+body.theme-typesafe.fn-notes .fn-spec:first-child {
+  border-left: 0;
+}
+
+body.theme-typesafe.fn-notes .fn-spec dt {
+  font-family: var(--fn-mono);
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fn-faint);
+  margin: 0 0 0.55rem;
+}
+
+body.theme-typesafe.fn-notes .fn-spec dd {
+  margin: 0;
+}
+
+body.theme-typesafe.fn-notes .fn-spec strong {
+  display: block;
+  font-family: var(--fn-body);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--fn-ink);
+  overflow-wrap: anywhere;
+}
+
+body.theme-typesafe.fn-notes .fn-spec dd span {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.74rem;
+  color: var(--fn-faint);
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-snapshot {
+  display: flex;
+  flex-wrap: wrap;
+  font-family: var(--fn-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fn-faint);
+  margin: 0;
+}
+
+body.theme-typesafe.fn-notes .fn-snapshot span + span::before {
+  content: "/";
+  padding: 0 1.1em;
+  color: var(--fn-faint);
+}
+
+/* -----------------------------------------------------------------------------
+   Sections: kicker + big headline + right-aligned mono meta
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.fn-notes .fn-section {
+  margin: 0 0 3rem;
+}
+
+body.theme-typesafe.fn-notes .fn-section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.6rem;
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-h2 {
+  font-family: var(--fn-display);
+  font-size: clamp(1.7rem, 3.4vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  color: var(--fn-ink);
+  max-width: 19em;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-section-meta {
+  flex-shrink: 0;
+  font-family: var(--fn-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fn-faint);
+  margin: 0 0 0.35rem;
+}
+
+/* -----------------------------------------------------------------------------
+   Cards (listing index + optional post-body grids)
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.fn-notes .fn-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.1rem;
+  margin: 0 0 1.8rem;
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.45rem 1.5rem 1.35rem;
+  background: var(--fn-card);
+  border: 1px solid var(--fn-hair);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-card:hover {
+  border-color: var(--fn-ink);
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-card-tag {
+  font-family: var(--fn-mono);
+  font-size: 0.64rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fn-orange);
+  margin: 0 0 0.7rem;
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-card-title {
+  font-family: var(--fn-display);
+  font-size: 1.17rem;
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+  color: var(--fn-ink);
+  margin: 0 0 0.6rem;
+  padding: 0;
+  border: 0;
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-card-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-card-title a::after {
+  /* whole card is the click target */
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-signal-card {
+  position: relative;
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-card-text {
+  font-family: var(--fn-body);
+  font-size: 0.92rem;
+  line-height: 1.66;
+  color: var(--fn-soft);
+  margin: 0 0 1.2rem;
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-card-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: auto 0 0;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--fn-hair);
+  font-family: var(--fn-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fn-faint);
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-signal-card:hover .fn-card-foot span:last-child {
+  color: var(--fn-orange);
+}
+
+/* -----------------------------------------------------------------------------
+   Callout: orange rail, mono body, bold lead-in
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.fn-notes .site-shell .fn-callout,
+body.theme-typesafe.fn-notes .post-content blockquote {
+  margin: 1.8rem 0;
+  padding: 1.15rem 1.3rem;
+  background: var(--fn-card);
+  border: 1px solid var(--fn-hair);
+  border-left: 3px solid var(--fn-orange);
+  font-family: var(--fn-mono);
+  font-size: 0.8rem;
+  line-height: 1.8;
+  color: var(--fn-soft);
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-callout p,
+body.theme-typesafe.fn-notes .post-content blockquote p {
+  font-family: var(--fn-mono);
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  max-width: none;
+  margin: 0 0 0.6rem;
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-callout p:last-child,
+body.theme-typesafe.fn-notes .post-content blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-callout strong,
+body.theme-typesafe.fn-notes .post-content blockquote strong {
+  color: var(--fn-ink);
+  font-weight: 600;
+}
+
+/* -----------------------------------------------------------------------------
+   Pagination (listing)
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.fn-notes .fn-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+body.theme-typesafe.fn-notes .fn-pagination a,
+body.theme-typesafe.fn-notes .fn-pagination span {
+  font-family: var(--fn-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--fn-hair);
+  background: var(--fn-card);
+  color: var(--fn-soft);
+  text-decoration: none;
+}
+
+body.theme-typesafe.fn-notes .fn-pagination a:hover {
+  border-color: var(--fn-ink);
+  color: var(--fn-ink);
+}
+
+body.theme-typesafe.fn-notes .fn-pagination .active {
+  background: var(--fn-ink);
+  border-color: var(--fn-ink);
+  color: var(--fn-paper);
+}
+
+body.theme-typesafe.fn-notes .fn-pagination .disabled {
+  opacity: 0.45;
+}
+
+/* -----------------------------------------------------------------------------
+   Post body
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.fn-notes .post-content {
+  max-width: none;
+  font-family: var(--fn-body);
+  font-size: 1rem;
+  line-height: 1.72;
+  color: var(--fn-soft);
+  counter-reset: fn-sec;
+  padding-bottom: 4rem;
+}
+
+body.theme-typesafe.fn-notes .post-content p,
+body.theme-typesafe.fn-notes .post-content > ul,
+body.theme-typesafe.fn-notes .post-content > ol {
+  max-width: 70ch;
+  color: var(--fn-soft);
+}
+
+body.theme-typesafe.fn-notes .post-content strong {
+  color: var(--fn-ink);
+  font-weight: 600;
+}
+
+/* h2 = a new dossier section: full-bleed hairline, orange kicker, big type. */
+body.theme-typesafe.fn-notes .post-content h2 {
+  counter-increment: fn-sec;
+  font-family: var(--fn-display);
+  font-size: clamp(1.7rem, 3.4vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  color: var(--fn-ink);
+  max-width: 19em;
+  margin: 4.6rem 0 1.4rem;
+  padding: 4.2rem 0 0;
+  border: 0;
+  border-top: 1px solid var(--fn-hair);
+  /* stretch the top rule edge to edge without widening the layout */
+  border-image: linear-gradient(var(--fn-hair), var(--fn-hair)) 1 0 0 0 / 1px 0 0 0 / 0 100vw;
+}
+
+body.theme-typesafe.fn-notes .post-content > h2:first-child,
+body.theme-typesafe.fn-notes .post-content > p:first-child + h2 {
+  margin-top: 1rem;
+  padding-top: 0;
+  border-top: 0;
+  border-image: none;
+}
+
+body.theme-typesafe.fn-notes .post-content h2::before {
+  content: counter(fn-sec, decimal-leading-zero) " / Section";
+  display: block;
+  font-family: var(--fn-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--fn-orange);
+  margin-bottom: 0.8rem;
+}
+
+body.theme-typesafe.fn-notes .post-content h2[data-eyebrow]::before {
+  content: attr(data-eyebrow);
+}
+
+body.theme-typesafe.fn-notes .post-content h3 {
+  font-family: var(--fn-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--fn-ink);
+  margin: 2.4rem 0 0.7rem;
+}
+
+body.theme-typesafe.fn-notes .post-content h4,
+body.theme-typesafe.fn-notes .post-content h5,
+body.theme-typesafe.fn-notes .post-content h6 {
+  font-family: var(--fn-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--fn-ink);
+}
+
+body.theme-typesafe.fn-notes .post-content a,
+body.theme-typesafe.fn-notes .site-shell .post-content p a:not([class]),
+body.theme-typesafe.fn-notes .site-shell .post-content li a:not([class]) {
+  color: var(--fn-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--fn-orange);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  border: 0;
+  background: none;
+}
+
+body.theme-typesafe.fn-notes .post-content a:hover,
+body.theme-typesafe.fn-notes .site-shell .post-content p a:not([class]):hover,
+body.theme-typesafe.fn-notes .site-shell .post-content li a:not([class]):hover {
+  color: var(--fn-orange);
+}
+
+/* Lists: em-dash bullets, numbered lists with mono orange markers. */
+body.theme-typesafe.fn-notes .post-content ul {
+  list-style: none;
+  padding-left: 1.5em;
+}
+
+body.theme-typesafe.fn-notes .post-content ul > li {
+  position: relative;
+  margin-bottom: 0.45rem;
+}
+
+body.theme-typesafe.fn-notes .post-content ul > li::before {
+  content: "\2014";
+  position: absolute;
+  left: -1.5em;
+  color: var(--fn-orange);
+}
+
+body.theme-typesafe.fn-notes .post-content ol > li::marker {
+  font-family: var(--fn-mono);
+  font-size: 0.85em;
+  color: var(--fn-orange);
+}
+
+body.theme-typesafe.fn-notes .post-content hr {
+  border: 0;
+  border-top: 1px solid var(--fn-hair);
+  margin: 3rem 0;
+}
+
+/* Figures */
+body.theme-typesafe.fn-notes .post-content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  padding: 10px;
+  background: var(--fn-card);
+  border: 1px solid var(--fn-hair);
+}
+
+body.theme-typesafe.fn-notes .post-content p:has(> img:only-child) {
+  max-width: none;
+  margin: 0 0 2.2rem;
+}
+
+body.theme-typesafe.fn-notes .post-content img + em,
+body.theme-typesafe.fn-notes .post-content figcaption,
+body.theme-typesafe.fn-notes .ts-caption {
+  font-family: var(--fn-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: var(--fn-faint);
+}
+
+/* Boxed side-notes already used by signal posts. */
+body.theme-typesafe.fn-notes .ts-note {
+  background: var(--fn-card);
+  border: 1px solid var(--fn-hair);
+  border-left: 3px solid var(--fn-green);
+}
+
+body.theme-typesafe.fn-notes .ts-note--warn {
+  border-left-color: var(--fn-orange);
+}
+
+body.theme-typesafe.fn-notes .ts-note > .ts-note-title,
+body.theme-typesafe.fn-notes.dark-mode .ts-note > .ts-note-title {
+  font-family: var(--fn-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--fn-orange);
+  border-bottom: 1px solid var(--fn-hair);
+}
+
+/* Tables: hairline grid, mono caps headers. */
+body.theme-typesafe.fn-notes .post-content table {
+  border: 1px solid var(--fn-hair);
+  background: var(--fn-card);
+  font-size: 0.9rem;
+}
+
+body.theme-typesafe.fn-notes .post-content th {
+  font-family: var(--fn-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  background: var(--fn-panel);
+  color: var(--fn-faint);
+  border: 1px solid var(--fn-hair);
+}
+
+body.theme-typesafe.fn-notes .post-content td {
+  border: 1px solid var(--fn-hair);
+  color: var(--fn-soft);
+}
+
+body.theme-typesafe.fn-notes .post-content tbody tr:nth-child(even) {
+  background: var(--fn-paper);
+}
+
+/* Code: a deep green-black slab with warm tokens. */
+body.theme-typesafe.fn-notes .post-content pre,
+body.theme-typesafe.fn-notes .post-content .highlight pre {
+  background: #13201b;
+  color: #e9ece6;
+  border: 1px solid var(--fn-ink);
+  font-family: var(--fn-mono);
+  font-size: 0.82rem;
+}
+
+body.theme-typesafe.fn-notes .post-content :not(pre) > code {
+  background: var(--fn-panel);
+  border: 1px solid var(--fn-hair);
+  color: var(--fn-ink);
+  font-family: var(--fn-mono);
+}
+
+body.theme-typesafe.fn-notes .post-content .highlight .k,
+body.theme-typesafe.fn-notes .post-content .highlight .kd,
+body.theme-typesafe.fn-notes .post-content .highlight .kt,
+body.theme-typesafe.fn-notes .post-content .highlight .kr {
+  color: #f08a5d;
+}
+body.theme-typesafe.fn-notes .post-content .highlight .s,
+body.theme-typesafe.fn-notes .post-content .highlight .s1,
+body.theme-typesafe.fn-notes .post-content .highlight .s2 {
+  color: #8fd3b6;
+}
+body.theme-typesafe.fn-notes .post-content .highlight .m,
+body.theme-typesafe.fn-notes .post-content .highlight .mi,
+body.theme-typesafe.fn-notes .post-content .highlight .mf {
+  color: #e9c46a;
+}
+body.theme-typesafe.fn-notes .post-content .highlight .n,
+body.theme-typesafe.fn-notes .post-content .highlight .nv {
+  color: #e9ece6;
+}
+body.theme-typesafe.fn-notes .post-content .highlight .nf {
+  color: #a8d5ff;
+}
+
+body.theme-typesafe.fn-notes .mermaid-diagram {
+  background: var(--fn-card);
+  border: 1px solid var(--fn-hair);
+}
+
+/* -----------------------------------------------------------------------------
+   Narrow screens
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 900px) {
+  body.theme-typesafe.fn-notes .fn-specs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  body.theme-typesafe.fn-notes .fn-spec {
+    border-left: 0;
+    border-top: 1px solid var(--fn-hair);
+  }
+
+  body.theme-typesafe.fn-notes .fn-spec:nth-child(-n + 2) {
+    border-top: 0;
+  }
+
+  body.theme-typesafe.fn-notes .fn-spec:nth-child(even) {
+    border-left: 1px solid var(--fn-hair);
+  }
+
+  body.theme-typesafe.fn-notes .fn-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  body.theme-typesafe.fn-notes .fn-strip > span:not(.fn-strip-label) {
+    display: none;
+  }
+
+  body.theme-typesafe.fn-notes .fn-cards {
+    grid-template-columns: 1fr;
+  }
+
+  body.theme-typesafe.fn-notes .fn-section-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+
+  body.theme-typesafe.fn-notes .fn-snapshot span + span::before {
+    padding: 0 0.6em;
+  }
+}
+
+/* -----------------------------------------------------------------------------
+   Optional brand mark (`logo:` frontmatter): top-right of the dossier, and
+   beside the tag on a listing card.
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.fn-notes .site-shell .fn-logo {
+  position: absolute;
+  top: clamp(1.4rem, 4vw, 2.6rem);
+  right: clamp(1.2rem, 4vw, 2.6rem);
+  width: 40px;
+  height: 40px;
+  padding: 6px;
+  background: #ffffff;
+  border: 1px solid var(--fn-hair);
+}
+
+body.theme-typesafe.fn-notes .site-shell .fn-card-logo {
+  float: right;
+  width: 28px;
+  height: 28px;
+  padding: 4px;
+  margin: -0.35rem 0 0 0.6rem;
+  background: #ffffff;
+  border: 1px solid var(--fn-hair);
+}
+
+body.theme-typesafe.fn-notes .fn-cards--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 640px) {
+  body.theme-typesafe.fn-notes .fn-cards--two {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* The base theme sets h4 as tiny caps; here h4 is a plain sub-heading. */
+body.theme-typesafe.fn-notes .post-content h4 {
+  font-size: 1.08rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--fn-ink);
+  margin: 1.8rem 0 0.5rem;
+}
+
+body.theme-typesafe.fn-notes .post-content .fn-card h4.fn-card-title {
+  font-size: 1.17rem;
+  margin: 0 0 0.6rem;
+}

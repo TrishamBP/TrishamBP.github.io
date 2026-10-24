@@ -4,6 +4,7 @@ title: "Quantum Leap: AI-Driven Circuit Optimization"
 seo_title: "Quantum Leap: AI-Driven Quantum Circuit Optimization"
 description: "AI-driven quantum circuit optimization uses machine learning to cut gate counts and circuit depth, making today's noisy quantum hardware far more practical."
 keywords: "AI-driven quantum circuit optimization, quantum circuit optimization, Claude quantum circuits, Toffoli gate count, quantum error correction, modular inversion, divsteps, decoded quantum interferometry, Berlekamp-Massey, FeMoco, SFT and RL for quantum gate optimization, NISQ"
+highlight: "Quantum Leap"
 category: "Quantum Computing"
 meta: "Quantum Computing"
 date: 2026-10-21

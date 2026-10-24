@@ -3,13 +3,18 @@ layout: default
 ---
 <div class="post{% if page.collection == 'newsletters' %} post--newsletter{% endif %}">
 
+  {% if page.collection == 'signals' %}
+  {%- assign signal_words = content | strip_html | number_of_words -%}
+  {% include signal-dossier.html words=signal_words %}
+  {% else %}
   <header class="post-header">
     {% if page.collection == 'newsletters' %}<img class="nl-masthead-logo" src="{{ '/assets/newsletter/newsletter-logo.png' | relative_url }}" alt="The Weekly Tech Brew newsletter logo: three coffee beans inside a Tech Brew badge" width="120" height="120">{% endif %}
     <h1>{{ page.title }}{% if page.subtitle %}<span class="post-subtitle">{{ page.subtitle }}</span>{% endif %}</h1>
     <p class="meta">{% if page.collection == 'newsletters' %}{% include newsletter-date.html date=page.date %}{% else %}{{ page.date | date: "%B %Y" }}{% endif %}{% if page.author and page.subtitle == nil %} • {{ page.author }}{% endif %}{% if page.meta %} • {{ page.meta }}{% endif %}</p>
   </header>
+  {% endif %}
 
-  <article class="post-content">
+  <article class="post-content"{% if page.collection == 'signals' %} id="signal-body"{% endif %}>
   {{ content }}
   </article>
   {% if page.collection == 'newsletters' %}

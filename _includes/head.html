@@ -101,14 +101,29 @@
   <link rel="stylesheet" href="{{ '/css/engineering-glossary.css' | relative_url }}" />
   {%- endif %}
   {%- comment -%}
-    Blog, newsletter, models and signals listings and posts: light typesafe.ai paper skin. Same gate as the
+    Blog, newsletter and models listings and posts: light typesafe.ai paper skin. Same gate as the
     `ts-paper` body class in _layouts/default.html.
   {%- endcomment -%}
   {%- if page.url == '/newsletter/' or page.collection == 'newsletters' %}
   <link rel="alternate" type="application/rss+xml" title="The Weekly Tech Brew" href="{{ '/newsletter/feed.xml' | absolute_url }}" />
   {%- endif %}
-  {%- if page.url == '/blog/' or page.url == '/newsletter/' or page.url == '/models/' or page.url == '/signals/' or page.layout == 'post' %}
+  {%- assign is_signals = false -%}
+  {%- if page.url == '/signals/' or page.collection == 'signals' -%}{%- assign is_signals = true -%}{%- endif -%}
+  {%- unless is_signals %}
+  {%- if page.url == '/blog/' or page.url == '/newsletter/' or page.url == '/models/' or page.layout == 'post' %}
   <link rel="stylesheet" href="{{ '/css/blog-paper.css' | relative_url }}?v={{ site.time | date: '%s' }}" />
+  {%- endif %}
+  {%- endunless %}
+  {%- comment -%}
+    Signals listing and signal posts: warm grid-paper "field notes" dossier
+    skin. Same gate as the `fn-notes` body class in _layouts/default.html.
+  {%- endcomment -%}
+  {%- if is_signals %}
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+  />
+  <link rel="stylesheet" href="{{ '/css/signals-field-notes.css' | relative_url }}?v={{ site.time | date: '%s' }}" />
   {%- endif %}
   {%- comment -%}
     Research page: full-screen cinematic sections. Same gate as the

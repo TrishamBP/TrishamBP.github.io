@@ -4,6 +4,7 @@ title: "PySR: Discover Mathematical Laws from Data with Symbolic Regression"
 seo_title: "PySR Symbolic Regression: Discover Mathematical Laws from Data"
 description: "PySR symbolic regression discovers mathematical laws from data, evolving readable equations instead of black-box weights. A Signals post on interpretable ML."
 keywords: "PySR, symbolic regression, interpretable machine learning, equation discovery, SymbolicRegression.jl, Pareto front, overfitting, dimensional analysis, physical units, datacenter carbon emissions, AI for science"
+highlight: "PySR"
 category: "Interpretable ML"
 meta: "Interpretable ML"
 date: 2026-10-20
