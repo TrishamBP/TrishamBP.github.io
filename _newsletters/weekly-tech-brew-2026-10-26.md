@@ -462,3 +462,47 @@ Published: October 2026 &middot; Starlink &middot; Satellite Internet &middot; S
 Will Starlink work in India? How low Earth orbit satellite internet works, why India can't fully trust a foreign network, and what it's building instead.
 
 <a class="nl-source" href="/2026/10/19/will-starlink-work-in-india/">Read More &rarr;</a>
+
+<h2 id="beyond-the-abstract" class="nl-icon-heading"><img class="nl-section-icon" src="/assets/newsletter/weekly-tech-brew-2026-10-26/beyond-the-abstract-telescope-icon.png" alt="Beyond The Abstract telescope icon: research papers section of The Weekly Tech Brew" width="44" height="48"> Beyond The Abstract</h2>
+
+**Five papers. Five ideas worth understanding. No filler.**
+
+### 1. Cache Engineering for Agents
+
+We've spent a lot of time on memory engineering and context engineering, and more recently on [loop engineering and graph engineering](/ai%20engineering/2026/08/22/context-engineering-loop-graph-engineering/). This paper adds a new layer underneath them: **cache engineering**.
+
+The authors introduce the **AKV serving engine**, which lets an LLM agent manage its own KV cache directly. Two operations do the work: **drop** removes selected parts of the cache from future attention, and **repos** shifts the position encodings of what's kept. The agent can trim its working memory without rewriting the text prefix or re-running prefill on the context it keeps.
+
+Compared with the usual approach of summarising once the context hits a threshold, it **cuts average cost by 27.7%**, delivers **up to 1.2x the output throughput** and makes **P95 latency 1.5x faster**, while keeping task accuracy high.
+
+<a class="nl-source" href="https://arxiv.org/abs/2610.28577" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+### 2. Gen2Sim: Scaling up Robot Learning in Simulation with Generative Models
+
+Training robots with reinforcement learning has a human bottleneck: someone has to build each simulated environment, model every object and hand-write a reward function for every task. **Gen2Sim** hands that work to generative models.
+
+It turns ordinary 2D images of objects into 3D simulation assets using image diffusion models, and asks an LLM to estimate plausible physics parameters for each object. An LLM then writes the **task descriptions**, breaks each task into **ordered sub-steps**, and writes a **Python reward function** for each step.
+
+That decomposition is the key result: Gen2Sim learns long-horizon tasks where RL with a single, non-decomposed reward fails. The authors also release hundreds of simulated assets, tasks and demonstrations. It's a 2023 paper, but it was an early blueprint for today's push to scale up robot learning in simulation.
+
+<a class="nl-source" href="https://arxiv.org/abs/2310.18308" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+### 3. EmbodiedGen V2: An Agentic, Simulation-Ready 3D World Engine for Embodied AI
+
+If Gen2Sim showed generative models could build individual tasks, **EmbodiedGen V2** scales the idea up to whole worlds. The goal is to construct training environments automatically instead of hand-building every scene.
+
+It generates **executable, simulation-ready environments** for embodied policies: 3D assets that work across simulators, interaction affordances (how a robot can use each object), task-driven worlds and large multi-room scenes. Everything stays editable and reusable, so a generated world can be changed and used again rather than rebuilt from scratch.
+
+The numbers are strong. Generated assets reach **96.5% human acceptance** and a **98.6% collision success rate**. Running online reinforcement learning in the generated environments lifts simulated task success from **9.7% to 79.8%**, and the gains carry over to real robots, where task success rises from **21.7% to 75.0%**.
+
+<a class="nl-source" href="https://arxiv.org/abs/2607.07459" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+<!--
+  Add each remaining paper (4-5) in this format:
+
+### N. <Paper title>
+
+<Two or three sentences on what the paper does and why it matters.>
+
+<a class="nl-source" href="<paper URL>" target="_blank" rel="noopener">Read the paper &rarr;</a>
+-->

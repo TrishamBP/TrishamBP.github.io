@@ -1172,3 +1172,21 @@ body.theme-typesafe.ts-paper .post-content .nl-safe .nl-safe-label {
   color: #ffffff;
   background: #028a4b;
 }
+
+/* Section heading with a small icon badge (Beyond The Abstract telescope,
+   26 Oct issue). The img width/height attributes keep it small in email. */
+body.theme-typesafe.ts-paper .post-content h2.nl-icon-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+body.theme-typesafe.ts-paper .post-content img.nl-section-icon {
+  flex: none;
+  width: 44px;
+  height: 48px;
+  margin: 0;
+  border: 0;
+  border-radius: 8px;
+  box-shadow: none;
+}
