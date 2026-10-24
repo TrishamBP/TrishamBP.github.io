@@ -177,3 +177,11 @@ Both systems are answers to the same problem: serving large language models chea
 
 ## Inside the DeepInfer Codebase: The Engine Core Files
 {: data-eyebrow="03 / Engine core"}
+
+### The Offline LLM API: `llm.py` and `SamplingParams`
+
+Users talk to DeepInfer through the **`LLM` class** in `llm.py`, which the package's `__init__.py` exports. `LLM` wraps the engine, exposes the tokenizer and offers a batched **`generate()`** call.
+
+Each request is configured by **`SamplingParams`** in `sampling_params.py`. It covers temperature, top-p / top-k, logprobs, stop conditions and seeds, and it validates its arguments before anything reaches the engine.
+
+This walkthrough starts at `llm.py` and follows its imports outward, so every file covered later can be reached from this API.
