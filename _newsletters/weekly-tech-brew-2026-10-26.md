@@ -422,3 +422,43 @@ One catch: the server code is MIT, but the Stable Audio 3 model weights are unde
 
 </div>
 </details>
+
+## Signals from My Corner
+
+For technology, AI, science, and space: the latest long reads from my own blog.
+
+### 1. Coding with Opus 5.5: How I Use It, What's Different from Opus 5, and Its Best Use Cases
+
+Published: October 2026 &middot; Claude &middot; Opus 5.5 &middot; Claude Code &middot; Agentic Coding &middot; Prompt Engineering
+{: .nl-repo-meta}
+
+How I code with Claude Opus 5.5: what changed from Opus 5, which old prompting habits to delete, and the decisions.md, flow.md and task.md files I keep.
+
+<a class="nl-source" href="/ai%20engineering/2026/10/24/coding-with-claude-opus-5-5/">Read More &rarr;</a>
+
+### 2. The Paradox of Open Source Security: Why Firefox Hides Its Own Tests
+
+Published: October 2026 &middot; Open Source &middot; Firefox &middot; Mozilla &middot; Cybersecurity &middot; Responsible Disclosure
+{: .nl-repo-meta}
+
+Open source security has a paradox: Firefox publishes every line of code, yet hides the tests for its security fixes. Here's why Mozilla does it.
+
+<a class="nl-source" href="/2026/10/23/why-firefox-hides-its-own-security-tests/">Read More &rarr;</a>
+
+### 3. The Orbital Laboratory
+
+Published: October 2026 &middot; Space Medicine &middot; Microgravity Research &middot; International Space Station &middot; Artificial Retina &middot; Organoids &middot; SpaceX Dragon
+{: .nl-repo-meta}
+
+Space as a living laboratory for discovering new treatments, understanding human biology, and solving medical challenges on Earth.
+
+<a class="nl-source" href="/2026/10/19/orbital-laboratory-space-medicine/">Read More &rarr;</a>
+
+### 4. Will Starlink Work in India?
+
+Published: October 2026 &middot; Starlink &middot; Satellite Internet &middot; SpaceX &middot; India &middot; NavIC
+{: .nl-repo-meta}
+
+Will Starlink work in India? How low Earth orbit satellite internet works, why India can't fully trust a foreign network, and what it's building instead.
+
+<a class="nl-source" href="/2026/10/19/will-starlink-work-in-india/">Read More &rarr;</a>
