@@ -426,9 +426,9 @@ Most of a coding session isn't frontier-level reasoning. Reading files, running 
 2. **An LLM gateway:** if you already route through a gateway like LiteLLM, send traffic through it and let FireRouter pick the best model for every turn.
 3. **Anthropic- and OpenAI-compatible APIs:** use the Fireworks, OpenAI or Anthropic SDKs directly.
 
-#### How Fireworks AI Deploys Models: Serverless, Dedicated GPUs and Training
+#### How Fireworks AI Deploys Models: Serverless, Dedicated GPUs, Training and Batch
 
-Every model on Fireworks can be used in three ways. Using **DeepSeek V4.1 Flash 1017** as the example:
+Fireworks gives you four ways to use a model. Using **DeepSeek V4.1 Flash 1017** as the example:
 
 ##### 1. Serverless: Pay Per Token
 
@@ -473,6 +473,12 @@ This is the part I think is pretty awesome. Fireworks lets you improve a model f
 - **Training API, Dedicated** (Skill or Python SDK): you write the loop on GPUs reserved for you, with **full-parameter** training and the broadest model support. Best for large workloads.
 
 So you can go from a no-code LoRA fine-tune all the way to a hand-written RL loop doing full-parameter training, on the same platform that then serves the model.
+
+##### 4. Batch Inference Jobs: Bulk Work Without Real-Time Serving
+
+Similar to OpenAI's Batch API, Fireworks also runs **batch inference jobs**. Instead of sending requests one at a time and waiting on each response, you submit a whole set of requests as a single job and collect the results when it finishes.
+
+Batch fits work where nobody is waiting on the answer: classifying or summarizing a large dataset, running evals, generating synthetic training data, or backfilling embeddings and labels. It also pairs naturally with training. You can use batch jobs to generate or score the data you then fine-tune on.
 
 </div>
 </details>
