@@ -624,12 +624,22 @@ The numbers are strong. Generated assets reach **96.5% human acceptance** and a 
 
 <a class="nl-source" href="https://arxiv.org/abs/2607.07459" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
 
-<!--
-  Add each remaining paper (4-5) in this format:
+### 4. Toward Recursive Self-Improvement in Physical AI
 
-### N. <Paper title>
+**Recursive self-improvement (RSI)** means a system gets better at a task *and* gets better at the way it gets better. Digital agents already do a version of this: they rewrite their own code and check each new version against executable tests. This paper asks what it would take for robots to do the same.
 
-<Two or three sentences on what the paper does and why it matters.>
+The physical world is much harder. A robot sees only part of its surroundings, every trial costs time and hardware, conditions keep changing, and some mistakes can't be undone. The authors map out the path from improving a robot's skills to improving the processes that produce those skills. They name **four conditions** a gain needs to carry forward: the feedback has to target what the robot still needs to learn, the component receiving the change has to be able to use it, the improvement has to survive new tasks or new hardware, and further practice has to stay safe and affordable.
 
-<a class="nl-source" href="<paper URL>" target="_blank" rel="noopener">Read the paper &rarr;</a>
--->
+The honest verdict: most existing work is in manipulation. It shows robots improving their behaviour, speeding up later learning and refining their training procedures, and some systems even update the improver's own knowledge or tools. But none of the physical studies reviewed have yet shown a gain that comes **from the recursion itself**. The paper closes with evaluation principles and research directions for robots that, trial by trial, safely get better at getting better.
+
+<a class="nl-source" href="https://arxiv.org/abs/2610.29677" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+### 5. World Model for Robot Learning: A Comprehensive Survey
+
+A **world model** is a robot's internal prediction engine: given what it sees and the action it's about to take, it predicts what happens next. World models now sit at the centre of robot learning. They're used to train policies, plan ahead, simulate, evaluate and generate training data, and they've moved fast thanks to foundation models and large-scale video generation.
+
+The problem is that the research is scattered across different architectures, roles and application areas. This survey pulls it together from a robot-learning point of view. It covers how world models plug into robot policies, how they act as **learned simulators** for reinforcement learning and evaluation, and how robotic **video world models** evolved from free-form "imagination" to controllable, structured, foundation-scale systems. It also extends the picture to navigation and autonomous driving.
+
+It's a good map of the field, and a fitting close to this week's papers: Gen2Sim and EmbodiedGen V2 *build* worlds for robots to learn in, while world models let robots *predict* them. The survey also catalogues the main datasets, benchmarks and evaluation protocols, lays out the open challenges, and comes with a GitHub repository the authors plan to keep updated as new work appears.
+
+<a class="nl-source" href="https://arxiv.org/abs/2605.00080" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
