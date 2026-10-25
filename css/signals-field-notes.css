@@ -968,6 +968,41 @@ body.theme-typesafe.fn-notes .fn-cards--two {
   }
 }
 
+/* Side-by-side code (cuTile vs Triton in the Mamba-2 post). Each column
+   scrolls on its own; the pair stacks on narrow screens. */
+body.theme-typesafe.fn-notes .fn-code-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+  margin: 1.2rem 0 1.6rem;
+}
+
+body.theme-typesafe.fn-notes .fn-code-pair > div {
+  min-width: 0;
+}
+
+body.theme-typesafe.fn-notes .fn-code-label {
+  margin: 0 0 0.35rem;
+  font-family: var(--fn-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fn-soft);
+}
+
+body.theme-typesafe.fn-notes .fn-code-pair pre,
+body.theme-typesafe.fn-notes .fn-code-pair .highlight pre {
+  margin: 0;
+  font-size: 0.7rem;
+  overflow-x: auto;
+}
+
+@media (max-width: 900px) {
+  body.theme-typesafe.fn-notes .fn-code-pair {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* The base theme sets h4 as tiny caps; here h4 is a plain sub-heading. */
 body.theme-typesafe.fn-notes .post-content h4 {
   font-size: 1.08rem;
