@@ -376,7 +376,103 @@ The bigger story is the shift from generalized intelligence to specialized, cost
 <summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
 <div class="nl-expand-body" markdown="1">
 
-<!-- Tech Radar: Fireworks AI expanded content goes here. -->
+#### Which Open-Weight Models Does Fireworks AI Serve?
+
+Fireworks' model library covers the open-weight models developers are actually shipping: **GLM-5.3** and **GLM 5.3 Flash** from Z.ai, **DeepSeek V4.1 Flash**, **Kimi K3**, **Muse Spark Open**, **MiniMax M3.1 Flash**, Xiaomi's **MiMo-V2.6-Pro-RL**, and **Ember-1**, the model carrying Fireworks' own logo.
+
+Every model below has a **1M-token context window**, and every priced one supports function calling and runs **serverless**: you pay per token, with no GPUs to rent.
+
+#### Fireworks AI Pricing: Cached vs Uncached Input Tokens
+
+Prices are per million tokens. The column that matters is **cached input**: when a request reuses a prompt prefix Fireworks has already processed, such as a long system prompt or a document, those tokens are billed at a fraction of the normal rate.
+
+| Model | Uncached input | Cached input | Output | Cached saving | Notes |
+| --- | --- | --- | --- | --- | --- |
+| MiniMax M3.1 Flash | $0.15 | $0.015 | $0.60 | 90% | New · Vision |
+| DeepSeek V4.1 Flash 1017 | $0.30 | $0.006 | $1.20 | 98% | New · Tunable · Vision |
+| DeepSeek V4.1 Flash | $0.30 | $0.006 | $1.20 | 98% | Tunable · Vision |
+| GLM 5.3 Flash | $0.15 | $0.03 | $0.50 | 80% | Tunable · Vision |
+| GLM-5.3 | $1.40 | $0.26 | $4.40 | 81% | Tunable |
+| Ember-1 | $3.00 | $0.30 | $15.00 | 90% | Vision |
+| MiMo-V2.6-Pro-RL | Not listed | Not listed | Not listed | — | New · Vision |
+
+**What stands out:**
+
+- **DeepSeek V4.1 Flash has the steepest cache discount.** Cached input costs $0.006 per million tokens, 50× cheaper than uncached, so agent loops that resend the same context get very cheap.
+- **The Flash tier is the budget floor.** MiniMax M3.1 Flash and GLM 5.3 Flash both start at $0.15 per million input tokens.
+- **Ember-1 is the premium option.** At $3.00 in and $15.00 out, it's priced like a frontier model, but its 90% cache discount still applies.
+- **Output is where the bill grows.** Output tokens cost 3–5× more than uncached input across the lineup, so long generations cost more than long prompts.
+
+#### The Feature I Like Most: FireRouter with Opus for Claude Code
+
+**FireRouter with Opus** (`firerouter/opus`) is the Fireworks feature that matters most to me. You bring your existing Claude plan, and FireRouter makes it go further. **Claude Opus** handles the turns that actually need it, and routine work goes to lower-cost open models, **GLM-5.3** and **GLM-5.3 Flash**.
+
+The router scores **every turn** and is **cache-aware**, so it avoids moving a conversation somewhere that would throw away a warm prompt cache.
+
+![FireRouter with Opus cost savings for Claude Code: FireRouter routes hard turns to Claude Opus and routine turns to GLM-5.3, cutting cost per session from $15.36 to $6.63, a 57% drop](/assets/newsletter/weekly-tech-brew-2026-10-26/firerouter-opus-claude-code-cost-savings.png){: .nl-hero}
+
+**How FireRouter cuts the cost of Claude Code** (Fireworks' own figures):
+
+- **57% cheaper per session:** $6.63, against $15.36 on Opus alone.
+- **94.2% prompt cache hit rate,** against 97.8% on Opus, so the cache-aware routing keeps most of the caching discount.
+- **98.1% of Opus quality:** 78.7% accuracy, against 80.2% for Opus.
+- **At team scale:** a $160,000 Opus bill becomes $68,800, a saving of **$91,200** for the same work.
+
+Most of a coding session isn't frontier-level reasoning. Reading files, running tests and making small edits are routine turns, and paying Opus prices for them is where the money goes. FireRouter keeps Opus for the hard turns and sends the rest to models that cost a fraction as much.
+
+**Three ways to plug it in:**
+
+1. **FireConnect:** if you already use Claude Code, Codex, OpenCode or Copilot, point it at FireRouter and keep your existing harness.
+2. **An LLM gateway:** if you already route through a gateway like LiteLLM, send traffic through it and let FireRouter pick the best model for every turn.
+3. **Anthropic- and OpenAI-compatible APIs:** use the Fireworks, OpenAI or Anthropic SDKs directly.
+
+#### How Fireworks AI Deploys Models: Serverless, Dedicated GPUs and Training
+
+Every model on Fireworks can be used in three ways. Using **DeepSeek V4.1 Flash 1017** as the example:
+
+##### 1. Serverless: Pay Per Token
+
+Zero setup, no cold starts and generous rate limits. You pick one of two modes:
+
+| Mode | Best for | Uncached input | Cached input | Output |
+| --- | --- | --- | --- | --- |
+| Standard | General use, balancing performance and price | $0.30/M | $0.006/M | $1.20/M |
+| Priority | Workloads that need higher reliability during peak traffic | $0.375/M | $0.0075/M | $1.50/M |
+
+Priority costs **25% more** across the board, which buys you reliability when everyone else is hammering the same model.
+
+##### 2. Dedicated: Your Own GPUs
+
+Deploy the model on dedicated GPUs with high performance, fast autoscaling, minimal cold starts and **no rate limits**. You name the deployment, choose a base model and region, then pick a **deployment shape**: the accelerator, GPU count and precision the model runs on.
+
+| Deployment shape | Hardware | Precision | Listed price |
+| --- | --- | --- | --- |
+| `deepseek-v4p1-flash-1017-lora-b300-fp4-w4-p1` (recommended) | 4× NVIDIA B300 288GB | FP4 | $60.00 |
+| `deepseek-v4p1-flash-1017-full-rdma-b300-fp4-w4-p1-kv60` | 4× NVIDIA B300 288GB | FP4 | $60.00 |
+| `deepseek-v4p1-flash-1017-full-rdma-b300-fp4-w4-p1` | 4× NVIDIA B300 288GB | FP4 | $60.00 |
+| DeepSeek V4.1 Flash 1017 FP4 4× B200 | 4× NVIDIA B200 180GB | FP4 | $52.00 |
+
+The recommended shape is the **LoRA** one, so fine-tuned adapters can be served on the same deployment as the base model.
+
+##### 3. Training: Fine-Tune Models on Your Own Data
+
+This is the part I think is pretty awesome. Fireworks lets you improve a model for your own use case **without managing any training infrastructure**, and it covers supervised, preference and reinforcement learning.
+
+**Pick a training method based on the data you have:**
+
+| Method | You have | What it teaches the model |
+| --- | --- | --- |
+| **Supervised (SFT)** | Input/output pairs | Your task, format and tone: classification, extraction, format adherence, or distilling a larger model |
+| **Direct Preference (DPO)** | Preferred vs. rejected answers | Quality and behaviour you can't measure objectively |
+| **Reinforcement (RFT)** | A way to score outcomes | Full control of the RL loop through the Training API: custom rollouts, rewards and losses |
+
+**Then pick where the training runs.** The method decides *what* the model learns; the surface decides *who* writes the training loop and *where* the GPUs come from:
+
+- **Managed Training** (Skill, UI, CLI or API): upload a dataset, pick a method and get a model back. Fireworks runs the loop with standard recipes, **LoRA only**.
+- **Training API, Serverless** (Skill or Python SDK): you write the loop in Python on shared GPUs, with nothing to provision and per-token billing. **LoRA only**, for models in the serverless pool.
+- **Training API, Dedicated** (Skill or Python SDK): you write the loop on GPUs reserved for you, with **full-parameter** training and the broadest model support. Best for large workloads.
+
+So you can go from a no-code LoRA fine-tune all the way to a hand-written RL loop doing full-parameter training, on the same platform that then serves the model.
 
 </div>
 </details>
