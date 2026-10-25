@@ -356,6 +356,18 @@ He said the film left out two things: the agents were poorly contained and monit
 
 <a class="nl-source" href="https://theintercept.com/" target="_blank" rel="noopener">The Intercept, Oct 19 &rarr;</a>
 
+<h2 id="the-tech-radar" class="nl-icon-heading"><img class="nl-section-icon nl-section-icon--square" src="/assets/newsletter/weekly-tech-brew-2026-10-26/tech-radar-icon.png" alt="The Tech Radar icon: radar sweep badge for the company spotlight section of The Weekly Tech Brew" width="48" height="48"> The Tech Radar</h2>
+
+### This Week on the Radar: Fireworks AI
+
+![Fireworks AI logo: the Fireworks AI inference platform wordmark, featured company in this week's Tech Radar](/assets/newsletter/weekly-tech-brew-2026-10-26/fireworks-ai-logo-tech-radar.png){: .nl-hero}
+
+The AI race is shifting gears. Instead of throwing more compute at ever-larger models, companies are chasing something more strategic: smaller, cheaper, and more controllable AI that they can actually own and operate on their terms.
+
+Enter **Fireworks AI** — a rising force in AI inference infrastructure, backed by NVIDIA and reportedly valued at **$17.5 billion** in July 2026. The play? Make high-performance AI faster, cheaper, and easier to deploy at scale.
+
+<a class="nl-source" href="https://fireworks.ai/" target="_blank" rel="noopener">fireworks.ai &rarr;</a>
+
 ## Signal Over Breakfast
 
 1. <a href="https://github.com/JohnHeibel/ClaudeAnimationBase" target="_blank" rel="noopener">8 GitHub repos to build videos with Claude, ranked by stars</a>

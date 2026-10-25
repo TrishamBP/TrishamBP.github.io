@@ -1190,3 +1190,9 @@ body.theme-typesafe.ts-paper .post-content img.nl-section-icon {
   border-radius: 8px;
   box-shadow: none;
 }
+
+/* Square badge (The Tech Radar icon). */
+body.theme-typesafe.ts-paper .post-content img.nl-section-icon--square {
+  width: 48px;
+  height: 48px;
+}
