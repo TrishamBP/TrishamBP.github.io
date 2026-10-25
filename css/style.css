@@ -1191,6 +1191,94 @@ body.dark-mode .skill-badge {
   margin: 0 auto;
 }
 
+/* Mermaid zoom + pan (attachZoom in _layouts/default.html). Neutral,
+   currentColor-based so it fits every section skin, light or dark. */
+.mermaid-diagram.mermaid-zoomable {
+  overflow: hidden;
+}
+
+.mermaid-zoom-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  margin: 0 0 0.6rem;
+}
+
+.mermaid-zoom-bar button {
+  min-width: 2rem;
+  padding: 0.2rem 0.6rem;
+  font: inherit;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: inherit;
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  opacity: 0.75;
+  cursor: pointer;
+}
+
+.mermaid-zoom-bar button:hover,
+.mermaid-zoom-bar button:focus-visible {
+  opacity: 1;
+}
+
+.mermaid-zoom-hint {
+  order: -1;
+  margin-right: auto;
+  font-size: 0.72rem;
+  opacity: 0.6;
+}
+
+.mermaid-zoom-viewport {
+  position: relative;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.mermaid-zoom-viewport.is-zoomed {
+  cursor: grab;
+  touch-action: none;
+}
+
+.mermaid-zoom-viewport.is-dragging {
+  cursor: grabbing;
+}
+
+.mermaid-zoom-stage {
+  transform-origin: 0 0;
+}
+
+.mermaid-zoom-stage svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.mermaid-diagram.is-fullscreen {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+/* The stage stays pinned top-left: zoomAt() assumes its origin is the
+   viewport's (0, 0). */
+.mermaid-diagram.is-fullscreen .mermaid-zoom-viewport {
+  flex: 1;
+}
+
+.mermaid-diagram.is-fullscreen .mermaid-zoom-stage svg {
+  max-height: calc(100vh - 5rem);
+}
+
 /* ===== BLOG / POST TYPOGRAPHY — APTOS FONT FAMILY =====
    Applies the Aptos font family to all posts (layout: post): the post
    title, meta line, body copy, lists, blockquotes, tables, and headings.
