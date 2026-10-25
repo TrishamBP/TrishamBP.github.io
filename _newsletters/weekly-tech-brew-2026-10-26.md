@@ -368,6 +368,19 @@ Enter **Fireworks AI** — a rising force in AI inference infrastructure, backed
 
 <a class="nl-source" href="https://fireworks.ai/" target="_blank" rel="noopener">fireworks.ai &rarr;</a>
 
+As AI costs spiral, enterprises are increasingly turning to open-weight models and inference optimization to escape the economics of frontier AI. Enter Fireworks AI, the NVIDIA-backed inference cloud startup that just crossed **$1 billion in annualized revenue** — 5× last year's figure — while raising **$1.5 billion at a $17.5 billion valuation**. Competing with hyperscalers like AWS and Google Cloud, Fireworks hosts models from DeepSeek, MiniMax, Z.ai, and OpenAI, enabling developers to fine-tune and deploy models for specialized workloads at reportedly 5–10× lower costs than equivalent-quality closed models.
+
+The bigger story is the shift from generalized intelligence to specialized, cost-efficient AI. Fireworks processes **40 trillion tokens daily**, giving enterprises access to scalable inference without locking themselves into a single model provider or infrastructure ecosystem. With more than 20 computing suppliers, partnerships such as Microsoft Foundry, and plans to expand into GPU-backed model training, Fireworks is positioning itself at the intersection of AI sovereignty, inference economics, and cloud infrastructure — a market where owning the intelligence layer matters as much as building the model itself.
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+<!-- Tech Radar: Fireworks AI expanded content goes here. -->
+
+</div>
+</details>
+
 ## Signal Over Breakfast
 
 1. <a href="https://github.com/JohnHeibel/ClaudeAnimationBase" target="_blank" rel="noopener">8 GitHub repos to build videos with Claude, ranked by stars</a>
