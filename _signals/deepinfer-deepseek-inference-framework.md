@@ -418,3 +418,300 @@ At the native level, `pybind.cpp` registers the `cuda_utils`, `engine` and `grap
 > **Language lesson: Makefile targets.** Makefile targets declare build steps with dependency tracking. **Phony targets** such as `clean` or `format` name actions, not files. Variables like the accelerator type let one target serve several build configurations.
 
 **Referenced components:** `build.sh` · `setup.py` · `Makefile` · `pyproject.toml`
+
+## DeepInfer End-to-End Request Flow: Architecture Diagrams
+{: data-eyebrow="04 / Request flow"}
+
+Section 03 toured the files. This section follows the **data**: five diagrams that trace a request from the entry point, through speculative decoding, expert parallelism and kernel dispatch, and back out as text.
+
+### 1. How a Request Moves from the Entry Point to the Model
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as User code
+    participant LLM as LLM<br/>entrypoints/llm.py
+    participant E as LLMEngine<br/>engine/llm_engine.py
+    participant SO as SOMatcherBuilder / MultimodalProcessor
+    participant S as C++ Scheduler<br/>csrc/engine (pybind)
+    participant W as Worker driver, CP rank 0<br/>worker/worker.py
+    participant F as Follower workers, CP ranks 1..N
+    participant MR as ModelRunner<br/>worker/model_runner.py
+    participant M as DeepseekForCausalLM
+
+    U->>LLM: generate(prompts, SamplingParams)
+    LLM->>LLM: tokenizer.encode(prompt)
+    LLM->>E: add_request(request_id, params, prompt_token_ids)
+    E->>SO: rewrite image tokens / build grammar matcher (async)
+    SO-->>E: _enqueue(seq)
+    E->>S: scheduler.add_sequence(Sequence)
+    loop LLM._run_engine: while has_unfinished_requests
+        LLM->>E: step()
+        E->>S: schedule(sequence_metadata_pool)
+        S-->>E: seq_metadata_list, SchedulerOutputs<br/>(prefill or decode, blocks, clones)
+        E->>W: run_workers("execute_model_step")
+        W->>F: cp_broadcast_object(method, kwargs)
+        W->>MR: execute_main_model()
+        MR->>MR: _prepare_input → InputMetadataV4<br/>(C++ prepare_tensor_input_v4 / ZOS)
+        alt decode with captured batch size
+            MR->>M: cuda_graph_runner.replay()
+        else prefill / eager
+            MR->>M: model(kv_caches, input_metadata)
+        end
+        W->>W: post-process PREVIOUS step (ZOS overlap)
+        W->>MR: execute_sample() → model.sample() → Sampler
+        W->>E: callback post_process → _process_model_outputs
+        E->>S: C++ updates sequences, builds RequestOutput
+        E-->>LLM: RequestOutput[]
+    end
+    LLM->>LLM: tokenizer.decode(token_ids)
+    LLM-->>U: outputs
+```
+
+*A DeepInfer request from `LLM.generate()` to the model and back. The step loop repeats until no request is unfinished.*
+
+**What matters here:**
+
+- **The scheduler runs in C++.** Block management, sequences and output building are exposed through `csrc/engine/pybind_scheduler.cpp`, `pybind_sequence.cpp` and `pybind_output.cpp`. Python mostly coordinates.
+- **Zero-overhead scheduling (ZOS).** `Worker.execute_model_step` runs four phases:
+  1. forward the current step,
+  2. post-process the previous step,
+  3. sample the current step,
+  4. post-process the current step.
+
+  On ZOS decode steps, phase 4 moves into the next step. So the CPU bookkeeping overlaps with the GPU forward pass.
+- **One driver plus followers.** The driver worker (CP rank 0) lives in the engine process. `_init_workers` starts the follower processes for context parallelism. They run `start_slave_worker_loop` and receive each method call through `cp_broadcast_object`.
+
+### 2. How Speculative Decoding Works: DFlash MTP
+
+The draft model is **DFlash** (`model_executor/models/mtp/dflash.py`). It reads hidden states from selected layers of the main model (`dspark_target_layer_ids`) and proposes a **block of draft tokens**. The next step verifies those drafts. Draft proposals carry over between steps in a GPU-resident **`MTPInfoPool`**.
+
+```mermaid
+flowchart TD
+    subgraph STEP_N["Decode step N"]
+        direction TB
+        A["Main model forward<br/>input = last token + drafts from step N-1"] --> B["DeepseekDecoderLayer<br/>captures hidden states of target layers<br/>into dflash_input"]
+        B --> C["DFlash.update_main_cache<br/>projection → main_kv_proj<br/>writes main-token keys into DFlash KV cache"]
+        C --> D["hidden_states → Sampler"]
+
+        subgraph VERIFY["Sampler._verification"]
+            direction TB
+            V1["prepare_verification_metadata<br/>map rows to request and step, mark draft rows"] --> V2["apply_token_bitmask<br/>structured output mask"]
+            V2 --> V3["process_sampling → fused_sample kernel<br/>temperature, top-p/k, rejection test<br/>against draft logprobs from MTPInfoPool"]
+            V3 --> V4["get_accept_result<br/>accepted prefix per request,<br/>resample at first rejection"]
+            V4 --> V5["finalize_verification<br/>pack verified tokens and acceptance stats"]
+        end
+        D --> V1
+
+        subgraph DRAFT["mtp_module.decode_forward"]
+            direction TB
+            P1{"DFlash CUDA graph<br/>captured?"} -->|yes| P2["DFlashCudaGraphRunner.replay"]
+            P1 -->|no| P3["run_drafts"]
+            P2 --> P3b["build_dflash_input<br/>fixed-stride draft metadata"]
+            P3 --> P3b
+            P3b --> P4["forward_drafts<br/>DFlashDecoderLayer × N on golden token"]
+            P4 --> P5["sample_drafts<br/>+ ConfidenceHead (confidence_head_fused)"]
+            P5 --> P6["MTPInfoPool.store<br/>draft ids, logprobs, confidence"]
+        end
+        V5 --> P1
+    end
+
+    P6 -. "read by verification in step N+1" .-> V3
+    V5 --> OUT["SamplerOutput: accepted tokens + new token<br/>→ C++ scheduler appends to sequence"]
+    OUT --> SCH["Scheduler.update_mtp_runtime<br/>forward/sample timings → schedule_mtp_varlen<br/>picks per-request draft length (MTP varlen)"]
+    SCH -. "next step's query lengths" .-> A
+```
+
+*One DFlash decode step: verify the previous step's drafts, then propose new drafts for the next step.*
+
+**Notes:**
+
+- **Prefill does no extra draft work.** `update_main_cache` fills the DFlash KV cache during the main forward pass.
+- **Rejected draft positions need no masking.** Keys are written for every position. The next `forward_drafts` overwrites the rejected slots before anything reads them (from the docstring of `update_main_cache`).
+- **The speculative decoding kernels** live in `tilelang_ops/sampler.py`, `fused_sample.py`, `dflash.py`, `store_mtp_info.py` and `schedule_mtp_varlen.py`, each with `cuda/` and `asc/` backends.
+- **Variable draft length** is controlled by `DEEPINFER_ENABLE_MTP_VARLEN`. Measured step timings feed back into the scheduler.
+
+For the idea behind draft-and-verify decoding, see the [EAGLE-3 speculative decoding breakdown](/engineering/eagle-3-speculative-decoding-llm-inference-acceleration/).
+
+### 3. How Expert Parallelism and DeepEP Fit In
+
+Experts are split across the **expert-parallel (EP) group** (`parallel_state.py` → `expert_parallel_group`). Each MoE layer (`v4_modules/mlp.py: DeepseekMoE`) sends tokens to the ranks that own their experts with **DeepEP's `EPBuffer`**, then gathers the results back. **EPLB** rebalances which rank holds which expert.
+
+```mermaid
+flowchart TD
+    H["hidden_states from attention<br/>(FP8 or BF16)"] --> MEGA{"use_mega_moe?"}
+
+    MEGA -->|yes| MM["mega_moe_forward<br/>deep_gemm.fp8_fp4_mega_moe / bf16_mega_moe<br/>fused dispatch + GEMM + combine<br/>over deep_gemm SymmBuffer"]
+
+    MEGA -->|no| G["gate_forward<br/>GPU: deep_gemm.bf16_mega_gate<br/>else: tile_kernels moe_topk_gate"]
+    EPLBMAP[("EPLB layer state<br/>logical_to_physical_map<br/>logical_count")] --> G
+    G --> TK["topk_idx (physical experts), topk_weights"]
+
+    TK --> DISP["dispatch: DeepEP EPBuffer.dispatch<br/>optional FP8 dispatch<br/>limited to DEEPINFER_USERBUFFER_COMM_SMS"]
+    DISP -->|all-to-all across EP ranks| RX["tokens received for local experts<br/>+ psum_num_recv_tokens_per_expert"]
+    RX --> GEMM["routed_experts_forward<br/>deep_gemm m_grouped_fp8_fp4 / bf16<br/>contiguous grouped GEMM"]
+    GEMM --> CAP["ep_buffer.capture event"]
+    H --> SH["shared_forward<br/>shared expert, overlapped with comm"]
+    CAP --> COMB["combine: DeepEP EPBuffer.combine<br/>+ shared expert output"]
+    SH --> COMB
+    COMB -->|all-to-all back| OUT["moe_combined_hidden → next layer"]
+    MM --> OUT
+
+    subgraph BUF["userbuffer singleton (parallel_utils/userbuffer.py)"]
+        UB1["allocate_ep → DeepEP EPBuffer"]
+        UB2["allocate_sym_buffer → deep_gemm SymmBuffer"]
+        UB3["CP: DeepEP-V2 BucketBuffer → CPManager"]
+    end
+    UB1 -.-> DISP
+    UB2 -.-> MM
+
+    subgraph LB["EPLB (model_executor/eplb)"]
+        L1["expert_lb.step after each sample<br/>accumulate per-expert token load"] --> L2["policy.py: recompute replication<br/>+ greedy rank placement"]
+        L2 --> L3["shuffle.py: move expert weights in place<br/>NCCL batched P2P or symmetric memory"]
+    end
+    L3 -.-> EPLBMAP
+```
+
+*The DeepInfer MoE layer: gate, DeepEP dispatch, grouped GEMM and combine, or the fused mega-MoE path. EPLB updates the expert map in the background.*
+
+- **Redundant experts.** `resolve_num_extra_experts` adds replicas so that the physical experts divide evenly across the EP ranks. The gate then routes to physical experts through the EPLB map.
+- **DeepEP also handles context parallelism.** `CPManager` (`parallel_utils/cp.py`) wraps a DeepEP V2 `BucketBuffer` for context-parallel communication, separate from MoE.
+- **The DeepEP version is pinned** as of commit `9bd9cf2` ("Bump DeepEP to f6aa38fe").
+
+For where auxiliary-loss-free MoE balancing started, see the [DeepSeek-V3 MoE breakdown](/engineering/deepseek-v3-auxiliary-loss-free-moe-mtp-fp8-training/).
+
+### 4. Where the TileLang and NPU Kernels Live and How They're Dispatched
+
+```mermaid
+flowchart TD
+    subgraph CALLERS["Model code"]
+        C1["layers/layernorm.py RMSNorm"]
+        C2["layers/sampler.py"]
+        C3["v4_modules/attn.py, compress.py ..."]
+    end
+
+    subgraph IFACE["Interface layer: tilelang_ops/*.py<br/>norm.py, fused_sample.py, store_kv_cache.py, sampler.py, dflash.py ...<br/>argument checks, buffer allocation, *_ref PyTorch references, tests"]
+        I1["norm(...) → kernel = ops.norm_tl(...)"]
+    end
+    C1 --> I1
+    C2 --> IFACE
+    C3 --> IFACE
+
+    I1 --> OPS["tilelang_ops/ops.py<br/>imports tilelang_ops.#lt;backend#gt;<br/>re-exports every *_tl factory<br/>missing kernel → KernelUnavailableError"]
+
+    DET["deep_cluster/hardware/device.py<br/>accelerator_kind(): nvidia / ascend"] --> PLAT["platform.py get_platform()"]
+    PLAT -->|nvidia| GPU["PlatformGPU<br/>tilelang_ops_backend = 'cuda'<br/>distributed = nccl"]
+    PLAT -->|ascend| NPU["PlatformNPU<br/>tilelang_ops_backend = 'asc'<br/>distributed = hccl<br/>imports deepinfer.npu_ops"]
+    GPU --> OPS
+    NPU --> OPS
+
+    OPS -->|cuda| CU["tilelang_ops/cuda/*.py<br/>@tilelang.jit SM100 kernels<br/>TMA, UE8M0 scales, FP8/FP4"]
+    OPS -->|asc| AS["tilelang_ops/asc/*.py<br/>@tilelang.jit Ascend SIMD kernels<br/>kv_quant, rstd_1ulp macros"]
+
+    NPU --> PATCH["npu_ops/patch_imports.py<br/>import hook swaps:<br/>deep_select.interface.topk → npu_ops/deep_select.py<br/>flash_attn.cute _flash_attn_fwd → npu_ops/vit_attn.py"]
+
+    subgraph EXT["Other kernel sources (not TileLang)"]
+        X1["deep_gemm: FP8/FP4 GEMMs, mega-MoE"]
+        X2["deep_ep: MoE dispatch/combine"]
+        X3["FlashMLA: layers/attention_backend.py"]
+        X4["csrc/*.cpp → deepinfer._C<br/>cuda_utils.cpp or asc_utils.cpp<br/>chosen in setup.py"]
+    end
+```
+
+*Kernel dispatch in DeepInfer: model code calls the interface layer, `ops.py` picks the CUDA or Ascend backend, and DeepGEMM, DeepEP and FlashMLA sit alongside TileLang.*
+
+**Kernel families** (each has a `cuda/` and an `asc/` version):
+
+- `norm`
+- `fused_transform` (RMSNorm + RoPE + Hadamard + quantize + KV store)
+- store and load for the paged KV cache
+- `compress`
+- `candidate_blocks` and `get_kv_index` (sparse attention)
+- `fused_sample` and `random_sampling`
+- the sampler verification suite
+- `dflash` and `dflash_copy`
+- the ZOS gather kernels
+- `structure_output`
+- `image_embed_ops`
+- `prepare_cp_mirror`
+
+**Backend selection lives only in `ops.py`.** Interface modules always call `ops.xxx_tl` and never import a backend directly.
+
+### 5. End to End: From Request to Output
+
+```mermaid
+flowchart TD
+    %% ---------- Intake ----------
+    U["User: LLM.generate(prompts, SamplingParams)"] --> TOK["HF tokenizer.encode<br/>hugging_face/tokenizer.py"]
+    TOK --> ADD["LLMEngine.add_request"]
+    ADD --> MMP{"has images?"}
+    MMP -->|yes| VE["ve/multimodal_processor.py<br/>background preprocess, image tokens<br/>shared-memory pool"]
+    MMP -->|no| SOQ
+    VE --> SOQ{"structured output?"}
+    SOQ -->|yes| SOB["SOMatcherBuilder<br/>xgrammar compile on thread pool"]
+    SOQ -->|no| ENQ
+    SOB --> ENQ["Sequence → C++ Scheduler waiting queue"]
+
+    %% ---------- Step loop ----------
+    ENQ --> STEP["LLMEngine.step()"]
+    STEP --> SCHED["C++ Scheduler.schedule<br/>prefill vs decode, chunked prefill<br/>paged KV blocks, preemption<br/>MTP varlen query lengths"]
+    SCHED --> RUNW["driver Worker.run_workers<br/>cp_broadcast → follower CP ranks"]
+
+    %% ---------- Input prep ----------
+    RUNW --> PREP["ModelRunner._prepare_input<br/>C++ prepare_tensor_input_v4 / ZOS<br/>→ InputMetadataV4 (block tables, SWA, compressed idx)"]
+    PREP --> GQ{"decode and<br/>graph captured?"}
+    GQ -->|yes| CG["CudaGraphRunner.replay"]
+    GQ -->|no| EAGER["model.forward eager"]
+
+    %% ---------- Model ----------
+    CG --> EMB
+    EAGER --> EMB["VocabParallelEmbedding (TileLang gather)<br/>+ ViT / VL aligner for images<br/>+ Engram n-gram embeddings"]
+    EMB --> LAYER
+
+    subgraph LAYER["DeepseekDecoderLayer × L"]
+        direction TB
+        HC1["mHC pre-mix + RMSNorm"] --> ATT["V4 MLA attention<br/>fused_transform → store KV (FP8/FP4)<br/>indexer top-k → sparse FlashMLA<br/>SWA + compressed KV, cross-layer KV sharing"]
+        ATT --> HC2["mHC post / pre-mix + RMSNorm"]
+        HC2 --> MOE["DeepseekMoE<br/>gate (EPLB map) → DeepEP dispatch<br/>→ deep_gemm grouped GEMM → DeepEP combine<br/>+ shared expert, or mega-MoE"]
+        MOE --> CAPT["capture DFlash target-layer hidden<br/>YOCO prefill truncation"]
+    end
+
+    LAYER --> DFU["DFlash.update_main_cache<br/>write draft-model KV"]
+    DFU --> HEAD["final norm + mHC head → hidden_states"]
+
+    %% ---------- Overlap ----------
+    HEAD --> PPREV["Worker: post-process PREVIOUS step<br/>(ZOS overlap with GPU)"]
+
+    %% ---------- Sampling ----------
+    PPREV --> SAMP["Sampler<br/>logits = hidden @ lm_head (BF16 GEMM)"]
+    SAMP --> MASK["structured-output bitmask"]
+    MASK --> VER["verify step N-1 drafts from MTPInfoPool<br/>fused_sample → get_accept_result → finalize_verification"]
+    VER --> DR["DFlash decode_forward (CUDA graph)<br/>draft layers → sample_drafts + ConfidenceHead<br/>→ MTPInfoPool.store"]
+    DR --> EPLBS["EPLB step: record expert load<br/>periodically rebalance + shuffle weights"]
+
+    %% ---------- Output ----------
+    EPLBS --> POST["engine.post_process → _process_model_outputs<br/>C++ appends accepted + new tokens<br/>stop/EOS checks, frees KV blocks"]
+    POST --> STATS["StatsLogger: throughput, MFU,<br/>MTP acceptance, MoE balance"]
+    POST --> RO["RequestOutput[]"]
+    RO --> MORE{"unfinished requests?"}
+    MORE -->|yes| STEP
+    MORE -->|no| FLUSH["flush_inflight_reqs"]
+    FLUSH --> DETOK["tokenizer.decode"]
+    DETOK --> RESULT["return outputs to user"]
+
+    %% ---------- Cross-cutting ----------
+    PLATFORM["platform.py: GPU (cuda/NCCL) or NPU (asc/HCCL)<br/>→ tilelang_ops/ops.py picks kernel backend"] -.-> LAYER
+    PLATFORM -.-> SAMP
+```
+
+*The full DeepInfer path, from `LLM.generate()` through the decoder layers, sampling, DFlash drafting and EPLB, back to the user.*
+
+### Main Files to Read in the DeepInfer Codebase
+
+| Area | Start here |
+| --- | --- |
+| **Intake and loop** | `deepinfer/entrypoints/llm.py`, then `deepinfer/engine/llm_engine.py` (`step` is around line 860) |
+| **Worker** | `deepinfer/worker/worker.py:89` (`execute_model_step`), then `deepinfer/worker/model_runner.py:308` |
+| **Model** | `deepinfer/model_executor/models/deepseek.py`, `decoder_layer.py` and `v4_modules/mlp.py:565` (MoE forward) |
+| **Speculative decoding** | `deepinfer/model_executor/layers/sampler.py:411` (`_verification`) and `models/mtp/dflash.py:347` (`run_drafts`) |
+| **Kernels** | `deepinfer/model_executor/layers/tilelang_ops/ops.py` and `deepinfer/platform.py` |
