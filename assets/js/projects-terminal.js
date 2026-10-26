@@ -9,8 +9,14 @@
  *   cards   each [data-tx-card] types its `cat file.md` line when it scrolls
  *           into view, then opens its window ([data-tx-body]).
  *
+ *   tabs    [data-tx-tabs] links become a tablist and only one [data-tx-panel]
+ *           shows at a time. The URL hash (#<panel id>) picks the tab, and any
+ *           in-page link to a panel (the hero's ./explore buttons) switches to
+ *           it. Without JS every panel is shown, stacked.
+ *
  * Clicking the hero or pressing any key finishes the hero instantly. Under
- * prefers-reduced-motion nothing is hidden and nothing is typed.
+ * prefers-reduced-motion nothing is hidden and nothing is typed (tabs still
+ * work).
  */
 (function () {
   var body = document.body;
@@ -19,6 +25,8 @@
 
   var now = document.querySelector("[data-tx-now]");
   if (now) now.textContent = formatNow(new Date());
+
+  setupTabs();
 
   var reduce =
     window.matchMedia &&
@@ -141,6 +149,91 @@
      before it finishes typing still sees the cards open. */
   runHero();
   watchCards();
+
+  function setupTabs() {
+    var bar = document.querySelector("[data-tx-tabs]");
+    var panels = [].slice.call(document.querySelectorAll("[data-tx-panel]"));
+    if (!bar || !panels.length) return;
+    var tabs = [].slice.call(bar.querySelectorAll("[data-tx-tab]"));
+
+    bar.setAttribute("role", "tablist");
+    document.body.classList.add("tx-tabbed");
+    tabs.forEach(function (tab) {
+      var id = tab.getAttribute("data-tx-tab");
+      tab.setAttribute("role", "tab");
+      tab.setAttribute("aria-controls", id);
+      var panel = document.getElementById(id);
+      if (panel) {
+        panel.setAttribute("role", "tabpanel");
+        panel.setAttribute("aria-labelledby", tab.id);
+      }
+    });
+
+    function isPanel(id) {
+      return panels.some(function (p) {
+        return p.id === id;
+      });
+    }
+
+    function select(id, focus) {
+      tabs.forEach(function (tab) {
+        var on = tab.getAttribute("data-tx-tab") === id;
+        tab.setAttribute("aria-selected", on ? "true" : "false");
+        tab.tabIndex = on ? 0 : -1;
+        tab.classList.toggle("is-active", on);
+        if (on && focus) tab.focus();
+      });
+      panels.forEach(function (p) {
+        var on = p.id === id;
+        p.hidden = !on;
+        if (!on) {
+          [].forEach.call(p.querySelectorAll("video"), function (v) {
+            v.pause();
+          });
+        }
+      });
+    }
+
+    function show(id, scroll) {
+      select(id);
+      if (history.replaceState) history.replaceState(null, "", "#" + id);
+      if (scroll) bar.scrollIntoView({ behavior: reduceMotion() ? "auto" : "smooth", block: "start" });
+    }
+
+    document.addEventListener("click", function (e) {
+      var link = e.target.closest && e.target.closest('a[href^="#"]');
+      if (!link) return;
+      var id = link.getAttribute("href").slice(1);
+      if (!isPanel(id)) return;
+      e.preventDefault();
+      /* Tab clicks stay put; hero buttons jump down to the tabs. */
+      show(id, !link.hasAttribute("data-tx-tab"));
+    });
+
+    bar.addEventListener("keydown", function (e) {
+      var i = tabs.indexOf(document.activeElement);
+      if (i < 0) return;
+      var next = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+      if (next === undefined) return;
+      e.preventDefault();
+      next = (next + tabs.length) % tabs.length;
+      var id = tabs[next].getAttribute("data-tx-tab");
+      select(id, true);
+      if (history.replaceState) history.replaceState(null, "", "#" + id);
+    });
+
+    window.addEventListener("hashchange", function () {
+      var id = location.hash.slice(1);
+      if (isPanel(id)) select(id);
+    });
+
+    var start = location.hash.slice(1);
+    select(isPanel(start) ? start : panels[0].id);
+  }
+
+  function reduceMotion() {
+    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
 
   function formatNow(d) {
     var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];

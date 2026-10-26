@@ -527,6 +527,73 @@ body.theme-typesafe.tx-term .tx-group--end .tx-links {
 }
 
 /* -----------------------------------------------------------------------------
+   Category tabs (a tablist once projects-terminal.js adds `tx-tabbed`;
+   without JS they are plain anchor links and every panel shows)
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.tx-term .tx-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 110px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--tx-line);
+  scroll-margin-top: 70px;
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  font-family: var(--tx-mono);
+  font-size: 0.84rem;
+  color: var(--tx-text);
+  text-decoration: none;
+  background: var(--tx-window);
+  border: 1px solid var(--tx-line);
+  border-radius: 6px;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+body.theme-typesafe.tx-term .tx-tab-num {
+  font-size: 0.72rem;
+  color: var(--tx-muted);
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-tab:hover {
+  color: var(--tx-bright);
+  border-color: var(--tx-muted);
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-tab:focus-visible {
+  outline: 2px solid var(--tx-blue);
+  outline-offset: 2px;
+}
+
+body.theme-typesafe.tx-term .site-shell .tx-tab.is-active {
+  color: var(--tx-green);
+  background: rgba(63, 185, 80, 0.14);
+  border-color: rgba(63, 185, 80, 0.5);
+}
+
+body.theme-typesafe.tx-term .tx-tab.is-active .tx-tab-num {
+  color: var(--tx-green);
+}
+
+body.theme-typesafe.tx-term .tx-panel[hidden] {
+  display: none;
+}
+
+body.theme-typesafe.tx-term.tx-tabbed .tx-panel {
+  margin-top: 44px;
+}
+
+body.theme-typesafe.tx-term.tx-tabbed .tx-group--end {
+  margin-top: 90px;
+}
+
+/* -----------------------------------------------------------------------------
    Typing states (only when projects-terminal.js has added `tx-anim`)
    -------------------------------------------------------------------------- */
 
@@ -592,5 +659,14 @@ body.tx-term.tx-anim [data-tx-card].is-open [data-tx-body] {
 
   body.theme-typesafe.tx-term .tx-title--left {
     display: inline;
+  }
+
+  body.theme-typesafe.tx-term .tx-tabs {
+    margin-top: 72px;
+  }
+
+  body.theme-typesafe.tx-term .site-shell .tx-tab {
+    padding: 8px 12px;
+    font-size: 0.78rem;
   }
 }

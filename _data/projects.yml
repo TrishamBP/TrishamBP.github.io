@@ -10,6 +10,12 @@
 #   image       optional preview image (path from site root) + image_alt
 #   video       optional demo video (mp4, H.264) shown first when expanded, with
 #               video_poster, video_length ("0:22") and video_caption
+#   wide        true makes the card span both grid columns (cards with a
+#               video always do)
+#
+# Each group is one tab on /projects/. The tab order, labels and the Hugging
+# Face "Model training" tab (built from _data/hf_models.yml) are set in
+# projects.md.
 
 - name: Dhokla House
   group: Live products
@@ -159,3 +165,96 @@
   links:
     - label: View on GitHub
       url: https://github.com/TrishamBP/IBM_Bob_2.0_Hackathon
+
+- name: AKV-Sem
+  group: Open source libraries and plugins
+  summary: Semantic-aware KV cache engineering for LLM agents, built on the AKV framework.
+  stack: [Python, SGLang, KV cache, LLM agents]
+  details:
+    - label: What it does
+      text: >-
+        Agent-side policies decide which messages to drop from the KV cache and
+        when to reposition retained tokens, and an SGLang-based system executes
+        those operations while reusing compatible KV cache.
+    - label: My contribution
+      text: >-
+        Semantic awareness: the agent labels every dropped path as failed,
+        irrelevant or resolved, with a reason. Those notes stay in context after
+        the KV entries are gone, so the agent stops repeating dead ends.
+  highlights:
+    - I built the semantic policy, its tests and the semantic demo mode.
+    - The underlying AKV framework is by Tianyu Fu et al., used under Apache-2.0.
+  links:
+    - label: View on GitHub
+      url: https://github.com/TrishamBP/AKV-Sem
+    - label: AKV paper
+      url: https://arxiv.org/pdf/2610.28577
+
+- name: Harness Engineering
+  group: Open source libraries and plugins
+  summary: A small, fully tested reference agent harness in pure-stdlib Python.
+  stack: [Python, Agent harness, Context engineering, Zero dependencies]
+  details:
+    - label: What it does
+      text: >-
+        Every subsystem of a production coding-agent runtime is its own tested
+        module: agent loop, typed tool registry, concurrency-aware scheduler,
+        policy engine, verify-on-stop guard, event log and orchestration.
+    - label: Context and memory
+      text: >-
+        A cache-stable prompt, just-in-time AGENTS.md and CLAUDE.md loading,
+        compaction with incremental summaries, and bounded memory.
+  highlights:
+    - 79 passing tests and 36 Mermaid diagrams, with no third-party dependencies in the core.
+  links:
+    - label: View on GitHub
+      url: https://github.com/TrishamBP/harness-engineering
+    - label: Read the write-up
+      url: /engineering/harness-engineering/
+
+- name: Production FastAPI Template
+  group: Open source libraries and plugins
+  summary: Claude Code plugin and portable agent skill for production FastAPI, RAG and agent backends.
+  stack: [Claude Code plugin, Agent skill, FastAPI, Pydantic v2, AWS ECS Fargate]
+  details:
+    - label: What it does
+      text: >-
+        Packages the standards I use at work as a skill coding agents follow:
+        domain-oriented project structure, async execution, Pydantic v2,
+        API conventions, guardrails, AI evaluation, and API and agent security.
+    - label: Where it runs
+      text: >-
+        Installs as a Claude Code plugin marketplace, or as a plain SKILL.md for
+        Cursor, Windsurf and other agentic IDEs.
+  links:
+    - label: View on GitHub
+      url: https://github.com/TrishamBP/fastapi_claude_code_plugin
+
+- name: Football Video Intelligence
+  group: Computer vision and data analytics
+  wide: true
+  image: /assets/images/projects/football-analysis-yolo-player-tracking.gif
+  image_alt: >-
+    YOLO football player tracking demo: team-coloured player markers with track
+    IDs, referee and ball markers, a ball possession bar, camera movement and
+    live speed and distance for each player
+  summary: Computer-vision pipeline that turns broadcast football video into player tracking and match analytics.
+  stack: [Python, PyTorch, Ultralytics YOLOv8, ByteTrack, OpenCV, scikit-learn, pandas]
+  details:
+    - label: Detection and tracking
+      text: >-
+        YOLOv8x at 1280 px detects players, goalkeepers, referees and the ball in
+        batched GPU inference. ByteTrack keeps stable IDs across frames, and the
+        ball trajectory is interpolated through missed detections.
+    - label: Analytics
+      text: >-
+        Lucas-Kanade optical flow removes camera motion, a homography maps
+        positions to pitch metres, KMeans on jersey colours assigns teams, and
+        the pipeline computes ball possession plus per-player speed and distance.
+  highlights:
+    - Cached stubs are fingerprinted to the source video, so swapping the clip rebuilds them.
+    - Frames are decoded lazily and streamed to the writer instead of held in RAM.
+    - The detector weights come from Roboflow sports; the demo clip is from the DFL Bundesliga Data Shootout.
+  links:
+    - label: View on GitHub
+      url: https://github.com/TrishamBP/football_analysis_yolo
