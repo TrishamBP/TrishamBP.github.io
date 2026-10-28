@@ -1249,3 +1249,10 @@ body.theme-typesafe.ts-paper.skin-noir .post-content li {
   font-family: var(--ts-body);
   color: #ffffff;
 }
+
+body.theme-typesafe.ts-paper.skin-noir .post-content img.post-hero {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+}
