@@ -1209,3 +1209,43 @@ body.theme-typesafe.ts-paper .post-content img.nl-section-icon--square {
   width: 48px;
   height: 48px;
 }
+
+/* -----------------------------------------------------------------------------
+   NOIR POST VARIANT (frontmatter `skin: noir`, body class `skin-noir`)
+   Pure black page, white text, Aptos. Used by the GPT-6.1 Terra post only.
+   Aptos ships with Windows 11 / Microsoft 365; elsewhere it falls back to the
+   system sans. Remapping ink/light inverts the skin's ink-filled accents too.
+   -------------------------------------------------------------------------- */
+body.theme-typesafe.ts-paper.skin-noir {
+  --ts-bg: #000000;
+  --ts-surface: #111111;
+  --ts-surface-2: #1c1c1c;
+  --ts-fg: #ffffff;
+  --ts-fg-soft: rgba(255, 255, 255, 0.88);
+  --ts-fg-faint: rgba(255, 255, 255, 0.62);
+  --ts-line: rgba(255, 255, 255, 0.24);
+  --ts-ink: #ffffff;
+  --ts-ink-soft: rgba(255, 255, 255, 0.88);
+  --ts-light: #000000;
+  --ts-display: "Aptos Display", "Aptos", "Segoe UI", -apple-system,
+    BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --ts-body: "Aptos", "Segoe UI", -apple-system, BlinkMacSystemFont,
+    "Helvetica Neue", Arial, sans-serif;
+
+  font-family: var(--ts-body);
+}
+
+body.theme-typesafe.ts-paper.skin-noir .post-header h1,
+body.theme-typesafe.ts-paper.skin-noir .post-content h2,
+body.theme-typesafe.ts-paper.skin-noir .post-content h3 {
+  font-family: var(--ts-display);
+  color: #ffffff;
+}
+
+body.theme-typesafe.ts-paper.skin-noir .post-header .meta,
+body.theme-typesafe.ts-paper.skin-noir .post-content,
+body.theme-typesafe.ts-paper.skin-noir .post-content p,
+body.theme-typesafe.ts-paper.skin-noir .post-content li {
+  font-family: var(--ts-body);
+  color: #ffffff;
+}
