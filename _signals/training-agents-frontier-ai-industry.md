@@ -34,6 +34,9 @@ published: true
   citation artifacts removed. Links and these facts verified 2026-10-29:
   Bedrock RFT models (Nova 2 Lite us-east-1; gpt-oss-20B, Qwen3 32B us-west-2), GRPO;
   Agent Lightning skill install command, MIT license, verl backend; GEPA textual feedback.
+  Sections 03-04: author-supplied text. Method acronyms expanded; CISPO signal corrected
+  (clips IS weights, arXiv:2506.13585); notes on Dr. GRPO (2503.20783), DAPO (2503.14476),
+  OPD (Thinking Machines blog), OPSD (2601.18734) added and verified 2026-10-29.
 -->
 
 ![Training agents at the frontier of AI industry hero: the agentic RL loop, where an LLM agent policy acts in parallel sandboxed environments (terminal, browser, git repo, API tools), verifiers grade each trajectory into a reward, and the reward drives the policy update](/assets/blogs/training-agents-frontier/training-agents-frontier-agentic-rl-loop-hero.png)
@@ -666,3 +669,165 @@ Bedrock's managed reinforcement fine-tuning is available only for supported mode
 > **My recommended sequence:** Langfuse evaluation and trace collection → DSPy GEPA optimization → validation and sealed-holdout testing → reward and trajectory construction → a small RL proof of concept → production rollout only after measurable improvement.
 >
 > That gives you a working optimization system early, while keeping the option open to train the model itself later.
+
+## Choosing an RL or Fine-Tuning Method for Enterprise Agents
+{: data-eyebrow="03 / Training methods"}
+
+Choose the optimization method based on **the training signal you actually have**, not simply because you have agent traces.
+
+| Method | Signal required | Application to an enterprise agent stack |
+|---|---|---|
+| **SFT** (supervised fine-tuning) | High-quality expert trajectories | Train a compatible model on successful agent executions |
+| **DPO** (direct preference optimization) | Preference pairs: better vs. worse | Use reviewed comparisons of agent outputs or trajectories |
+| **OPD** (on-policy distillation) | A stronger teacher model | Distill better decisions into a smaller student model |
+| **OPSD** (on-policy self-distillation) | Verified answers or self-generated targets | Explore self-distillation when the model and training setup support it |
+| **PPO** (proximal policy optimization) | Reward signal plus a value model | Train a policy against business outcome rewards |
+| **GRPO** (group relative policy optimization) | Multiple sampled attempts and reward scores | Compare alternative agent solutions for the same task |
+| **Dr. GRPO** (GRPO done right) | Group-relative rewards with adjusted normalization | Investigate when response-length bias affects training |
+| **PPO-Clip** | Rewards and policy-update ratios | Constrain policy updates to improve training stability |
+| **DAPO** (decoupled clip and dynamic sampling) | Group-based policy optimization with specialized sampling and clipping | Explore for suitable reasoning or tool-use tasks |
+| **CISPO** (clipped IS-weight policy optimization) | Group-relative advantages, with clipped importance-sampling weights instead of clipped token updates | Consider for compatible long-output RL training pipelines |
+
+A few notes on how these relate:
+
+- **PPO-Clip** is the clipped-surrogate form of PPO that most PPO implementations use. It is listed separately because the clipping is what keeps updates stable.
+- **Dr. GRPO, DAPO and CISPO** are all refinements of GRPO-style group-relative training. Dr. GRPO removes the bias that inflates the length of wrong answers. DAPO decouples the clip range and drops prompts whose sampled answers all score the same. CISPO keeps a gradient for every token by clipping the importance weight rather than the update.
+- **OPD** lets the student sample its own outputs while a teacher grades each token ([Thinking Machines](https://thinkingmachines.ai/blog/on-policy-distillation/)). **OPSD** uses the same model as teacher, giving the teacher copy privileged information such as a verified answer ([paper](https://arxiv.org/abs/2601.18734)).
+
+### What I Would Choose for Enterprise Agents
+
+| If you have... | Start with |
+|---|---|
+| Traces, but no reliable rewards | Evaluation and DSPy GEPA |
+| Successful executions | A reviewed SFT dataset |
+| Preferred and rejected outputs | DPO |
+| Tasks you can execute and outcomes you can verify | GRPO or another suitable policy-gradient method |
+| A stronger teacher | OPD or conventional distillation |
+
+> **One important caveat:** these methods generally train model parameters, and their applicability depends on the training framework and model architecture. **You cannot directly apply GRPO or PPO to an arbitrary model through the Bedrock Runtime inference API.** Bedrock's managed reinforcement fine-tuning runs GRPO, but only for its listed models.
+
+For a Bedrock + DSPy + LangGraph + Langfuse architecture, I would first build a **trajectory evaluator** that assigns verified business rewards to complete agent runs. Then decide whether those trajectories are best used for prompt optimization, SFT, preference optimization or actual RL.
+
+## Modular Agent Optimization: Don't Optimize the Agent as One Black Box
+{: data-eyebrow="04 / Modular optimization"}
+
+The missing architectural principle for an enterprise RL system: **don't optimize the entire agent as one black box.** Break it into independently testable components, optimize each component, and promote only the version that performs better on held-out business tasks.
+
+### The Modular Agent Optimization Architecture
+
+| Layer | Purpose | Implementation |
+|---|---|---|
+| Production agent | Separate routing, classification, decision, planning and writing | LangGraph nodes + DSPy modules |
+| Record | Capture execution traces | Langfuse + OpenTelemetry |
+| Define success | Specify private tests and business KPIs | Evaluation datasets + custom reward functions |
+| Practice | Execute tasks repeatedly in an environment | Sandbox, simulator or mocked business systems |
+| Model selection | Choose the right model per task using quality and cost | Bedrock model routing and evaluation |
+| Harness optimization | Improve prompts, tools, context and orchestration | DSPy GEPA/MIPRO and controlled experiments |
+| Training | Update model parameters when appropriate | SFT/RL on a compatible training backend |
+| Release | Test, obtain approval and promote the better version | Sealed holdout + human approval + versioned rollout |
+
+```mermaid
+flowchart TD
+    PA["Production agent<br/>LangGraph + DSPy"] --> RC["Record<br/>Langfuse + OTel"]
+    RC --> DS["Define success<br/>tests + KPIs"]
+    DS --> PR["Practice<br/>sandbox / simulator"]
+    PR --> MS["Model selection<br/>quality vs cost"]
+    MS --> HO["Harness optimization<br/>DSPy GEPA / MIPRO"]
+    HO --> TR["Training<br/>SFT / RL, when needed"]
+    TR --> RL{"Release<br/>holdout + approval"}
+    HO --> RL
+    RL -->|"promote"| PA
+```
+
+### Extending the Claude Code Prompt with Modular Agent Optimization
+
+Add this requirement to the master prompt from section 02.
+
+```text
+Additional Architecture Requirement: Modular Agent Optimization
+
+Refactor the existing agent into independently observable and optimizable modules without
+unnecessarily rewriting the production system.
+
+1. CREATE EXPLICIT OPTIMIZATION BOUNDARIES
+Identify the actual components in the repository and represent them as independently versioned
+modules where practical:
+- Routing and task classification.
+- Document or image classification, if applicable.
+- Decision and tool selection.
+- Planning and multi-step orchestration.
+- Retrieval and context construction.
+- Final response generation.
+- Validation, policy enforcement, and execution.
+
+Use LangGraph nodes as workflow boundaries and DSPy modules for components that benefit from
+prompt/program optimization. Do not force every node to become a DSPy module.
+
+2. EVALUATE EVERY COMPONENT INDEPENDENTLY
+Define component-specific test datasets and metrics, in addition to end-to-end business outcome tests.
+
+For example:
+- Routing: correct route selection and unnecessary handoff rate.
+- Classification: per-class precision, recall, and F1.
+- Decisions: business-rule compliance and action correctness.
+- Retrieval: evidence recall, relevance, and grounding.
+- Planning: task completion, unnecessary steps, and tool-call efficiency.
+- Generation: factual correctness, completeness, and format compliance.
+- Execution: successful state transitions, unauthorized actions, and rollback behavior.
+
+Use deterministic verifiers wherever possible. Keep the overall business KPI as the primary
+release criterion.
+
+3. ADD TRACE-TO-TEST CONVERSION
+Use Langfuse traces and CloudWatch operational events to identify failures and construct
+regression tests.
+
+For each failure, retain the sanitized input, expected behavior, observed behavior, relevant
+tool results, component version, and evaluation result.
+
+Require human review for ambiguous labels. Prevent traces from the sealed holdout from entering
+optimization datasets.
+
+4. IMPLEMENT CONTROLLED COMPONENT OPTIMIZATION
+For each optimizable component:
+1. Establish a baseline.
+2. Run its development dataset.
+3. Collect failure diagnostics.
+4. Generate candidate prompts or configurations using DSPy.
+5. Evaluate candidates on validation data.
+6. Run end-to-end regression tests to detect downstream effects.
+7. Promote only if the overall business KPI improves and critical constraints remain satisfied.
+
+Where component changes interact, support joint evaluation of combinations rather than assuming
+independent improvements always compose.
+
+5. IMPLEMENT QUALITY-COST PARETO ROUTING
+Evaluate eligible Bedrock models for each task category.
+
+Measure quality, latency, and cost per successful task. Maintain a configurable routing policy
+that selects among models satisfying the minimum quality and safety thresholds.
+
+Do not select a model based on price alone or assume a smaller model is better without evaluation.
+
+6. SEPARATE HARNESS OPTIMIZATION FROM MODEL TRAINING
+Treat prompt optimization, tool configuration, routing, retrieval, and graph changes as harness
+optimization.
+
+Treat SFT, DPO, PPO, GRPO, and other parameter-learning methods as separate training experiments
+with explicit model and backend compatibility checks.
+
+Record which layer changed in every experiment so improvements can be attributed correctly.
+
+7. IMPLEMENT A PROMOTION AND ROLLBACK WORKFLOW
+Maintain immutable candidate versions containing the model identifier, prompt versions, graph
+configuration, tool versions, and evaluator versions.
+
+Run validation and end-to-end regression tests for every candidate. Require a sealed-holdout
+evaluation and appropriate human approval before production promotion.
+
+Support a rollback to the last approved version.
+
+Do not modify the production agent automatically based on a single successful evaluation run.
+```
+
+> **My recommendation:** build the modular evaluation and harness optimization layer first. It will tell you whether the bottleneck is routing, retrieval, tool execution, planning or the model itself, and whether you actually need RL to improve the business outcome.
