@@ -1256,3 +1256,24 @@ body.theme-typesafe.ts-paper.skin-noir .post-content img.post-hero {
   max-width: none;
   height: auto;
 }
+
+/* -----------------------------------------------------------------------------
+   MEMORY MATH BOX (`<div class="mem-box" markdown="1">` in a post body)
+   Hard ink border + offset shadow, like the subscribe box. Used by the
+   Kimi K3.1 Pro post for its GPU-memory worked example.
+   -------------------------------------------------------------------------- */
+body.theme-typesafe.ts-paper .post-content .mem-box {
+  margin: 2rem 0 2.4rem;
+  padding: 1.4rem 1.4rem 0.6rem;
+  background: var(--ts-surface);
+  border: 2px solid var(--ts-ink);
+  box-shadow: 6px 6px 0 var(--ts-ink);
+}
+
+body.theme-typesafe.ts-paper .post-content .mem-box h3 {
+  margin-top: 0;
+}
+
+body.theme-typesafe.ts-paper .post-content .mem-box table {
+  background: var(--ts-bg);
+}
