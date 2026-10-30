@@ -831,3 +831,6 @@ Do not modify the production agent automatically based on a single successful ev
 ```
 
 > **My recommendation:** build the modular evaluation and harness optimization layer first. It will tell you whether the bottleneck is routing, retrieval, tool execution, planning or the model itself, and whether you actually need RL to improve the business outcome.
+
+## Agent Environments and Benchmarks in Industry
+{: data-eyebrow="05 / Environments and benchmarks"}
