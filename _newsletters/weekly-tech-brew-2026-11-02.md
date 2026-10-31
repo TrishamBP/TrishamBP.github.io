@@ -224,3 +224,26 @@ Imagine combining a local LLM with speech generation to build voice-enabled AI a
 ![Ollama speech generation with Phonon by Gradium: the black and white Ollama llama logo](/assets/newsletter/weekly-tech-brew-2026-11-02/ollama-phonon-gradium-speech-generation.png){: .nl-hero}
 
 <a class="nl-source" href="https://ollama.com/library/phonon" target="_blank" rel="noopener">Try Phonon on Ollama &rarr;</a>
+
+### 8. NVIDIA Nemotron 3.5 Transcribe: Open-Weight Speech Recognition in 40 Languages
+
+**NVIDIA Nemotron 3.5 Transcribe** is an open-weight, offline speech and audio model for transcription in **40 languages**, with support for recordings up to **one hour** and a **65,536-token context**.
+
+Its hybrid **Mamba-2–Transformer mixture-of-experts** architecture has 34B total parameters but activates only about **4.3B**, including the audio encoder. It is released in BF16, FP8 and NVFP4 precision and runs on a single H100 80 GB.
+
+**One model, many ways to write down what was said.** You pick the transcription style with the instruction: verbatim, clean written text, domain vocabulary, speaker-attributed transcripts with word timestamps, speech translation, language identification, or questions about the audio.
+
+**How it scores:**
+
+- **4.71% mean WER** on the English Open ASR Leaderboard, the best open-weight result (next best: Qwen3-ASR-1.7B at 4.94)
+- **10.98% WER** on long-form audio (next best open-weight: Parakeet-TDT-0.6B-v3 at 13.37)
+- **4.62% WER** on the Multilingual Open ASR Leaderboard (next best open-weight: Qwen3-ASR-1.7B at 6.49)
+- **15.80 mean cpWER** on multi-speaker meetings and calls, the best published result
+
+**It's fast, too.** With the optimized Nemotron Transcribe NIM, one RTX PRO 6000 Blackwell GPU transcribes up to **2,238 seconds of audio per second** and returns a 30-second clip's transcript in **0.13 seconds**. Those serving optimizations are not yet in the open-source release; NVIDIA says the release-day vLLM integration is roughly two times slower.
+
+It is an **offline** model, not a real-time streaming ASR service, and it is released under the **OpenMDW-1.1** license for commercial and non-commercial use.
+
+![NVIDIA Nemotron 3.5 Transcribe speech recognition model: diagram of one speech LLM turning audio and an instruction into verbatim, written, contextual, speaker-attributed, rich and translated transcripts with word timestamps](/assets/newsletter/weekly-tech-brew-2026-11-02/nvidia-nemotron-3-5-transcribe-speech-recognition.png){: .nl-hero}
+
+<a class="nl-source" href="https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B" target="_blank" rel="noopener">Try Nemotron 3.5 Transcribe on Hugging Face &rarr;</a>
