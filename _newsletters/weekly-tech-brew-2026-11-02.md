@@ -137,3 +137,23 @@ A significant step up from **GPT-5.6 Terra**, it excels at the communication and
 <a class="nl-source" href="https://deploymentsafety.openai.com/gpt-6-1-terra" target="_blank" rel="noopener">Read more on OpenAI &rarr;</a>
 
 <a class="nl-read-btn" href="/artificial%20intelligence/2026/10/28/gpt-6-1-openai/">Read the blog &rarr;</a>
+
+### 2. Kimi K3.1 Pro: New Frontier in AI Intelligence
+
+**Kimi K3.1 Pro** is the first model in **Moonshot AI's** new K3.1 series. Moonshot calls it the most capable 3T-class open-weight model to date, and it has a **1-million-token context window**.
+
+It brings substantial improvements in coding, 3D creation, financial research and other agentic capabilities.
+
+Moonshot is also releasing **Kimi K3.1 Pro Highspeed**, which runs **2–3× faster** than K3.1 Pro for more responsive interactions.
+
+![Kimi K3.1 Pro by Moonshot AI: launch banner with the Kimi K3.1 Pro logo over misty mountain peaks](/assets/newsletter/weekly-tech-brew-2026-11-02/kimi-k3-1-pro-moonshot-ai.png){: .nl-hero}
+
+<a class="nl-source" href="https://www.kimi.com/" target="_blank" rel="noopener">Try Kimi on the Kimi website &rarr;</a>
+
+<a class="nl-read-btn" href="/artificial%20intelligence/2026/10/29/kimi-k3-1-pro/">Read the blog &rarr;</a>
+
+### 3. NVIDIA Kumo - Foundation Models for Structured Data
+
+**NVIDIA Kumo** is a family of open models, libraries, and tools for making predictions from tabular, relational, and time-series data. Kumo can be used to forecast outcomes, score risk, detect anomalies, and generate recommendations—without building and maintaining a separate machine learning model for every task.
+
+<a class="nl-read-btn" href="/artificial%20intelligence/2026/10/30/nvidia-kumo-foundation-models-structured-data/">Read the blog &rarr;</a>
