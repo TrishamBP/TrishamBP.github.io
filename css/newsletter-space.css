@@ -6,7 +6,9 @@
    to <body> and `_includes/head.html` loads this file, both on the same gate.
    Blog posts keep the light paper skin.
 
-     background  #020B20     navy   #071A38
+     background  #000A23 midnight gradient (#01143D glow at the top,
+                 #00071C at the edges, faint vertical pinstripes)
+                 navy   #071A38 (cards: translucent #01143D)
      blue        #1677FF     cyan   #00CFFF
      text        #F4F7FF     muted  #9BAFCB
 
@@ -25,7 +27,10 @@
    ========================================================================== */
 
 body.theme-typesafe.ts-paper.nl-space {
-  --nl-bg: #020b20;
+  --nl-bg: #000a23;
+  --nl-glow: #01143d;
+  --nl-deep: #00071c;
+  --nl-card: rgba(1, 20, 61, 0.62);
   --nl-navy: #071a38;
   --nl-blue: #1677ff;
   --nl-cyan: #00cfff;
@@ -48,7 +53,12 @@ body.theme-typesafe.ts-paper.nl-space {
   --ts-green: var(--nl-cyan);
   --ts-accent: var(--nl-cyan);
 
-  background: var(--nl-bg);
+  background-color: var(--nl-bg);
+  background-image:
+    repeating-linear-gradient(90deg, rgba(120, 160, 255, 0.018) 0 1px, transparent 1px 7px),
+    radial-gradient(ellipse 90% 55% at 50% 0%, var(--nl-glow) 0%, rgba(1, 20, 61, 0) 70%),
+    radial-gradient(ellipse 120% 100% at 50% 40%, #000d2a 0%, var(--nl-bg) 45%, var(--nl-deep) 100%);
+  background-attachment: fixed;
   color: var(--nl-text);
 }
 
@@ -62,7 +72,9 @@ body.theme-typesafe.ts-paper.nl-space ::selection {
    -------------------------------------------------------------------------- */
 
 body.theme-typesafe.ts-paper.nl-space .topnav {
-  background: var(--nl-bg);
+  background: rgba(0, 10, 35, 0.82);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   border-bottom-color: var(--nl-navy);
 }
 
@@ -145,13 +157,13 @@ body.theme-typesafe.ts-paper.nl-space .post-content p.nl-section-kicker {
    -------------------------------------------------------------------------- */
 
 body.theme-typesafe.ts-paper.nl-space .newsletter-grid .article-card {
-  background: var(--nl-navy);
+  background: var(--nl-card);
   border-color: var(--nl-blue);
   box-shadow: 6px 6px 0 var(--nl-blue);
 }
 
 body.theme-typesafe.ts-paper.nl-space .newsletter-grid .article-card:hover {
-  background: var(--nl-navy);
+  background: rgba(1, 20, 61, 0.85);
   border-color: var(--nl-cyan);
   box-shadow: 8px 8px 0 var(--nl-cyan);
 }
@@ -276,7 +288,7 @@ body.theme-typesafe.ts-paper.nl-space .post-content .nl-repo-meta {
    -------------------------------------------------------------------------- */
 
 body.theme-typesafe.ts-paper.nl-space .nl-subscribe {
-  background: var(--nl-navy);
+  background: var(--nl-card);
   border-color: var(--nl-blue);
   box-shadow: 6px 6px 0 var(--nl-blue);
 }
