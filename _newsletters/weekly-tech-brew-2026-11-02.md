@@ -248,6 +248,153 @@ It is an **offline** model, not a real-time streaming ASR service, and it is rel
 
 <a class="nl-source" href="https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B" target="_blank" rel="noopener">Try Nemotron 3.5 Transcribe on Hugging Face &rarr;</a>
 
+<h2 id="beyond-the-abstract" class="nl-icon-heading"><img class="nl-section-icon" src="/assets/newsletter/weekly-tech-brew-2026-10-26/beyond-the-abstract-telescope-icon.png" alt="Beyond The Abstract telescope icon: research papers section of The Weekly Tech Brew" width="44" height="48"> Beyond The Abstract</h2>
+
+<p class="nl-section-kicker">Research Papers &middot; AI &middot; Systems &middot; Robotics &middot; Science</p>
+
+**Five papers, fresh ideas, and the research shaping tomorrow's technology.**
+
+This week's picks come from the **October 29 Hugging Face Daily Papers** list, chosen for LLM inference infrastructure, agentic systems, reinforcement learning, distributed systems, and Physical AI/robotics. They're ranked in the order I'd read them.
+
+### 1. TAO: Tool-Aware Joint Scheduling for LLM-Based Agentic Serving
+
+*Highest priority · arXiv 2610.37230 · AIOR*
+
+**Research area:** LLM inference, GPU scheduling, agentic serving, KV cache.
+
+- Joint scheduling of agent sessions across GPUs.
+- Accounts for external tool-return readiness.
+- Incorporates KV-cache reuse and token footprint.
+- Uses dynamic programming for session placement.
+
+**Reported results:** up to **26.8% lower latency**, **36.3% lower mean TTFT** and **29.5% higher decode throughput**.
+
+**Why read it:** it connects agent orchestration with low-level inference scheduling, rather than treating them as separate problems.
+
+<a class="nl-source" href="https://arxiv.org/abs/2610.37230" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+<a class="nl-source" href="https://huggingface.co/papers/2610.37230" target="_blank" rel="noopener">View it on Hugging Face Papers &rarr;</a>
+
+### 2. HuGe: Scaling Humanoid Generalist Vision-Language-Action Models with Egocentric Experience
+
+*Physical AI · arXiv 2610.34186*
+
+**Research area:** Robotics, VLA, imitation learning, humanoid control.
+
+This paper investigates how to transfer human first-person experience into humanoid robot policies.
+
+- More than **2,000 hours** of human and robot egocentric data.
+- Three-stage training: pretraining, humanoid adaptation and fine-tuning.
+- Pseudo-proprioception for embodiment transfer.
+- Real-world experiments on **Unitree G1**.
+
+**Why read it:** particularly relevant to autonomous robots, UAVs, physical systems and intelligent control.
+
+<a class="nl-source" href="https://arxiv.org/abs/2610.34186" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+<a class="nl-source" href="https://huggingface.co/papers/2610.34186" target="_blank" rel="noopener">View it on Hugging Face Papers &rarr;</a>
+
+### 3. LongZero: Enhancing Long-Context Reasoning in LLMs from Zero Data
+
+*RL and reasoning · arXiv 2610.30132 · Tsinghua University*
+
+**Research area:** Reinforcement learning, GRPO, synthetic data, long-context reasoning.
+
+The interesting idea is that an LLM can **generate its own training tasks** without requiring an external dataset.
+
+- Generates questions and supporting evidence.
+- Constructs multi-document contexts.
+- Creates multi-hop and multi-round retrieval tasks.
+- Uses Group Relative Policy Optimization (GRPO).
+
+The authors report an improvement from **54.7 to 57.4** average across five benchmarks on Qwen3-4B-Thinking-2507.
+
+**Why read it:** directly relevant to RL-based post-training, reasoning optimization and self-improving agents.
+
+<a class="nl-source" href="https://arxiv.org/abs/2610.30132" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+<a class="nl-source" href="https://huggingface.co/papers/2610.30132" target="_blank" rel="noopener">View it on Hugging Face Papers &rarr;</a>
+
+### 4. CausGround: Causal Interaction Grounding for Adaptive Embodied Planning
+
+*Autonomous planning · arXiv 2610.29702*
+
+**Research area:** Causal reasoning, embodied AI, world models, robotic planning.
+
+The central idea: an intelligent robot should understand not just what action to take, but **whether that action is physically executable** and what consequences it will produce.
+
+- Extracts action preconditions and effects.
+- Builds reusable causal knowledge from interaction experience.
+- Uses backward reasoning to determine required conditions.
+- Uses forward reasoning to predict action effects.
+- Does not require retraining the underlying MLLM.
+
+Reported VirtualHome task success increases from **24.9% to 53.3%**.
+
+**Why read it:** it connects causal reasoning, world-state representations and autonomous decision-making. Very relevant to robotics and autonomous defence systems.
+
+<a class="nl-source" href="https://arxiv.org/abs/2610.29702" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+<a class="nl-source" href="https://huggingface.co/papers/2610.29702" target="_blank" rel="noopener">View it on Hugging Face Papers &rarr;</a>
+
+### 5. RealCLI: Toward a Unified Evaluation of Human-Agent Collaboration for CLI Agents
+
+*Agent evaluation · arXiv 2610.22507 · IQuest*
+
+**Research area:** Agent evaluation, tool use, reliability, human-in-the-loop.
+
+This paper studies something important: an agent completing a task does not necessarily mean it **collaborated correctly with the human**. It evaluates:
+
+- Task execution.
+- User steerability and intervention.
+- Trust calibration.
+- Recovery from errors.
+- Safety boundaries and authorization.
+
+The best reported joint collaboration score is only **37.6%**.
+
+**Why read it:** it speaks directly to enterprise agent work: LangGraph workflows, human-in-the-loop checkpoints, agent evaluation and observability.
+
+<a class="nl-source" href="https://arxiv.org/abs/2610.22507" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+<a class="nl-source" href="https://huggingface.co/papers/2610.22507" target="_blank" rel="noopener">View it on Hugging Face Papers &rarr;</a>
+
+<a class="nl-source" href="https://github.com/RealCLI-Team/RealCLI-Benchmark-v1.0" target="_blank" rel="noopener">RealCLI benchmark on GitHub &rarr;</a>
+
+### One More Paper Worth Keeping on Your Radar
+
+**Sensorimotor Alignment: A Platonic Proxy for Embodied Policy Success** is particularly interesting from a research methodology perspective. It proposes a **training-free metric** to estimate whether a robot foundation model will perform well, by measuring the alignment between sensory representations and physical motion trajectories.
+
+The interesting part is that it could help identify promising VLA architectures **before** spending resources on expensive closed-loop robot evaluations.
+
+<a class="nl-source" href="https://arxiv.org/abs/2610.31670" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+### How to Prioritize Your Reading
+
+| Priority | Paper | What to focus on |
+|---|---|---|
+| 1 | TAO | Scheduling, KV cache, GPU utilization |
+| 2 | HuGe | VLA architecture, embodiment transfer |
+| 3 | LongZero | GRPO, self-generated RL tasks |
+| 4 | CausGround | Causal world models, planning |
+| 5 | RealCLI | Agent evaluation and reliability |
+
+### Where These Papers Meet
+
+There is an interesting intersection across these papers: **agentic inference infrastructure + reinforcement learning + Physical AI**.
+
+Think about an autonomous system where:
+
+1. A VLA perceives the physical environment.
+2. A reasoning agent generates a plan.
+3. A causal world model checks whether the actions are feasible.
+4. An RL policy optimizes the action sequence.
+5. A low-latency inference scheduler ensures the system can execute decisions in real time.
+
+That intersection is particularly interesting for robotics, autonomous vehicles and aerospace systems.
+
+I'd start with **TAO** and **HuGe**. They represent two sides of the same problem: making intelligent systems both computationally efficient and physically capable.
+
 ## Tech Signals
 
 ### Claude Apps
