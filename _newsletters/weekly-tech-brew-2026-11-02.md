@@ -272,7 +272,7 @@ The stories, performances, and moments making sporting history.
 
 ### Harry Kane Wins Ballon d'Or 2026
 
-![Harry Kane wins the Ballon d'Or 2026: the Bayern Munich and England striker smiles as he holds up the golden ball trophy on stage](/assets/newsletter/weekly-tech-brew-2026-11-02/harry-kane-ballon-dor-2026.png){: .nl-hero}
+![Harry Kane wins the Ballon d'Or 2026: the Bayern Munich and England striker kisses the golden ball trophy on stage](/assets/newsletter/weekly-tech-brew-2026-11-02/harry-kane-ballon-dor-2026.png){: .nl-hero}
 
 **Harry Kane** edged out **Kylian Mbappé** for the 2026 Men's Ballon d'Or by just **28 points**, making it one of the closest votes in the award's history.
 
