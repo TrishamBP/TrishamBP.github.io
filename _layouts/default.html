@@ -23,7 +23,7 @@
   {%- assign url_prefix = page.url | slice: 0, 13 -%}
   {%- assign is_signals = false -%}
   {%- if page.url == '/signals/' or page.collection == 'signals' -%}{%- assign is_signals = true -%}{%- endif -%}
-  <body class="{% unless page_theme == 'none' %}theme-{{ page_theme }} {% endunless %}{% if url_prefix == '/engineering/' or page.collection == 'implementations' %}eng-glossary {% endif %}{% if is_signals %}fn-notes {% elsif page.url == '/blog/' or page.url == '/newsletter/' or page.url == '/models/' or page.layout == 'post' %}ts-paper {% endif %}{% if page.url == '/research-articles/' %}spx-cinema {% endif %}{% if page.url == '/certifications/' %}grid-neon {% endif %}{% if page.url == '/physical-systems/' %}ps-systems {% endif %}{% if page.url == '/projects/' %}tx-term {% endif %}{% if page.skin %}skin-{{ page.skin }} {% endif %}dark-mode">
+  <body class="{% unless page_theme == 'none' %}theme-{{ page_theme }} {% endunless %}{% if url_prefix == '/engineering/' or page.collection == 'implementations' %}eng-glossary {% endif %}{% if is_signals %}fn-notes {% elsif page.url == '/blog/' or page.url == '/newsletter/' or page.url == '/models/' or page.layout == 'post' %}ts-paper {% endif %}{% if page.url == '/newsletter/' or page.collection == 'newsletters' %}nl-space {% endif %}{% if page.url == '/research-articles/' %}spx-cinema {% endif %}{% if page.url == '/certifications/' %}grid-neon {% endif %}{% if page.url == '/physical-systems/' %}ps-systems {% endif %}{% if page.url == '/projects/' %}tx-term {% endif %}{% if page.skin %}skin-{{ page.skin }} {% endif %}dark-mode">
     {%- if is_signals %}
     <div class="fn-strip">
       <span class="fn-strip-label">Signals</span>
@@ -401,10 +401,12 @@
             return;
           }
 
-          /* The blog paper and signals skins are light even though `dark-mode` is set. */
+          /* The blog paper and signals skins are light even though `dark-mode` is set
+             (the newsletter's nl-space skin is the dark exception). */
           var isDark =
             document.body.classList.contains("dark-mode") &&
-            !document.body.classList.contains("ts-paper") &&
+            (!document.body.classList.contains("ts-paper") ||
+              document.body.classList.contains("nl-space")) &&
             !document.body.classList.contains("fn-notes");
           window.mermaid.initialize({
             startOnLoad: false,

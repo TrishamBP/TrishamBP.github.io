@@ -1,0 +1,512 @@
+/* =============================================================================
+   NEWSLETTER SPACE SKIN (The Weekly Tech Brew)
+   -----------------------------------------------------------------------------
+   Loaded on top of css/blog-paper.css for /newsletter/ and every edition
+   (page.collection == 'newsletters'). `_layouts/default.html` adds `nl-space`
+   to <body> and `_includes/head.html` loads this file, both on the same gate.
+   Blog posts keep the light paper skin.
+
+     background  #020B20     navy   #071A38
+     blue        #1677FF     cyan   #00CFFF
+     text        #F4F7FF     muted  #9BAFCB
+
+   Contrast (WCAG): text on bg 18.3, muted on bg 8.8, cyan on bg 10.6,
+   blue on bg 4.8 (but 4.2 on navy) and text on blue only 3.8. So:
+     - cyan carries links, accents and solid buttons (dark #020B20 label)
+     - blue is structure only: borders, offset shadows, rules
+     - navy is the card / panel surface
+
+   Most of the paper skin runs on --ts-* variables, so remapping them does the
+   bulk of the work. The paper skin also uses --ts-ink as a fill colour AND as
+   a text colour; the overrides below set both cases explicitly.
+
+   Scoped as body.theme-typesafe.ts-paper.nl-space (four classes), so it
+   outranks every blog-paper rule without !important.
+   ========================================================================== */
+
+body.theme-typesafe.ts-paper.nl-space {
+  --nl-bg: #020b20;
+  --nl-navy: #071a38;
+  --nl-blue: #1677ff;
+  --nl-cyan: #00cfff;
+  --nl-text: #f4f7ff;
+  --nl-muted: #9bafcb;
+
+  --ts-paper: var(--nl-bg);
+  --ts-panel: var(--nl-navy);
+  --ts-panel-2: var(--nl-navy);
+  --ts-bg: var(--nl-bg);
+  --ts-surface: var(--nl-navy);
+  --ts-surface-2: var(--nl-navy);
+  --ts-fg: var(--nl-text);
+  --ts-fg-soft: var(--nl-text);
+  --ts-fg-faint: var(--nl-muted);
+  --ts-line: var(--nl-blue);
+  --ts-ink: var(--nl-blue);
+  --ts-ink-soft: var(--nl-muted);
+  --ts-light: var(--nl-bg);
+  --ts-green: var(--nl-cyan);
+  --ts-accent: var(--nl-cyan);
+
+  background: var(--nl-bg);
+  color: var(--nl-text);
+}
+
+body.theme-typesafe.ts-paper.nl-space ::selection {
+  background: var(--nl-cyan);
+  color: var(--nl-bg);
+}
+
+/* -----------------------------------------------------------------------------
+   Page chrome: nav, headings, body copy, links
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.ts-paper.nl-space .topnav {
+  background: var(--nl-bg);
+  border-bottom-color: var(--nl-navy);
+}
+
+body.theme-typesafe.ts-paper.nl-space .topnav-brand {
+  color: var(--nl-text);
+}
+
+body.theme-typesafe.ts-paper.nl-space .topnav-link {
+  color: var(--nl-muted);
+}
+
+body.theme-typesafe.ts-paper.nl-space.dark-mode .topnav-link:hover {
+  background: var(--nl-navy);
+  color: var(--nl-text);
+}
+
+body.theme-typesafe.ts-paper.nl-space.dark-mode .topnav-link.active {
+  background: var(--nl-cyan);
+  color: var(--nl-bg);
+}
+
+body.theme-typesafe.ts-paper.nl-space .topnav-hamburger span {
+  background: var(--nl-text);
+}
+
+body.theme-typesafe.ts-paper.nl-space .section-title,
+body.theme-typesafe.ts-paper.nl-space .post-header h1,
+body.theme-typesafe.ts-paper.nl-space .post-content h2,
+body.theme-typesafe.ts-paper.nl-space .post-content h3,
+body.theme-typesafe.ts-paper.nl-space .post-content h4,
+body.theme-typesafe.ts-paper.nl-space .post-content h5 {
+  color: var(--nl-text);
+  border-color: var(--nl-blue);
+}
+
+body.theme-typesafe.ts-paper.nl-space .research-intro,
+body.theme-typesafe.ts-paper.nl-space .post-header .meta,
+body.theme-typesafe.ts-paper.nl-space .post-header .post-subtitle {
+  color: var(--nl-muted);
+  border-color: var(--nl-blue);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content,
+body.theme-typesafe.ts-paper.nl-space .post-content p,
+body.theme-typesafe.ts-paper.nl-space .post-content li,
+body.theme-typesafe.ts-paper.nl-space .post-content td {
+  color: var(--nl-text);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content em {
+  color: var(--nl-muted);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content a {
+  color: var(--nl-cyan);
+  text-decoration-color: rgba(0, 207, 255, 0.45);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content a:hover {
+  color: var(--nl-text);
+  text-decoration-color: var(--nl-cyan);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content hr {
+  border-color: var(--nl-navy);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content blockquote {
+  background: var(--nl-navy);
+  border-left: 3px solid var(--nl-cyan);
+  color: var(--nl-text);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content p.nl-section-kicker {
+  color: var(--nl-cyan);
+}
+
+/* -----------------------------------------------------------------------------
+   /newsletter/ edition cards: navy panels, blue frame, cyan on hover
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.ts-paper.nl-space .newsletter-grid .article-card {
+  background: var(--nl-navy);
+  border-color: var(--nl-blue);
+  box-shadow: 6px 6px 0 var(--nl-blue);
+}
+
+body.theme-typesafe.ts-paper.nl-space .newsletter-grid .article-card:hover {
+  background: var(--nl-navy);
+  border-color: var(--nl-cyan);
+  box-shadow: 8px 8px 0 var(--nl-cyan);
+}
+
+body.theme-typesafe.ts-paper.nl-space .newsletter-grid .article-card::before {
+  color: var(--nl-muted);
+}
+
+body.theme-typesafe.ts-paper.nl-space .newsletter-grid .article-card:hover::before {
+  color: var(--nl-cyan);
+}
+
+body.theme-typesafe.ts-paper.nl-space .newsletter-grid .article-title a {
+  color: var(--nl-text);
+  -webkit-text-stroke-color: var(--nl-text);
+}
+
+body.theme-typesafe.ts-paper.nl-space .newsletter-grid .article-title a:hover {
+  color: var(--nl-cyan);
+  -webkit-text-stroke-color: var(--nl-cyan);
+}
+
+body.theme-typesafe.ts-paper.nl-space .newsletter-grid .article-date,
+body.theme-typesafe.ts-paper.nl-space .newsletter-grid .article-subtitle {
+  color: var(--nl-muted);
+}
+
+body.theme-typesafe.ts-paper.nl-space .article-pagination a,
+body.theme-typesafe.ts-paper.nl-space .article-pagination span {
+  color: var(--nl-text);
+  border-color: var(--nl-blue);
+}
+
+body.theme-typesafe.ts-paper.nl-space .article-pagination a:hover,
+body.theme-typesafe.ts-paper.nl-space .article-pagination .active {
+  background: var(--nl-cyan);
+  border-color: var(--nl-cyan);
+  color: var(--nl-bg);
+}
+
+/* -----------------------------------------------------------------------------
+   Buttons. Outline buttons: navy fill, blue frame, light label.
+   Solid buttons: cyan fill, dark label (10.6:1).
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.ts-paper.nl-space .nl-modal-open,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-expand > summary,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-expand--release[open] > summary {
+  color: var(--nl-text);
+  background: var(--nl-navy);
+  border-color: var(--nl-blue);
+  box-shadow: 3px 3px 0 var(--nl-blue);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-expand--release > summary,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-expand:not(.nl-expand--release)[open] > summary,
+body.theme-typesafe.ts-paper.nl-space .post-content a.nl-read-btn,
+body.theme-typesafe.ts-paper.nl-space .nl-subscribe-button,
+body.theme-typesafe.ts-paper.nl-space a.nl-subscribe-link {
+  color: var(--nl-bg);
+  background: var(--nl-cyan);
+  border-color: var(--nl-cyan);
+  box-shadow: 3px 3px 0 var(--nl-blue);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content a.nl-read-btn:hover,
+body.theme-typesafe.ts-paper.nl-space .nl-subscribe-button:hover,
+body.theme-typesafe.ts-paper.nl-space .nl-subscribe-button:focus-visible,
+body.theme-typesafe.ts-paper.nl-space a.nl-subscribe-link:hover,
+body.theme-typesafe.ts-paper.nl-space a.nl-subscribe-link:focus-visible {
+  color: var(--nl-bg);
+  background: var(--nl-text);
+  border-color: var(--nl-text);
+}
+
+body.theme-typesafe.ts-paper.nl-space .nl-modal-open:hover,
+body.theme-typesafe.ts-paper.nl-space .nl-modal-open:focus-visible,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-expand > summary:hover,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-expand > summary:focus-visible,
+body.theme-typesafe.ts-paper.nl-space .post-content a.nl-read-btn:hover,
+body.theme-typesafe.ts-paper.nl-space .post-content a.nl-read-btn:focus-visible {
+  box-shadow: 4px 4px 0 var(--nl-cyan);
+}
+
+/* The +/x badge inside the Expand toggle. */
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-expand > summary::before,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-expand--release[open] > summary::before {
+  color: var(--nl-bg);
+  background: var(--nl-cyan);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-expand--release > summary::before,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-expand:not(.nl-expand--release)[open] > summary::before {
+  color: var(--nl-cyan);
+  background: var(--nl-bg);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-expand-body {
+  border-left-color: var(--nl-cyan);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-expand--release {
+  border-bottom-color: rgba(22, 119, 255, 0.55);
+}
+
+/* Small caps source links under a story. */
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-source {
+  color: var(--nl-text);
+  border-bottom-color: var(--nl-cyan);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-source:hover {
+  color: var(--nl-cyan);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-repo-meta {
+  color: var(--nl-cyan);
+}
+
+/* -----------------------------------------------------------------------------
+   Subscribe box, modals
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.ts-paper.nl-space .nl-subscribe {
+  background: var(--nl-navy);
+  border-color: var(--nl-blue);
+  box-shadow: 6px 6px 0 var(--nl-blue);
+}
+
+body.theme-typesafe.ts-paper.nl-space .nl-subscribe .nl-subscribe-title,
+body.theme-typesafe.ts-paper.nl-space .nl-subscribe-text,
+body.theme-typesafe.ts-paper.nl-space .nl-unsubscribe-link {
+  color: var(--nl-text);
+}
+
+body.theme-typesafe.ts-paper.nl-space .nl-subscribe-fine {
+  color: var(--nl-muted);
+}
+
+body.theme-typesafe.ts-paper.nl-space .nl-subscribe-input {
+  color: var(--nl-text);
+  background: var(--nl-bg);
+  border-color: var(--nl-blue);
+}
+
+body.theme-typesafe.ts-paper.nl-space .nl-subscribe-input::placeholder {
+  color: var(--nl-muted);
+}
+
+body.theme-typesafe.ts-paper.nl-space .nl-modal,
+body.theme-typesafe.ts-paper.nl-space .nl-modal-head {
+  background: var(--nl-bg);
+  color: var(--nl-text);
+  border-color: var(--nl-blue);
+}
+
+body.theme-typesafe.ts-paper.nl-space .nl-modal {
+  box-shadow: 8px 8px 0 var(--nl-blue);
+}
+
+body.theme-typesafe.ts-paper.nl-space .nl-modal::backdrop {
+  background: rgba(2, 11, 32, 0.78);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-modal-head h2 {
+  color: var(--nl-text);
+}
+
+body.theme-typesafe.ts-paper.nl-space .nl-modal-close {
+  color: var(--nl-text);
+  border-color: var(--nl-blue);
+}
+
+body.theme-typesafe.ts-paper.nl-space .nl-modal-close:hover,
+body.theme-typesafe.ts-paper.nl-space .nl-modal-close:focus-visible {
+  color: var(--nl-bg);
+  background: var(--nl-cyan);
+  border-color: var(--nl-cyan);
+}
+
+/* -----------------------------------------------------------------------------
+   Code, tables, images, timeline, memory box
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.ts-paper.nl-space .post-content pre,
+body.theme-typesafe.ts-paper.nl-space .post-content .highlight pre {
+  background: var(--nl-navy);
+  color: var(--nl-text);
+  border: 1px solid rgba(22, 119, 255, 0.45);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content :not(pre) > code {
+  background: var(--nl-navy);
+  border-color: rgba(22, 119, 255, 0.45);
+  color: var(--nl-cyan);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content table {
+  border-color: var(--nl-blue);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content th {
+  background: var(--nl-navy);
+  color: var(--nl-cyan);
+  border-color: var(--nl-blue);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content td {
+  border-color: rgba(22, 119, 255, 0.45);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content tbody tr:nth-child(even) td,
+body.theme-typesafe.ts-paper.nl-space .post-content tbody tr:nth-child(even) {
+  background: rgba(7, 26, 56, 0.7);
+}
+
+/* Images keep a light backing, so transparent PNGs drawn for the old paper
+   page (dark marks on transparency) stay readable on the navy page. */
+body.theme-typesafe.ts-paper.nl-space .post-content img {
+  background: var(--nl-text);
+  border-color: var(--nl-blue);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content img.nl-section-icon,
+body.theme-typesafe.ts-paper.nl-space .post--newsletter .post-header .nl-masthead-logo {
+  background: transparent;
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content img.nl-logo,
+body.theme-typesafe.ts-paper.nl-space .post-content img.nl-video-thumb {
+  border-color: var(--nl-blue);
+  box-shadow: 4px 4px 0 var(--nl-blue);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content a:hover img.nl-video-thumb {
+  box-shadow: 8px 8px 0 var(--nl-cyan);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content li::marker {
+  color: var(--nl-cyan);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .mermaid-diagram {
+  background: var(--nl-navy);
+  border-color: var(--nl-blue);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .ts-timeline::before {
+  background: var(--nl-blue);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .ts-timeline-item--current::before {
+  box-shadow: 0 0 0 4px rgba(0, 207, 255, 0.22);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .ts-timeline-card {
+  background: var(--nl-navy);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .ts-timeline-title,
+body.theme-typesafe.ts-paper.nl-space .post-content .ts-timeline-tag--research {
+  color: var(--nl-text);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .ts-timeline-tag--closed {
+  color: var(--nl-text);
+  background: var(--nl-navy);
+  border-color: var(--nl-blue);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .ts-timeline-tag--open {
+  color: var(--nl-bg);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .mem-box {
+  background: var(--nl-navy);
+  border-color: var(--nl-blue);
+  box-shadow: 6px 6px 0 var(--nl-blue);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .mem-box table {
+  background: var(--nl-bg);
+}
+
+/* .nl-danger / .nl-safe placards keep their fixed hazard colours on purpose:
+   they are warnings and read the same on any background. The light text
+   rules above outrank blog-paper's fixed placard text, so restore it here. */
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-danger,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-danger p,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-danger li,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-danger em,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-danger strong,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-danger h3,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-danger h4,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-danger a,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-danger .nl-source {
+  color: #111111;
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-danger a {
+  text-decoration-color: #c8102e;
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-danger .nl-source {
+  border-bottom-color: #c8102e;
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-danger a:hover,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-danger .nl-source:hover {
+  color: #c8102e;
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-safe,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-safe p,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-safe li,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-safe em,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-safe strong,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-safe h3,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-safe h4,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-safe a,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-safe .nl-source {
+  color: #10301f;
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-safe a {
+  text-decoration-color: #028a4b;
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-danger li::marker {
+  color: #c8102e;
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-safe li::marker {
+  color: #028a4b;
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-danger hr {
+  border-color: rgba(17, 17, 17, 0.25);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-safe hr {
+  border-color: rgba(16, 48, 31, 0.25);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-danger .nl-danger-label,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-safe .nl-safe-label {
+  color: #ffffff;
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-danger h3,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-danger h4 {
+  border-color: #c8102e;
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-safe h3,
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-safe h4 {
+  border-color: #028a4b;
+}
