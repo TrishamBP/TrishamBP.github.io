@@ -157,3 +157,17 @@ Moonshot is also releasing **Kimi K3.1 Pro Highspeed**, which runs **2–3× fas
 **NVIDIA Kumo** is a family of open models, libraries, and tools for making predictions from tabular, relational, and time-series data. Kumo can be used to forecast outcomes, score risk, detect anomalies, and generate recommendations—without building and maintaining a separate machine learning model for every task.
 
 <a class="nl-read-btn" href="/artificial%20intelligence/2026/10/30/nvidia-kumo-foundation-models-structured-data/">Read the blog &rarr;</a>
+
+### 4. Echo-3 by SpAItial: 3D World Reconstruction From an iPhone
+
+**SpAItial** released **Echo-3** today, which it calls the best model in the world at **3D world reconstruction**.
+
+Believe it or not, its worlds are generated from just an **iPhone capture**, with no specialized capture hardware needed.
+
+You scan a space with an iPhone and Echo-3 reconstructs it in super high quality while keeping it **metrically consistent**.
+
+Think of the possibilities. You can try it today with the SpAItial app or reach out for API access.
+
+![Echo-3 by SpAItial: the Echo-3 wordmark filled with a mosaic of 3D world reconstructions captured on an iPhone, on a black background](/assets/newsletter/weekly-tech-brew-2026-11-02/echo-3-spaitial-3d-world-reconstruction.jpg){: .nl-hero}
+
+<a class="nl-source" href="https://spaitial.ai/echo-3" target="_blank" rel="noopener">Try Echo-3 on SpAItial &rarr;</a>
