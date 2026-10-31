@@ -4,11 +4,10 @@ title: "The Weekly Tech Brew"
 subtitle: "by Trisham Patil"
 date: 2026-11-02
 author: Trisham Patil
-# Fill these in once the stories are written:
-# email_subject: "The Weekly Tech Brew #4: ..."
-# seo_title: "... | The Weekly Tech Brew"
-# description: "150-160 characters naming this issue's top stories."
-# keywords: "..."
+email_subject: "The Weekly Tech Brew #4: $6.3B Binance Hack, GPT-6.1 Terra, Gemini 4 Carbon, Groq LPU & More"
+seo_title: "Binance Hack, GPT-6.1, Gemini 4 Carbon & Groq LPU Inference | The Weekly Tech Brew #4"
+description: "Weekly Tech Brew #4: the $6.3B Binance hack, GPT-6.1 Terra, Gemini 4 Carbon, Groq's LPU for fast LLM inference, AKV cache engineering and new AI papers."
+keywords: "AI newsletter, Binance hack, GPT-6.1 Terra, Gemini 4 Carbon, Groq LPU, LLM inference, KV cache engineering, AKV, PINNs, AI research papers, Ballon d'Or 2026"
 ---
 
 ## The World Brief
@@ -116,6 +115,53 @@ Amid reports of a possible Qatari campaign to influence the vote, the CEC reject
 The vote came four years after a three-year stretch in which Israel went to the polls five times, the first four failing to produce a stable government.
 
 *Source: The Times of Israel*
+
+</div>
+</details>
+
+## Compute Among the Stars
+
+<p class="nl-section-kicker">Space Computing &middot; Google &middot; TPUs &middot; Project Suncatcher</p>
+
+### Google's Project Suncatcher Gets Its First AI Response From a TPU in Orbit
+
+Google's **Project Suncatcher** has generated its **first AI response from an orbital TPU**, bringing space-based AI data centers one step closer to reality.
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+![Google Project Suncatcher orbital TPU: illustration of a satellite above Earth beside a chat panel showing the prompt "Write a haiku about being in space" and the haiku generated from orbit](/assets/newsletter/weekly-tech-brew-2026-11-02/google-project-suncatcher-orbital-tpu-gemma-haiku.jpg){: .nl-hero}
+
+*The first prompt sent to a TPU in orbit, and the haiku it sent back. (Illustrative image)*
+
+#### From Launch to "Hello World"
+
+Google launched the **Project Suncatcher prototype satellite on October 1**. It is the first step in a long-term research moonshot: finding out whether AI compute can be powered in space.
+
+The following weeks went into commissioning. The team powered up the host and **TPU trays** and ran early machine learning tests to make sure the hardware survived the trip.
+
+This week came the **"Hello World" moment**: the first AI response ever produced by a **data-center-class TPU in orbit**.
+
+#### A Haiku From Space
+
+During a ground-station pass, the team sent a prompt up to the onboard **Gemma 4** open model, asking it to write a haiku about being in space. As the satellite flew over **Svalbard, Norway**, the answer came back down:
+
+> Blue marble below<br>
+> Data streams in silent grace<br>
+> Starlight feeds my core. ✨
+
+The team then tried space-themed limericks and prompts that asked the model to report the technical status of the payload systems.
+
+#### What Comes Next for Orbital TPUs
+
+- **Stress tests:** the next round checks how the TPUs hold up under **thermal stress and radiation exposure** in orbit.
+- **Reliability first:** proving the chips can run workloads reliably in space is the gate for everything after it.
+- **2027:** the next milestone is a pair of **twin interconnected satellites**.
+
+Why it matters: data centers on Earth are increasingly limited by power and cooling. A satellite in the right orbit gets near-constant sunlight, so if TPUs can run reliably up there, **solar-powered AI compute in space** stops being science fiction and becomes an engineering problem.
+
+The chips have earned their space wings. It's an early win on a very long road.
 
 </div>
 </details>
