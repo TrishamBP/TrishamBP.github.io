@@ -646,14 +646,14 @@ hero_text: true
       </div>
       {%- assign hf_total = 0 -%}
       {%- for m in site.data.hf_models -%}
-        {%- assign hf_total = hf_total | plus: m.downloads -%}
+        {%- assign hf_total = hf_total | plus: m.downloads | plus: m.extra_downloads -%}
       {%- endfor %}
       <p class="hf-total">Total downloads: <b data-hf-total>{{ hf_total }}</b></p>
       <div class="hf-model-cards">
         {%- for m in site.data.hf_models %}
         <a class="hf-model-card" href="https://huggingface.co/{{ m.id }}" target="_blank" rel="noopener noreferrer">
           <h4>{{ m.id }}</h4>
-          <p>{{ m.task }}{% if m.params %} | {{ m.params }}{% endif %} | Downloads: <span data-hf-downloads="{{ m.id }}" data-count="{{ m.downloads }}">{{ m.downloads }}</span></p>
+          <p>{{ m.task }}{% if m.params %} | {{ m.params }}{% endif %} | Downloads: <span data-hf-downloads="{{ m.id }}" data-extra="{{ m.extra_downloads | default: 0 }}" data-count="{{ m.downloads | plus: m.extra_downloads }}">{{ m.downloads | plus: m.extra_downloads }}</span></p>
         </a>
         {%- endfor %}
       </div>

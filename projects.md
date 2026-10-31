@@ -118,7 +118,7 @@ tabs:
           <p class="tx-summary">// {{ m.summary }}</p>
           <p class="tx-detail"><b>Training:</b> {{ m.training }}{% if m.base %} on {{ m.base }}{% endif %}{% if m.params %} &middot; {{ m.params }}{% endif %}</p>
           <p class="tx-detail">{{ m.detail }}</p>
-          <p class="tx-detail"><b>Downloads:</b> <span data-hf-downloads="{{ m.id }}" data-count="{{ m.downloads }}">{{ m.downloads }}</span></p>
+          <p class="tx-detail"><b>Downloads:</b> <span data-hf-downloads="{{ m.id }}" data-extra="{{ m.extra_downloads | default: 0 }}" data-count="{{ m.downloads | plus: m.extra_downloads }}">{{ m.downloads | plus: m.extra_downloads }}</span></p>
           <ul class="tx-chips" aria-label="Model facts">
             {%- if m.released %}<li class="tx-chip--year">{{ m.released }}</li>{% endif %}
             <li>{{ m.task }}</li>

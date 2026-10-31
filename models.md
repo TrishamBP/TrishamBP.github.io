@@ -17,7 +17,7 @@ permalink: /models/
 {%- assign models = site.data.hf_models -%}
 {%- assign total_downloads = 0 -%}
 {%- for m in models -%}
-  {%- assign total_downloads = total_downloads | plus: m.downloads -%}
+  {%- assign total_downloads = total_downloads | plus: m.downloads | plus: m.extra_downloads -%}
 {%- endfor -%}
 
 <section class="content-section articles-section models-section" aria-labelledby="models-heading">
@@ -54,7 +54,7 @@ permalink: /models/
         <p class="article-preview">{{ m.summary }}</p>
         <p class="article-preview model-detail">{{ m.detail }}</p>
         <ul class="model-meta">
-          <li><span>Downloads</span><b data-hf-downloads="{{ m.id }}" data-count="{{ m.downloads }}">{{ m.downloads }}</b></li>
+          <li><span>Downloads</span><b data-hf-downloads="{{ m.id }}" data-extra="{{ m.extra_downloads | default: 0 }}" data-count="{{ m.downloads | plus: m.extra_downloads }}">{{ m.downloads | plus: m.extra_downloads }}</b></li>
           <li><span>Base</span>{{ m.base }}</li>
           <li><span>License</span>{{ m.license }}</li>
           <li><span>Released</span>{{ m.released }}</li>
