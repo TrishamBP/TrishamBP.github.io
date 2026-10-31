@@ -248,6 +248,22 @@ It is an **offline** model, not a real-time streaming ASR service, and it is rel
 
 <a class="nl-source" href="https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B" target="_blank" rel="noopener">Try Nemotron 3.5 Transcribe on Hugging Face &rarr;</a>
 
+## Tech Signals
+
+### Claude Apps
+
+- **Introducing Claude Duet (research preview).** Work with Claude as a proactive agent that surfaces what needs your attention, keeps working when you step away, and checks with you before it acts on your behalf. Join the waitlist, starting with US Pro and Max subscribers.
+- **Claude Security now scans continuously and tracks fixes (beta).** Keep up with your repositories as code changes and track findings until fixed. Claude Security learns from your team's context and connects to your tools. Admins for Claude Enterprise can enable this in the admin console. Claude Enterprise organizations receive up to $25,000 in usage credits to use on Claude Security for two months. The offer applies to usage through December 31, 2026. Terms apply.
+- **Build live dashboards and animate explainers with Claude (beta).** Turn data from tools like BigQuery, Databricks, Snowflake, and Salesforce into live dashboards and your ideas into animated explainers. Dashboards are on paid plans, and animated explainers are on Team and Enterprise.
+- **Claude now works with Google Docs, Sheets, and Slides (beta).** Work with Claude for Google Workspace in your open Docs, Sheets, and Slides files, and new connectors let Claude create and edit Google files without moving between tools. Available on paid Claude plans.
+
+### From Our Signals
+
+1. **Training Agents at the Frontier of AI Industry:** how enterprise RL, sandboxed environments and verifier rewards turn LLM agents into measurable business wins. <a href="/signals/training-agents-frontier-ai-industry/">Read the signal &rarr;</a>
+2. **The Sleep Framework for LLMs:** a sleep phase for continual learning that lets models consolidate new facts into their weights without catastrophic forgetting. <a href="/signals/sleep-framework-for-llms/">Read the signal &rarr;</a>
+3. **DeepInfer by DeepSeek:** the open-source inference engine behind DeepSeek-V4.1-Flash, and what its Apache-2.0 release leaves out. <a href="/signals/deepinfer-deepseek-inference-framework/">Read the signal &rarr;</a>
+4. **Accelerating Mamba-2 With NVIDIA CUDA Tile:** how Mamba-2's SSD chunked scan maps to GPU tiles for faster forward-pass kernels. <a href="/signals/accelerating-mamba-2-forward-pass-kernels-nvidia-cuda-tile/">Read the signal &rarr;</a>
+
 ## Extra Time
 
 <p class="nl-section-kicker">Football &middot; Sports &middot; Records &middot; Achievements</p>
