@@ -247,3 +247,80 @@ It is an **offline** model, not a real-time streaming ASR service, and it is rel
 ![NVIDIA Nemotron 3.5 Transcribe speech recognition model: diagram of one speech LLM turning audio and an instruction into verbatim, written, contextual, speaker-attributed, rich and translated transcripts with word timestamps](/assets/newsletter/weekly-tech-brew-2026-11-02/nvidia-nemotron-3-5-transcribe-speech-recognition.png){: .nl-hero}
 
 <a class="nl-source" href="https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B" target="_blank" rel="noopener">Try Nemotron 3.5 Transcribe on Hugging Face &rarr;</a>
+
+## Extra Time
+
+<p class="nl-section-kicker">Football &middot; Sports &middot; Records &middot; Achievements</p>
+
+The stories, performances, and moments making sporting history.
+
+### Harry Kane Wins Ballon d'Or 2026
+
+![Harry Kane wins the Ballon d'Or 2026: the Bayern Munich and England striker smiles as he holds up the golden ball trophy on stage](/assets/newsletter/weekly-tech-brew-2026-11-02/harry-kane-ballon-dor-2026.png){: .nl-hero}
+
+**Harry Kane** edged out **Kylian Mbappé** for the 2026 Men's Ballon d'Or by just **28 points**, making it one of the closest votes in the award's history.
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+#### A First for England in 25 Years
+
+Bayern Munich striker Kane became the **first English winner of the prize in 25 years** on Monday, as Bayern celebrated their first Ballon d'Or winner in 45 years, and the first for any player at a German club since 1996.
+
+The England international scored **73 goals** for club and country last season, when he was Europe's top scorer, and his six goals at the World Cup helped his country to a third-place finish.
+
+Mbappé, meanwhile, struck 42 goals for Real Madrid last season before becoming the **top scorer in World Cup history** this summer with 22 goals for France, 10 of them scored at this year's edition.
+
+#### How Close Was the Vote?
+
+The full voting breakdown, published by French outlet L'Equipe on Friday ahead of award organizers France Football's print version on Saturday, showed just how close the race was between the two strikers.
+
+Kane garnered **40 first-place votes** for a total of **1,055 points**, compared to 23 first-place votes for runner-up Mbappé and a total of **1,027 points**. That made it the **fourth-closest vote** in the award's 70-year history, according to L'Equipe, and the closest since Lionel Messi beat Virgil van Dijk by seven points in 2019.
+
+The prize is decided by a jury of 100 international journalists. The points system awards 15 points for first place, 12 for second, 10 for third, then 8, 7, 5, 4, 3, 2, and 1 point for the rest of the top 10.
+
+Third-place **Lamine Yamal** was a further 146 points back of Mbappé, and took 13 first-place votes, after a standout year that saw the 19-year-old help Barcelona win the LaLiga title before playing a key part in Spain's World Cup triumph.
+
+There was a split in the votes for the World Cup champions, with Yamal's teammate, **Rodri**, in fourth with 726 points and 10 first-place votes.
+
+#### Women's Ballon d'Or: A Third Win for Alexia Putellas
+
+There was a more decisive outcome for the Women's Ballon d'Or award. **Alexia Putellas** (618 points) won the award for a **third time** by beating her former Barcelona teammate Ewa Pajor (532 points) by 86 points. Putellas, now playing for London City Lionesses, was selected first by 28 of the 50 judges.
+
+Manchester City's Khadija Shaw was a distant third with 344 points.
+
+#### Full Men's Ballon d'Or 2026 Results
+
+1. **Harry Kane** (England, Bayern Munich): 1,055 points
+2. **Kylian Mbappé** (France, Real Madrid): 1,027 points
+3. **Lamine Yamal** (Spain, FC Barcelona): 881 points
+4. Rodri (Spain, Manchester City, Barcelona): 726 points
+5. Lionel Messi (Argentina, Inter Miami): 612 points
+6. Khvicha Kvaratskhelia (Georgia, Paris Saint-Germain): 541 points
+7. Ousmane Dembélé (France, Paris Saint-Germain): 418 points
+8. Erling Haaland (Norway, Manchester City): 378 points
+9. Michael Olise (France, Bayern Munich): 296 points
+10. Fabián Ruiz (Spain, Paris Saint-Germain): 201 points
+11. Jude Bellingham (England, Real Madrid): 107 points
+12. Pau Cubarsí (Spain, FC Barcelona): 101 points
+13. Achraf Hakimi (Morocco, Paris Saint-Germain): 65 points
+14. Vitinha (Portugal, Paris Saint-Germain): 59 points
+15. Declan Rice (England, Arsenal): 57 points
+16. Ferran Torres (Spain, FC Barcelona, Paris Saint-Germain since August 2026): 44 points
+17. Vinícius Júnior (Brazil, Real Madrid): 26 points
+18. Marc Cucurella (Spain, Real Madrid): 16 points
+19. João Neves (Portugal, Paris Saint-Germain): 15 points
+20. Willian Pacho (Ecuador, Paris Saint-Germain): 12 points
+21. Gabriel (Brazil, Arsenal): 11 points
+22. Lautaro Martínez (Argentina, Inter Milan): 11 points
+23. Nuno Mendes (Portugal, Paris Saint-Germain): 8 points
+24. Luis Díaz (Colombia, Bayern Munich): 8 points
+25. Marquinhos (Brazil, Paris Saint-Germain): 7 points
+26. Dayot Upamecano (France, Bayern Munich): 5 points
+27. Bruno Fernandes (Portugal, Manchester United): 5 points
+28. Julián Quiñones (Mexico, Al-Qadsiah): 4 points
+29. Sadio Mané (Senegal, Al Nassr) and William Saliba (France, Arsenal): 2 points each
+
+</div>
+</details>
