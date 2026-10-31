@@ -177,6 +177,15 @@
     the module script is deferred by default and falls back to the static
     schematic in _includes/neural-core-hero.html if anything fails.
   {%- endcomment -%}
+  {%- comment -%}
+    Text-only homepage hero (`hero_text: true`): the 3D hero's styles and a
+    small script, no Three.js.
+  {%- endcomment -%}
+  {%- if page.hero_text %}
+  <link rel="stylesheet" href="{{ '/css/neural-core.css' | relative_url }}" />
+  <link rel="stylesheet" href="{{ '/css/home-chapters.css' | relative_url }}" />
+  <script defer src="{{ '/assets/js/hero-text.js' | relative_url }}"></script>
+  {%- endif %}
   {%- if page.neural_core %}
   <link rel="stylesheet" href="{{ '/css/neural-core.css' | relative_url }}" />
   <link rel="stylesheet" href="{{ '/css/home-chapters.css' | relative_url }}" />

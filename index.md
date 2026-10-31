@@ -1,10 +1,12 @@
 ---
 layout: default
 title: Home
-neural_core: true
+# 3D Neural Compute Core hero is switched off (user's choice). To bring it
+# back: set `neural_core: true`, drop `hero_text`, and include neural-core-hero.html.
+hero_text: true
 ---
 
-{% include neural-core-hero.html %}
+{% include hero-text.html %}
 
 <section class="hero" id="engineer" aria-labelledby="engineer-name">
   <p class="home-kicker"><b>02</b> Who builds it</p>

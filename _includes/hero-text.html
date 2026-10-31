@@ -1,0 +1,35 @@
+{%- comment -%}
+  Homepage hero, text only (`hero_text: true` in index.md). Replaces the 3D
+  Neural Compute Core (_includes/neural-core-hero.html, still in the repo and
+  re-enabled with `neural_core: true`). Same id, classes and type styles as
+  that hero, so css/neural-core.css and css/home-chapters.css style it.
+
+  assets/js/hero-text.js runs the intro (name → tagline → scroll cue) and the
+  scroll story: the title fades, then "02 Who builds it" arrives and
+  ENGINEER → BUILDER → RESEARCHER → POLYMATH reveal one by one, before the
+  profile section in index.md takes over.
+  Without JS the title block simply shows on the black stage.
+{%- endcomment -%}
+<section id="neural-core" class="nc-hero nc-textonly" aria-labelledby="nc-hero-name">
+  <div class="nc-stage">
+    <header class="nc-titleblock">
+      <p class="nc-kicker"><b>01</b> What I build</p>
+      <p class="nc-name" id="nc-hero-name">Intelligent Systems</p>
+      <p class="nc-keywords"><span>Inference</span><span>Memory</span><span>Retrieval</span><span>Orchestration</span></p>
+      <p class="nc-lede">Engineering intelligent systems from model inference to production infrastructure.</p>
+    </header>
+    <div class="nc-cta">
+      <span class="nc-scroll" aria-hidden="true"><span>Scroll</span><i></i></span>
+    </div>
+    <div class="nc-handoff">
+      <p class="nc-handoff-label"><b>02</b> Who builds it</p>
+      <p class="nc-handoff-title">
+        <span style="--i: 0">Engineer</span>
+        <span style="--i: 1">Builder</span>
+        <span style="--i: 2">Researcher</span>
+        <span style="--i: 3">Polymath</span>
+      </p>
+    </div>
+  </div>
+</section>
+<span id="nc-end" class="nc-end" aria-hidden="true"></span>

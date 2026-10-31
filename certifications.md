@@ -9,10 +9,10 @@ image: /assets/images/certifications/UC-8dd47b2a-48c3-408f-833e-01e87bc1bff6.jpg
 ---
 
 {%- comment -%}
-  Neon grid skin (css/certs-neon.css + assets/js/certs-neon.js): the canvas
-  below is a fixed full-screen backdrop with light racers on a grid floor.
+  Neon grid skin (css/certs-neon.css). The animated light-racer canvas
+  backdrop (assets/js/certs-neon.js) was removed at the user's request:
+  the page shows only the certificates now.
 {%- endcomment -%}
-<canvas class="gn-canvas" aria-hidden="true"></canvas>
 
 <section class="content-section certs-section" aria-labelledby="certs-heading">
   <p class="gn-eyebrow"><span class="gn-dot" aria-hidden="true"></span>{{ site.data.certifications.size }} Credentials &middot; Verified &middot; Online</p>
@@ -22,9 +22,6 @@ image: /assets/images/certifications/UC-8dd47b2a-48c3-408f-833e-01e87bc1bff6.jpg
     AI agents and MCP, RAG, deep learning, and natural language processing,
     listed newest first.
   </p>
-
-  {%- comment -%} Open floor so the light racers are visible before the cards. {%- endcomment -%}
-  <div class="gn-stage" aria-hidden="true"><span>Scroll</span></div>
 
   <div class="cert-grid" aria-label="Certifications">
     {% for c in site.data.certifications %}
@@ -81,4 +78,3 @@ image: /assets/images/certifications/UC-8dd47b2a-48c3-408f-833e-01e87bc1bff6.jpg
   </div>
 </section>
 
-<script src="{{ '/assets/js/certs-neon.js' | relative_url }}" defer></script>

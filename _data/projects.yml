@@ -17,6 +17,59 @@
 # Face "Model training" tab (built from _data/hf_models.yml) are set in
 # projects.md.
 
+- name: Gaius Networks (Flipped AI) — AI Systems Engineering
+  group: Live products
+  wide: true
+  summary: >-
+    Full Stack / Forward-Deployed AI Engineer. Architecting and engineering
+    production-grade AI systems, with a focus on LLM inference infrastructure,
+    retrieval-augmented generation (RAG), agentic workflows and distributed
+    backend systems.
+  stack: [Python, FastAPI, LangGraph, vLLM, SGLang, TensorRT-LLM, FlashInfer, RabbitMQ, AWS]
+  details:
+    - label: LLM Inference Engineering
+      text: >-
+        Working on LLM serving and inference optimization, including model
+        deployment, KV-cache management, batching strategies, latency
+        optimization, throughput and efficient GPU utilization. Exploring
+        inference frameworks and architectures such as vLLM, SGLang,
+        TensorRT-LLM and FlashInfer.
+    - label: RAG Architecture
+      text: >-
+        Designing advanced retrieval pipelines involving embedding generation,
+        semantic chunking, vector search, metadata filtering, hybrid retrieval,
+        reranking and context compression to improve retrieval relevance and
+        response quality.
+    - label: Agentic LLM Workflows
+      text: >-
+        Building multi-step LLM workflows and autonomous agents using LangGraph,
+        with structured execution, state management, tool calling, conditional
+        routing, retries, validation and human-in-the-loop checkpoints.
+    - label: Distributed Backend Systems
+      text: >-
+        Engineering asynchronous, event-driven backend architectures using
+        Python, FastAPI, AWS services and message brokers. Designing decoupled
+        services that support concurrent workloads, fault isolation, reliable
+        task execution and horizontal scalability.
+    - label: Messaging & Communication Infrastructure
+      text: >-
+        Implementing asynchronous communication patterns using RabbitMQ and
+        message queues, including producer-consumer architectures, task
+        distribution, message acknowledgement, retries and failure handling.
+    - label: Production Systems Engineering
+      text: >-
+        Integrating AI services with databases, object storage, APIs and cloud
+        infrastructure. Emphasizing observability, tracing, performance
+        monitoring, reliability, secure deployment and operational efficiency.
+    - label: End-to-End Systems Ownership
+      text: >-
+        Bridging research and production engineering by translating emerging AI
+        capabilities into deployable systems, making architectural decisions
+        across the inference, orchestration, retrieval and backend layers.
+  links:
+    - label: Visit site
+      url: https://flipped.ai/
+
 - name: Dhokla House
   group: Live products
   year: "2022–2023"

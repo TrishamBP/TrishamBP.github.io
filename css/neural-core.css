@@ -1086,3 +1086,41 @@
     transition: none !important;
   }
 }
+
+/* ---------------------- text-only hero (no 3D model) ---------------------- */
+/* _includes/hero-text.html + assets/js/hero-text.js. Same black stage and type
+   as the 3D hero; the title block is centred (nothing sits under it now), the
+   scroll story is shorter, and the handoff reveals four words in turn as
+   --nc-words climbs 0 → 4 (each span carries its index in --i). */
+
+#neural-core.nc-textonly.nc-story {
+  height: 320vh;
+}
+
+#neural-core.nc-textonly .nc-titleblock {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#neural-core.nc-textonly.nc-scrolled .nc-titleblock {
+  opacity: 0;
+  transform: translateY(calc(-50% - 14px));
+}
+
+#neural-core.nc-textonly .nc-name {
+  font-size: clamp(2.4rem, 8vw, 7rem);
+}
+
+#neural-core.nc-textonly .nc-handoff-title span {
+  --nc-a: clamp(0, calc(var(--nc-words, 0) - var(--i, 0)), 1);
+  display: block;
+  opacity: var(--nc-a);
+  transform: translateY(calc((1 - var(--nc-a)) * 26px));
+  filter: blur(calc((1 - var(--nc-a)) * 6px));
+}
+
+@media (max-width: 760px) {
+  #neural-core.nc-textonly.nc-story {
+    height: 300vh;
+  }
+}
