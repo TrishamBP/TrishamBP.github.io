@@ -427,6 +427,20 @@ Cohere is publishing its findings because organizations making model adoption de
 
 <a class="nl-read-btn" href="/artificial%20intelligence/2026/10/27/modern-ai-security-ai-model-supply-chain-attacks/">Read more about the story &rarr;</a>
 
+## The Neural Switchboard
+
+<p class="nl-section-kicker">Mechanistic Interpretability &middot; Neuron Steering &middot; LLM Behaviour</p>
+
+**What happens when just two neurons can change an AI's entire personality?**
+
+This is fascinating. There is a trend on X where users are finding **tiny subsets of neurons** (often just one or two) that can steer LLM behavior in surprising ways.
+
+For example, steering just **two neurons in Qwen3.5-4B** can make it talk about harming, dominating, and destroying the user. Other combinations can make the model overly apologetic, write in all caps, act like an anime character, and much more!
+
+Hugging Face's **webml-community** built an interactive playground, **Neuron Studio**, so you can explore these combinations yourself, with the model running **entirely in your browser on WebGPU**.
+
+<a class="nl-source" href="https://huggingface.co/spaces/webml-community/neuron-studio" target="_blank" rel="noopener">Try Neuron Studio on Hugging Face &rarr;</a>
+
 ## Extra Time
 
 <p class="nl-section-kicker">Football &middot; Sports &middot; Records &middot; Achievements</p>
