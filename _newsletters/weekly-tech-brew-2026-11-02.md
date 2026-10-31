@@ -152,13 +152,33 @@ Moonshot is also releasing **Kimi K3.1 Pro Highspeed**, which runs **2–3× fas
 
 <a class="nl-read-btn" href="/artificial%20intelligence/2026/10/29/kimi-k3-1-pro/">Read the blog &rarr;</a>
 
-### 3. NVIDIA Kumo - Foundation Models for Structured Data
+### 3. Gemini 4 Carbon: Google's Next Frontier Model
+
+**Google** introduced **Gemini 4 Carbon**, its next frontier model, following **Argon's** release just two weeks ago.
+
+Carbon shows the pace at which Google is pushing the frontier: it ranks **#1** on the recently updated **v5.0 of the Artificial Analysis Intelligence Index**, at **59**.
+
+It also leads across key **cybersecurity evaluations**:
+
+- **88.2%** on SEC-bench Pro for finding vulnerabilities
+- **54.8%** on ExploitGym for exploitation
+- **71.0%** on CWE-bench for patching
+
+Google reports significant improvements in long-horizon tasks even compared to Argon, along with strengthened frontier safeguards.
+
+As with Argon, the rollout will be gradual and responsible. Some trusted cyber defenders get access starting this week, and access will then expand to more partners through the **Fairwind Program**, ahead of wider availability soon.
+
+![Gemini 4 Carbon by Google: launch banner with a glowing crystal on a blue background and the text Our next frontier model](/assets/newsletter/weekly-tech-brew-2026-11-02/gemini-4-carbon-google-frontier-model.png){: .nl-hero}
+
+<a class="nl-source" href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/" target="_blank" rel="noopener">Read more on the Google blog &rarr;</a>
+
+### 4. NVIDIA Kumo - Foundation Models for Structured Data
 
 **NVIDIA Kumo** is a family of open models, libraries, and tools for making predictions from tabular, relational, and time-series data. Kumo can be used to forecast outcomes, score risk, detect anomalies, and generate recommendations—without building and maintaining a separate machine learning model for every task.
 
 <a class="nl-read-btn" href="/artificial%20intelligence/2026/10/30/nvidia-kumo-foundation-models-structured-data/">Read the blog &rarr;</a>
 
-### 4. Echo-3 by SpAItial: 3D World Reconstruction From an iPhone
+### 5. Echo-3 by SpAItial: 3D World Reconstruction From an iPhone
 
 **SpAItial** released **Echo-3** today, which it calls the best model in the world at **3D world reconstruction**.
 
@@ -171,3 +191,36 @@ Think of the possibilities. You can try it today with the SpAItial app or reach 
 ![Echo-3 by SpAItial: the Echo-3 wordmark filled with a mosaic of 3D world reconstructions captured on an iPhone, on a black background](/assets/newsletter/weekly-tech-brew-2026-11-02/echo-3-spaitial-3d-world-reconstruction.jpg){: .nl-hero}
 
 <a class="nl-source" href="https://spaitial.ai/echo-3" target="_blank" rel="noopener">Try Echo-3 on SpAItial &rarr;</a>
+
+### 6. oruk-loop-153M: A Looped Speech Recognition Model With 13× Fewer Parameters
+
+**Oruk** replaced 52 speech-model layers with two reusable blocks, and is releasing **oruk-loop-153M** with open weights.
+
+The encoder runs one shared block **24 times**. The decoder runs another **28 times**. Each pass builds on the last while reusing the same weights. Small adapters customize each pass.
+
+That gives **153 million parameters** compared with about **2.04 billion** in the Qwen3-ASR teacher: roughly **13× fewer parameters** to store. Looping changes how much of the model has to be stored while keeping the repeated computation.
+
+**The win is storage.** Compute per token stays close to the teacher's, and default merged decoding uses about as much GPU memory as the teacher.
+
+The weights ship alongside inference code and a model card with the training recipe and evaluation limits. The benchmark results use checkpoints selected on those same test sets, and performance varies across domains.
+
+![oruk-loop-153M looped speech recognition model: Open ASR Leaderboard chart of word error rate against parameter count, showing 0.52 lower WER at the same size and 1.7x fewer parameters at the same accuracy](/assets/newsletter/weekly-tech-brew-2026-11-02/oruk-loop-153m-looped-speech-recognition-model.jpg){: .nl-hero}
+
+<a class="nl-source" href="https://huggingface.co/oruk/oruk-loop-153M" target="_blank" rel="noopener">Try oruk-loop-153M on Hugging Face &rarr;</a>
+
+### 7. Ollama Speech Generation: Phonon by Gradium
+
+**Local AI is learning to speak!** Ollama has officially introduced speech generation, starting with **Phonon by Gradium**.
+
+Why is this interesting for developers?
+
+- ⚡ **Lightweight models**, starting at 31M parameters
+- 🔒 **Local speech generation** on supported hardware
+- 🔊 **Streaming audio** as text is generated
+- 🌍 **Five languages**: English, French, German, Spanish and Portuguese
+
+Imagine combining a local LLM with speech generation to build voice-enabled AI assistants without relying on a separate cloud TTS API.
+
+![Ollama speech generation with Phonon by Gradium: the black and white Ollama llama logo](/assets/newsletter/weekly-tech-brew-2026-11-02/ollama-phonon-gradium-speech-generation.png){: .nl-hero}
+
+<a class="nl-source" href="https://ollama.com/library/phonon" target="_blank" rel="noopener">Try Phonon on Ollama &rarr;</a>
