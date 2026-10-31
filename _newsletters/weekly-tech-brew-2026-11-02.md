@@ -441,6 +441,28 @@ Hugging Face's **webml-community** built an interactive playground, **Neuron Stu
 
 <a class="nl-source" href="https://huggingface.co/spaces/webml-community/neuron-studio" target="_blank" rel="noopener">Try Neuron Studio on Hugging Face &rarr;</a>
 
+## The AI Inference Landscape
+
+Most people are focused on **training**: SFT, RL and fine-tuning. But **serving the model to millions of users is a different ball game**.
+
+![The AI inference landscape 2026: logos of AI model providers, inference infrastructure and APIs, GPU cloud and compute, inference engines and frameworks, hardware and AI accelerators, model optimization, edge and distributed inference, and monitoring and observability companies](/assets/newsletter/weekly-tech-brew-2026-11-02/ai-inference-landscape-2026.png){: .nl-hero style="max-width:570px;margin-left:auto;margin-right:auto"}
+
+#### Go Deeper: LLM Inference Engineering Implementations
+
+1. **<a href="/engineering/vllm-pagedattention-efficient-memory-management-for-llm-serving/">vLLM & PagedAttention</a>:** efficient memory management for LLM serving
+2. **<a href="/engineering/sglang-radixattention-structured-lm-program-execution/">SGLang</a>:** RadixAttention and efficient execution of structured LM programs
+3. **<a href="/engineering/tensorrt-llm-inference-serving-engine-kv-cache-scheduling/">TensorRT-LLM</a>:** inside NVIDIA's serving engine: KV cache, paged attention and in-flight batching
+4. **<a href="/engineering/flashinfer-customizable-attention-engine-llm-inference-serving/">FlashInfer</a>:** a customizable, block-sparse attention engine for LLM serving
+5. **<a href="/engineering/distserve-prefill-decode-disaggregation-llm-serving/">DistServe</a>:** disaggregating prefill and decoding for goodput-optimized serving
+6. **<a href="/engineering/mooncake-kvcache-centric-architecture-for-serving-llm-chatbot/">Mooncake</a>:** a KVCache-centric architecture for serving LLM chatbots
+7. **<a href="/engineering/strata-hierarchical-context-caching-long-context-llm-serving/">Strata</a>:** hierarchical context caching for long-context LLM serving
+8. **<a href="/engineering/eagle-3-speculative-decoding-llm-inference-acceleration/">EAGLE-3</a>:** speculative decoding for LLM inference acceleration
+9. **<a href="/engineering/llm-int8-8-bit-matrix-multiplication-for-transformers-at-scale/">LLM.int8()</a>:** 8-bit inference for large transformers without losing accuracy
+10. **<a href="/engineering/turboquant-near-optimal-vector-quantization-kv-cache-simplemem/">TurboQuant</a>:** near-optimal low-bit vector quantization for KV cache compression
+11. **<a href="/engineering/deepseek-v41-flash-kv-cache-compression-agentic-llm-inference/">DeepSeek-V4.1-Flash</a>:** pushing KV cache compression to 890 bytes per token
+
+<a class="nl-read-btn" href="/engineering/inference-serving/">Browse all LLM Inference &amp; Serving implementations &rarr;</a>
+
 ## Extra Time
 
 <p class="nl-section-kicker">Football &middot; Sports &middot; Records &middot; Achievements</p>
