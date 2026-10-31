@@ -286,7 +286,7 @@ Cohere is publishing its findings because organizations making model adoption de
 
 The stories, performances, and moments making sporting history.
 
-### Harry Kane Wins Ballon d'Or 2026
+### 1. Harry Kane Wins Ballon d'Or 2026
 
 ![Harry Kane wins the Ballon d'Or 2026: the Bayern Munich and England striker kisses the golden ball trophy on stage](/assets/newsletter/weekly-tech-brew-2026-11-02/harry-kane-ballon-dor-2026.png){: .nl-hero}
 
@@ -353,6 +353,87 @@ Manchester City's Khadija Shaw was a distant third with 344 points.
 27. Bruno Fernandes (Portugal, Manchester United): 5 points
 28. Julián Quiñones (Mexico, Al-Qadsiah): 4 points
 29. Sadio Mané (Senegal, Al Nassr) and William Saliba (France, Arsenal): 2 points each
+
+</div>
+</details>
+
+### 2. Man City FFP: Huge Two-Part Punishment Deemed Too 'Excessive' as 'Expected' Sanction Revealed
+
+![Manchester City FFP 115 charges: a Manchester City corner flag with the club crest in front of empty stands at the Etihad Stadium](/assets/newsletter/weekly-tech-brew-2026-11-02/manchester-city-ffp-115-charges-sanctions.png){: .nl-hero}
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+The Manchester City sanctions story is about the **Premier League's long-running legal case against Manchester City FC**, involving alleged breaches of financial regulations.
+
+There are two separate issues that are often confused:
+
+1. **The 115 charges:** The Premier League accused Manchester City of breaching financial rules over multiple seasons.
+2. **The independent disciplinary process:** The case concerns whether those alleged breaches occurred and what consequences could follow.
+
+The important distinction is that being charged does not mean being found guilty. Let's look at the latest developments and what they mean for the club.
+
+#### Major Development: 29 September 2026
+
+**What actually happened?** On 29 September 2026, the Premier League published the independent commission's findings. Manchester City was **found guilty of all charges relating to serious financial breaches** over nine seasons (2009–10 to 2017–18).
+
+This is a significant development: the case has moved beyond allegations to an independent commission's findings.
+
+#### 1. What Was Manchester City Accused Of?
+
+The original investigation covered alleged financial misconduct between 2009 and 2018. The key findings included:
+
+| Allegation | What the commission found |
+|---|---|
+| Inflated sponsorship revenue | Sham commercial agreements with sponsors |
+| Misleading financial accounts | Financial information was misstated |
+| Concealed funding | Owner-backed funding was disguised as commercial revenue |
+| Financial fair play violations | Breaches of Premier League and UEFA spending limits |
+| Lack of cooperation | Three of four alleged cooperation breaches upheld |
+
+The commission found that the arrangements artificially inflated revenue and reduced costs by **more than £900 million**.
+
+#### 2. What Happened to the 115 Charges?
+
+The original case involved 115 alleged breaches. The independent commission upheld all charges relating to serious financial breaches and the majority of the charges concerning non-cooperation.
+
+This is not simply a case of late paperwork or accounting mistakes. The commission found **deliberate arrangements to circumvent financial rules**.
+
+#### 3. What Is Happening Now?
+
+1. **29 September 2026: Verdict published.** The independent commission published its findings against Manchester City.
+2. **2 October 2026: City appeals.** Manchester City formally appealed the commission's decision, disputing its findings.
+3. **October 2026: Sanctions process.** The Premier League is pursuing a separate sanctions hearing. The appeal and sanctions processes may proceed in parallel.
+4. **Next: Final consequences.** The appeal board must consider City's challenge. The sanctions decision will determine the sporting and financial consequences.
+
+#### 4. What Punishment Could Manchester City Face?
+
+These are **potential consequences, not confirmed punishments**.
+
+| Potential sanction | Impact |
+|---|---|
+| Financial penalty | Significant monetary fine |
+| Points deduction | Could affect league position |
+| Relegation | Could force City out of the Premier League |
+| Expulsion | Removal from the competition |
+| Historical sporting consequences | Potential disputes over titles and compensation |
+
+The commission has discretion over sanctions under Premier League rules.
+
+#### 5. Why Does This Matter Beyond Football?
+
+There are three major implications:
+
+- **Financial regulation:** It tests how effectively sporting organisations can enforce financial rules against powerful clubs.
+- **Football economics:** A points deduction or relegation could affect broadcasting revenue, sponsorships, player contracts and the wider Premier League ecosystem.
+- **Legal precedent:** The outcome could influence how football regulators investigate sponsorship arrangements and owner-linked funding.
+
+#### Further Reading
+
+- <a href="https://www.premierleague.com/en/news/4727779/premier-league-statement-manchester-city-fc" target="_blank" rel="noopener">Premier League statement: Manchester City FC (independent commission findings) &rarr;</a>
+- <a href="https://www.premierleague.com/en/news/4729207/premier-league-statement-manchester-city-fc-appeal-decision-of-independent-commission-02-october-2026" target="_blank" rel="noopener">Premier League statement: Manchester City FC appeal decision of independent commission, 2 October 2026 &rarr;</a>
+- <a href="https://www.skysports.com/football/news/13598124/manchester-city-charges-latest-on-sanctions-hearing-and-appeal-against-guilty-verdict" target="_blank" rel="noopener">Sky Sports: Manchester City charges, latest on sanctions hearing and appeal against guilty verdict &rarr;</a>
 
 </div>
 </details>
