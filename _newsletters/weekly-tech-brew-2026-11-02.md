@@ -345,6 +345,95 @@ It is an **offline** model, not a real-time streaming ASR service, and it is rel
 
 <a class="nl-source" href="https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B" target="_blank" rel="noopener">Try Nemotron 3.5 Transcribe on Hugging Face &rarr;</a>
 
+## Repo Radar
+
+<p class="nl-section-kicker">GitHub &middot; Open Source &middot; Developer Tools &middot; Experiments</p>
+
+Discovering interesting repositories, underrated projects, and tools worth starring.
+
+### 1. AKV (thu-nics/AKV): KV Cache Engineering for LLM Agents
+
+Agents pile up tool results turn after turn, and every one of them sits in the KV cache long after it stops being useful. What if the agent could tell the inference server which context to forget, without re-prefilling what it keeps?
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+**AKV** is the official implementation of the paper **"Cache Engineering for Agents"** from Tsinghua's NICS lab. It brings KV cache engineering to LLM agents in two parts:
+
+- **`akv.agent`** decides which messages to drop from the KV cache and when to compact the positions of the tokens it keeps.
+- **`akv.system`** is an **SGLang-based** inference server that carries out those operations through an OpenAI-compatible Chat Completions API.
+
+![AKV cache engineering for agents workflow: the agent harness builds a request, AKV Agent prepares cache operations, and AKV System runs model inference with Drop and Reposition before the harness handles the response and executes tools](/assets/newsletter/weekly-tech-brew-2026-11-02/akv-cache-engineering-for-agents-workflow.png){: .nl-hero}
+
+It works with two cache operations:
+
+- **Drop** removes the KV entries of selected messages without changing the positions of the tokens that remain.
+- **Reposition** compacts those positions to close the gaps.
+
+The KV entries you keep are reused after both operations, with **no re-prefill**.
+
+A `CachePolicy` adds the operations to a normal request payload. For example, `"drop_message": {"4": [2]}` means *after processing message 4, drop the KV cache of message 2*. You keep the full message history; the server applies the cuts. Policies can be **turn-based, token-based or model-driven**, and a `drop_context` tool even lets the agent decide for itself what to forget.
+
+Integrating it into an agent harness is one step: pass the final payload through `CachePolicy.process` before sending it. The examples serve **GPT-OSS-120B**, and the code is Apache-2.0.
+
+<a class="nl-source" href="https://github.com/thu-nics/AKV" target="_blank" rel="noopener">View thu-nics/AKV on GitHub &rarr;</a> &middot; <a class="nl-source" href="https://arxiv.org/pdf/2610.28577" target="_blank" rel="noopener">Read the paper &rarr;</a>
+
+</div>
+</details>
+
+### 2. AKV-Sem (TrishamBP/AKV-Sem): Semantic-Aware KV Cache Engineering for Agents
+
+When AKV drops context, it leaves no trace. The model can't tell a dead end from a finished step, so it may walk the same failed path again. AKV-Sem, my extension of AKV, makes dropped context leave a note behind.
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+![AKV-Sem semantic-aware KV cache engineering for agents: the AKV memory bot holding a labelled KV block next to its verdict ledger](/assets/newsletter/weekly-tech-brew-2026-11-02/akv-sem-semantic-kv-cache-agents-logo.png){: .nl-hero}
+
+The AKV System only appends, drops and repositions KV entries; it never reads the text. **AKV-Sem** adds that judgement on the agent side, where the model already decides what to drop:
+
+- **`SemanticDropTool`:** when the agent drops a result, it labels it **failed**, **irrelevant** or **resolved**, with a reason. That receipt stays in the history and is never dropped, so the note outlives the KV entries.
+- **`PathMemory`:** rebuilds a ledger of judged paths from the history. If the agent repeats a tool call it has already judged, it gets the recorded reason back instead of running the call again. Matching is exact on tool name and arguments, or fuzzy with an optional embedder.
+- **`SemanticSelection`:** a selector that drops model-labelled results and unwarned reruns of discarded paths, while sparing results an embedder finds relevant to the user's task.
+
+For example, after the agent labels `route-A3` as *failed: route-A3 was cancelled*, a later `read_record(route-A3)` returns that reason instead of re-running. A repeat is blocked only once by default, so if the model asks again on purpose, the call still goes through.
+
+Dropped KV entries are never restored. The gain is that **the model keeps the lesson and stops repeating dead ends**. The underlying AKV framework is by Tianyu Fu et al. and is used under Apache-2.0.
+
+<a class="nl-source" href="https://github.com/TrishamBP/AKV-Sem" target="_blank" rel="noopener">View TrishamBP/AKV-Sem on GitHub &rarr;</a>
+
+</div>
+</details>
+
+### 3. PINNeAPPle (PINNeAPPle-Labs/PINNeAPPle): Physics AI That Tells You When to Trust It
+
+A physics surrogate model can look perfect on its test set and quietly go wrong on the first new case, where there is no reference solution to check it against. PINNeAPPle is an open-source Physics AI toolkit built to catch that moment.
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+![PINNeAPPle physics AI toolkit for physics-informed neural networks: mosaic of a global weather forecast, OpenFOAM airliner and Ahmed body simulations, physics ensembles, MeshGraphNet, PINNs for electrodynamics and heat, and design apps](/assets/newsletter/weekly-tech-brew-2026-11-02/pinneapple-physics-ai-toolkit-pinns.jpg){: .nl-hero}
+
+**PINNeAPPle** brings **physics-informed neural networks (PINNs)**, neural operators (FNO, DeepONet), graph networks on meshes (MeshGraphNet) and classical solvers like **OpenFOAM** and **CalculiX** under one problem description, with one interface to compare them.
+
+What sets it apart is a **trust layer** that checks every prediction against the physics itself, without needing a reference solution:
+
+- **"This model just left its domain."** The model's PDE residual on each case flags a new regime on the **first** case, not after the errors pile up.
+- **"Why did it fail?"** Each model declares its assumptions (laminar, incompressible...), and a physics audit checks them on every case.
+- **"That was the sensor, not the process."** A physics check on the reading stops sensor noise from switching models.
+
+There is also **`pinneapple check`**, a linter for physics: a GitHub Action that fails a pull request when a simulation or model breaks conservation, its PDE, its boundary conditions or its training range.
+
+It works alongside DeepXDE and NVIDIA PhysicsNeMo rather than replacing them. Install it with `pip install pinneapple`, and the code is Apache-2.0.
+
+<a class="nl-source" href="https://github.com/PINNeAPPle-Labs/PINNeAPPle" target="_blank" rel="noopener">View PINNeAPPle-Labs/PINNeAPPle on GitHub &rarr;</a>
+
+</div>
+</details>
+
 ## Beyond The Abstract
 
 <p class="nl-section-kicker">Research Papers &middot; AI &middot; Systems &middot; Robotics &middot; Science</p>
