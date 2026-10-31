@@ -6,9 +6,10 @@
    to <body> and `_includes/head.html` loads this file, both on the same gate.
    Blog posts keep the light paper skin.
 
-     background  #000A23 midnight gradient (#01143D glow at the top,
-                 #00071C at the edges, faint vertical pinstripes)
-                 navy   #071A38 (cards: translucent #01143D)
+     background  #010101 near-black with a cool blue light bloom in the
+                 top-right corner (#C6D7F7 core → #15385A haze → black),
+                 from the user's reference image
+                 navy   #071A38 (cards: translucent navy over the black)
      blue        #1677FF     cyan   #00CFFF
      text        #F4F7FF     muted  #9BAFCB
 
@@ -27,10 +28,8 @@
    ========================================================================== */
 
 body.theme-typesafe.ts-paper.nl-space {
-  --nl-bg: #000a23;
-  --nl-glow: #01143d;
-  --nl-deep: #00071c;
-  --nl-card: rgba(1, 20, 61, 0.62);
+  --nl-bg: #010101;
+  --nl-card: rgba(7, 26, 56, 0.5);
   --nl-navy: #071a38;
   --nl-blue: #1677ff;
   --nl-cyan: #00cfff;
@@ -54,10 +53,10 @@ body.theme-typesafe.ts-paper.nl-space {
   --ts-accent: var(--nl-cyan);
 
   background-color: var(--nl-bg);
+  /* Corner light: a tight pale core, a wider deep-blue haze, then black. */
   background-image:
-    repeating-linear-gradient(90deg, rgba(120, 160, 255, 0.018) 0 1px, transparent 1px 7px),
-    radial-gradient(ellipse 90% 55% at 50% 0%, var(--nl-glow) 0%, rgba(1, 20, 61, 0) 70%),
-    radial-gradient(ellipse 120% 100% at 50% 40%, #000d2a 0%, var(--nl-bg) 45%, var(--nl-deep) 100%);
+    radial-gradient(circle at 100% 0%, rgba(198, 215, 247, 0.55) 0, rgba(198, 215, 247, 0) 7vmax),
+    radial-gradient(ellipse 60vmax 50vmax at 100% 0%, rgba(21, 56, 90, 0.9) 0%, rgba(17, 50, 82, 0.45) 35%, rgba(1, 1, 1, 0) 100%);
   background-attachment: fixed;
   color: var(--nl-text);
 }
@@ -72,7 +71,7 @@ body.theme-typesafe.ts-paper.nl-space ::selection {
    -------------------------------------------------------------------------- */
 
 body.theme-typesafe.ts-paper.nl-space .topnav {
-  background: rgba(0, 10, 35, 0.82);
+  background: rgba(1, 1, 1, 0.78);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border-bottom-color: var(--nl-navy);
@@ -163,7 +162,7 @@ body.theme-typesafe.ts-paper.nl-space .newsletter-grid .article-card {
 }
 
 body.theme-typesafe.ts-paper.nl-space .newsletter-grid .article-card:hover {
-  background: rgba(1, 20, 61, 0.85);
+  background: rgba(7, 26, 56, 0.8);
   border-color: var(--nl-cyan);
   box-shadow: 8px 8px 0 var(--nl-cyan);
 }
