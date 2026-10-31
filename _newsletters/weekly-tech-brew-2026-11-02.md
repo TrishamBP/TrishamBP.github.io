@@ -120,6 +120,103 @@ The vote came four years after a three-year stretch in which Israel went to the 
 </div>
 </details>
 
+## The Company Dossier
+
+<p class="nl-section-kicker">Startups &middot; AI Labs &middot; Founders &middot; Business Models &middot; Innovation</p>
+
+Inside the companies building the technologies and businesses shaping tomorrow.
+
+### Groq AI: The LPU Company Built for Fast LLM Inference
+
+![Groq AI logo: the white groq wordmark with a lightning bolt on an orange background, the AI inference company behind the LPU and GroqCloud](/assets/newsletter/weekly-tech-brew-2026-11-02/groq-ai-lpu-inference-infrastructure.png){: .nl-hero}
+
+**<a href="https://groq.com/" target="_blank" rel="noopener">Groq</a>** is an AI infrastructure company that specialises in making **Large Language Models (LLMs) run extremely fast**.
+
+Think of Groq as a company trying to solve one of the biggest bottlenecks in AI: **inference speed, latency and the cost of generating tokens**.
+
+It is **not** primarily an AI model developer like OpenAI or Anthropic. It builds the **hardware and infrastructure** that AI models run on.
+
+If you've followed our coverage of **vLLM, SGLang, PagedAttention, TensorRT-LLM, KV-cache management** and inference optimisation, Groq is worth studying from a different angle.
+
+Most of that work asks how to optimise inference on conventional GPU infrastructure. Groq asks a different question:
+
+> **What if we redesigned the processor itself around the execution characteristics of LLM inference?**
+
+That is a fascinating computer architecture problem.
+
+One distinction worth remembering: **Groq optimises the hardware and execution of inference; vLLM and SGLang primarily optimise how models are served and scheduled on supported hardware.** They operate at different layers of the stack.
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+#### 1. What Does Groq Actually Build?
+
+- **LPU (Language Processing Unit):** a specialised processor designed specifically for AI inference, particularly the sequential token generation of LLMs.
+- **GroqCloud:** a cloud platform that lets developers run supported models through APIs without owning or managing the hardware.
+- **Groq Infrastructure:** dedicated inference infrastructure, hardware management, model execution and enterprise controls.
+
+#### 2. Groq LPU vs NVIDIA GPU: What Makes It Different?
+
+This is where things get interesting from a computer architecture perspective.
+
+- **NVIDIA GPU:** general-purpose parallel computing, widely used for both training and inference.
+- **Groq LPU:** a purpose-built architecture focused on predictable, low-latency inference.
+
+| Feature | NVIDIA GPU | Groq LPU |
+|---|---|---|
+| Architecture | Parallel processing | Deterministic dataflow |
+| Memory | HBM and cache hierarchy | Large on-chip SRAM |
+| Scheduling | Dynamic execution | Compiler-planned execution |
+| Primary market | Training and inference | Inference |
+| Flexibility | Broad workloads | Specialised workloads |
+
+**Why SRAM matters.** GPUs typically fetch model weights from high-bandwidth memory (HBM). Groq uses large amounts of on-chip SRAM and a compiler-controlled execution pipeline to reduce data movement and scheduling overhead.
+
+Think of it like this:
+
+- **GPU:** multiple workers sharing resources and coordinating their work.
+- **LPU:** an assembly line where every worker knows exactly when the next component arrives and what to do with it.
+
+This deterministic architecture is central to Groq's approach.
+
+#### 3. Where Would You Use Groq?
+
+- Voice agents that need extremely low response latency
+- Real-time customer support agents
+- AI coding assistants
+- Multi-agent systems making frequent LLM calls
+- Real-time conversational applications
+- High-throughput LLM API services
+
+For example, in a **Twilio voice-agent** pipeline:
+
+1. **User speaks:** Twilio captures the audio input.
+2. **Speech-to-Text:** converts the audio into text.
+3. **GroqCloud API:** runs LLM inference on Groq infrastructure.
+4. **Text-to-Speech:** generates the spoken response.
+5. **User hears the response.**
+
+Faster LLM generation cuts the time spent waiting on the model, although STT, TTS, network and orchestration latency still matter.
+
+#### 4. What Is Happening With Groq and NVIDIA?
+
+An important strategic development: in **December 2025**, Groq entered a **non-exclusive technology licensing agreement with NVIDIA**. NVIDIA subsequently announced its next-generation **LPX platform**, which incorporates Groq inference technology.
+
+Groq also raised **$650 million in June 2026** to expand its inference cloud business.
+
+This is interesting because NVIDIA is not simply competing with specialised inference architectures; it is also **folding elements of that technology into its own infrastructure strategy**.
+
+#### 5. Where to Explore
+
+- <a href="https://groq.com/" target="_blank" rel="noopener">Groq: official website</a>
+- <a href="https://console.groq.com/" target="_blank" rel="noopener">GroqCloud developer console</a>
+- <a href="https://console.groq.com/docs/overview" target="_blank" rel="noopener">Groq API documentation</a>
+- <a href="https://groq.com/lpu-architecture" target="_blank" rel="noopener">How the LPU works</a>
+
+</div>
+</details>
+
 ## The Model Drop
 
 <p class="nl-section-kicker">New Models &middot; Open Weights &middot; API Releases &middot; Benchmarks</p>
@@ -248,7 +345,7 @@ It is an **offline** model, not a real-time streaming ASR service, and it is rel
 
 <a class="nl-source" href="https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B" target="_blank" rel="noopener">Try Nemotron 3.5 Transcribe on Hugging Face &rarr;</a>
 
-<h2 id="beyond-the-abstract" class="nl-icon-heading"><img class="nl-section-icon" src="/assets/newsletter/weekly-tech-brew-2026-10-26/beyond-the-abstract-telescope-icon.png" alt="Beyond The Abstract telescope icon: research papers section of The Weekly Tech Brew" width="44" height="48"> Beyond The Abstract</h2>
+## Beyond The Abstract
 
 <p class="nl-section-kicker">Research Papers &middot; AI &middot; Systems &middot; Robotics &middot; Science</p>
 
