@@ -125,3 +125,15 @@ The vote came four years after a three-year stretch in which Israel went to the 
 <p class="nl-section-kicker">New Models &middot; Open Weights &middot; API Releases &middot; Benchmarks</p>
 
 A weekly roundup of the latest models, capabilities, releases, and breakthroughs shaping the AI landscape.
+
+### 1. GPT-6.1 by OpenAI
+
+![GPT-6.1 Terra by OpenAI: launch banner with the words GPT-6.1 and Terra on either side of planet Earth seen from space](/assets/newsletter/weekly-tech-brew-2026-11-02/gpt-6-1-terra-openai.png){: .nl-hero}
+
+OpenAI introduced **GPT-6.1 Terra**, a fast, efficient model that combines detailed visual reasoning and precise computer use alongside clearer, more natural writing.
+
+A significant step up from **GPT-5.6 Terra**, it excels at the communication and computer-based tasks that fill the workday, from drafting proposals and interpreting technical drawings to filling out forms and editing videos.
+
+<a class="nl-source" href="https://deploymentsafety.openai.com/gpt-6-1-terra" target="_blank" rel="noopener">Read more on OpenAI &rarr;</a>
+
+<a class="nl-read-btn" href="/artificial%20intelligence/2026/10/28/gpt-6-1-openai/">Read the blog &rarr;</a>
