@@ -1186,6 +1186,16 @@ body.theme-typesafe.ts-paper .post-content .nl-safe .nl-safe-label {
   background: #028a4b;
 }
 
+/* Small caps strapline under a section heading (The World Brief, 2 Nov issue). */
+body.theme-typesafe.ts-paper .post-content p.nl-section-kicker {
+  margin: -0.4rem 0 1.4rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ts-fg-faint);
+}
+
 /* Section heading with a small icon badge (Beyond The Abstract telescope,
    26 Oct issue). The img width/height attributes keep it small in email. */
 body.theme-typesafe.ts-paper .post-content h2.nl-icon-heading {
