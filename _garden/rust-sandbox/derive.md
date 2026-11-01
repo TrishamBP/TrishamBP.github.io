@@ -1,12 +1,12 @@
 ---
 layout: garden
 guide: rust-sandbox
-order: 4
-note_no: "04"
+order: 6
+note_no: "06"
 nav_title: "#[derive] and attributes"
 title: "Rust #[derive] Explained: Debug, Clone, Copy, PartialEq and Eq"
 seo_title: "Rust #[derive] Explained: Debug, Clone, Copy, PartialEq and Eq"
-description: "Rust #[derive] explained in plain English: what attributes are, what Debug, Clone, Copy, PartialEq and Eq give you, and why f64 and Vec limit what a struct can derive."
+description: "Rust #[derive] explained in plain English: what attributes are, what Debug, Clone, Copy, PartialEq and Eq give you, and why f64 and Vec limit derives."
 keywords: "Rust derive, Rust attributes, Rust Debug trait, Rust Clone vs Copy, Rust PartialEq vs Eq, Rust NaN equality, Rust Default trait, derive macro, Rust dataclass"
 lede: "The #[derive(...)] line sits above almost every Rust struct. This note explains attributes in plain English, then what each derived trait gives you and why different types derive different lists."
 sections:
@@ -30,7 +30,7 @@ sections:
 
 The line `#[derive(Debug, Clone, Copy, PartialEq, Eq)]` shows up above almost every struct in Rust code. It looks like noise at first, but each word in it changes what you're allowed to do with the type.
 
-This note explains the line piece by piece. It builds on moves from [Note 01](/digital-garden/rust-sandbox/ownership-borrowing/) and on traits from [Note 03](/digital-garden/rust-sandbox/traits/). It starts with a plain-English glossary you can come back to.
+This note explains the line piece by piece. It builds on moves from [Note 01](/digital-garden/rust-sandbox/ownership-borrowing/) and on traits from [Note 05](/digital-garden/rust-sandbox/traits/). It starts with a plain-English glossary you can come back to.
 
 ## Plain-English glossary: attribute, trait, derive
 {: #der-glossary}
@@ -42,7 +42,7 @@ A recap of the terms from the earlier notes, plus the new ones. The rest of the 
 | **struct** | A custom data type that groups a few named values together. | A form with labelled boxes: "left", "right". |
 | **field** | One named value inside a struct, such as `left: usize`. | One box on the form. |
 | **attribute** `#[...]` | A note to the **compiler** attached to the item directly below it. It's not code that runs. It changes how the compiler treats that item. | A sticky note on a document: "please photocopy this twice". The note isn't part of the document, but it tells the office what to do with it. |
-| **trait** | A named set of abilities that a type promises to have, such as "can be printed" or "can be compared". It's similar to an interface in Java or a protocol in Python. [Note 03](/digital-garden/rust-sandbox/traits/) covers traits in depth. | A skill badge: "certified to drive". Any type that holds the badge must actually be able to do the thing. |
+| **trait** | A named set of abilities that a type promises to have, such as "can be printed" or "can be compared". It's similar to an interface in Java or a protocol in Python. [Note 05](/digital-garden/rust-sandbox/traits/) covers traits in depth. | A skill badge: "certified to drive". Any type that holds the badge must actually be able to do the thing. |
 | **`impl`** | The block of code where you write how a type performs a trait. | The training that earns the badge. |
 | **derive** | "Compiler, write the `impl` for these traits for me." It works for traits whose code follows an obvious pattern (compare every field, print every field...). | Auto-fill on a web form: the browser fills in the boxes it can work out by itself. |
 | **move** | Handing a value to a new owner. The old variable can't be used afterwards. | Giving someone your only house key. |
@@ -62,9 +62,8 @@ shapes_demo/
     ├── main.rs
     └── math/
         ├── mod.rs          <- declares the modules + approx_eq
-        ├── matrix.rs       <- DimensionMismatch, Matrix2
+        ├── matrix.rs       <- DimensionMismatch, Vector, Matrix2
         ├── complex.rs      <- Complex
-        ├── vector.rs       <- Vector
         └── trigonometry.rs
 ```
 
@@ -72,18 +71,21 @@ shapes_demo/
 
 ```rust
 pub mod complex;
+pub mod magnitude;
 pub mod matrix;
 pub mod trigonometry;
-pub mod vector;
+
+/// The tolerance used when comparing `f64` results.
+pub const DEFAULT_TOLERANCE: f64 = 1e-9;
 
 /// Float comparison with a tolerance. `==` is unreliable for f64,
 /// and NaN is never equal to anything, not even itself.
-pub fn approx_eq(a: f64, b: f64) -> bool {
-    (a - b).abs() < 1e-9
+pub fn approx_eq(a: f64, b: f64, tolerance: f64) -> bool {
+    (a - b).abs() <= tolerance
 }
 ```
 
-**`src/math/matrix.rs`** (the `Display` impl and `total` method from Note 02 are left out here):
+**`src/math/matrix.rs`**, the three structs (their methods and the `Display` impl come in other notes):
 
 ```rust
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -92,9 +94,14 @@ pub struct DimensionMismatch {
     pub right: usize,
 }
 
+#[derive(Debug, Clone, PartialEq)]
+pub struct Vector {
+    components: Vec<f64>,
+}
+
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Matrix2 {
-    pub data: [[f64; 2]; 2],
+    rows: [[f64; 2]; 2],
 }
 ```
 
@@ -108,22 +115,7 @@ pub struct Complex {
 }
 ```
 
-**`src/math/vector.rs`** (the `len`, `scale` and `into_inner` methods from Note 01 are left out here):
-
-```rust
-#[derive(Debug, Clone, PartialEq)]
-pub struct Vector {
-    components: Vec<f64>,
-}
-
-impl Vector {
-    pub fn new(components: Vec<f64>) -> Vector {
-        Vector { components }
-    }
-}
-```
-
-The field `components` has no `pub`, so it's **private**: code outside `vector.rs` can't touch it directly (`error[E0616]: field 'components' ... is private`) and must go through methods like `new`.
+The fields `components` and `rows` have no `pub`, so they're **private**. Why that matters is covered in [Note 03](/digital-garden/rust-sandbox/methods-constructors/#mth-encapsulation).
 
 `DimensionMismatch` is an error value: "you tried to combine something of size `left` with something of size `right`". It's the main example below.
 
@@ -321,7 +313,7 @@ The compiler checks every field against every derived trait. Python's `@dataclas
 ## 4. Worked example: why `Vector` derives only three traits
 {: #der-vector}
 
-This line sits directly above `Vector` in `src/math/vector.rs`:
+This line sits directly above `Vector` in `src/math/matrix.rs`:
 
 ```rust
 #[derive(Debug, Clone, PartialEq)]

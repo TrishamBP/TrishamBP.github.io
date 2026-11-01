@@ -1,0 +1,49 @@
+/* Injected into each lab's shadow root (see main.tsx), so preflight and
+   utilities stay isolated from the Jekyll site's CSS, and site CSS can't leak in. */
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+
+  --color-lab-bg: #0b1220;
+  --color-lab-panel: #111a2e;
+  --color-lab-raised: #17223a;
+  --color-lab-line: #24324f;
+  --color-lab-text: #e6edf7;
+  --color-lab-muted: #94a3b8;
+
+  /* One colour per component kind, used by every diagram */
+  --color-k-client: #cbd5e1;
+  --color-k-edge: #fbbf24;
+  --color-k-gateway: #f59e0b;
+  --color-k-presentation: #fb7185;
+  --color-k-product: #fb923c;
+  --color-k-service: #38bdf8;
+  --color-k-db: #a78bfa;
+  --color-k-cache: #f87171;
+  --color-k-queue: #4ade80;
+  --color-k-external: #64748b;
+
+  --color-t-req: #38bdf8;
+  --color-t-res: #4ade80;
+  --color-t-err: #f43f5e;
+  --color-t-evt: #facc15;
+}
+
+:host {
+  display: block;
+  font-family: var(--font-sans);
+  color: var(--color-lab-text);
+  line-height: 1.5;
+  margin: 1.75rem 0;
+}
+
+.lab-scroll::-webkit-scrollbar { height: 8px; width: 8px; }
+.lab-scroll::-webkit-scrollbar-thumb { background: #24324f; border-radius: 8px; }
+
+input[type="range"] { accent-color: #38bdf8; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 0ms !important; animation-duration: 0ms !important; }
+}

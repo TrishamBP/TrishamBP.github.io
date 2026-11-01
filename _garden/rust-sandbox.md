@@ -20,6 +20,8 @@ sections:
     title: "How to use this Rust learning guide"
   - id: demo-project
     title: "The demo project used in these Rust notes"
+  - id: intro-concepts
+    title: "Rust concept index: where each idea is explained"
   - id: intro-notes
     title: "The notes in this Rust guide"
 ---
@@ -44,21 +46,60 @@ shapes_demo/
 ├── Cargo.toml
 ├── examples/               <- small experiments: cargo run --example <name>
 └── src/
-    ├── lib.rs              <- library crate root (Note 05)
-    ├── main.rs             <- binary that uses the library (Note 05)
-    ├── point.rs            <- Point + Display (Note 05)
+    ├── lib.rs              <- library crate root (Note 10)
+    ├── main.rs             <- binary that uses the library (Note 10)
+    ├── point.rs            <- Point + Display (Note 10)
     └── math/
-        ├── mod.rs          <- declares the math modules, approx_eq (Notes 04, 05)
-        ├── vector.rs       <- Vector: heap data, len/scale/into_inner (Notes 01, 04)
-        ├── matrix.rs       <- DimensionMismatch + Display, Matrix2 (Notes 02, 04)
-        ├── complex.rs      <- Complex, + via the Add trait (Notes 03, 04)
-        ├── magnitude.rs    <- the Magnitude trait (Note 03)
-        └── trigonometry.rs <- sin_cos (Note 05)
+        ├── mod.rs          <- declares the modules, DEFAULT_TOLERANCE, approx_eq
+        ├── matrix.rs       <- the main file: DimensionMismatch, Vector, Vector2,
+        │                      Matrix2, rotate_vector and the tests (Notes 01-11)
+        ├── complex.rs      <- Complex, + via the Add trait (Notes 05, 06)
+        ├── magnitude.rs    <- the Magnitude trait (Note 05)
+        └── trigonometry.rs <- sin_cos (Notes 07, 10)
 ```
 
-Create it with `cargo new --lib shapes_demo`, add the files as each note shows them, and run `cargo run`. Put small experiments in `examples/<name>.rs` and run them with `cargo run --example <name>`.
+Create it with `cargo new --lib shapes_demo`, add the files as each note shows them, and run `cargo run`. Put small experiments in `examples/<name>.rs` and run them with `cargo run --example <name>`. Run `cargo test` for the unit tests and doc tests ([Note 11](/digital-garden/rust-sandbox/doc-comments-tests/)).
 
 I compiled every snippet and every quoted compiler error in this guide with **Rust 1.99**, so you should see the same messages.
+
+## Rust concept index: where each idea is explained
+{: #intro-concepts}
+
+Every concept is explained in **one** place. Other notes link back to it instead of repeating it. Use this table to jump straight to a concept:
+
+| Concept | Note |
+|---|---|
+| [Ownership, move, drop](/digital-garden/rust-sandbox/ownership-borrowing/#own-rules) | 01 |
+| [Borrowing `&T` / `&mut T`, `self` / `&self` / `&mut self`](/digital-garden/rust-sandbox/ownership-borrowing/#own-self) | 01 |
+| [`struct`, `impl`, `Display`, `write!`](/digital-garden/rust-sandbox/structs-impl-display/) | 02 |
+| [Implicit return (last line without `;`)](/digital-garden/rust-sandbox/structs-impl-display/#dsp-semicolon) | 02 |
+| [Private fields and encapsulation](/digital-garden/rust-sandbox/methods-constructors/#mth-encapsulation) | 03 |
+| [`Vec<T>` and generic parameters](/digital-garden/rust-sandbox/methods-constructors/#mth-struct) | 03 |
+| [Associated functions vs methods, `Self`, field init shorthand](/digital-garden/rust-sandbox/methods-constructors/#mth-assoc-vs-method) | 03 |
+| [Naming conventions (`new`, `from_`, `into_`, `as_`, `to_`)](/digital-garden/rust-sandbox/methods-constructors/#mth-naming) | 03 |
+| [Slices `&[T]`, `to_vec`](/digital-garden/rust-sandbox/slices-lifetimes/#slc-what) | 04 |
+| [Deref coercion `&Vec<T>` → `&[T]`](/digital-garden/rust-sandbox/slices-lifetimes/#slc-components) | 04 |
+| [Lifetimes and lifetime elision](/digital-garden/rust-sandbox/slices-lifetimes/#slc-elision) | 04 |
+| [Traits, generics, `impl Trait`, `dyn Trait`](/digital-garden/rust-sandbox/traits/) | 05 |
+| [`#[derive]` and attributes](/digital-garden/rust-sandbox/derive/) | 06 |
+| [Arrays `[T; N]`, type aliases](/digital-garden/rust-sandbox/arrays-tuples-constants/#arr-arrays) | 07 |
+| [`const`, associated constants, `const fn`](/digital-garden/rust-sandbox/arrays-tuples-constants/#arr-const) | 07 |
+| [Destructuring and tuples](/digital-garden/rust-sandbox/arrays-tuples-constants/#arr-destructure) | 07 |
+| [Free functions, number literals](/digital-garden/rust-sandbox/arrays-tuples-constants/#arr-free) | 07 |
+| [Enums, `Result`, `Ok`, `Err`, `match`](/digital-garden/rust-sandbox/error-handling-result/#err-enum) | 08 |
+| [`if` as an expression](/digital-garden/rust-sandbox/error-handling-result/#err-if) | 08 |
+| [The `?` operator](/digital-garden/rust-sandbox/error-handling-result/#err-question) | 08 |
+| [`std::error::Error`, `Box<dyn Error>`](/digital-garden/rust-sandbox/error-handling-result/#err-error-trait) | 08 |
+| [`unwrap`, `expect`, panics vs `Result`](/digital-garden/rust-sandbox/error-handling-result/#err-unwrap) | 08 |
+| [Iterators: `iter`, `zip`, `map`, `collect`, `sum`](/digital-garden/rust-sandbox/iterators-closures/#itr-chain) | 09 |
+| [Closures](/digital-garden/rust-sandbox/iterators-closures/#itr-closures) | 09 |
+| [Type inference and the turbofish `::<>`](/digital-garden/rust-sandbox/iterators-closures/#itr-turbofish) | 09 |
+| [`for` loops and ranges `0..2`, `0..=2`](/digital-garden/rust-sandbox/iterators-closures/#itr-for) | 09 |
+| [Modules, `use`, `crate::`, `pub`](/digital-garden/rust-sandbox/modules-use/) | 10 |
+| [Comments `//`, `///`, `//!` and `cargo doc`](/digital-garden/rust-sandbox/doc-comments-tests/#tst-comments) | 11 |
+| [Doc tests](/digital-garden/rust-sandbox/doc-comments-tests/#tst-doctests) | 11 |
+| [`#[cfg(test)]`, `mod tests`, `use super::*`](/digital-garden/rust-sandbox/doc-comments-tests/#tst-module) | 11 |
+| [`#[test]`, `assert_eq!`, `#[should_panic]`](/digital-garden/rust-sandbox/doc-comments-tests/#tst-asserts) | 11 |
 
 ## The notes in this Rust guide
 {: #intro-notes}

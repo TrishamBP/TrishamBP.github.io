@@ -1,12 +1,12 @@
 ---
 layout: garden
 guide: rust-sandbox
-order: 3
-note_no: "03"
+order: 5
+note_no: "05"
 nav_title: "Traits"
 title: "Rust Traits Explained: Shared Behaviour, Generics and dyn Trait"
 seo_title: "Rust Traits Explained: Define, Implement, Generics & dyn Trait"
-description: "Rust traits explained for beginners: define and implement your own trait, default methods, trait bounds and generics, impl Trait, dyn Trait, operators and the orphan rule."
+description: "Rust traits explained for beginners: define and implement a trait, default methods, trait bounds and generics, impl Trait, dyn Trait and the orphan rule."
 keywords: "Rust traits, Rust trait tutorial, implement trait Rust, Rust trait bounds, Rust generics, impl Trait, dyn Trait, Rust default methods, Rust operator overloading, Rust orphan rule"
 lede: "Traits are how Rust shares behaviour between types without inheritance. This note defines a trait from scratch, implements it for three different types, and shows every way to use it, with the compiler errors that keep you honest."
 sections:
@@ -32,7 +32,7 @@ sections:
     title: "Summary: Rust traits"
 ---
 
-Display (in [Note 02](/digital-garden/rust-sandbox/structs-impl-display/)) was one trait. `#[derive]` (in [Note 04](/digital-garden/rust-sandbox/derive/)) is a way to get traits for free. This note sits between them and answers the general question: **what is a trait, and what can you do with one?**
+Display (in [Note 02](/digital-garden/rust-sandbox/structs-impl-display/)) was one trait. `#[derive]` (in [Note 06](/digital-garden/rust-sandbox/derive/)) is a way to get traits for free. This note answers the general question: **what is a trait, and what can you do with one?**
 
 We'll write our own trait, `Magnitude`, so nothing is hidden inside the standard library.
 
@@ -58,7 +58,7 @@ New file **`src/math/magnitude.rs`**, declared with `pub mod magnitude;` in `src
 
 ```rust
 use super::complex::Complex;
-use super::vector::Vector;
+use super::matrix::Vector;
 
 /// Anything that has a size (a length, a norm, an absolute value).
 pub trait Magnitude {
@@ -126,7 +126,7 @@ error[E0046]: not all trait items implemented, missing: `magnitude`
 
 ```rust
 use shapes_demo::math::magnitude::Magnitude; // <- needed!
-use shapes_demo::math::vector::Vector;
+use shapes_demo::math::matrix::Vector;
 
 let v = Vector::new(vec![3.0, 4.0]);
 println!("{}", v.magnitude());  // 5
@@ -140,7 +140,7 @@ error[E0599]: no method named `magnitude` found for struct `Vector` in the curre
   = help: items from traits can only be used if the trait is in scope
 ```
 
-This surprised me. **Trait methods are only callable where the trait itself is imported.** It keeps two unrelated traits with a method of the same name from clashing. The common standard traits (`Clone`, `PartialEq`, `ToString`, `Iterator`...) are in the **prelude**, which Rust imports into every file for you. That's why you never write `use` for them. (See [Note 05](/digital-garden/rust-sandbox/modules-use/#mod-use) for how `use` works.)
+This surprised me. **Trait methods are only callable where the trait itself is imported.** It keeps two unrelated traits with a method of the same name from clashing. The common standard traits (`Clone`, `PartialEq`, `ToString`, `Iterator`...) are in the **prelude**, which Rust imports into every file for you. That's why you never write `use` for them. (See [Note 10](/digital-garden/rust-sandbox/modules-use/#mod-use) for how `use` works.)
 
 ## 5. Trait bounds: functions that accept "anything that can..."
 {: #trt-bounds}
@@ -299,7 +299,7 @@ Most everyday Rust is these standard traits, implemented by hand or with `#[deri
 Two connections to earlier notes:
 
 - **Free methods from blanket impls.** The standard library says, in effect, `impl<T: Display> ToString for T`: *every* type that implements `Display` automatically gets `.to_string()`. That's why `e.to_string()` worked in [Note 02](/digital-garden/rust-sandbox/structs-impl-display/#dsp-flow).
-- **Supertraits.** A trait can require another one: `trait Copy: Clone`. That's why every `Copy` type must also be `Clone`, as [Note 04](/digital-garden/rust-sandbox/derive/#der-copy) showed.
+- **Supertraits.** A trait can require another one: `trait Copy: Clone`. That's why every `Copy` type must also be `Clone`, as [Note 06](/digital-garden/rust-sandbox/derive/#der-copy) showed.
 
 ## Summary: Rust traits
 {: #trt-summary}

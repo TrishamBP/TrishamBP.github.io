@@ -34,6 +34,7 @@ exclude:
   - eagle_three
   - harness_engineering
   - scripts
+  - system-design-lab
   - newsletter_emails
   - "mech papers"
 

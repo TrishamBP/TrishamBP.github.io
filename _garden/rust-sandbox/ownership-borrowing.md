@@ -58,7 +58,7 @@ You need these two terms first.
 
 **The heap** holds data whose size can change while the program runs, such as `Vec<f64>` and `String`. The program has to ask the system for heap memory (an **allocation**), and that memory has to be freed later. Think of a warehouse: you rent space, and someone must give it back.
 
-The `Vector` type from the demo (`src/math/vector.rs`) uses both:
+The `Vector` type from the demo (`src/math/matrix.rs`) uses both:
 
 ```text
 STACK (24 bytes)              HEAP
@@ -185,7 +185,7 @@ let y = x;           // a copy, not a move
 println!("{}", x);   // OK
 ```
 
-`f64`, `usize`, `bool`, `Matrix2` and `DimensionMismatch` are all `Copy`. [Note 04](/digital-garden/rust-sandbox/derive/#der-copy) shows how a struct becomes `Copy`.
+`f64`, `usize`, `bool`, `Matrix2` and `DimensionMismatch` are all `Copy`. [Note 06](/digital-garden/rust-sandbox/derive/#der-copy) shows how a struct becomes `Copy`.
 
 **`Clone`**: an explicit, possibly expensive duplicate.
 
@@ -203,13 +203,13 @@ Moving and cloning often aren't what you want. Usually you want to *look at* a v
 **Analogy:** you own a book. A friend borrows it, reads it and returns it. You still own the book, and the friend isn't allowed to throw it away.
 
 ```rust
-fn print_len(v: &Vector) {     // borrows: doesn't take ownership
-    println!("len = {}", v.len());
+fn print_dimension(v: &Vector) {   // borrows: doesn't take ownership
+    println!("dimension = {}", v.dimension());
 }
 
 let a = Vector::new(vec![1.0, 2.0]);
-print_len(&a);        // lend a
-print_len(&a);        // lend it again
+print_dimension(&a);  // lend a
+print_dimension(&a);  // lend it again
 println!("{:?}", a);  // a is still the owner
 ```
 
@@ -294,7 +294,7 @@ Methods take their value in one of the same three ways. The demo's `Vector` has 
 ```rust
 impl Vector {
     /// Borrow to read.
-    pub fn len(&self) -> usize {
+    pub fn dimension(&self) -> usize {
         self.components.len()
     }
 
@@ -306,7 +306,7 @@ impl Vector {
     }
 
     /// Take ownership: the Vector is consumed.
-    pub fn into_inner(self) -> Vec<f64> {
+    pub fn into_components(self) -> Vec<f64> {
         self.components
     }
 }
@@ -314,9 +314,9 @@ impl Vector {
 
 ```rust
 let mut v = Vector::new(vec![1.0, 2.0]);
-v.len();                  // v is still usable
-v.scale(2.0);             // v is still usable, and now holds [2.0, 4.0]
-let raw = v.into_inner(); // v moved into the method; v is gone now
+v.dimension();                 // v is still usable
+v.scale(2.0);                  // v is still usable, and now holds [2.0, 4.0]
+let raw = v.into_components(); // v moved into the method; v is gone now
 ```
 
 | Form | Meaning | After the call |

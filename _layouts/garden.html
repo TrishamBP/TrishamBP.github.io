@@ -134,3 +134,27 @@ layout: default
 </div>
 
 <script src="{{ '/assets/js/garden-docs.js' | relative_url }}" defer></script>
+{%- if page.sd_lab %}
+{%- comment -%}
+  Interactive React labs (built from system-design-lab/ into assets/sd-lab/).
+  A page opts in with `sd_lab: true` and embeds labs as
+  <div data-sd-lab="gen2-traffic"></div>.
+{%- endcomment %}
+<script type="module" src="{{ '/assets/sd-lab/sd-lab.js' | relative_url }}"></script>
+{%- endif %}
+{%- if page.mathjax %}
+<!-- MathJax, opt-in via `mathjax: true` (same setup as learning-paper.html).
+     Inline math is single $...$; $$...$$ display blocks become math/tex. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$']],
+      displayMath: [['$$', '$$']],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    "HTML-CSS": { linebreaks: { automatic: true }, scale: 96 }
+  });
+</script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_CHTML"></script>
+{%- endif %}

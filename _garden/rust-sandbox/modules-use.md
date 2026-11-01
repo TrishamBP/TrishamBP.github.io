@@ -1,12 +1,12 @@
 ---
 layout: garden
 guide: rust-sandbox
-order: 5
-note_no: "05"
+order: 10
+note_no: "10"
 nav_title: "Modules and use"
 title: "Rust Modules and use: Importing with crate:: Paths"
 seo_title: "Rust Modules and use Explained: crate:: Paths, mod and pub Visibility"
-description: "Rust modules and the use keyword explained: how crate:: paths are read, why mod declarations build the module tree, importing std::fmt, and when pub is required."
+description: "Rust modules and the use keyword explained: how crate:: paths are read, why mod declarations build the module tree, std::fmt, and when pub is required."
 keywords: "Rust modules, Rust use keyword, Rust crate path, Rust mod declaration, Rust pub visibility, Rust lib.rs vs main.rs, use std::fmt, Rust imports, Rust module tree"
 lede: "How Rust files connect: what use really does, how to read a crate:: path, why a file is only a module once mod declares it, and why every part of an import path must be visible."
 sections:
@@ -26,12 +26,12 @@ sections:
 
 A line like `use crate::math::trigonometry::sin_cos;` confused me at first. Where does `crate` come from? Why `::`? And why does the import fail when the function plainly exists?
 
-This note answers all three. By now you can read what's *inside* each file (Notes 01 to 04). This note is about how the files **connect**.
+This note answers all three. By now you can read what's *inside* each file (Notes 01 to 09). This note is about how the files **connect**.
 
 ## The files for this note
 {: #mod-files}
 
-These are the parts of the [demo project](/digital-garden/rust-sandbox/#demo-project) that matter here. The package `shapes_demo` has a library crate (`src/lib.rs`) and a binary crate (`src/main.rs`) that uses it. The other `math/` files (`matrix.rs`, `vector.rs`, ...) from the earlier notes are left out of this tree.
+These are the parts of the [demo project](/digital-garden/rust-sandbox/#demo-project) that matter here. The package `shapes_demo` has a library crate (`src/lib.rs`) and a binary crate (`src/main.rs`) that uses it. The other `math/` files (`matrix.rs`, `complex.rs`, ...) from the earlier notes are left out of this tree.
 
 ```text
 shapes_demo/
@@ -56,9 +56,9 @@ pub mod point;
 
 ```rust
 pub mod complex;
+pub mod magnitude;
 pub mod matrix;
 pub mod trigonometry;
-pub mod vector;
 ```
 
 **`src/math/trigonometry.rs`** holds the function we want to import:

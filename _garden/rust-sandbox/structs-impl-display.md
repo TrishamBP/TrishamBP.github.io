@@ -6,7 +6,7 @@ note_no: "02"
 nav_title: "Structs, impl and Display"
 title: "Rust Structs, impl and the Display Trait, Line by Line"
 seo_title: "Rust Structs, impl and the Display Trait Explained Line by Line"
-description: "Rust structs, impl blocks and the Display trait explained line by line: &self, fmt::Formatter, fmt::Result, the write! macro and why the last line has no semicolon."
+description: "Rust structs, impl blocks and the Display trait explained line by line: &self, fmt::Formatter, fmt::Result, the write! macro and the missing semicolon."
 keywords: "Rust struct, Rust impl, Rust Display trait, impl fmt::Display, Rust fmt::Formatter, Rust write! macro, Rust Debug vs Display, Rust fmt::Result, Rust methods"
 lede: "One small, very common piece of Rust, explained word by word: a struct, and the impl fmt::Display block that decides how it prints with println!(\"{}\", ...)."
 sections:
@@ -59,7 +59,7 @@ impl fmt::Display for DimensionMismatch {
 }
 ```
 
-`DimensionMismatch` is an error value: "you tried to combine a vector with `left` components and one with `right` components". Ignore the `#[derive(...)]` line for now; [Note 04](/digital-garden/rust-sandbox/derive/) is all about it. Here is each remaining part, in order.
+`DimensionMismatch` is an error value: "you tried to combine a vector with `left` components and one with `right` components". Ignore the `#[derive(...)]` line for now; [Note 06](/digital-garden/rust-sandbox/derive/) is all about it. Here is each remaining part, in order.
 
 ## 1. `struct`: a data type you define
 {: #dsp-struct}
@@ -73,7 +73,7 @@ pub struct DimensionMismatch {
 }
 ```
 
-`usize` is an unsigned (never negative) integer, the type Rust uses for sizes and indexes. `pub` makes the struct and each field visible outside this module (see [Note 05](/digital-garden/rust-sandbox/modules-use/#mod-pub)).
+`usize` is an unsigned (never negative) integer, the type Rust uses for sizes and indexes. `pub` makes the struct and each field visible outside this module (see [Note 10](/digital-garden/rust-sandbox/modules-use/#mod-pub)).
 
 The Python equivalent is a class that only has fields:
 
@@ -113,7 +113,7 @@ The code in this note uses Form B.
 ## 3. `fmt::Display`: the trait that decides what `{}` prints
 {: #dsp-display}
 
-`Display` is a **trait** from the standard library. A trait is a **contract**: *"any type that has this trait must provide these methods"*. It's similar to an interface in Java or a protocol in Python. ([Note 03](/digital-garden/rust-sandbox/traits/) covers traits in general: defining your own, generics and `dyn Trait`.)
+`Display` is a **trait** from the standard library. A trait is a **contract**: *"any type that has this trait must provide these methods"*. It's similar to an interface in Java or a protocol in Python. ([Note 05](/digital-garden/rust-sandbox/traits/) covers traits in general: defining your own, generics and `dyn Trait`.)
 
 The standard library defines `Display` like this (simplified):
 
@@ -146,7 +146,7 @@ Rust **can't derive** `Display`, because the compiler can't guess which message 
 
 The name `fmt` shows up twice in `impl fmt::Display ... fn fmt(...)`, but the two mean different things:
 
-- **`fmt::Display`**: here `fmt` is the **module** `std::fmt`, brought in by `use std::fmt;` (see [Note 05](/digital-garden/rust-sandbox/modules-use/#mod-fmt)).
+- **`fmt::Display`**: here `fmt` is the **module** `std::fmt`, brought in by `use std::fmt;` (see [Note 10](/digital-garden/rust-sandbox/modules-use/#mod-fmt)).
 - **`fn fmt(...)`**: here `fmt` is the **method** that the `Display` contract requires.
 
 You must use the name `fmt`, because the contract says so. Name it anything else and the compiler refuses:
