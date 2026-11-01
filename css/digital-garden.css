@@ -211,9 +211,7 @@ body.theme-typesafe.dg-garden .site-shell .dg-crumbs a:hover {
 }
 
 body.theme-typesafe.dg-garden .dg-guide-head {
-  padding-bottom: 2.2rem;
-  margin-bottom: 2.4rem;
-  border-bottom: 1px solid var(--dg-hair);
+  margin-bottom: 1.2rem;
 }
 
 body.theme-typesafe.dg-garden .site-shell .dg-guide-logo {
@@ -254,6 +252,56 @@ body.theme-typesafe.dg-garden .post-content.dg-notes h4 {
 body.theme-typesafe.dg-garden .post-content.dg-notes a {
   color: #ffffff;
   text-decoration-color: var(--dg-rust);
+}
+
+/* Index (`{: .dg-toc}` list under "Index"): a framed, clickable outline. */
+body.theme-typesafe.dg-garden .post-content.dg-notes ul.dg-toc {
+  list-style: none;
+  margin: 1rem 0 2rem;
+  padding: 1.3rem 1.6rem;
+  border: 1px solid var(--dg-hair);
+  background: #0b0b0b;
+}
+
+body.theme-typesafe.dg-garden .post-content.dg-notes ul.dg-toc > li {
+  margin: 0.2rem 0 0.9rem;
+  font-weight: 600;
+}
+
+body.theme-typesafe.dg-garden .post-content.dg-notes ul.dg-toc > li:last-child {
+  margin-bottom: 0;
+}
+
+body.theme-typesafe.dg-garden .post-content.dg-notes ul.dg-toc ul {
+  list-style: none;
+  margin: 0.4rem 0 0;
+  padding-left: 1.1rem;
+  border-left: 1px solid var(--dg-hair);
+}
+
+body.theme-typesafe.dg-garden .post-content.dg-notes ul.dg-toc ul li {
+  margin: 0.25rem 0;
+  font-weight: 400;
+}
+
+body.theme-typesafe.dg-garden .post-content.dg-notes ul.dg-toc a {
+  text-decoration: none;
+}
+
+body.theme-typesafe.dg-garden .post-content.dg-notes ul.dg-toc a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--dg-rust);
+}
+
+/* Jump targets clear the sticky nav; smooth scroll unless reduced motion. */
+body.theme-typesafe.dg-garden .post-content.dg-notes [id] {
+  scroll-margin-top: 80px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:has(body.dg-garden) {
+    scroll-behavior: smooth;
+  }
 }
 
 @media (max-width: 720px) {
