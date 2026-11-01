@@ -169,6 +169,13 @@
   />
   <link rel="stylesheet" href="{{ '/css/certs-neon.css' | relative_url }}" />
   {%- endif %}
+  {%- comment -%}
+    Digital Garden (listing + notes): black page, white text, Aptos. Same gate
+    as the `dg-garden` body class in _layouts/default.html.
+  {%- endcomment -%}
+  {%- if page.url == '/digital-garden/' or page.collection == 'garden' %}
+  <link rel="stylesheet" href="{{ '/css/digital-garden.css' | relative_url }}?v={{ site.time | date: '%s' }}" />
+  {%- endif %}
   {%- endunless %}
 
   {%- comment -%}

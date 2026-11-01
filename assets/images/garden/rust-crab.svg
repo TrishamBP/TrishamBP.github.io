@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" role="img" aria-labelledby="t">
+  <title id="t">Rust crab logo for The Rust Sandbox, Rust programming notes</title>
+  <g fill="#F74C00" stroke="#F74C00" stroke-linecap="round" stroke-linejoin="round">
+    <!-- legs -->
+    <g fill="none" stroke-width="7">
+      <path d="M58 88 L34 98 L26 116"/><path d="M60 98 L42 112 L38 128"/><path d="M66 106 L56 122 L56 136"/>
+      <path d="M142 88 L166 98 L174 116"/><path d="M140 98 L158 112 L162 128"/><path d="M134 106 L144 122 L144 136"/>
+    </g>
+    <!-- arms -->
+    <g fill="none" stroke-width="8">
+      <path d="M56 70 L36 58 L30 40"/><path d="M144 70 L164 58 L170 40"/>
+    </g>
+    <!-- claws -->
+    <path d="M30 42 C12 38 8 18 20 8 C22 20 30 24 40 22 C44 32 40 42 30 42 Z" stroke-width="2"/>
+    <path d="M170 42 C188 38 192 18 180 8 C178 20 170 24 160 22 C156 32 160 42 170 42 Z" stroke-width="2"/>
+    <!-- shell -->
+    <path d="M38 84 C38 50 66 38 100 38 C134 38 162 50 162 84 C162 102 134 112 100 112 C66 112 38 102 38 84 Z" stroke-width="2"/>
+    <!-- shell ridges -->
+    <path d="M50 58 L60 50 L66 58 L76 46 L84 54 L92 42 L100 50 L108 42 L116 54 L124 46 L134 58 L140 50 L150 58" fill="none" stroke-width="5"/>
+  </g>
+  <!-- eyes -->
+  <circle cx="82" cy="74" r="9" fill="#000"/><circle cx="118" cy="74" r="9" fill="#000"/>
+  <circle cx="85" cy="71" r="3" fill="#fff"/><circle cx="121" cy="71" r="3" fill="#fff"/>
+  <!-- smile -->
+  <path d="M88 92 Q100 100 112 92" fill="none" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+</svg>

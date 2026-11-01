@@ -1,0 +1,39 @@
+---
+layout: default
+---
+{%- comment -%}
+  One Digital Garden guide (collection `garden`). Black / white / Aptos skin
+  from css/digital-garden.css. The notes themselves are the page body
+  (markdown), rendered inside `.post-content` so code blocks, tables and
+  Mermaid get the site-wide long-form styling.
+{%- endcomment -%}
+<article class="dg-guide" aria-labelledby="dg-guide-title">
+  <nav class="dg-crumbs" aria-label="Breadcrumb">
+    <a href="{{ '/digital-garden/' | relative_url }}">Digital Garden</a>
+    <span aria-hidden="true">/</span>
+    <span>{{ page.title }}</span>
+  </nav>
+
+  <header class="dg-guide-head">
+    {%- if page.logo %}
+    <img class="dg-guide-logo" src="{{ page.logo | relative_url }}" alt="{{ page.logo_alt | default: page.title | escape }}" width="120" height="84">
+    {%- endif %}
+    <p class="dg-eyebrow">{{ page.tag | default: "Guide" }} / Learning guide{% if page.status %} / {{ page.status }}{% endif %}</p>
+    <h1 id="dg-guide-title" class="dg-title">{{ page.title }}</h1>
+    {%- if page.lede %}
+    <p class="dg-lede">{{ page.lede }}</p>
+    {%- endif %}
+  </header>
+
+  {%- assign dg_body = content | strip_html | strip -%}
+  {%- if dg_body == "" %}
+  <section class="dg-empty" aria-label="Notes">
+    <p class="dg-eyebrow">Notes</p>
+    <p>The first notes are being written. Check back soon.</p>
+  </section>
+  {%- else %}
+  <div class="post-content dg-notes">
+    {{ content }}
+  </div>
+  {%- endif %}
+</article>
