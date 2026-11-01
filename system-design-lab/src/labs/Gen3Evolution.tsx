@@ -285,7 +285,7 @@ export default function Gen3Evolution() {
   const toggleFail = (id: string) => setFailed((s) => { const n = new Set(s); if (n.has(id)) n.delete(id); else n.add(id); return n; });
 
   return (
-    <LabFrame eyebrow="Module 1 · Lab 4" title="From one gateway to a layered, self-service architecture" simulated={false}>
+    <LabFrame eyebrow="Uber · Lab 4" title="From one gateway to a layered, self-service architecture" simulated={false}>
       <Controls tl={tl} explain={explain} onExplain={() => setExplain((e) => !e)} />
       <StepChips tl={tl} titles={PHASES.map((p) => p.title)} />
       <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="Request flow to animate">

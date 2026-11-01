@@ -152,7 +152,7 @@ export default function Gen2Request() {
   const [sel, setSel] = useState<string | null>(null);
   const node = useMemo(() => NODES.find((n) => n.id === sel) ?? null, [sel]);
   return (
-    <LabFrame eyebrow="Module 1 · Lab 2" title="Gen 2 (2015–2017): one request through RTAPI, the all-encompassing gateway" simulated={false}>
+    <LabFrame eyebrow="Uber · Lab 2" title="Gen 2 (2015–2017): one request through RTAPI, the all-encompassing gateway" simulated={false}>
       <Controls tl={tl} explain={explain} onExplain={() => setExplain((e) => !e)} />
       <StepChips tl={tl} titles={STEPS.map((s) => s.title)} />
       <Diagram width={940} height={460} nodes={NODES} edges={EDGES} packets={tl.step.packets} t={tl.t}

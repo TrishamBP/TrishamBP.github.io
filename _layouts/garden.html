@@ -16,6 +16,13 @@ layout: default
 {%- assign guide_pages = site.garden | where: "guide", page.guide | sort: "order" -%}
 {%- assign guide_root = guide_pages | where: "guide_root", true | first -%}
 {%- assign guide_notes = guide_pages | where_exp: "p", "p.guide_root != true" -%}
+{%- comment -%} Top-level entries: ungrouped notes plus group (case study) roots. {%- endcomment -%}
+{%- assign top_notes = guide_notes | where_exp: "p", "p.group == nil or p.group_root == true" -%}
+{%- if page.group -%}
+  {%- assign group_pages = guide_pages | where: "group", page.group -%}
+  {%- assign group_root = group_pages | where: "group_root", true | first -%}
+  {%- assign group_notes = group_pages | where_exp: "p", "p.group_root != true" -%}
+{%- endif -%}
 {%- for p in guide_pages -%}
   {%- if p.url == page.url -%}
     {%- assign cur_index = forloop.index0 -%}
@@ -41,6 +48,53 @@ layout: default
 
       <ul class="dg-side-list">
         {%- for p in guide_pages %}
+        {%- if p.group and p.group_root != true -%}{%- continue -%}{%- endif -%}
+        {%- if p.group_root %}
+        {%- comment -%}
+          A group (e.g. one company case study in the System Design guide):
+          its root page (`group_root: true`, `group: <id>`) is the title, and
+          every page with the same `group:` nests under it with its own
+          subsections. Only the page being read gets `is-current`.
+        {%- endcomment -%}
+        {%- assign gpages = guide_pages | where: "group", p.group -%}
+        {%- assign in_group = false -%}
+        {%- for gp in gpages -%}{%- if gp.url == page.url -%}{%- assign in_group = true -%}{%- endif -%}{%- endfor %}
+        <li>
+          <details class="dg-side-item dg-side-group{% if in_group %} is-in-group{% endif %}"{% if in_group %} open{% endif %}>
+            <summary>
+              <span class="dg-chev" aria-hidden="true"></span>
+              <a href="{{ p.url | relative_url }}"{% if p.url == page.url %} aria-current="page"{% endif %}>
+                <span>{{ p.nav_title | default: p.title }}</span>
+              </a>
+            </summary>
+            <ul class="dg-side-group-list">
+              {%- for gp in gpages %}
+              {%- assign g_current = false -%}
+              {%- if gp.url == page.url -%}{%- assign g_current = true -%}{%- endif %}
+              <li>
+                <details class="dg-side-item{% if g_current %} is-current{% endif %}"{% if g_current %} open{% endif %}>
+                  <summary>
+                    <span class="dg-chev" aria-hidden="true"></span>
+                    <a href="{{ gp.url | relative_url }}"{% if g_current %} aria-current="page"{% endif %}>
+                      <span class="dg-side-no">{{ gp.note_no }}</span>
+                      <span>{% if gp.group_root %}{{ gp.group_overview_title | default: "Overview" }}{% else %}{{ gp.nav_title | default: gp.title }}{% endif %}</span>
+                    </a>
+                  </summary>
+                  {%- if gp.sections and gp.sections.size > 0 %}
+                  <ul class="dg-side-sub">
+                    {%- for s in gp.sections %}
+                    <li><a href="{{ gp.url | relative_url }}#{{ s.id }}" data-dg-target="{{ s.id }}">{{ s.title | markdownify | remove: '<p>' | remove: '</p>' | strip }}</a></li>
+                    {%- endfor %}
+                  </ul>
+                  {%- endif %}
+                </details>
+              </li>
+              {%- endfor %}
+            </ul>
+          </details>
+        </li>
+        {%- continue -%}
+        {%- endif %}
         {%- assign is_current = false -%}
         {%- if p.url == page.url -%}{%- assign is_current = true -%}{%- endif %}
         <li>
@@ -75,6 +129,10 @@ layout: default
       {%- else %}
       <a href="{{ guide_root.url | relative_url }}">{{ guide_root.title }}</a>
       <span aria-hidden="true">/</span>
+      {%- if page.group and page.group_root != true %}
+      <a href="{{ group_root.url | relative_url }}">{{ group_root.nav_title | default: group_root.title }}</a>
+      <span aria-hidden="true">/</span>
+      {%- endif %}
       <span>{{ page.nav_title | default: page.title }}</span>
       {%- endif %}
     </nav>
@@ -86,6 +144,10 @@ layout: default
       <p class="dg-eyebrow">
         {%- if page.guide_root -%}
           {{ page.tag | default: "Guide" }} / Learning guide{% if page.status %} / {{ page.status }}{% endif %}
+        {%- elsif page.group_root -%}
+          {{ guide_root.title }} / Case study{% if page.status %} / {{ page.status }}{% endif %}
+        {%- elsif page.group -%}
+          {{ guide_root.title }} / {{ group_root.nav_title | default: group_root.title }} / Page {{ page.note_no }} of {{ group_notes.size }}
         {%- else -%}
           {{ guide_root.title }} / Note {{ page.note_no }} of {{ guide_notes.size }}
         {%- endif -%}
@@ -99,12 +161,13 @@ layout: default
     <div class="post-content dg-notes">
       {{ content }}
 
-      {%- if page.guide_root %}
+      {%- if page.guide_root or page.group_root %}
+      {%- if page.group_root %}{%- assign list_notes = group_notes -%}{%- else -%}{%- assign list_notes = top_notes -%}{%- endif %}
       <ol class="dg-note-list">
-        {%- for n in guide_notes %}
+        {%- for n in list_notes %}
         <li>
           <a class="dg-note-card" href="{{ n.url | relative_url }}">
-            <span class="dg-note-no">Note {{ n.note_no }}</span>
+            <span class="dg-note-no">{% if n.group_root %}Case study{% elsif n.group %}Page {{ n.note_no }}{% else %}Note {{ n.note_no }}{% endif %}</span>
             <span class="dg-note-title">{{ n.title }}</span>
             <span class="dg-note-desc">{{ n.description }}</span>
           </a>

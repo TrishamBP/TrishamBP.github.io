@@ -4,7 +4,7 @@ Interactive, animation-first labs for the **System Design** guide in the Digital
 (`/digital-garden/system-design/`). Uber is the case study: start with one ride, find each
 bottleneck, introduce the concept that fixes it, and animate the change.
 
-- **Content** (SEO-friendly markdown notes): `../_garden/system-design.md` and `../_garden/system-design/*.md`
+- **Content** (SEO-friendly markdown): `../_garden/system-design.md` (guide root), one case study per company: `../_garden/system-design/<company>.md` (overview, `group_root: true`) + `../_garden/system-design/<company>/*.md` (pages, `group: <company>`)
 - **Labs** (React islands): this folder, built into `../assets/sd-lab/`
 - **Plan and status:** [CURRICULUM.md](CURRICULUM.md), [PROGRESS.md](PROGRESS.md), [ARCHITECTURE.md](ARCHITECTURE.md)
 
@@ -19,7 +19,7 @@ Planned for later modules: D3 (charts) and `h3-js` (the real Uber H3 library).
 cd system-design-lab
 npm install
 npm run build        # type-check + build into ../assets/sd-lab (commit the output)
-npm test             # unit tests: queue simulator vs M/M/1 theory, blast radius, quizzes
+npm test             # unit tests: queue simulator vs M/M/1 theory, blast radius
 npm run typecheck
 ```
 
@@ -41,7 +41,8 @@ The smoke test opens every System Design page and checks:
 - step forward and back, Explain and the inspector work;
 - failure injection changes flow health;
 - the traffic simulator produces errors at 2.5× load and clears them after scaling out;
-- quizzes give feedback;
+- the sidebar shows the company group with its nested pages;
+- no quiz, exercise or planned text remains;
 - Mermaid diagrams render and no `$math$` is left unrendered.
 
 ## Embedding a lab in a note
@@ -55,12 +56,11 @@ mathjax: true       # optional: $inline$ and $$display$$ math
 ---
 
 <div data-sd-lab="gen2-traffic"></div>
-<div data-sd-lab="quiz" data-quiz="m1-gen2"></div>
 ```
 
-Register new labs in `src/main.tsx` (`LABS`), quizzes in `src/content/quizzes.ts`, and lessons in
-`src/content/curriculum.ts`. After editing note headings, run
-`python scripts/garden_sections.py _garden/system-design.md _garden/system-design/*.md`.
+Register new labs in `src/main.tsx` (`LABS`). Case-study pages need `group: <company>` and an `order`
+after the company's overview page. After editing headings, run
+`python scripts/garden_sections.py _garden/system-design.md _garden/system-design/*.md _garden/system-design/*/*.md`.
 
 ## Accuracy rules
 

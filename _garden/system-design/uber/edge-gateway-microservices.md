@@ -1,14 +1,15 @@
 ---
 layout: garden
 guide: system-design
-order: 3
+order: 4
+group: uber
 note_no: "03"
 nav_title: "Gen 3: edge, presentation, product"
 title: "Uber's Edge Gateway: Self-Service, Decentralized, Layered Microservices"
 seo_title: "Microservices Architecture at Uber: Edge Gateway, Presentation & Product Layers"
 description: "Microservices architecture at Uber explained: the Edge Gateway, presentation and product layers, service boundaries and ownership, with live blast-radius labs."
 keywords: "microservices architecture, Uber Edge Gateway, layered architecture, presentation service, backend for frontend, product service, service boundary, service ownership, independent deployment, domain-oriented microservice architecture, blast radius"
-lede: "Uber's fix for the all-encompassing gateway wasn't a faster gateway. It was a thinner one, plus layers of services that teams own end to end. This note animates that transformation one layer at a time, lets you fail any service and see who notices, and is honest about what microservices cost."
+lede: "Uber's fix for the all-encompassing gateway wasn't a faster gateway. It was a thinner one, plus layers of services that teams own end to end. This page animates that transformation one layer at a time, lets you fail any service and see who notices, and is honest about what microservices cost."
 sd_lab: true
 mathjax: true
 sections:
@@ -30,19 +31,15 @@ sections:
     title: "8\\. The problems microservices architecture introduces"
   - id: g3-compare
     title: "9\\. Lab: Gen 2 vs Gen 3, side by side"
-  - id: g3-exercise
-    title: "10\\. Exercise and engineering challenge"
-  - id: g3-check
-    title: "11\\. Knowledge check"
   - id: g3-summary
     title: "Key takeaways: microservices architecture at Uber"
   - id: g3-refs
     title: "References"
 ---
 
-A **microservices architecture** only pays off if teams can actually change their services independently. By 2018 Uber had the microservices (2,200+ of them), but every product-facing API still lived in one shared gateway, RTAPI ([Note 02](/digital-garden/system-design/uber-rtapi-api-gateway-bottleneck/#g2-coupling)).
+A **microservices architecture** only pays off if teams can actually change their services independently. By 2018 Uber had the microservices (2,200+ of them), but every product-facing API still lived in one shared gateway, RTAPI ([Note 02](/digital-garden/system-design/uber/rtapi-api-gateway-bottleneck/#g2-coupling)).
 
-Uber's third generation fixed that by doing *less* at the gateway. This note rebuilds the layered design (edge, presentation, product, domain) and animates the transformation. You'll fail services to measure blast radius, then weigh what the design costs.
+Uber's third generation fixed that by doing *less* at the gateway. This page rebuilds the layered design (edge, presentation, product, domain) and animates the transformation. You'll fail services to measure blast radius, then weigh what the design costs.
 
 ## 1. The problem: a gateway every team must queue behind
 {: #g3-problem}
@@ -186,11 +183,9 @@ What Uber has documented, and what is an educational generalisation:
 | Mobile → edge | HTTP/JSON | Yes. *"All mobile to server communications were primarily in HTTP/JSON."* |
 | Service → service (sync) | RPC over a multiplexed protocol | Yes: *"a new internal protocol … multiplexed bidirectional transport."* Uber open-sourced [TChannel](https://github.com/uber/tchannel) and [YARPC](https://github.com/yarpc/yarpc-go) (HTTP, TChannel and gRPC transports) |
 | Orchestrating many calls | In-process workflow framework | Yes: Control Flow Framework (CFF) in Go, and the Glue framework on [Fx](https://github.com/uber-go/fx) |
-| Service → service (async) | Events on a log such as Kafka | Kafka at Uber is widely documented; covered in Module 2 |
+| Service → service (async) | Events on a log such as Kafka | Uber has written extensively about running Kafka; this page covers the synchronous path |
 
 Uber's own lesson from the article: *"If there is an option, stick with a single protocol for your mobile applications and internal services."* Every extra protocol makes the gateway translate.
-
-[Module 3](/digital-garden/system-design/) will cover REST vs GraphQL vs gRPC in depth.
 
 ```mermaid
 sequenceDiagram
@@ -253,7 +248,7 @@ Microservices move complexity from *inside the code* to *between services*. Uber
 - **Data consistency:** no cross-service transactions. You get eventual consistency, sagas and idempotent handlers.
 - **Contract management:** versioning, deprecation and schema registries.
 - **Operational overhead:** thousands of deployables, on-call rotations, capacity plans.
-- **Reusable services have wide blast radius:** fail the Trips API in Lab 4 and three flows break.
+- **Reusable services have wide blast radius:** fail the Trips API in the layering lab above and three flows break.
 
 Availability also compounds along a call chain. A request that crosses 6 services, each at 99.95%:
 
@@ -268,27 +263,6 @@ Same event, two architectures. Switch scenarios: a crashing bug, a traffic spike
 
 <div data-sd-lab="gen-compare"></div>
 
-## 10. Exercise and engineering challenge
-{: #g3-exercise}
-
-**Exercise.** You own the Pricing API (product layer). The Eats team asks for a new `delivery_fee` field, and the Rider team needs the existing `fare` field unchanged. Design the change so both teams can deploy on their own schedules.
-
-<details markdown="1">
-<summary>Show one good answer</summary>
-
-Add `delivery_fee` as a new **optional** field and keep `fare` exactly as it is. That's an additive, backward-compatible change. Ship it behind a canary.
-
-The Eats Feed view starts reading the field when it's ready; the Rider Home view ignores it. Nobody coordinates a release. If the field's meaning ever has to change, add a new field (or a v2 endpoint) and deprecate the old one after callers migrate: expand, migrate, contract.
-
-</details>
-
-**Engineering challenge.** In Lab 4, phase 5, find the **single** service whose failure breaks the most flows. Then propose two ways to shrink its blast radius. (Think: a cached fallback in the presentation layer, splitting read and write APIs, or a degraded response that drops the ETA instead of failing the screen.)
-
-## 11. Knowledge check
-{: #g3-check}
-
-<div data-sd-lab="quiz" data-quiz="m1-gen3"></div>
-
 ## Key takeaways: microservices architecture at Uber
 {: #g3-summary}
 
@@ -297,7 +271,7 @@ The Eats Feed view starts reading the field when it's ready; the Rider Home view
 - **Service boundaries + ownership + backward-compatible contracts** are what make independent deployment work.
 - Microservices **shrink blast radius and remove team bottlenecks**, but bring partial failure, tracing, consistency and operational cost.
 - Uber's later **DOMA** groups services into domains behind domain gateways to keep 2,200 services understandable.
-- Module 1 recap: [Gen 1](/digital-garden/system-design/uber-api-gateway-first-generation/#g1-architecture) → [Gen 2](/digital-garden/system-design/uber-rtapi-api-gateway-bottleneck/#g2-architecture) → Gen 3. Next is Module 2: what happens when someone requests a ride.
+- The Uber evolution in one line: [Gen 1](/digital-garden/system-design/uber/api-gateway-first-generation/#g1-architecture) → [Gen 2](/digital-garden/system-design/uber/rtapi-api-gateway-bottleneck/#g2-architecture) → Gen 3.
 
 ## References
 {: #g3-refs}

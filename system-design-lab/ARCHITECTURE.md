@@ -45,12 +45,9 @@ src/
                          wire inspector (request/response bodies per step)
     LabFrame.tsx         lab card, InfoPanel (click-to-inspect), Metric, Slider, Toggle
     Chart.tsx            multi-series SVG line chart
-    KnowledgeCheck.tsx   quizzes with explained answers (+ shuffle.ts)
-    progress.ts          localStorage progress shared across islands (custom event)
     graph.ts             blast radius: transitive callers of failed nodes
     sim/queueSim.ts      discrete-event M/M/c/K queue with timeouts (tested vs theory)
   labs/                  one file per lab (lazy chunk)
-  content/               curriculum.ts, quizzes.ts
 tests/                   node --test unit tests; e2e/smoke.mjs (Playwright + system Chrome)
 ```
 

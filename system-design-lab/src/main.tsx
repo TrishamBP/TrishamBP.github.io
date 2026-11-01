@@ -1,7 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { lazy, StrictMode, Suspense, type ComponentType } from "react";
 import css from "./styles.css?inline";
-import { recordLab } from "./engine/progress";
 
 /**
  * Island loader. Markdown pages embed a lab with
@@ -17,8 +16,6 @@ const LABS: Record<string, () => Promise<{ default: ComponentType<LabProps> }>> 
   "gen2-traffic": () => import("./labs/Gen2Traffic"),
   "gen3-evolution": () => import("./labs/Gen3Evolution"),
   "gen-compare": () => import("./labs/GenCompare"),
-  quiz: () => import("./labs/QuizLab"),
-  progress: () => import("./labs/ProgressBoard"),
 };
 
 // Tailwind v4 registers its internal variables with @property, which is
@@ -49,7 +46,6 @@ function mount(el: HTMLElement) {
   const host = document.createElement("div");
   root.append(style, host);
   const Lab = lazyLab(name);
-  el.addEventListener("pointerdown", () => recordLab(el.dataset.labId ?? name), { once: true });
   createRoot(host).render(
     <StrictMode>
       <Suspense fallback={<div style={{ padding: 24, color: "#94a3b8", fontSize: 13 }}>Loading interactive lab…</div>}>

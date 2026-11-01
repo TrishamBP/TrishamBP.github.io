@@ -122,7 +122,7 @@ export default function GenCompare() {
   const t = playing ? loop : 0.45;
   const sc = SCENARIOS[i];
   return (
-    <LabFrame eyebrow="Module 1 · Lab 5" title="Gen 2 vs Gen 3, side by side: same event, different outcome" simulated={false}>
+    <LabFrame eyebrow="Uber · Lab 5" title="Gen 2 vs Gen 3, side by side: same event, different outcome" simulated={false}>
       <div className="flex flex-wrap gap-1.5" role="group" aria-label="Scenario">
         {SCENARIOS.map((x, j) => (
           <button key={x.name} type="button" onClick={() => setI(j)} aria-pressed={i === j}

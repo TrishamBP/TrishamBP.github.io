@@ -435,6 +435,29 @@ body.theme-typesafe.dg-garden .site-shell .dg-side-sub a.is-active {
   border-left-color: var(--dg-rust);
 }
 
+/* Grouped pages (a case study such as Uber in the System Design guide):
+   the group title is a top-level item; its pages nest one level in, each
+   with its own subsection list. */
+body.theme-typesafe.dg-garden .dg-side-group-list {
+  list-style: none;
+  margin: 0.1rem 0 0.6rem 0.68rem;
+  padding: 0 0 0 0.35rem;
+  border-left: 1px solid var(--dg-hair);
+}
+
+body.theme-typesafe.dg-garden .dg-side-group-list > li {
+  margin: 0 0 0.1rem;
+}
+
+body.theme-typesafe.dg-garden .site-shell .dg-side-group.is-in-group > summary a {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+body.theme-typesafe.dg-garden .site-shell .dg-side-group-list .dg-side-item > summary a {
+  font-size: 0.9rem;
+}
+
 body.theme-typesafe.dg-garden .dg-side-sub code {
   font-size: 0.8em;
   padding: 0 0.2em;

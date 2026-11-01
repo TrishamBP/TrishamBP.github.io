@@ -1,14 +1,15 @@
 ---
 layout: garden
 guide: system-design
-order: 2
+order: 3
+group: uber
 note_no: "02"
 nav_title: "Gen 2: the all-encompassing gateway"
 title: "Uber's RTAPI: How an All-Encompassing API Gateway Becomes a Bottleneck"
 seo_title: "API Gateway Bottleneck Explained: Uber's RTAPI, NGINX, Routing & Queueing Math"
 description: "Why does an API gateway become a bottleneck? Rebuild Uber's RTAPI, trace a request through NGINX, auth and routing, then overload it in a live queueing lab."
 keywords: "API gateway bottleneck, API gateway, Uber RTAPI, NGINX reverse proxy, SSL termination, request routing, single point of failure, tight coupling, Little's Law, queueing theory, p99 latency"
-lede: "In 2015 Uber built a real API gateway. By 2019 it served 800,000 requests per second and about 40% of engineering committed code to it. This note traces one request through it, then overloads it until you can see exactly where an all-encompassing gateway breaks."
+lede: "In 2015 Uber built a real API gateway. By 2019 it served 800,000 requests per second and about 40% of engineering committed code to it. This page traces one request through it, then overloads it until you can see exactly where an all-encompassing gateway breaks."
 sd_lab: true
 mathjax: true
 sections:
@@ -30,19 +31,15 @@ sections:
     title: "8\\. Tight coupling: the bottleneck replicas can't fix"
   - id: g2-tradeoffs
     title: "9\\. Trade-offs of an all-encompassing gateway"
-  - id: g2-exercise
-    title: "10\\. Exercise and engineering challenge"
-  - id: g2-check
-    title: "11\\. Knowledge check"
   - id: g2-summary
     title: "Key takeaways: the API gateway bottleneck"
   - id: g2-refs
     title: "References"
 ---
 
-An **API gateway bottleneck** rarely looks like one at first. In 2015 Uber replaced "everything goes through dispatch" ([Note 01](/digital-garden/system-design/uber-api-gateway-first-generation/#g1-problem)) with a real gateway, RTAPI, and it worked. It grew to serve 800,000 requests per second.
+An **API gateway bottleneck** rarely looks like one at first. In 2015 Uber replaced "everything goes through dispatch" ([Page 01](/digital-garden/system-design/uber/api-gateway-first-generation/#g1-problem)) with a real gateway, RTAPI, and it worked. It grew to serve 800,000 requests per second.
 
-Then it became the thing every team waited on. This note rebuilds RTAPI from Uber's write-up and walks a request through NGINX, authentication and routing. Then you'll overload it in a live simulation and work out the mathematics of why latency explodes, and why the hardest bottleneck wasn't CPU at all.
+Then it became the thing every team waited on. This page rebuilds RTAPI from Uber's write-up and walks a request through NGINX, authentication and routing. Then you'll overload it in a live simulation and work out the mathematics of why latency explodes, and why the hardest bottleneck wasn't CPU at all.
 
 ## 1. The problem Gen 2 solved, and the one it created
 {: #g2-problem}
@@ -311,25 +308,6 @@ flowchart LR
 | Scaling | Stateless, so add instances for throughput | Can't scale *people*; the gateway team is a queue |
 | Failure | Split into 40+ deployments to isolate load | A shared-library bug still reaches all of them |
 
-## 10. Exercise and engineering challenge
-{: #g2-exercise}
-
-**Exercise.** Your gateway instance has 128 workers and $S = 25\text{ ms}$. Peak traffic is 12,000 req/s and you want to stay at or below $\rho = 0.7$ at peak. How many instances do you need?
-
-<details markdown="1">
-<summary>Show the working</summary>
-
-Per instance: $\mu_1 = 128 / 0.025 = 5{,}120$ req/s. You need $n \cdot 5{,}120 \cdot 0.7 \ge 12{,}000$, so $n \ge 3.35$: **4 instances**. Add at least one more so you survive losing one (N+1), and spread them across zones. Check it in the lab: set 128 workers, 25 ms, 12,000 req/s and slide instances.
-
-</details>
-
-**Engineering challenge.** In the lab, set 4,000 req/s with 1 instance. Without adding instances, find a configuration that keeps the error rate under 1%. Is that configuration realistic? (Explore service time: what would you have to make faster, and where does that work go?)
-
-## 11. Knowledge check
-{: #g2-check}
-
-<div data-sd-lab="quiz" data-quiz="m1-gen2"></div>
-
 ## Key takeaways: the API gateway bottleneck
 {: #g2-summary}
 
@@ -338,7 +316,7 @@ Per instance: $\mu_1 = 128 / 0.025 = 5{,}120$ req/s. You need $n \cdot 5{,}120 \
 - **Little's Law, $L = \lambda W$**, sizes worker and connection pools.
 - A gateway is a **single point of failure** unless it's replicated, health-checked and able to shed load.
 - Uber's real RTAPI bottleneck was **tight coupling**: one codebase, test suite, dependency tree and team shared by 40% of engineering.
-- Next: [Gen 3, the Edge Gateway and layered microservices](/digital-garden/system-design/uber-edge-gateway-microservices/#g3-problem).
+- Next: [Gen 3, the Edge Gateway and layered microservices](/digital-garden/system-design/uber/edge-gateway-microservices/#g3-problem).
 
 ## References
 {: #g2-refs}

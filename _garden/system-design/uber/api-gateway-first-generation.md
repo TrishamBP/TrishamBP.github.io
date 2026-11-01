@@ -1,14 +1,15 @@
 ---
 layout: garden
 guide: system-design
-order: 1
+order: 2
+group: uber
 note_no: "01"
 nav_title: "Gen 1: dispatch and messageType"
 title: "Uber's First-Generation Architecture: One Endpoint, Routed by messageType"
 seo_title: "Uber API Gateway Evolution, Gen 1: Dispatch, messageType & SSL Termination"
 description: "Uber API gateway evolution, part 1: how the 2014 dispatch service routed every request by messageType, with an animated lab on SSL termination and proxying."
 keywords: "Uber API gateway, Uber architecture evolution, Uber dispatch service, messageType RPC, SSL termination, reverse proxy, nginx, request routing, single point of failure, system design case study"
-lede: "Before Uber had an API gateway, its gateway was a field in a JSON body. This note rebuilds the 2014 design, animates a request through it, and works out with real numbers why it couldn't last."
+lede: "Before Uber had an API gateway, its gateway was a field in a JSON body. This page rebuilds the 2014 design, animates a request through it, and works out with real numbers why it couldn't last."
 sd_lab: true
 mathjax: true
 sections:
@@ -24,10 +25,6 @@ sections:
     title: "5\\. The bottleneck: why every path through dispatch hurts"
   - id: g1-tradeoffs
     title: "6\\. Trade-offs: what Gen 1 got right"
-  - id: g1-exercise
-    title: "7\\. Exercise and engineering challenge"
-  - id: g1-check
-    title: "8\\. Knowledge check"
   - id: g1-summary
     title: "Key takeaways: Uber's first-generation API architecture"
   - id: g1-refs
@@ -36,7 +33,7 @@ sections:
 
 The **Uber API gateway** story starts before Uber had an API gateway. In 2014 the backend was essentially two services, *dispatch* and *api*. Both mobile apps sent every request to one URL, and a field inside the message decided what happened next.
 
-This note rebuilds that first-generation design from Uber's own engineering write-up. You'll animate a request through it, learn the concepts inside the diagram (TLS termination, reverse proxying, request routing) and then work out, with numbers, why it had to change.
+This page rebuilds that first-generation design from Uber's own engineering write-up. You'll animate a request through it, learn the concepts inside the diagram (TLS termination, reverse proxying, request routing) and then work out, with numbers, why it had to change.
 
 ## 1. The problem: one backend, two apps, every request
 {: #g1-problem}
@@ -181,25 +178,6 @@ Don't read Gen 1 as a mistake. For a small team it had real advantages:
 
 The lesson generalises: **start simple, and introduce a component only when a bottleneck proves you need it.** Uber's bottleneck was coupling, and the response was a real API gateway.
 
-## 7. Exercise and engineering challenge
-{: #g1-exercise}
-
-**Exercise (5 minutes).** Dispatch handles 2,000 messages per second, of which 30% are `ApiCommand`. Each `ApiCommand` costs dispatch 2 ms of CPU to proxy. How many CPU cores does dispatch spend purely on proxying?
-
-<details markdown="1">
-<summary>Show the working</summary>
-
-$2{,}000 \times 0.30 = 600$ proxied messages/s. $600 \times 2\text{ ms} = 1{,}200$ ms of CPU per second, which is **1.2 cores** spent on traffic that dispatch doesn't need to see. Those cores are capacity taken from trip matching.
-
-</details>
-
-**Engineering challenge.** Redraw the diagram so that `ApiCommand` traffic no longer depends on dispatch, *without changing the mobile apps*. What must nginx learn to do? What does it need to inspect? (Hint: you just invented request routing at the edge, which is Gen 2.)
-
-## 8. Knowledge check
-{: #g1-check}
-
-<div data-sd-lab="quiz" data-quiz="m1-gen1"></div>
-
 ## Key takeaways: Uber's first-generation API architecture
 {: #g1-summary}
 
@@ -207,7 +185,7 @@ $2{,}000 \times 0.30 = 600$ proxied messages/s. $600 \times 2\text{ ms} = 1{,}20
 - **`ApiCommand` made dispatch the de facto gateway:** non-trip requests were proxied through the real-time core.
 - **TLS termination** and **authentication** at the edge centralise security work, and a **reverse proxy** hides backend topology from clients.
 - **Availability multiplies along a path:** each extra hop adds downtime ($0.999^3 \approx 99.7\%$).
-- The real limit was **coupling** of capacity, failure and change to the most critical service. Next: [Gen 2, RTAPI, the all-encompassing gateway](/digital-garden/system-design/uber-rtapi-api-gateway-bottleneck/#g2-problem).
+- The real limit was **coupling** of capacity, failure and change to the most critical service. Next: [Gen 2, RTAPI, the all-encompassing gateway](/digital-garden/system-design/uber/rtapi-api-gateway-bottleneck/#g2-problem).
 
 ## References
 {: #g1-refs}
@@ -215,4 +193,4 @@ $2{,}000 \times 0.30 = 600$ proxied messages/s. $600 \times 2\text{ ms} = 1{,}20
 - Uber Engineering, [*Designing Edge Gateway, Uber's API Lifecycle Management Platform*](https://www.uber.com/blog/gatewayuberapi/), Pavel Astakhov, Madan Thangavelu and Uday Kiran Medisetty, August 2020. The source for the 2014 design, the `messageType` routing, `ApiCommand` and Fig. 1. **Documented Uber facts.**
 - NGINX, [*NGINX Reverse Proxy*](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) and [*SSL Termination*](https://docs.nginx.com/nginx/admin-guide/security-controls/terminating-ssl-http/) (official documentation).
 - IETF, [RFC 8446: TLS 1.3](https://www.rfc-editor.org/rfc/rfc8446).
-- **Illustrative, not Uber's:** the request payloads, the `getPaymentProfiles` command name, and the exercise numbers.
+- **Illustrative, not Uber's:** the request payloads, the `getPaymentProfiles` command name.

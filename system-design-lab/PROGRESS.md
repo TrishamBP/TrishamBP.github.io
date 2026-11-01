@@ -24,18 +24,30 @@ work in the real browser test (`tests/e2e/smoke.mjs`).
 
 - [x] Verified the reference image against Uber's *Designing Edge Gateway* (2020). Corrected the
       generation labels (dispatch/messageType = Gen 1; RTAPI = Gen 2).
-- [x] Note 01, Gen 1 dispatch/messageType: lab `gen1-dispatch` (8 steps), 2 Mermaid diagrams,
+- [x] Page 01, Gen 1 dispatch/messageType: lab `gen1-dispatch` (8 steps), 2 Mermaid diagrams,
       availability math, exercise, challenge, 4-question quiz, references.
-- [x] Note 02, Gen 2 RTAPI: lab `gen2-request` (7-step request lifecycle with TLS/auth/routing and
+- [x] Page 02, Gen 2 RTAPI: lab `gen2-request` (7-step request lifecycle with TLS/auth/routing and
       wire payloads), lab `gen2-traffic` (live queueing simulation with presets, crash and
       bad-deploy toggles, p50/p95/p99, Little's Law), 3 Mermaid diagrams, all 10 Part A questions,
       exercise, challenge, 6-question quiz, references.
-- [x] Note 03, Gen 3 Edge Gateway: lab `gen3-evolution` (5-phase transformation, 5 animated user
+- [x] Page 03, Gen 3 Edge Gateway: lab `gen3-evolution` (5-phase transformation, 5 animated user
       flows, click-to-inspect, fail-any-service blast radius), lab `gen-compare` (4 scenarios side
       by side + comparison table), 2 Mermaid diagrams, all 10 Part B questions, exercise,
       challenge, 6-question quiz, references.
 
-## Next: Milestone 2, Module 2 Part B (Uber H3)
+## Milestone 1b: Restructure as company case studies (done, 2026-11-01)
+
+- [x] The System Design guide now covers multiple companies; Uber is one case study.
+- [x] `garden.html` supports groups: `group: <id>` on pages, `group_root: true` on the case-study
+      overview page. Sidebar: guide → company → pages → subsections. Breadcrumb and eyebrow show
+      the company. The guide root lists case studies; the group root lists its pages.
+- [x] Uber pages moved to `_garden/system-design/uber/` (URLs `/digital-garden/system-design/uber/<slug>/`),
+      with an overview at `_garden/system-design/uber.md`.
+- [x] At the user's request, removed the planned/roadmap content from the site, the knowledge-check
+      quizzes, the exercise/answer sections and the progress board, plus their code
+      (KnowledgeCheck, quizzes, progress, curriculum).
+
+## Backlog (internal, not published): Milestone 2, Module 2 Part B (Uber H3)
 
 - [ ] Add `h3-js`; confirm the v4 API (`latLngToCell`, `gridDisk`, `cellToBoundary`,
       `cellToParent`, `cellToChildren`, `getResolution`, `getHexagonEdgeLengthAvg`) against h3geo.org.

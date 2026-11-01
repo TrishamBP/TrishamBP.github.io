@@ -178,7 +178,7 @@ export default function Gen1Dispatch() {
   const [sel, setSel] = useState<string | null>(null);
   const node = useMemo(() => NODES.find((n) => n.id === sel) ?? null, [sel]);
   return (
-    <LabFrame eyebrow="Module 1 · Lab 1" title="Gen 1 (2014): one endpoint, routed by messageType" simulated={false}>
+    <LabFrame eyebrow="Uber · Lab 1" title="Gen 1 (2014): one endpoint, routed by messageType" simulated={false}>
       <Controls tl={tl} explain={explain} onExplain={() => setExplain((e) => !e)} />
       <StepChips tl={tl} titles={STEPS.map((s) => s.title)} />
       <Diagram width={900} height={380} nodes={NODES} edges={EDGES} packets={tl.step.packets} t={tl.t}

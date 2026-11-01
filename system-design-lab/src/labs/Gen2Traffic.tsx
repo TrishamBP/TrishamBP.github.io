@@ -72,7 +72,7 @@ export default function Gen2Traffic() {
   const regime = p.down ? "down" : rho < 0.7 ? "healthy" : rho < 1 ? "knee" : "overload";
 
   return (
-    <LabFrame eyebrow="Module 1 · Lab 3" title="Overload the gateway: what happens when every request goes through one tier">
+    <LabFrame eyebrow="Uber · Lab 3" title="Overload the gateway: what happens when every request goes through one tier">
       <div className="flex flex-wrap items-center gap-2" role="toolbar" aria-label="Simulation controls">
         <Btn onClick={() => setRunning((r) => !r)} label={running ? "Pause" : "Play"}>{running ? "❚❚ Pause" : "▶ Play"}</Btn>
         <Btn onClick={() => { advance(1000); setSnap(sim.current.snapshot()); }} label="Step forward 1 simulated second" disabled={running}>+1 s</Btn>

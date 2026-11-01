@@ -9,9 +9,10 @@ const OUT = process.env.OUT ?? "tests/e2e/shots";
 mkdirSync(OUT, { recursive: true });
 const PAGES = [
   "/digital-garden/system-design/",
-  "/digital-garden/system-design/uber-api-gateway-first-generation/",
-  "/digital-garden/system-design/uber-rtapi-api-gateway-bottleneck/",
-  "/digital-garden/system-design/uber-edge-gateway-microservices/",
+  "/digital-garden/system-design/uber/",
+  "/digital-garden/system-design/uber/api-gateway-first-generation/",
+  "/digital-garden/system-design/uber/rtapi-api-gateway-bottleneck/",
+  "/digital-garden/system-design/uber/edge-gateway-microservices/",
 ];
 const exe = process.env.CHROME ?? "C:/Program Files/Google/Chrome/Application/chrome.exe";
 const browser = await chromium.launch({ executablePath: exe });
@@ -90,12 +91,6 @@ for (const path of PAGES) {
       console.log("  scaled:", JSON.stringify(scaled));
       if (parseFloat(scaled["Error rate"]) > 2) fail("traffic: scale-out should clear errors");
     }
-    if (name === "quiz") {
-      await h.evaluate((el) => el.shadowRoot.querySelectorAll('[role="radio"]')[1].click());
-      await page.waitForTimeout(300);
-      const fb = await h.evaluate((el) => !!el.shadowRoot.textContent.match(/Correct\.|Not quite\./));
-      if (!fb) fail("quiz: no feedback");
-    }
     if (name === "gen-compare") {
       await btn("Debug one slow request"); await page.waitForTimeout(500);
     }
@@ -114,6 +109,17 @@ for (const path of PAGES) {
   for (const [k, d] of diagrams.entries()) { await d.scrollIntoViewIfNeeded(); await d.screenshot({ path: `${OUT}/${path.split("/").filter(Boolean).pop()}-mermaid-${k}.png` }); }
   console.log(`  mathjax elements: ${jax}`);
   if (errors.length) { fail(`${path} console errors:\n   ` + errors.join("\n   ")); }
+  // sidebar: group + nested page structure
+  const side = await page.$eval(".dg-side-nav", (n) => ({
+    groups: n.querySelectorAll(".dg-side-group").length,
+    nested: n.querySelectorAll(".dg-side-group-list > li").length,
+    current: n.querySelector(".dg-side-item.is-current > summary a")?.textContent.trim().replace(/\s+/g, " ") ?? null,
+  }));
+  console.log("  sidebar:", JSON.stringify(side));
+  if (side.groups !== 1 || side.nested !== 4) fail(`${path}: sidebar group structure ${JSON.stringify(side)}`);
+  const leftovers = await page.evaluate(() => /Knowledge check|Exercise and engineering|coming soon|Planned/i.test(document.querySelector(".dg-guide").textContent));
+  if (leftovers) fail(`${path}: quiz/exercise/planned text still present`);
+  await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: `${OUT}/${path.split("/").filter(Boolean).pop()}-page.png`, fullPage: false });
 }
 await browser.close();
