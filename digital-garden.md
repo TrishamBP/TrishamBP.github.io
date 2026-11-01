@@ -9,10 +9,11 @@ permalink: /digital-garden/
 
 {%- comment -%}
   Digital Garden: learning guides from the `garden` collection, two cards per
-  row (Signals-style cards in the black / white / Aptos skin). Card order
-  follows each guide's `order:` frontmatter.
+  row (Signals-style cards in the black / white / Aptos skin). Only guide
+  root pages (`guide_root: true`) get a card; their notes are reached from
+  the guide's docs sidebar.
 {%- endcomment -%}
-{%- assign guides = site.garden | sort: "order" -%}
+{%- assign guides = site.garden | where: "guide_root", true | sort: "card_order" -%}
 
 <section class="dg-index" aria-labelledby="dg-heading">
   <header class="dg-hero">
@@ -36,7 +37,7 @@ permalink: /digital-garden/
         <p class="dg-card-text">{{ g.card_text | default: g.description }}</p>
         <p class="dg-card-foot">
           <span>{{ g.status | default: "Learning guide" }}</span>
-          <span>Open guide &rarr;</span>
+          <span>{% assign gnotes = site.garden | where: "guide", g.guide | where_exp: "p", "p.guide_root != true" %}{{ gnotes.size }} notes &middot; Open guide &rarr;</span>
         </p>
       </article>
     {% endfor %}

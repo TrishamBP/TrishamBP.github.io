@@ -221,15 +221,6 @@ body.theme-typesafe.dg-garden .site-shell .dg-guide-logo {
   margin: 0 0 1.4rem;
 }
 
-body.theme-typesafe.dg-garden .site-shell .dg-empty {
-  padding: 1.6rem 1.7rem;
-  border: 1px dashed var(--dg-hair);
-}
-
-body.theme-typesafe.dg-garden .site-shell .dg-empty p:last-child {
-  margin: 0;
-}
-
 /* Notes body: white Aptos on black. Code keeps its monospace stack. */
 body.theme-typesafe.dg-garden .post-content.dg-notes {
   max-width: none;
@@ -254,45 +245,6 @@ body.theme-typesafe.dg-garden .post-content.dg-notes a {
   text-decoration-color: var(--dg-rust);
 }
 
-/* Index (`{: .dg-toc}` list under "Index"): a framed, clickable outline. */
-body.theme-typesafe.dg-garden .post-content.dg-notes ul.dg-toc {
-  list-style: none;
-  margin: 1rem 0 2rem;
-  padding: 1.3rem 1.6rem;
-  border: 1px solid var(--dg-hair);
-  background: #0b0b0b;
-}
-
-body.theme-typesafe.dg-garden .post-content.dg-notes ul.dg-toc > li {
-  margin: 0.2rem 0 0.9rem;
-  font-weight: 600;
-}
-
-body.theme-typesafe.dg-garden .post-content.dg-notes ul.dg-toc > li:last-child {
-  margin-bottom: 0;
-}
-
-body.theme-typesafe.dg-garden .post-content.dg-notes ul.dg-toc ul {
-  list-style: none;
-  margin: 0.4rem 0 0;
-  padding-left: 1.1rem;
-  border-left: 1px solid var(--dg-hair);
-}
-
-body.theme-typesafe.dg-garden .post-content.dg-notes ul.dg-toc ul li {
-  margin: 0.25rem 0;
-  font-weight: 400;
-}
-
-body.theme-typesafe.dg-garden .post-content.dg-notes ul.dg-toc a {
-  text-decoration: none;
-}
-
-body.theme-typesafe.dg-garden .post-content.dg-notes ul.dg-toc a:hover {
-  text-decoration: underline;
-  text-decoration-color: var(--dg-rust);
-}
-
 /* Jump targets clear the sticky nav; smooth scroll unless reduced motion. */
 body.theme-typesafe.dg-garden .post-content.dg-notes [id] {
   scroll-margin-top: 80px;
@@ -307,5 +259,347 @@ body.theme-typesafe.dg-garden .post-content.dg-notes [id] {
 @media (max-width: 720px) {
   body.theme-typesafe.dg-garden .dg-cards {
     grid-template-columns: 1fr;
+  }
+}
+
+/* =============================================================================
+   DOCS LAYOUT (every `garden` page: body class `dg-docs-page`)
+   Sticky left sidebar (guide > notes > subsections), article on the right,
+   previous / next cards at the bottom. Below 960px the sidebar folds into a
+   "Contents" button above the article.
+   ========================================================================== */
+
+body.theme-typesafe.dg-garden.dg-docs-page .site-shell {
+  width: min(1360px, 100%);
+}
+
+body.theme-typesafe.dg-garden .dg-docs {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: start;
+}
+
+body.theme-typesafe.dg-garden .dg-docs .dg-guide {
+  max-width: 860px;
+  margin: 0;
+  padding: clamp(1.6rem, 4vw, 3rem) 0 4rem;
+}
+
+/* Note titles are long and keyword-rich: smaller than the guide-root title. */
+body.theme-typesafe.dg-garden.dg-docs-page .site-shell .dg-title {
+  font-size: clamp(2rem, 4vw, 2.9rem);
+  line-height: 1.1;
+}
+
+/* ---- sidebar ---- */
+
+body.theme-typesafe.dg-garden .dg-side {
+  position: sticky;
+  top: 72px;
+  max-height: calc(100vh - 88px);
+  overflow-y: auto;
+  padding: clamp(1.6rem, 4vw, 3rem) 0.4rem 2rem 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+body.theme-typesafe.dg-garden .dg-side-toggle {
+  display: none;
+}
+
+body.theme-typesafe.dg-garden .site-shell .dg-side-guide {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 1.1rem;
+  padding: 0 0 1rem;
+  border-bottom: 1px solid var(--dg-hair);
+  font-family: var(--dg-display);
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+body.theme-typesafe.dg-garden .dg-side-guide img {
+  width: 34px;
+  height: auto;
+}
+
+body.theme-typesafe.dg-garden .dg-side-list,
+body.theme-typesafe.dg-garden .dg-side-sub {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+body.theme-typesafe.dg-garden .dg-side-list > li {
+  margin: 0 0 0.15rem;
+}
+
+body.theme-typesafe.dg-garden .dg-side-item > summary {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.35rem;
+  list-style: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+body.theme-typesafe.dg-garden .dg-side-item > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* The arrow: points right when closed, down when open. */
+body.theme-typesafe.dg-garden .dg-chev {
+  flex: none;
+  display: inline-block;
+  width: 1.4rem;
+  height: 1.9rem;
+  position: relative;
+}
+
+body.theme-typesafe.dg-garden .dg-chev::before {
+  content: "";
+  position: absolute;
+  left: 0.42rem;
+  top: 0.72rem;
+  width: 0.38rem;
+  height: 0.38rem;
+  border-right: 1.5px solid rgba(255, 255, 255, 0.55);
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.55);
+  transform: rotate(-45deg);
+  transition: transform 0.18s ease;
+}
+
+body.theme-typesafe.dg-garden .dg-side-item[open] > summary .dg-chev::before {
+  transform: rotate(45deg);
+}
+
+body.theme-typesafe.dg-garden .dg-side-item > summary:hover .dg-chev::before {
+  border-color: #ffffff;
+}
+
+body.theme-typesafe.dg-garden .site-shell .dg-side-item > summary a {
+  flex: 1;
+  display: flex;
+  gap: 0.55rem;
+  padding: 0.38rem 0.5rem 0.38rem 0.1rem;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.78);
+  text-decoration: none;
+}
+
+body.theme-typesafe.dg-garden .site-shell .dg-side-item > summary a:hover {
+  color: #ffffff;
+}
+
+body.theme-typesafe.dg-garden .site-shell .dg-side-item.is-current > summary a {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+body.theme-typesafe.dg-garden .dg-side-no {
+  flex: none;
+  min-width: 1.4rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--dg-rust);
+  font-weight: 600;
+}
+
+body.theme-typesafe.dg-garden .dg-side-sub {
+  margin: 0.15rem 0 0.7rem 0.68rem;
+  padding-left: 0.9rem;
+  border-left: 1px solid var(--dg-hair);
+}
+
+body.theme-typesafe.dg-garden .site-shell .dg-side-sub a {
+  display: block;
+  margin-left: -0.95rem;
+  padding: 0.3rem 0.4rem 0.3rem 0.9rem;
+  border-left: 2px solid transparent;
+  font-size: 0.86rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+}
+
+body.theme-typesafe.dg-garden .site-shell .dg-side-sub a:hover {
+  color: #ffffff;
+}
+
+body.theme-typesafe.dg-garden .site-shell .dg-side-sub a.is-active {
+  color: #ffffff;
+  border-left-color: var(--dg-rust);
+}
+
+body.theme-typesafe.dg-garden .dg-side-sub code {
+  font-size: 0.8em;
+  padding: 0 0.2em;
+  background: transparent;
+  border: 0;
+  color: inherit;
+}
+
+/* ---- note list on the guide's root page ---- */
+
+body.theme-typesafe.dg-garden .post-content.dg-notes ol.dg-note-list {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.8rem;
+}
+
+body.theme-typesafe.dg-garden .post-content.dg-notes ol.dg-note-list li {
+  margin: 0;
+}
+
+body.theme-typesafe.dg-garden .post-content.dg-notes a.dg-note-card {
+  display: grid;
+  gap: 0.3rem;
+  padding: 1.1rem 1.3rem;
+  border: 1px solid var(--dg-hair);
+  background: #0b0b0b;
+  text-decoration: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+body.theme-typesafe.dg-garden .post-content.dg-notes a.dg-note-card:hover {
+  border-color: #ffffff;
+  background: #111111;
+}
+
+body.theme-typesafe.dg-garden .dg-note-no {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dg-rust);
+}
+
+body.theme-typesafe.dg-garden .dg-note-title {
+  font-family: var(--dg-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+body.theme-typesafe.dg-garden .dg-note-desc {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ---- previous / next ---- */
+
+body.theme-typesafe.dg-garden .dg-pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 3.5rem 0 0;
+  padding: 2rem 0 0;
+  border-top: 1px solid var(--dg-hair);
+}
+
+body.theme-typesafe.dg-garden .site-shell .dg-pager-link {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1.1rem 1.3rem;
+  border: 1px solid var(--dg-hair);
+  text-decoration: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+body.theme-typesafe.dg-garden .site-shell .dg-pager-link:hover {
+  border-color: #ffffff;
+  background: #0b0b0b;
+}
+
+body.theme-typesafe.dg-garden .dg-pager-next {
+  grid-column: 2;
+  text-align: right;
+}
+
+body.theme-typesafe.dg-garden .dg-pager-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+body.theme-typesafe.dg-garden .dg-pager-title {
+  font-family: var(--dg-display);
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* ---- narrow screens: sidebar becomes a "Contents" drawer ---- */
+
+@media (max-width: 959px) {
+  body.theme-typesafe.dg-garden .dg-docs {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  body.theme-typesafe.dg-garden .dg-side {
+    position: static;
+    max-height: none;
+    overflow: visible;
+    padding: 1.2rem 0 0;
+  }
+
+  body.theme-typesafe.dg-garden .dg-side.is-collapsible .dg-side-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    background: #0b0b0b;
+    border: 1px solid var(--dg-hair);
+    color: #ffffff;
+    font-family: var(--dg-sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  body.theme-typesafe.dg-garden .dg-side.is-collapsible .dg-side-toggle .dg-chev::before {
+    transform: rotate(45deg);
+  }
+
+  body.theme-typesafe.dg-garden .dg-side.is-collapsible.is-open .dg-side-toggle .dg-chev::before {
+    transform: rotate(-135deg);
+  }
+
+  body.theme-typesafe.dg-garden .dg-side.is-collapsible .dg-side-nav {
+    display: none;
+    padding: 1rem 0.9rem 0.6rem;
+    border: 1px solid var(--dg-hair);
+    border-top: 0;
+  }
+
+  body.theme-typesafe.dg-garden .dg-side.is-collapsible.is-open .dg-side-nav {
+    display: block;
+  }
+
+  body.theme-typesafe.dg-garden .dg-docs .dg-guide {
+    padding-top: 1.6rem;
+  }
+}
+
+@media (max-width: 560px) {
+  body.theme-typesafe.dg-garden .dg-pager {
+    grid-template-columns: 1fr;
+  }
+
+  body.theme-typesafe.dg-garden .dg-pager-next {
+    grid-column: 1;
   }
 }
