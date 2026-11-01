@@ -39,7 +39,7 @@ let components = self
     .components
     .iter()
     .zip(&other.components)
-    .map(|`.map(|(a, b)| a + b)`| a + b)
+    .map(|(a, b)| a + b)
     .collect();
 Ok(Vector { components })
 ```
@@ -102,13 +102,13 @@ No error, the `30.0` is just ignored. **That's the real reason `checked_add` cal
 {: #itr-closures}
 
 ```rust
-|`.map(|(a, b)| a + b)`| a + b
+|(a, b)| a + b
 ```
 
 This is a **closure**: a small anonymous function, like Python's `lambda`.
 
 - The parameters go between the bars `| |`.
-- **``.map(|(a, b)| a + b)``** is a pattern that unpacks each pair from `zip` ([destructuring](/digital-garden/rust-sandbox/arrays-tuples-constants/#arr-destructure)). The Python equivalent is `lambda pair: pair[0] + pair[1]`.
+- **`(a, b)`** is a pattern that unpacks each pair from `zip` ([destructuring](/digital-garden/rust-sandbox/arrays-tuples-constants/#arr-destructure)). The Python equivalent is `lambda pair: pair[0] + pair[1]`.
 - After the bars comes the body. A single expression needs no braces and no `return`.
 
 `a` and `b` are `&f64`, and Rust allows `&f64 + &f64` directly. The result is a plain `f64`.
@@ -179,7 +179,7 @@ pub fn dot(&self, other: &Vector) -> Result<f64, DimensionMismatch> {
         .components
         .iter()
         .zip(&other.components)
-        .map(|`.map(|(a, b)| a + b)`| a * b)
+        .map(|(a, b)| a * b)
         .sum())
 }
 ```
@@ -197,7 +197,7 @@ The `Magnitude` trait's implementation for `Vector` ([Note 05](/digital-garden/r
 self.components().iter().map(|x| x * x).sum::<f64>().sqrt()
 ```
 
-`.map(|(a, b)| a + b)`|x| x * x)` squares each component, and `.sum::<f64>()` adds them up. The **`::<f64>`** is nicknamed the **turbofish** (`::<>` looks like a fish) and states the type directly.
+`.map(|x| x * x)` squares each component, and `.sum::<f64>()` adds them up. The **`::<f64>`** is nicknamed the **turbofish** (`::<>` looks like a fish) and states the type directly.
 
 **Why is it needed here, but not in `dot`?** `sum` can produce many types. In `dot`, the return type told Rust which one. Here, the next call is `.sqrt()`, and Rust can't pick a type for `sum` just from the fact that a method is called on the result. Without the turbofish:
 

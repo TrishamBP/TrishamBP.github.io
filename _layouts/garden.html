@@ -16,8 +16,14 @@ layout: default
 {%- assign guide_pages = site.garden | where: "guide", page.guide | sort: "order" -%}
 {%- assign guide_root = guide_pages | where: "guide_root", true | first -%}
 {%- assign guide_notes = guide_pages | where_exp: "p", "p.guide_root != true" -%}
-{%- comment -%} Top-level entries: ungrouped notes plus group (case study) roots. {%- endcomment -%}
-{%- assign top_notes = guide_notes | where_exp: "p", "p.group == nil or p.group_root == true" -%}
+{%- comment -%}
+  Top-level entries: ungrouped notes plus group (case study) roots.
+  GitHub Pages runs Jekyll 3.10, whose where_exp can't take `or`/`and`
+  (Liquid syntax error), so the two sets are filtered separately and joined.
+{%- endcomment -%}
+{%- assign ungrouped_notes = guide_notes | where_exp: "p", "p.group == nil" -%}
+{%- assign group_roots = guide_notes | where: "group_root", true -%}
+{%- assign top_notes = ungrouped_notes | concat: group_roots | sort: "order" -%}
 {%- if page.group -%}
   {%- assign group_pages = guide_pages | where: "group", page.group -%}
   {%- assign group_root = group_pages | where: "group_root", true | first -%}
@@ -35,6 +41,8 @@ layout: default
 
 <div class="dg-docs">
   <aside class="dg-side" aria-label="{{ guide_root.title | escape }} contents">
+    {%- comment -%} Outside the collapsible nav, so it stays visible on phones. {%- endcomment %}
+    {% include garden-search.html scope=guide_root.title %}
     <button class="dg-side-toggle" type="button" aria-expanded="false" aria-controls="dg-side-nav">
       <span>Contents</span>
       <span class="dg-chev" aria-hidden="true"></span>

@@ -1,0 +1,17 @@
+{%- comment -%}
+  Digital Garden search box. Renders a trigger that looks like a search box;
+  assets/js/garden-search.js opens a dialog that searches
+  /digital-garden/search.json (built by digital-garden/search.json).
+  Usage: {% include garden-search.html scope="The Rust Sandbox" %}
+  `scope` (optional): results from this guide rank slightly higher.
+  Hidden until the script runs, so no-JS visitors don't see a dead control.
+{%- endcomment -%}
+<button class="dg-search-trigger" type="button" hidden
+        data-dg-search-open
+        data-dg-search-scope="{{ include.scope | escape }}"
+        data-dg-search-index="{{ '/digital-garden/search.json' | relative_url }}"
+        aria-haspopup="dialog">
+  <svg class="dg-search-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  <span class="dg-search-placeholder">Search topics and concepts&hellip;</span>
+  <kbd class="dg-search-kbd">/</kbd>
+</button>

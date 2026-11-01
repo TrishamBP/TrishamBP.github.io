@@ -24,6 +24,7 @@ permalink: /digital-garden/
       languages and systems. They are working notes rather than polished
       tutorials, kept open so other engineers can learn from them too.
     </p>
+    {% include garden-search.html %}
   </header>
 
   <div class="dg-cards">

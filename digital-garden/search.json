@@ -1,0 +1,40 @@
+---
+layout: null
+permalink: /digital-garden/search.json
+sitemap: false
+---
+{%- comment -%}
+  Search index for the Digital Garden search box (assets/js/garden-search.js).
+
+  One entry per H2 section of every `garden` page, plus one entry for each
+  page's introduction (the text before its first H2). Section ids and titles
+  come from the page's `sections:` frontmatter, which matches its H2s in
+  order (see scripts/garden_sections.py). The text is the rendered section
+  with tags stripped, so code snippets are searchable too.
+
+  Fields: u = url (with #anchor), g = guide title, p = page title,
+          s = section title, k = page keywords, t = text.
+{%- endcomment -%}
+{%- assign docs = site.garden | sort: "order" -%}
+[
+{%- assign first = true -%}
+{%- for d in docs -%}
+  {%- assign root = site.garden | where: "guide", d.guide | where: "guide_root", true | first -%}
+  {%- assign page_title = d.nav_title | default: d.title -%}
+  {%- if d.guide_root -%}{%- assign page_title = d.title -%}{%- endif -%}
+  {%- assign parts = d.content | split: "<h2" -%}
+  {%- assign intro = parts[0] | strip_html | normalize_whitespace -%}
+  {%- unless first %},{% endunless -%}{%- assign first = false %}
+{"u":{{ d.url | relative_url | jsonify }},"g":{{ root.title | jsonify }},"p":{{ page_title | jsonify }},"n":{{ d.note_no | default: "" | jsonify }},"s":"","k":{{ d.keywords | default: "" | jsonify }},"t":{{ d.description | append: " " | append: intro | jsonify }}}
+  {%- for part in parts offset: 1 -%}
+    {%- assign sec = d.sections[forloop.index0] -%}
+    {%- if sec == nil -%}{%- continue -%}{%- endif -%}
+    {%- assign body = part | split: "</h2>" -%}
+    {%- assign text = "" -%}
+    {%- for chunk in body offset: 1 -%}{%- assign text = text | append: " " | append: chunk -%}{%- endfor -%}
+    {%- assign text = text | strip_html | normalize_whitespace -%}
+    {%- assign stitle = sec.title | replace: "\.", "." | remove: "`" -%},
+{"u":{{ d.url | relative_url | append: "#" | append: sec.id | jsonify }},"g":{{ root.title | jsonify }},"p":{{ page_title | jsonify }},"n":{{ d.note_no | default: "" | jsonify }},"s":{{ stitle | jsonify }},"k":"","t":{{ text | jsonify }}}
+  {%- endfor -%}
+{%- endfor %}
+]
