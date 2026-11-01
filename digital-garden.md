@@ -2,8 +2,8 @@
 layout: default
 title: Digital Garden
 seo_title: "Digital Garden: Programming Notes & Learning Guides by Trisham Patil"
-description: "Trisham Patil's digital garden: open programming notes and learning guides, starting with The Rust Sandbox, a hands-on Rust study guide built in public."
-keywords: "digital garden, programming notes, learning guides, study notes, Rust programming notes, learn Rust, Rust study guide, software engineering notes, Trisham Patil"
+description: "Trisham Patil's digital garden: open programming notes and learning guides, from The Rust Sandbox Rust study guide to system design production use cases."
+keywords: "digital garden, programming notes, learning guides, study notes, Rust programming notes, learn Rust, Rust study guide, system design notes, system design use cases, software engineering notes, Trisham Patil"
 permalink: /digital-garden/
 ---
 

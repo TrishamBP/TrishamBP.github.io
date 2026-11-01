@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" role="img" aria-labelledby="t">
+  <title id="t">System design architecture diagram logo for the System Design production use cases guide</title>
+  <g fill="none" stroke="#2563EB" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- client -->
+    <rect x="80" y="6" width="40" height="22" rx="4"/>
+    <!-- client -> load balancer -->
+    <path d="M100 28 L100 44"/>
+    <!-- load balancer -->
+    <path d="M78 44 H122 L112 60 H88 Z"/>
+    <!-- fan-out to services -->
+    <path d="M92 60 L46 78"/><path d="M100 60 L100 78"/><path d="M108 60 L154 78"/>
+    <!-- services -->
+    <rect x="28" y="78" width="36" height="20" rx="4"/>
+    <rect x="82" y="78" width="36" height="20" rx="4"/>
+    <rect x="136" y="78" width="36" height="20" rx="4"/>
+    <!-- services -> database -->
+    <path d="M46 98 L88 112"/><path d="M100 98 L100 108"/><path d="M154 98 L112 112"/>
+    <!-- database cylinder -->
+    <ellipse cx="100" cy="112" rx="16" ry="5"/>
+    <path d="M84 112 V128 A16 5 0 0 0 116 128 V112"/>
+  </g>
+  <!-- service status dots -->
+  <g fill="#2563EB">
+    <circle cx="38" cy="88" r="3"/><circle cx="92" cy="88" r="3"/><circle cx="146" cy="88" r="3"/>
+  </g>
+</svg>
