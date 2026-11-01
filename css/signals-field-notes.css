@@ -205,7 +205,7 @@ body.theme-typesafe.fn-notes .topnav-links.open {
   border-bottom: 1px solid var(--fn-ink);
 }
 
-@media (max-width: 1479px) {
+@media (max-width: 1599px) {
   body.theme-typesafe.fn-notes .topnav-links {
     top: 64px;
   }

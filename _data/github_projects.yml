@@ -1,0 +1,84 @@
+# ─────────────────────────────────────────────────────────────
+# GitHub Projects — data source for /github-projects/
+#
+# One block per public repo, shown in file order (3 cards per row).
+# Fields:
+#   name        — repo name as shown on GitHub
+#   repo        — owner/name (the link is built from it)
+#   description — 1–2 line summary
+#   language    — primary language (drives the coloured dot)
+#   lang_color  — GitHub's linguist colour for that language
+#   stack       — tech stack chips
+# Stars and forks are intentionally not shown.
+# ─────────────────────────────────────────────────────────────
+
+- name: rust_rope
+  repo: TrishamBP/rust_rope
+  description: >
+    Rotary Position Embeddings (RoPE) built from scratch in Rust. Rotates
+    [B, S, H, D] query/key tensors with interleaved or split-half layouts and
+    supports position interpolation, linear, NTK-aware and YaRN scaling,
+    validated against a PyTorch reference.
+  language: Rust
+  lang_color: "#dea584"
+  stack: ["Rust", "PyTorch (reference)", "Transformers", "Positional Encoding"]
+
+- name: rust-bpe-tokenizer
+  repo: TrishamBP/rust-bpe-tokenizer
+  description: >
+    An educational byte-level BPE tokenizer in Rust, trained on Tiny
+    Shakespeare. Standard library only, no unsafe code, 65 tests and a
+    versioned binary model format.
+  language: Rust
+  lang_color: "#dea584"
+  stack: ["Rust", "std only", "Byte Pair Encoding", "Tokenization"]
+
+- name: AKV-Sem
+  repo: TrishamBP/AKV-Sem
+  description: >
+    Semantic-aware KV cache engineering for LLM agents. Agents label dropped
+    context as failed, irrelevant or resolved and keep those notes, so they
+    avoid repeating dead ends. Built on the AKV framework by Tianyu Fu et al.
+  language: Python
+  lang_color: "#3572A5"
+  stack: ["Python", "SGLang", "KV Cache", "LLM Agents"]
+
+- name: llm-router
+  repo: TrishamBP/llm-router
+  description: >
+    A hybrid neural network + XGBoost router that sends each prompt to the
+    cheapest Claude model that can handle it, trading off predicted quality,
+    latency and cost.
+  language: Python
+  lang_color: "#3572A5"
+  stack: ["Python", "PyTorch", "XGBoost", "scikit-learn", "Fireworks AI", "Claude"]
+
+- name: eagle_3
+  repo: TrishamBP/eagle_3
+  description: >
+    A runnable reconstruction of EAGLE-3 speculative decoding in PyTorch: draft
+    model, multi-layer feature fusion, training-time test and lossless
+    verification, with one script per correctness experiment.
+  language: Python
+  lang_color: "#3572A5"
+  stack: ["Python", "PyTorch", "Transformers", "uv", "Speculative Decoding"]
+
+- name: fastapi_claude_code_plugin
+  repo: TrishamBP/fastapi_claude_code_plugin
+  description: >
+    A Claude Code plugin and portable agent skill (Codex, Cursor, Windsurf,
+    Antigravity, IBM Bob) encoding production standards for FastAPI, RAG and
+    agentic AI backends on AWS ECS Fargate.
+  language: Markdown
+  lang_color: "#083fa1"
+  stack: ["FastAPI", "Pydantic v2", "Claude Code", "RAG", "AWS ECS Fargate"]
+
+- name: tiny_gpt_llm
+  repo: TrishamBP/tiny_gpt_llm
+  description: >
+    A tiny GPT-style language model (~3M parameters) built from first
+    principles, with the full training pipeline, causal self-attention and
+    explanations that map the code to real GPT models.
+  language: Python
+  lang_color: "#3572A5"
+  stack: ["Python", "PyTorch", "GPT", "Self-Attention"]

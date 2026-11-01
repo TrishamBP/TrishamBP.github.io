@@ -3451,3 +3451,148 @@ body.dark-mode .session-watch {
     max-width: 85%;
   }
 }
+
+/* ===================================================================
+   GITHUB PROJECTS — GitHub-style repo cards on the Sessions black canvas
+   (3 per row; no stars/forks by design). Data: _data/github_projects.yml
+   =================================================================== */
+.gh-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.gh-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 20px;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px !important;
+  transition: border-color 0.2s ease;
+}
+
+.gh-card:hover {
+  border-color: #8b949e;
+}
+
+.site-shell .gh-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-family: var(--ts-display, inherit);
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.3;
+  min-width: 0;
+}
+
+.gh-repo-icon {
+  flex: none;
+  color: #8b949e;
+}
+
+.site-shell .gh-title a {
+  color: #58a6ff;
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.site-shell .gh-title a:hover {
+  text-decoration: underline;
+}
+
+.gh-badge {
+  flex: none;
+  margin-left: auto;
+  padding: 0 7px;
+  border: 1px solid #30363d;
+  border-radius: 2em;
+  color: #8b949e;
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.site-shell .gh-desc {
+  margin: 0;
+  color: #c9d1d9;
+  font-family: var(--ts-body, inherit);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  text-align: left;
+}
+
+.gh-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gh-stack li {
+  margin: 0;
+  padding: 0 10px;
+  border-radius: 2em;
+  background: rgba(56, 139, 253, 0.12);
+  color: #58a6ff;
+  font-family: var(--ts-term, inherit);
+  font-size: 0.7rem;
+  font-weight: 500;
+  line-height: 22px;
+}
+
+.gh-foot {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 4px;
+  color: #8b949e;
+  font-family: var(--ts-term, inherit);
+  font-size: 0.72rem;
+}
+
+.gh-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gh-lang-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(240, 246, 252, 0.1);
+}
+
+.site-shell .gh-link {
+  color: #8b949e;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.site-shell .gh-link:hover {
+  color: #58a6ff;
+}
+
+@media (max-width: 1000px) {
+  .gh-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .gh-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -70,6 +70,10 @@
             class="topnav-link{% if page.url contains '/projects' %} active{% endif %}"
             href="{{ '/projects/' | relative_url }}"
           >Projects</a>
+          <a
+            class="topnav-link{% if page.url contains '/github-projects' %} active{% endif %}"
+            href="{{ '/github-projects/' | relative_url }}"
+          >GitHub Projects</a>
           {%- comment %} Physical Systems replaced by Signals in the nav (the page
           still exists and remains reachable by URL).
           <a
@@ -504,7 +508,7 @@
                 ".site-shell .eng-lede, .site-shell .honors-intro," +
                 ".site-shell .resources-intro, .site-shell .about-journey-title," +
                 ".site-shell .eng-domain-card, .site-shell .eng-stats," +
-                ".site-shell .session-card, .site-shell .cert-card," +
+                ".site-shell .session-card, .site-shell .gh-card, .site-shell .cert-card," +
                 ".site-shell .award-card," +
                 ".site-shell .skills-category," +
                 ".site-shell .stats-card, .site-shell .timeline-item," +
