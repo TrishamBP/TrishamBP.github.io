@@ -1508,3 +1508,398 @@ body.theme-typesafe.ts-paper .post-content figure.qkv-demo {
 @media (prefers-reduced-motion: reduce) {
   .qkv-demo * { transition: none !important; animation: none !important; }
 }
+
+/* -----------------------------------------------------------------------------
+   Mamba state + MoE routing demos (<figure class="mamba-demo">,
+   <figure class="moe-demo">; assets/js/mamba-state-demo.js and
+   moe-routing-demo.js). Same paper card as .qkv-demo; shared nd-* parts.
+   -------------------------------------------------------------------------- */
+body.theme-typesafe.ts-paper .post-content figure.mamba-demo,
+body.theme-typesafe.ts-paper .post-content figure.moe-demo {
+  margin: 1.8rem 0 0.8rem;
+  padding: 1rem 1rem 0.9rem;
+  border: var(--ts-rule) solid var(--ts-line);
+  background: var(--ts-light);
+  box-shadow: 5px 5px 0 var(--ts-ink);
+  font-family: var(--ts-term);
+  color: var(--ts-ink);
+}
+
+.mamba-demo .nd-scroll,
+.moe-demo .nd-scroll {
+  overflow-x: auto;
+  margin-bottom: 0.4rem;
+}
+
+.mamba-demo svg,
+.moe-demo svg {
+  display: block;
+  width: 100%;
+  min-width: 620px;
+  height: auto;
+}
+
+.mamba-demo .nd-chip,
+.moe-demo .nd-chip {
+  fill: var(--ts-light);
+  stroke: var(--ts-ink);
+  stroke-width: 1.2;
+  transition: stroke 0.3s ease, stroke-width 0.3s ease;
+}
+
+.mamba-demo .nd-word,
+.moe-demo .nd-word {
+  font-family: var(--ts-term);
+  font-size: 13px;
+  fill: var(--ts-ink);
+}
+
+.mamba-demo .nd-label,
+.moe-demo .nd-label {
+  font-family: var(--ts-term);
+  font-size: 12px;
+  font-weight: 700;
+  fill: var(--ts-ink);
+}
+
+.mamba-demo .nd-small,
+.moe-demo .nd-small {
+  font-family: var(--ts-term);
+  font-size: 11px;
+  fill: #5c5c5c;
+}
+
+/* Mamba */
+.mamba-demo .nd-tok { transition: opacity 0.4s ease; }
+.mamba-demo .nd-tok.is-future { opacity: 0.35; }
+.mamba-demo .nd-tok.is-future .nd-chip { stroke-dasharray: 4 3; }
+.mamba-demo .nd-tok.is-done { opacity: 0.7; }
+.mamba-demo .nd-tok.is-now .nd-chip { stroke: var(--ts-green); stroke-width: 2.6; }
+
+.mamba-demo .nd-out { fill: transparent; transition: fill 0.4s ease; }
+
+.mamba-demo .nd-box {
+  fill: var(--ts-paper);
+  stroke: var(--ts-ink);
+  stroke-width: 1.4;
+}
+
+.mamba-demo .nd-cell {
+  stroke: rgba(30, 30, 30, 0.25);
+  stroke-width: 1;
+  transition: fill 0.5s ease;
+}
+
+.mamba-demo .nd-track { fill: var(--ts-panel-2); }
+
+.mamba-demo .nd-bar-write,
+.mamba-demo .nd-bar-keep {
+  transform-box: fill-box;
+  transform-origin: left;
+  transition: transform 0.45s ease;
+}
+
+.mamba-demo .nd-bar-write { fill: var(--ts-green); }
+.mamba-demo .nd-bar-keep { fill: var(--ts-ink); }
+
+.mamba-demo .nd-dot {
+  opacity: 0;
+  stroke: var(--ts-ink);
+  stroke-width: 1.5;
+  transition: transform 0.5s ease-in-out, opacity 0.2s ease;
+}
+
+.mamba-demo .nd-dot.is-on { opacity: 1; }
+.mamba-demo .nd-dot.is-jump { transition: none; }
+
+.mamba-demo .nd-kv {
+  fill: transparent;
+  stroke: rgba(30, 30, 30, 0.3);
+  stroke-dasharray: 3 3;
+  transition: fill 0.4s ease;
+}
+
+.mamba-demo .nd-kv.is-on {
+  stroke: var(--ts-ink);
+  stroke-dasharray: none;
+}
+
+.mamba-demo .nd-readout,
+.moe-demo .nd-readout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.2rem;
+  margin: 0.2rem 0 0.75rem;
+  font-size: 0.76rem;
+}
+
+.mamba-demo .nd-readout b { color: var(--ts-green); }
+
+/* MoE */
+.moe-demo .md-readout { display: block; min-height: 3em; }
+.moe-demo .md-readout b { color: #0b7d74; font-weight: 700; }
+.moe-demo .md-foot { margin-top: 0.25rem; color: #5c5c5c; }
+
+.moe-demo .md-link {
+  stroke: var(--ts-ink);
+  stroke-width: 1.4;
+  fill: none;
+}
+
+.moe-demo .md-router-box {
+  fill: var(--ts-ink);
+  transition: fill 0.3s ease;
+}
+
+.moe-demo .md-router.is-on .md-router-box { fill: #3a3a3a; }
+.moe-demo .md-on-ink { fill: #fefefe; }
+
+.moe-demo .md-tok.is-pulse .nd-chip {
+  animation: md-pulse 0.6s ease;
+}
+
+@keyframes md-pulse {
+  0% { stroke: var(--ts-green); stroke-width: 4; }
+  100% { stroke: var(--ts-ink); stroke-width: 1.2; }
+}
+
+.moe-demo .md-cell {
+  fill: #fff;
+  stroke: rgba(30, 30, 30, 0.35);
+  stroke-width: 1;
+  transition: fill 0.35s ease, opacity 0.35s ease;
+}
+
+.moe-demo .md-cell.is-on { fill: var(--ts-teal); stroke: var(--ts-ink); }
+.moe-demo .md-cell.md-shared { fill: #fff; stroke-dasharray: 3 2; }
+.moe-demo .md-cell.md-shared.is-on { fill: var(--ts-green); stroke: var(--ts-ink); stroke-dasharray: none; }
+
+.moe-demo .md-wire {
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  animation: md-draw 0.6s ease forwards;
+}
+
+.moe-demo .md-wire.is-in { stroke: var(--ts-teal); opacity: 0.85; }
+.moe-demo .md-wire.is-outw { stroke: var(--ts-teal); opacity: 0.55; }
+.moe-demo .md-wire.is-shared { stroke: var(--ts-green); opacity: 0.6; }
+
+@keyframes md-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+.moe-demo .md-comb-c {
+  fill: var(--ts-light);
+  stroke: var(--ts-ink);
+  stroke-width: 1.4;
+  transition: fill 0.3s ease;
+}
+
+.moe-demo .md-comb.is-on .md-comb-c { fill: #d9f3e6; }
+.moe-demo .md-outg { opacity: 0.3; transition: opacity 0.4s ease; }
+.moe-demo .md-outg.is-on { opacity: 1; }
+.moe-demo .md-outg.is-on .md-out-chip { stroke: var(--ts-green); stroke-width: 2.4; }
+
+.mamba-demo .nd-controls,
+.moe-demo .nd-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.mamba-demo button,
+.moe-demo button {
+  font: inherit;
+  font-size: 0.72rem;
+  padding: 0.35rem 0.65rem;
+  border: 1.2px solid var(--ts-ink);
+  background: transparent;
+  color: var(--ts-ink);
+  cursor: pointer;
+}
+
+.mamba-demo button:hover,
+.moe-demo button:hover {
+  background: var(--ts-ink);
+  color: var(--ts-light);
+}
+
+.mamba-demo button:focus-visible,
+.moe-demo button:focus-visible {
+  outline: 2px solid var(--ts-green);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mamba-demo *,
+  .moe-demo * { transition: none !important; animation: none !important; }
+  .moe-demo .md-wire { stroke-dashoffset: 0; }
+}
+
+/* -----------------------------------------------------------------------------
+   MTP / speculative decoding demo (<figure class="mtp-demo">,
+   assets/js/mtp-speculative-demo.js). HTML chips, same paper card.
+   Draft = violet (MTP head), main-model token = green, rejected = red.
+   -------------------------------------------------------------------------- */
+body.theme-typesafe.ts-paper .post-content figure.mtp-demo {
+  --mtp-draft: #7c3aed;
+  --mtp-bad: #c2410c;
+  margin: 1.8rem 0 0.8rem;
+  padding: 1rem 1rem 0.9rem;
+  border: var(--ts-rule) solid var(--ts-line);
+  background: var(--ts-light);
+  box-shadow: 5px 5px 0 var(--ts-ink);
+  font-family: var(--ts-term);
+  color: var(--ts-ink);
+}
+
+.mtp-demo .mtp-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  font-size: 0.7rem;
+  color: #5c5c5c;
+}
+
+.mtp-demo .mtp-legend .mtp-chip {
+  width: 1.4rem;
+  height: 0.85rem;
+  padding: 0;
+  margin-right: 0.35rem;
+  vertical-align: -0.12em;
+}
+
+.mtp-demo .mtp-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  min-height: 5.4rem;
+  align-content: flex-start;
+  margin: 0.9rem 0 0.8rem;
+}
+
+.mtp-demo .mtp-chip {
+  display: inline-block;
+  padding: 0.28rem 0.55rem;
+  border: 1.2px solid var(--ts-ink);
+  font-size: 0.78rem;
+  line-height: 1.2;
+  transition: transform 0.3s ease, opacity 0.3s ease, background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.mtp-demo .mtp-chip.is-new { opacity: 0; transform: translateY(-8px); }
+.mtp-demo .mtp-chip.is-ctx { border-color: #a3a3a3; color: #5c5c5c; }
+.mtp-demo .mtp-chip.is-acc { background: var(--ts-ink); color: var(--ts-light); }
+
+.mtp-demo .mtp-chip.is-draft {
+  border: 1.6px dashed var(--mtp-draft);
+  color: var(--mtp-draft);
+  background: #f3edff;
+}
+
+.mtp-demo .mtp-chip.is-scan {
+  animation: mtp-scan 0.9s ease-in-out infinite alternate;
+}
+
+@keyframes mtp-scan {
+  from { background: #f3edff; }
+  to { background: #ddd0fb; }
+}
+
+.mtp-demo .mtp-chip.is-ok {
+  border-style: solid;
+  border-color: var(--ts-green);
+  color: var(--ts-ink);
+  background: #d9f3e6;
+}
+
+.mtp-demo .mtp-chip.is-ok::after { content: " ✓"; color: var(--ts-green); }
+
+.mtp-demo .mtp-chip.is-bad {
+  border-style: solid;
+  border-color: var(--mtp-bad);
+  color: var(--mtp-bad);
+  background: #fde8dc;
+  text-decoration: line-through;
+}
+
+.mtp-demo .mtp-chip.is-bad::after { content: " ✗"; }
+
+.mtp-demo .mtp-chip.is-main {
+  border: 2.4px solid var(--ts-green);
+  background: var(--ts-ink);
+  color: var(--ts-light);
+}
+
+.mtp-demo .mtp-phase {
+  min-height: 3.2em;
+  font-family: var(--ts-body);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.mtp-demo .mtp-phase-tag {
+  display: inline-block;
+  margin-right: 0.55rem;
+  padding: 0.05rem 0.4rem;
+  background: var(--ts-ink);
+  color: var(--ts-light);
+  font-family: var(--ts-term);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  vertical-align: 0.1em;
+}
+
+.mtp-demo .mtp-meter { margin: 0.6rem 0 0.8rem; font-size: 0.72rem; }
+
+.mtp-demo .mtp-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.3rem;
+}
+
+.mtp-demo .mtp-row-label { flex: 0 0 9.5rem; }
+.mtp-demo .mtp-row b { flex: 0 0 auto; }
+
+.mtp-demo .mtp-track { display: inline-flex; gap: 3px; }
+
+.mtp-demo .mtp-cell {
+  width: 1.1rem;
+  height: 0.75rem;
+  border: 1px solid rgba(30, 30, 30, 0.3);
+  transition: background 0.3s ease;
+}
+
+.mtp-demo .mtp-cell.is-plain { background: #a3a3a3; border-color: #a3a3a3; }
+.mtp-demo .mtp-cell.is-mtp { background: var(--ts-green); border-color: var(--ts-green); }
+
+.mtp-demo .mtp-note { margin-top: 0.3rem; color: #5c5c5c; }
+
+.mtp-demo .mtp-controls { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+
+.mtp-demo button {
+  font: inherit;
+  font-size: 0.72rem;
+  padding: 0.35rem 0.65rem;
+  border: 1.2px solid var(--ts-ink);
+  background: transparent;
+  color: var(--ts-ink);
+  cursor: pointer;
+}
+
+.mtp-demo button:hover { background: var(--ts-ink); color: var(--ts-light); }
+.mtp-demo button:focus-visible { outline: 2px solid var(--ts-green); outline-offset: 2px; }
+
+@media (max-width: 560px) {
+  .mtp-demo .mtp-row { flex-wrap: wrap; }
+  .mtp-demo .mtp-row-label { flex-basis: 100%; }
+  .mtp-demo .mtp-cell { width: 0.8rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mtp-demo * { transition: none !important; animation: none !important; }
+}
