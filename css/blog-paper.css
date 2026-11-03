@@ -1287,3 +1287,224 @@ body.theme-typesafe.ts-paper .post-content .mem-box h3 {
 body.theme-typesafe.ts-paper .post-content .mem-box table {
   background: var(--ts-bg);
 }
+
+/* -----------------------------------------------------------------------------
+   Q/K/V attention step-through (<figure class="qkv-demo">, built by
+   assets/js/attention-qkv-demo.js). Paper card: ink border, offset shadow.
+   Q = green, K = teal, V = magenta (#b8399a for legibility on paper).
+   -------------------------------------------------------------------------- */
+body.theme-typesafe.ts-paper .post-content figure.qkv-demo {
+  --qkv-q: var(--ts-green);
+  --qkv-k: var(--ts-teal);
+  --qkv-v: #b8399a;
+  margin: 1.8rem 0 0.8rem;
+  padding: 1rem 1rem 0.9rem;
+  border: var(--ts-rule) solid var(--ts-line);
+  background: var(--ts-light);
+  box-shadow: 5px 5px 0 var(--ts-ink);
+  font-family: var(--ts-term);
+  color: var(--ts-ink);
+}
+
+.qkv-demo .qkv-heads,
+.qkv-demo .qkv-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.qkv-demo button {
+  font: inherit;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  padding: 0.35rem 0.65rem;
+  border: 1.2px solid var(--ts-ink);
+  background: transparent;
+  color: var(--ts-ink);
+  cursor: pointer;
+}
+
+.qkv-demo button:hover,
+.qkv-demo .qkv-heads button[aria-pressed="true"] {
+  background: var(--ts-ink);
+  color: var(--ts-light);
+}
+
+.qkv-demo button:focus-visible {
+  outline: 2px solid var(--qkv-q);
+  outline-offset: 2px;
+}
+
+.qkv-demo .qkv-scroll {
+  overflow-x: auto;
+  margin: 0.6rem 0 0.2rem;
+}
+
+.qkv-demo svg {
+  display: block;
+  width: 100%;
+  min-width: 620px;
+  height: auto;
+}
+
+.qkv-demo .qkv-chip {
+  fill: var(--ts-light);
+  stroke: var(--ts-ink);
+  stroke-width: 1.2;
+  transition: fill 0.5s ease, stroke 0.5s ease;
+}
+
+.qkv-demo .qkv-word {
+  font-family: var(--ts-term);
+  font-size: 13px;
+  fill: var(--ts-ink);
+  transition: fill 0.5s ease;
+}
+
+.qkv-demo .qkv-tok {
+  transition: opacity 0.5s ease;
+}
+
+.qkv-demo.show-future .qkv-tok.is-future {
+  opacity: 0.28;
+}
+
+.qkv-demo .qkv-tok.is-future .qkv-chip {
+  stroke-dasharray: 4 3;
+}
+
+.qkv-demo .qkv-tok.is-query .qkv-chip {
+  stroke: var(--qkv-q);
+  stroke-width: 2.4;
+}
+
+.qkv-demo .qkv-tok.is-lit .qkv-chip {
+  stroke-width: 2.4;
+}
+
+.qkv-demo .qkv-tok.is-mixed .qkv-chip {
+  fill: var(--qkv-v);
+  stroke: var(--qkv-v);
+}
+
+.qkv-demo .qkv-tok.is-mixed .qkv-word {
+  fill: #fff;
+}
+
+.qkv-demo .qkv-tag {
+  transition: opacity 0.4s ease;
+}
+
+.qkv-demo .qkv-tag.is-off {
+  opacity: 0;
+}
+
+.qkv-demo .qkv-tag rect {
+  fill: var(--ts-ink);
+  transition: fill 0.4s ease;
+}
+
+.qkv-demo .qkv-tag.is-q rect { fill: var(--qkv-q); }
+.qkv-demo .qkv-tag.is-k rect { fill: var(--qkv-k); }
+.qkv-demo .qkv-tag.is-v rect { fill: var(--qkv-v); }
+
+.qkv-demo .qkv-tag text {
+  font-family: var(--ts-term);
+  font-size: 12px;
+  font-weight: 700;
+  fill: #fff;
+}
+
+.qkv-demo .qkv-arc {
+  fill: none;
+  stroke: var(--ts-ink);
+  stroke-linecap: round;
+  transition: opacity 0.6s ease, stroke-width 0.6s ease, stroke 0.6s ease;
+}
+
+.qkv-demo .qkv-arc.is-cmp {
+  stroke: var(--qkv-q);
+  stroke-dasharray: 3 5;
+}
+
+.qkv-demo .qkv-arc.is-flow {
+  stroke: var(--qkv-v);
+  stroke-dasharray: 10 8;
+  animation: qkv-flow 1.1s linear infinite;
+}
+
+.qkv-demo .qkv-arc.no-anim {
+  animation: none;
+  stroke-dasharray: none;
+}
+
+@keyframes qkv-flow {
+  to { stroke-dashoffset: -18; }
+}
+
+.qkv-demo .qkv-bar {
+  fill: var(--qkv-q);
+  transform-box: fill-box;
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 0.6s ease, fill 0.5s ease;
+}
+
+.qkv-demo .qkv-bar.is-w { fill: var(--ts-ink); }
+.qkv-demo .qkv-bar.is-v { fill: var(--qkv-v); }
+
+.qkv-demo .qkv-num {
+  font-family: var(--ts-term);
+  font-size: 11.5px;
+  fill: var(--ts-ink);
+}
+
+.qkv-demo .qkv-caption {
+  min-height: 3.2em;
+  font-family: var(--ts-body);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.qkv-demo .qkv-step-tag {
+  display: inline-block;
+  margin-right: 0.55rem;
+  padding: 0.05rem 0.4rem;
+  background: var(--ts-ink);
+  color: var(--ts-light);
+  font-family: var(--ts-term);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  vertical-align: 0.1em;
+}
+
+.qkv-demo .qkv-readout {
+  min-height: 1.4em;
+  margin: 0.35rem 0 0.7rem;
+  font-size: 0.76rem;
+  color: var(--qkv-v);
+  overflow-wrap: anywhere;
+}
+
+.qkv-demo .qkv-dots {
+  display: inline-flex;
+  gap: 0.3rem;
+  margin-left: auto;
+}
+
+.qkv-demo .qkv-dots button {
+  width: 0.8rem;
+  height: 0.8rem;
+  padding: 0;
+}
+
+.qkv-demo .qkv-dots button.is-on {
+  background: var(--qkv-q);
+  border-color: var(--qkv-q);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qkv-demo * { transition: none !important; animation: none !important; }
+}
