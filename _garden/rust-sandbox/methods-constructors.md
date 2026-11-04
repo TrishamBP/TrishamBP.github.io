@@ -1,8 +1,8 @@
 ---
 layout: garden
 guide: rust-sandbox
-order: 3
-note_no: "03"
+order: 6
+note_no: "06"
 nav_title: "Methods and constructors"
 title: "Rust Methods, Constructors and Encapsulation: Building the Vector Type"
 seo_title: "Rust Methods vs Associated Functions: Constructors, Self & Encapsulation"
@@ -28,7 +28,7 @@ sections:
     title: "Summary: Rust methods and constructors"
 ---
 
-[Note 02](/digital-garden/rust-sandbox/structs-impl-display/) showed a struct whose fields were all `pub`. Real types usually hide their data and expose **methods** instead. This note builds the demo's `Vector` type that way, one function at a time.
+[Note 05](/digital-garden/rust-sandbox/structs-impl-display/) showed a struct whose fields were all `pub`. Real types usually hide their data and expose **methods** instead. This note builds the demo's `Vector` type that way, one function at a time.
 
 All the code is in `src/math/matrix.rs` of the [demo project](/digital-garden/rust-sandbox/#demo-project).
 
@@ -43,9 +43,9 @@ pub struct Vector {
 ```
 
 - **`f64`** is a 64-bit floating-point number, like Python's `float`.
-- **`Vec<f64>`** is a list of `f64` values that can grow. It's like a Python `list`, but **every element must have the same type**. It stores its numbers on the heap ([Note 01](/digital-garden/rust-sandbox/ownership-borrowing/#own-stack-heap) shows the memory layout).
-- **`<f64>`** is a **generic parameter**: `Vec` is written once in the standard library and works for any element type. `Vec<usize>` is a list of integers, and `Vec<String>` a list of strings. [Note 05](/digital-garden/rust-sandbox/traits/#trt-bounds) shows how to write your own generic functions.
-- The `#[derive(...)]` line is explained in [Note 06](/digital-garden/rust-sandbox/derive/#der-vector).
+- **`Vec<f64>`** is a list of `f64` values that can grow. It's like a Python `list`, but **every element must have the same type**. It stores its numbers on the heap ([Note 04](/digital-garden/rust-sandbox/ownership-borrowing/#own-stack-heap) shows the memory layout).
+- **`<f64>`** is a **generic parameter**: `Vec` is written once in the standard library and works for any element type. `Vec<usize>` is a list of integers, and `Vec<String>` a list of strings. [Note 08](/digital-garden/rust-sandbox/traits/#trt-bounds) shows how to write your own generic functions.
+- The `#[derive(...)]` line is explained in [Note 09](/digital-garden/rust-sandbox/derive/#der-vector).
 
 ### Encapsulation: why `components` has no `pub`
 {: #mth-encapsulation}
@@ -77,7 +77,7 @@ impl Vector {
 }
 ```
 
-This is "Form A" from [Note 02](/digital-garden/rust-sandbox/structs-impl-display/#dsp-impl): your own functions for one type, not a trait. Inside the block, **`Self`** (capital S) is a shorthand for the type itself, here `Vector`. Writing `Self` means you don't have to repeat the type's name, and the code survives renaming.
+This is "Form A" from [Note 05](/digital-garden/rust-sandbox/structs-impl-display/#dsp-impl): your own functions for one type, not a trait. Inside the block, **`Self`** (capital S) is a shorthand for the type itself, here `Vector`. Writing `Self` means you don't have to repeat the type's name, and the code survives renaming.
 
 ## 3. `new`: the anatomy of a Rust function
 {: #mth-new}
@@ -96,7 +96,7 @@ Piece by piece:
 | `fn new` | defines a function named `new` |
 | `components: Vec<f64>` | a parameter: **name, then `:`, then type**. Rust requires the type; Python doesn't |
 | `-> Self` | the return type, here `Vector` |
-| `Self { components }` | builds the struct and is the return value, because there's no `;` ([Note 02](/digital-garden/rust-sandbox/structs-impl-display/#dsp-semicolon)) |
+| `Self { components }` | builds the struct and is the return value, because there's no `;` ([Note 05](/digital-garden/rust-sandbox/structs-impl-display/#dsp-semicolon)) |
 
 ### Field init shorthand
 {: #mth-shorthand}
@@ -123,7 +123,7 @@ println!("{:?}", data);       // ERROR: data was moved
 error[E0382]: borrow of moved value: `data`
 ```
 
-Only the 24-byte stack part (pointer, length, capacity) moves. The heap numbers stay exactly where they are: **no copy, no new allocation**. That makes `new` as cheap as a constructor can be. If the caller wants to keep their data, there's a second constructor, `from_slice`, in [Note 04](/digital-garden/rust-sandbox/slices-lifetimes/#slc-from-slice).
+Only the 24-byte stack part (pointer, length, capacity) moves. The heap numbers stay exactly where they are: **no copy, no new allocation**. That makes `new` as cheap as a constructor can be. If the caller wants to keep their data, there's a second constructor, `from_slice`, in [Note 07](/digital-garden/rust-sandbox/slices-lifetimes/#slc-from-slice).
 
 ## 4. Associated functions vs methods
 {: #mth-assoc-vs-method}
@@ -167,7 +167,7 @@ pub fn is_empty(&self) -> bool {
 }
 ```
 
-- `&self` borrows the vector to read it ([Note 01](/digital-garden/rust-sandbox/ownership-borrowing/#own-self)).
+- `&self` borrows the vector to read it ([Note 04](/digital-garden/rust-sandbox/ownership-borrowing/#own-self)).
 - `self.components` reads the private field. That's allowed here, because these methods live in the **same module** as the struct.
 - `.len()` is the `Vec`'s own method: the number of elements. `bool` is `true` or `false`.
 
@@ -182,7 +182,7 @@ pub fn into_components(self) -> Vec<f64> {
 }
 ```
 
-The parameter is `self`, not `&self`, so the method **takes ownership**. The `Vec` inside moves out to the caller, and the `Vector` no longer exists after the call. [Note 01](/digital-garden/rust-sandbox/ownership-borrowing/#own-self) shows the compiler error you get if you use the vector afterwards.
+The parameter is `self`, not `&self`, so the method **takes ownership**. The `Vec` inside moves out to the caller, and the `Vector` no longer exists after the call. [Note 04](/digital-garden/rust-sandbox/ownership-borrowing/#own-self) shows the compiler error you get if you use the vector afterwards.
 
 ## 7. Rust naming conventions: read the name, know the cost
 {: #mth-naming}
@@ -197,7 +197,7 @@ Rust names carry meaning. The standard library and well-written crates follow th
 | `as_...` | a **cheap borrowed view**, no copy | `as_str`, `as_slice` |
 | `to_...` | an **owned copy**, possibly expensive | `to_vec`, `to_string` |
 | `is_...` / `has_...` | returns `bool` | `is_empty`, `is_nan` |
-| `checked_...` | returns a `Result`/`Option` instead of panicking | `checked_add` ([Note 08](/digital-garden/rust-sandbox/error-handling-result/)) |
+| `checked_...` | returns a `Result`/`Option` instead of panicking | `checked_add` ([Note 11](/digital-garden/rust-sandbox/error-handling-result/)) |
 | `..._mut` | the same, but with mutable access | `iter_mut`, `get_mut` |
 
 The demo's `components()` returns a borrowed view, so by the strict convention it could be called `as_components()`. Many crates use a bare noun for simple getters, though, and that's what this project does.

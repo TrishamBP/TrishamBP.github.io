@@ -1,8 +1,8 @@
 ---
 layout: garden
 guide: rust-sandbox
-order: 4
-note_no: "04"
+order: 7
+note_no: "07"
 nav_title: "Slices and lifetimes"
 title: "Rust Slices and Lifetimes: &[T], Deref Coercion and Lifetime Elision"
 seo_title: "Rust Slices and Lifetimes Explained: &[T], Deref Coercion, Elision"
@@ -26,9 +26,9 @@ sections:
     title: "Summary: Rust slices and lifetimes"
 ---
 
-[Note 01](/digital-garden/rust-sandbox/ownership-borrowing/#own-borrow) introduced borrowing with `&T`. This note is about the most common borrowed type in Rust code, the **slice**, and the **lifetime** that the compiler quietly attaches to every borrow.
+[Note 04](/digital-garden/rust-sandbox/ownership-borrowing/#own-borrow) introduced borrowing with `&T`. This note is about the most common borrowed type in Rust code, the **slice**, and the **lifetime** that the compiler quietly attaches to every borrow.
 
-The code continues the `Vector` type from [Note 03](/digital-garden/rust-sandbox/methods-constructors/).
+The code continues the `Vector` type from [Note 06](/digital-garden/rust-sandbox/methods-constructors/).
 
 ## 1. What a slice is
 {: #slc-what}
@@ -70,7 +70,7 @@ Unlike Python, a range that goes past the end isn't quietly shortened. It **pani
 range end index 9 out of range for slice of length 4
 ```
 
-Ranges also drive `for` loops; see [Note 09](/digital-garden/rust-sandbox/iterators-closures/#itr-for).
+Ranges also drive `for` loops; see [Note 12](/digital-garden/rust-sandbox/iterators-closures/#itr-for).
 
 ## 3. `from_slice`: borrow the input, copy the values
 {: #slc-from-slice}
@@ -103,7 +103,7 @@ println!("{:?}", data);            // data is still usable: it was only borrowed
 
 | Constructor | Input | Cost | Does the caller keep the data? |
 |---|---|---|---|
-| `new` ([Note 03](/digital-garden/rust-sandbox/methods-constructors/#mth-new-move)) | `Vec<f64>` (owned) | no copy | no, the data moved |
+| `new` ([Note 06](/digital-garden/rust-sandbox/methods-constructors/#mth-new-move)) | `Vec<f64>` (owned) | no copy | no, the data moved |
 | `from_slice` | `&[f64]` (borrowed) | one allocation and a copy | yes |
 
 Offering both is idiomatic Rust: the caller picks between "take my data, I'm done with it" (fast) and "copy it, I still need mine" (safe and flexible).
@@ -156,7 +156,7 @@ println!("{:?}", slice);   // ERROR: slice would point into freed memory
 error[E0597]: `v` does not live long enough
 ```
 
-It's the same rule as in [Note 01](/digital-garden/rust-sandbox/ownership-borrowing/#own-outlive), but now flowing through a method. The hidden `'a` in `components` ties `slice` to `v`, so the compiler knows the slice must die before `v` does.
+It's the same rule as in [Note 04](/digital-garden/rust-sandbox/ownership-borrowing/#own-outlive), but now flowing through a method. The hidden `'a` in `components` ties `slice` to `v`, so the compiler knows the slice must die before `v` does.
 
 When the compiler **can't** work out which input an output borrows from (for example, a function taking two references and returning one), elision doesn't apply, and you have to write the `'a` yourself.
 

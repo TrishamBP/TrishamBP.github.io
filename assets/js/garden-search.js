@@ -47,6 +47,12 @@
     gc: ["ownership", "drop"], free: ["drop", "free"], memory: ["heap", "stack", "memory"],
     loop: ["for", "loop", "iterator"], comprehension: ["iterator", "map"], generator: ["iterator", "lazy"],
     static: ["associated function", "const"], staticmethod: ["associated function"],
+    global: ["const", "static"], globals: ["const", "static"], final: ["const"],
+    reassign: ["mut", "shadowing"], mutable: ["mut"], immutable: ["mut"], variable: ["let"], variables: ["let"],
+    "f-string": ["interpolation", "println"], fstring: ["interpolation", "println"], format: ["println", "interpolation"],
+    logical: ["logic", "short-circuiting"], not: ["inversion"], negate: ["inversion"], negation: ["inversion"],
+    ternary: ["if is an expression"], cast: ["casting", "as"], convert: ["casting", "as"], conversion: ["casting"],
+    lint: ["allow", "deny"], lints: ["allow", "deny"], warning: ["allow", "lint"], warnings: ["allow", "lint"],
     unittest: ["test"], pytest: ["test"], assert: ["assert"], mock: ["test"],
     "&": ["borrow", "reference"], "?": ["?", "question mark"], "::<>": ["turbofish"], fn: ["function", "fn"]
   };

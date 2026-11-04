@@ -1,8 +1,8 @@
 ---
 layout: garden
 guide: rust-sandbox
-order: 1
-note_no: "01"
+order: 4
+note_no: "04"
 nav_title: "Ownership and borrowing"
 title: "Rust Ownership and Borrowing, Explained from Scratch"
 seo_title: "Rust Ownership and Borrowing Explained: Move, Copy, Clone & References"
@@ -32,7 +32,7 @@ sections:
 
 Ownership is the most important idea in Rust. It's the main thing that makes Rust different from Python, and almost every other note in this guide builds on it: `&self`, moves, `Copy`, `.clone()`.
 
-If a Rust compiler error has ever said *"value used after move"* or *"cannot borrow as mutable"*, this note explains why. I build it up one step at a time.
+If a Rust compiler error has ever said *"value used after move"* or *"cannot borrow as mutable"*, this note explains why. I build it up one step at a time, starting from the variables and scopes of [Note 01](/digital-garden/rust-sandbox/variables-mutability/).
 
 ## 1. The problem that ownership solves
 {: #own-problem}
@@ -80,7 +80,7 @@ The stack part cleans itself up. The real question is **who frees the heap part*
 2. There can be only **one owner at a time**.
 3. When the owner goes **out of scope**, Rust frees the value. This is called **drop**.
 
-A **scope** is the region between `{` and `}`.
+A **scope** is the region between `{` and `}` ([Note 01](/digital-garden/rust-sandbox/variables-mutability/#var-scopes) covers scopes and blocks).
 
 ```rust
 {
@@ -185,7 +185,7 @@ let y = x;           // a copy, not a move
 println!("{}", x);   // OK
 ```
 
-`f64`, `usize`, `bool`, `Matrix2` and `DimensionMismatch` are all `Copy`. [Note 06](/digital-garden/rust-sandbox/derive/#der-copy) shows how a struct becomes `Copy`.
+`f64`, `usize`, `bool`, `Matrix2` and `DimensionMismatch` are all `Copy`. [Note 09](/digital-garden/rust-sandbox/derive/#der-copy) shows how a struct becomes `Copy`.
 
 **`Clone`**: an explicit, possibly expensive duplicate.
 
@@ -275,7 +275,7 @@ This check is what **lifetimes** are about: the compiler proves that every borro
 ### `mut`: changing needs permission twice
 {: #own-mut}
 
-Variables are read-only by default. To change a value, or to lend it out as `&mut`, the variable itself must be declared `let mut`:
+Variables are read-only by default ([Note 01](/digital-garden/rust-sandbox/variables-mutability/#var-mut)). The same rule covers borrowing: to change a value through a method, or to lend it out as `&mut`, the variable itself must be declared `let mut`:
 
 ```rust
 let v = Vector::new(vec![1.0]);
@@ -325,7 +325,7 @@ let raw = v.into_components(); // v moved into the method; v is gone now
 | `&self` | borrow to read | unchanged, still usable |
 | `&mut self` | borrow to change | changed, still usable |
 
-`Display::fmt` (the method behind `println!("{}", ...)`, see [Note 02](/digital-garden/rust-sandbox/structs-impl-display/)) takes `&self` because printing only reads. That's why you can still use a value after printing it.
+`Display::fmt` (the method behind `println!("{}", ...)`, see [Note 05](/digital-garden/rust-sandbox/structs-impl-display/)) takes `&self` because printing only reads. That's why you can still use a value after printing it.
 
 ## 8. All the ownership concepts together
 {: #own-table}

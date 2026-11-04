@@ -1,8 +1,8 @@
 ---
 layout: garden
 guide: rust-sandbox
-order: 6
-note_no: "06"
+order: 9
+note_no: "09"
 nav_title: "#[derive] and attributes"
 title: "Rust #[derive] Explained: Debug, Clone, Copy, PartialEq and Eq"
 seo_title: "Rust #[derive] Explained: Debug, Clone, Copy, PartialEq and Eq"
@@ -30,7 +30,7 @@ sections:
 
 The line `#[derive(Debug, Clone, Copy, PartialEq, Eq)]` shows up above almost every struct in Rust code. It looks like noise at first, but each word in it changes what you're allowed to do with the type.
 
-This note explains the line piece by piece. It builds on moves from [Note 01](/digital-garden/rust-sandbox/ownership-borrowing/) and on traits from [Note 05](/digital-garden/rust-sandbox/traits/). It starts with a plain-English glossary you can come back to.
+This note explains the line piece by piece. It builds on moves from [Note 04](/digital-garden/rust-sandbox/ownership-borrowing/) and on traits from [Note 08](/digital-garden/rust-sandbox/traits/). It starts with a plain-English glossary you can come back to.
 
 ## Plain-English glossary: attribute, trait, derive
 {: #der-glossary}
@@ -42,7 +42,7 @@ A recap of the terms from the earlier notes, plus the new ones. The rest of the 
 | **struct** | A custom data type that groups a few named values together. | A form with labelled boxes: "left", "right". |
 | **field** | One named value inside a struct, such as `left: usize`. | One box on the form. |
 | **attribute** `#[...]` | A note to the **compiler** attached to the item directly below it. It's not code that runs. It changes how the compiler treats that item. | A sticky note on a document: "please photocopy this twice". The note isn't part of the document, but it tells the office what to do with it. |
-| **trait** | A named set of abilities that a type promises to have, such as "can be printed" or "can be compared". It's similar to an interface in Java or a protocol in Python. [Note 05](/digital-garden/rust-sandbox/traits/) covers traits in depth. | A skill badge: "certified to drive". Any type that holds the badge must actually be able to do the thing. |
+| **trait** | A named set of abilities that a type promises to have, such as "can be printed" or "can be compared". It's similar to an interface in Java or a protocol in Python. [Note 08](/digital-garden/rust-sandbox/traits/) covers traits in depth. | A skill badge: "certified to drive". Any type that holds the badge must actually be able to do the thing. |
 | **`impl`** | The block of code where you write how a type performs a trait. | The training that earns the badge. |
 | **derive** | "Compiler, write the `impl` for these traits for me." It works for traits whose code follows an obvious pattern (compare every field, print every field...). | Auto-fill on a web form: the browser fills in the boxes it can work out by itself. |
 | **move** | Handing a value to a new owner. The old variable can't be used afterwards. | Giving someone your only house key. |
@@ -115,14 +115,14 @@ pub struct Complex {
 }
 ```
 
-The fields `components` and `rows` have no `pub`, so they're **private**. Why that matters is covered in [Note 03](/digital-garden/rust-sandbox/methods-constructors/#mth-encapsulation).
+The fields `components` and `rows` have no `pub`, so they're **private**. Why that matters is covered in [Note 06](/digital-garden/rust-sandbox/methods-constructors/#mth-encapsulation).
 
 `DimensionMismatch` is an error value: "you tried to combine something of size `left` with something of size `right`". It's the main example below.
 
 ## 1. What `#[derive(...)]` does
 {: #der-derive}
 
-`#[...]` is an **attribute**: an instruction to the compiler about the item directly below it. Other attributes you'll meet soon are `#[test]` (this function is a test) and `#[allow(dead_code)]` (don't warn me about unused code).
+`#[...]` is an **attribute**: an instruction to the compiler about the item directly below it. You've already met `#[allow(dead_code)]` ([Note 01](/digital-garden/rust-sandbox/variables-mutability/#var-directives)), and `#[test]` (this function is a test) comes later.
 
 `derive` is one specific attribute. It tells the compiler: *"Write the code for these traits for me."*
 
@@ -175,7 +175,7 @@ You need `Debug` to use `assert_eq!` in tests, because a failed assertion prints
 error[E0277]: `P` doesn't implement `Debug`
 ```
 
-`Debug` does **not** give you `{}`. For `{}` you must implement `Display` yourself, as [Note 02](/digital-garden/rust-sandbox/structs-impl-display/) does for this exact type. Rust deliberately won't derive `Display`: there's no obvious "user-facing" format to generate. Using `{}` on a type without it fails:
+`Debug` does **not** give you `{}`. For `{}` you must implement `Display` yourself, as [Note 05](/digital-garden/rust-sandbox/structs-impl-display/) does for this exact type. Rust deliberately won't derive `Display`: there's no obvious "user-facing" format to generate. Using `{}` on a type without it fails:
 
 ```text
 error[E0277]: `DimensionMismatch` doesn't implement `std::fmt::Display`
@@ -200,7 +200,7 @@ That's why a clone can be expensive. Writing `.clone()` makes the cost visible i
 
 **In plain English:** "I'm so small and simple that duplicating me is free, so do it automatically."
 
-This is the most important trait in the list for **ownership** ([Note 01](/digital-garden/rust-sandbox/ownership-borrowing/#own-move) explains moves in full). By default, assigning a value to another variable *moves* it, and the old variable can't be used any more:
+This is the most important trait in the list for **ownership** ([Note 04](/digital-garden/rust-sandbox/ownership-borrowing/#own-move) explains moves in full). By default, assigning a value to another variable *moves* it, and the old variable can't be used any more:
 
 ```rust
 let a = Vector::new(vec![1.0, 2.0]);
@@ -365,7 +365,7 @@ let c = a;             // no Copy, so this is a MOVE
 // println!("{:?}", a); // ERROR: a was moved into c
 ```
 
-Uncomment the last line and you get the familiar `error[E0382]: borrow of moved value: 'a'` from [Note 01](/digital-garden/rust-sandbox/ownership-borrowing/#own-move).
+Uncomment the last line and you get the familiar `error[E0382]: borrow of moved value: 'a'` from [Note 04](/digital-garden/rust-sandbox/ownership-borrowing/#own-move).
 
 **In short:** `Debug` prints with `{:?}`. `Clone` is an explicit copy, which for `Vector` allocates heap memory. `PartialEq` (Partial Equality) gives `==`, and it's "partial" because NaN ≠ NaN. `Vector` can't be `Copy` because it owns heap memory, and can't be `Eq` because it contains `f64`.
 

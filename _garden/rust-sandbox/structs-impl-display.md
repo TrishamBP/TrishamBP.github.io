@@ -1,8 +1,8 @@
 ---
 layout: garden
 guide: rust-sandbox
-order: 2
-note_no: "02"
+order: 5
+note_no: "05"
 nav_title: "Structs, impl and Display"
 title: "Rust Structs, impl and the Display Trait, Line by Line"
 seo_title: "Rust Structs, impl and the Display Trait Explained Line by Line"
@@ -32,7 +32,7 @@ sections:
 
 This note takes one small, very common piece of Rust and explains every word in it: a struct, plus an `impl fmt::Display` block that controls how the struct prints with `println!("{}", ...)`.
 
-It uses `&self` and borrowing from [Note 01](/digital-garden/rust-sandbox/ownership-borrowing/), so read that first if `&` still looks mysterious.
+It uses `&self` and borrowing from [Note 04](/digital-garden/rust-sandbox/ownership-borrowing/), so read that first if `&` still looks mysterious.
 
 ## The code for this note
 {: #dsp-code}
@@ -59,7 +59,7 @@ impl fmt::Display for DimensionMismatch {
 }
 ```
 
-`DimensionMismatch` is an error value: "you tried to combine a vector with `left` components and one with `right` components". Ignore the `#[derive(...)]` line for now; [Note 06](/digital-garden/rust-sandbox/derive/) is all about it. Here is each remaining part, in order.
+`DimensionMismatch` is an error value: "you tried to combine a vector with `left` components and one with `right` components". Ignore the `#[derive(...)]` line for now; [Note 09](/digital-garden/rust-sandbox/derive/) is all about it. Here is each remaining part, in order.
 
 ## 1. `struct`: a data type you define
 {: #dsp-struct}
@@ -73,7 +73,7 @@ pub struct DimensionMismatch {
 }
 ```
 
-`usize` is an unsigned (never negative) integer, the type Rust uses for sizes and indexes. `pub` makes the struct and each field visible outside this module (see [Note 10](/digital-garden/rust-sandbox/modules-use/#mod-pub)).
+`usize` is an unsigned (never negative) integer, the type Rust uses for sizes and indexes ([Note 02](/digital-garden/rust-sandbox/integers-floats-casting/#num-usize)). `pub` makes the struct and each field visible outside this module (see [Note 13](/digital-garden/rust-sandbox/modules-use/#mod-pub)).
 
 The Python equivalent is a class that only has fields:
 
@@ -113,7 +113,7 @@ The code in this note uses Form B.
 ## 3. `fmt::Display`: the trait that decides what `{}` prints
 {: #dsp-display}
 
-`Display` is a **trait** from the standard library. A trait is a **contract**: *"any type that has this trait must provide these methods"*. It's similar to an interface in Java or a protocol in Python. ([Note 05](/digital-garden/rust-sandbox/traits/) covers traits in general: defining your own, generics and `dyn Trait`.)
+`Display` is a **trait** from the standard library. A trait is a **contract**: *"any type that has this trait must provide these methods"*. It's similar to an interface in Java or a protocol in Python. ([Note 08](/digital-garden/rust-sandbox/traits/) covers traits in general: defining your own, generics and `dyn Trait`.)
 
 The standard library defines `Display` like this (simplified):
 
@@ -146,7 +146,7 @@ Rust **can't derive** `Display`, because the compiler can't guess which message 
 
 The name `fmt` shows up twice in `impl fmt::Display ... fn fmt(...)`, but the two mean different things:
 
-- **`fmt::Display`**: here `fmt` is the **module** `std::fmt`, brought in by `use std::fmt;` (see [Note 10](/digital-garden/rust-sandbox/modules-use/#mod-fmt)).
+- **`fmt::Display`**: here `fmt` is the **module** `std::fmt`, brought in by `use std::fmt;` (see [Note 13](/digital-garden/rust-sandbox/modules-use/#mod-fmt)).
 - **`fn fmt(...)`**: here `fmt` is the **method** that the `Display` contract requires.
 
 You must use the name `fmt`, because the contract says so. Name it anything else and the compiler refuses:
@@ -182,7 +182,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result
 | `&self` | borrow to read |
 | `&mut self` | borrow to change |
 
-Printing only reads the data, so `&self` is the right choice. [Note 01](/digital-garden/rust-sandbox/ownership-borrowing/#own-self) explains these three forms in depth.
+Printing only reads the data, so `&self` is the right choice. [Note 04](/digital-garden/rust-sandbox/ownership-borrowing/#own-self) explains these three forms in depth.
 
 ### `f: &mut fmt::Formatter<'_>`: where the text goes
 {: #dsp-formatter}

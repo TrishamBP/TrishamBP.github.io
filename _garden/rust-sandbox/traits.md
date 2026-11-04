@@ -1,8 +1,8 @@
 ---
 layout: garden
 guide: rust-sandbox
-order: 5
-note_no: "05"
+order: 8
+note_no: "08"
 nav_title: "Traits"
 title: "Rust Traits Explained: Shared Behaviour, Generics and dyn Trait"
 seo_title: "Rust Traits Explained: Define, Implement, Generics & dyn Trait"
@@ -32,7 +32,7 @@ sections:
     title: "Summary: Rust traits"
 ---
 
-Display (in [Note 02](/digital-garden/rust-sandbox/structs-impl-display/)) was one trait. `#[derive]` (in [Note 06](/digital-garden/rust-sandbox/derive/)) is a way to get traits for free. This note answers the general question: **what is a trait, and what can you do with one?**
+Display (in [Note 05](/digital-garden/rust-sandbox/structs-impl-display/)) was one trait. `#[derive]` (in [Note 09](/digital-garden/rust-sandbox/derive/)) is a way to get traits for free. This note answers the general question: **what is a trait, and what can you do with one?**
 
 We'll write our own trait, `Magnitude`, so nothing is hidden inside the standard library.
 
@@ -140,7 +140,7 @@ error[E0599]: no method named `magnitude` found for struct `Vector` in the curre
   = help: items from traits can only be used if the trait is in scope
 ```
 
-This surprised me. **Trait methods are only callable where the trait itself is imported.** It keeps two unrelated traits with a method of the same name from clashing. The common standard traits (`Clone`, `PartialEq`, `ToString`, `Iterator`...) are in the **prelude**, which Rust imports into every file for you. That's why you never write `use` for them. (See [Note 10](/digital-garden/rust-sandbox/modules-use/#mod-use) for how `use` works.)
+This surprised me. **Trait methods are only callable where the trait itself is imported.** It keeps two unrelated traits with a method of the same name from clashing. The common standard traits (`Clone`, `PartialEq`, `ToString`, `Iterator`...) are in the **prelude**, which Rust imports into every file for you. That's why you never write `use` for them. (See [Note 13](/digital-garden/rust-sandbox/modules-use/#mod-use) for how `use` works.)
 
 ## 5. Trait bounds: functions that accept "anything that can..."
 {: #trt-bounds}
@@ -298,8 +298,8 @@ Most everyday Rust is these standard traits, implemented by hand or with `#[deri
 
 Two connections to earlier notes:
 
-- **Free methods from blanket impls.** The standard library says, in effect, `impl<T: Display> ToString for T`: *every* type that implements `Display` automatically gets `.to_string()`. That's why `e.to_string()` worked in [Note 02](/digital-garden/rust-sandbox/structs-impl-display/#dsp-flow).
-- **Supertraits.** A trait can require another one: `trait Copy: Clone`. That's why every `Copy` type must also be `Clone`, as [Note 06](/digital-garden/rust-sandbox/derive/#der-copy) showed.
+- **Free methods from blanket impls.** The standard library says, in effect, `impl<T: Display> ToString for T`: *every* type that implements `Display` automatically gets `.to_string()`. That's why `e.to_string()` worked in [Note 05](/digital-garden/rust-sandbox/structs-impl-display/#dsp-flow).
+- **Supertraits.** A trait can require another one: `trait Copy: Clone`. That's why every `Copy` type must also be `Clone`, as [Note 09](/digital-garden/rust-sandbox/derive/#der-copy) showed.
 
 ## Summary: Rust traits
 {: #trt-summary}

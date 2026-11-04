@@ -1,8 +1,8 @@
 ---
 layout: garden
 guide: rust-sandbox
-order: 10
-note_no: "10"
+order: 13
+note_no: "13"
 nav_title: "Modules and use"
 title: "Rust Modules and use: Importing with crate:: Paths"
 seo_title: "Rust Modules and use Explained: crate:: Paths, mod and pub Visibility"
@@ -26,7 +26,7 @@ sections:
 
 A line like `use crate::math::trigonometry::sin_cos;` confused me at first. Where does `crate` come from? Why `::`? And why does the import fail when the function plainly exists?
 
-This note answers all three. By now you can read what's *inside* each file (Notes 01 to 09). This note is about how the files **connect**.
+This note answers all three. By now you can read what's *inside* each file (Notes 01 to 12). This note is about how the files **connect**.
 
 ## The files for this note
 {: #mod-files}
@@ -198,7 +198,7 @@ Look at the first line of `point.rs` again:
 use std::fmt;
 ```
 
-This line imports the **module** `fmt`, not a function or type inside it. The code then names things through it: `fmt::Display`, `fmt::Formatter` and `fmt::Result`. You need all three to make your own type printable with `println!("{}", value)`. [Note 02](/digital-garden/rust-sandbox/structs-impl-display/) walks through this block line by line:
+This line imports the **module** `fmt`, not a function or type inside it. The code then names things through it: `fmt::Display`, `fmt::Formatter` and `fmt::Result`. You need all three to make your own type printable with `println!("{}", value)`. [Note 05](/digital-garden/rust-sandbox/structs-impl-display/) walks through this block line by line:
 
 ```rust
 impl fmt::Display for Point {

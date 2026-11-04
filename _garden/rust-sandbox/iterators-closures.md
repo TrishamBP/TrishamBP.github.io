@@ -1,8 +1,8 @@
 ---
 layout: garden
 guide: rust-sandbox
-order: 9
-note_no: "09"
+order: 12
+note_no: "12"
 nav_title: "Iterators and closures"
 title: "Rust Iterators and Closures: zip, map, collect, sum and the Turbofish"
 seo_title: "Rust Iterators and Closures Explained: zip, map, collect & Turbofish"
@@ -32,7 +32,7 @@ sections:
     title: "Summary: Rust iterators and closures"
 ---
 
-This is the body of `Vector::checked_add` after the dimension check from [Note 08](/digital-garden/rust-sandbox/error-handling-result/#err-question):
+This is the body of `Vector::checked_add` after the dimension check from [Note 11](/digital-garden/rust-sandbox/error-handling-result/#err-question):
 
 ```rust
 let components = self
@@ -71,7 +71,7 @@ components = [a + b for a, b in zip(self.components, other.components)]
 ## 2. `iter`, `iter_mut` and `into_iter`
 {: #itr-iter}
 
-There are three ways to walk through a `Vec`, and they map directly onto the three ways of using a value from [Note 01](/digital-garden/rust-sandbox/ownership-borrowing/#own-self):
+There are three ways to walk through a `Vec`, and they map directly onto the three ways of using a value from [Note 04](/digital-garden/rust-sandbox/ownership-borrowing/#own-self):
 
 | Method | Each item is | The `Vec` afterwards | Used in the demo |
 |---|---|---|---|
@@ -191,7 +191,7 @@ This is the dot product: a · b = a₁b₁ + a₂b₂ + ... + aₙbₙ.
 ## 8. The turbofish `::<>`
 {: #itr-turbofish}
 
-The `Magnitude` trait's implementation for `Vector` ([Note 05](/digital-garden/rust-sandbox/traits/#trt-impl)) contains this line:
+The `Magnitude` trait's implementation for `Vector` ([Note 08](/digital-garden/rust-sandbox/traits/#trt-impl)) contains this line:
 
 ```rust
 self.components().iter().map(|x| x * x).sum::<f64>().sqrt()
@@ -222,6 +222,17 @@ for row in 0..2 {            // 0, 1
 
 - `0..2` is a **range**: 0 and 1. The end is excluded, like Python's `range(0, 2)`.
 - `0..=2` includes the end: 0, 1, 2.
+- Ranges are iterators, so iterator methods work on them:
+
+```rust
+for i in (0..5).rev() { }        // 4 3 2 1 0
+for i in (0..10).step_by(3) { }  // 0 3 6 9
+for c in 'a'..='e' { }           // a b c d e: chars work too
+let total: i32 = (1..=10).sum(); // 55
+(1..5).contains(&5)              // false: the end is excluded
+```
+
+- Parentheses matter: `(0..5).rev()` reverses the range, while `0..5.rev()` would call `rev` on `5`.
 - A `for` loop can walk an array directly, and destructure each item:
 
 ```rust
@@ -229,7 +240,7 @@ for theta in [-2.0, -0.3, 0.0, 0.7] { /* ... */ }
 for (alpha, beta) in [(0.3, 0.4), (1.0, -2.5)] { /* ... */ }
 ```
 
-The same range syntax makes slices ([Note 04](/digital-garden/rust-sandbox/slices-lifetimes/#slc-ranges)).
+The same range syntax makes slices ([Note 07](/digital-garden/rust-sandbox/slices-lifetimes/#slc-ranges)).
 
 ## Summary: Rust iterators and closures
 {: #itr-summary}

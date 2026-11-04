@@ -1,8 +1,8 @@
 ---
 layout: garden
 guide: rust-sandbox
-order: 8
-note_no: "08"
+order: 11
+note_no: "11"
 nav_title: "Error handling: Result and ?"
 title: "Rust Error Handling: Result, Enums, the ? Operator and Panics"
 seo_title: "Rust Error Handling Explained: Result, ?, std::error::Error & Panics"
@@ -36,7 +36,7 @@ sections:
 
 Adding a 2-component vector to a 3-component vector is meaningless. Python would `raise` an exception. Rust's `Vector::checked_add` instead **returns** an error as a value, and the type system makes sure the caller can't ignore it.
 
-This note builds on the error type from [Note 02](/digital-garden/rust-sandbox/structs-impl-display/) and on traits ([Note 05](/digital-garden/rust-sandbox/traits/)).
+This note builds on the error type from [Note 05](/digital-garden/rust-sandbox/structs-impl-display/) and on traits ([Note 08](/digital-garden/rust-sandbox/traits/)).
 
 ## 1. Why the error is a struct, not a text message
 {: #err-struct}
@@ -50,7 +50,7 @@ pub struct DimensionMismatch {
 
 The error could have been a `String` like `"sizes 2 and 3 differ"`. A struct is better because it **keeps the numbers**. The caller can write `if e.left > e.right { ... }` in code. With only a message, the caller would have to parse text to get the numbers back.
 
-The human-readable text still exists: that's the `Display` impl from [Note 02](/digital-garden/rust-sandbox/structs-impl-display/#dsp-display). The fields are `pub` on purpose, so callers can read `error.left` directly.
+The human-readable text still exists: that's the `Display` impl from [Note 05](/digital-garden/rust-sandbox/structs-impl-display/#dsp-display). The fields are `pub` on purpose, so callers can read `error.left` directly.
 
 ## 2. Enums: a type that is one of several variants
 {: #err-enum}
@@ -88,7 +88,7 @@ fn check_same_dimension(&self, other: &Vector) -> Result<(), DimensionMismatch> 
 
 - There's **no `pub`**, so it's a private helper. Only code in this module can call it.
 - `other: &Vector` borrows a second vector.
-- The return type is `Result<(), DimensionMismatch>`. `T` is `()`, the unit type ("no value", see [Note 02](/digital-garden/rust-sandbox/structs-impl-display/#dsp-result)). So `Ok(())` means *"success, and nothing to hand back"*: the check passed.
+- The return type is `Result<(), DimensionMismatch>`. `T` is `()`, the unit type ("no value", see [Note 05](/digital-garden/rust-sandbox/structs-impl-display/#dsp-result)). So `Ok(())` means *"success, and nothing to hand back"*: the check passed.
 
 The big difference from Python: the possible error is **written in the signature**. You can't call this function and forget that it might fail.
 
@@ -118,7 +118,7 @@ match a.checked_add(&b) {
 }
 ```
 
-`Ok(sum)` both **checks** the variant and **unpacks** the value inside into `sum` (destructuring, as in [Note 07](/digital-garden/rust-sandbox/arrays-tuples-constants/#arr-destructure)).
+`Ok(sum)` both **checks** the variant and **unpacks** the value inside into `sum` (destructuring, as in [Note 10](/digital-garden/rust-sandbox/arrays-tuples-constants/#arr-destructure)).
 
 `match` must be **exhaustive**. Forget the `Err` arm and the build fails:
 
@@ -136,7 +136,7 @@ This is how Rust guarantees that the error case is handled, not merely hoped abo
 ```rust
 pub fn checked_add(&self, other: &Vector) -> Result<Vector, DimensionMismatch> {
     self.check_same_dimension(other)?;
-    // ... add the components (Note 09) ...
+    // ... add the components (Note 12) ...
     Ok(Vector { components })
 }
 ```
@@ -172,7 +172,7 @@ impl std::error::Error for DimensionMismatch {}
 
 `std::error::Error` is the standard trait for *"this type is an error"*. The block is **empty** because every method of the trait has a default body ([provided methods](/digital-garden/rust-sandbox/traits/#trt-define)).
 
-The trait has two **supertraits** ([Note 05](/digital-garden/rust-sandbox/traits/#trt-std)): an `Error` must also implement `Debug` and `Display`. That's one reason `DimensionMismatch` derives `Debug` and implements `Display` by hand.
+The trait has two **supertraits** ([Note 08](/digital-garden/rust-sandbox/traits/#trt-std)): an `Error` must also implement `Debug` and `Display`. That's one reason `DimensionMismatch` derives `Debug` and implements `Display` by hand.
 
 **Why bother?** Real programs hit many kinds of errors: a dimension mismatch here, a number that won't parse there. They often collect them all in one general type, **`Box<dyn std::error::Error>`** ("any error, on the heap"; see [`dyn Trait`](/digital-garden/rust-sandbox/traits/#trt-dyn)). Only types that implement `Error` can go into it, and `?` converts them automatically ([previous section](#err-from)):
 
@@ -233,7 +233,7 @@ a.checked_add(&b).expect("vectors from the same sensor");
 // vectors from the same sensor: DimensionMismatch { left: 1, right: 2 }
 ```
 
-They're fine in tests and quick experiments ([Note 11](/digital-garden/rust-sandbox/doc-comments-tests/#tst-unwrap)). **In library code, avoid them**: return the `Result` and let the caller decide.
+They're fine in tests and quick experiments ([Note 14](/digital-garden/rust-sandbox/doc-comments-tests/#tst-unwrap)). **In library code, avoid them**: return the `Result` and let the caller decide.
 
 ## 10. Panics: for bugs, not for expected errors
 {: #err-panic}
@@ -264,7 +264,7 @@ index out of bounds: the len is 2 but the index is 2
 | Rust tool | return `Result` (`checked_add`) | **panic** (`get`) |
 | Python analogy | `raise ValueError` for the caller to catch | `assert` / an `IndexError` you never catch |
 
-The `/// # Panics` section in the doc comment tells callers exactly when `get` panics. It's a standard heading in Rust documentation ([Note 11](/digital-garden/rust-sandbox/doc-comments-tests/#tst-docs)). The `checked_` prefix ([naming conventions](/digital-garden/rust-sandbox/methods-constructors/#mth-naming)) signals the opposite: this one returns a `Result` instead of panicking.
+The `/// # Panics` section in the doc comment tells callers exactly when `get` panics. It's a standard heading in Rust documentation ([Note 14](/digital-garden/rust-sandbox/doc-comments-tests/#tst-docs)). The `checked_` prefix ([naming conventions](/digital-garden/rust-sandbox/methods-constructors/#mth-naming)) signals the opposite: this one returns a `Result` instead of panicking.
 
 ## Summary: Rust error handling
 {: #err-summary}

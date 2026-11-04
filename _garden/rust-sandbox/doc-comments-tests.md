@@ -1,8 +1,8 @@
 ---
 layout: garden
 guide: rust-sandbox
-order: 11
-note_no: "11"
+order: 14
+note_no: "14"
 nav_title: "Comments, docs and tests"
 title: "Rust Comments, Doc Tests and Unit Tests: //!, ///, #[test] and cargo test"
 seo_title: "Rust Doc Comments, Doc Tests & Unit Tests Explained (cargo test)"
@@ -32,7 +32,7 @@ sections:
     title: "Summary: Rust comments, docs and tests"
 ---
 
-This is the last note, because it uses nearly everything before it: modules ([Note 10](/digital-garden/rust-sandbox/modules-use/)) for `mod tests`, derives for `assert_eq!`, and `Result` for `unwrap`. It's also the one that makes the rest of the code **trustworthy**.
+This is the last note, because it uses nearly everything before it: modules ([Note 13](/digital-garden/rust-sandbox/modules-use/)) for `mod tests`, derives for `assert_eq!`, and `Result` for `unwrap`. It's also the one that makes the rest of the code **trustworthy**.
 
 ## 1. Three kinds of comments
 {: #tst-comments}
@@ -71,7 +71,7 @@ Doc comments are written in **Markdown**:
 
 Run **`cargo doc --open`**, and Rust builds a documentation website from these comments and opens it. It works like a Python module docstring, but it's rendered into browsable HTML, in the same format as the official docs at docs.rs.
 
-Rust docs use a few standard Markdown headings: `# Examples`, **`# Panics`** (when the function panics, as on `Matrix2::get` in [Note 08](/digital-garden/rust-sandbox/error-handling-result/#err-panic)), `# Errors` (when it returns `Err`) and `# Safety`.
+Rust docs use a few standard Markdown headings: `# Examples`, **`# Panics`** (when the function panics, as on `Matrix2::get` in [Note 11](/digital-garden/rust-sandbox/error-handling-result/#err-panic)), `# Errors` (when it returns `Err`) and `# Safety`.
 
 ## 3. Doc tests: examples that can't go stale
 {: #tst-doctests}
@@ -96,7 +96,7 @@ assertion `left == right` failed
  right: 4
 ```
 
-Notice the first line of the example: `use shapes_demo::math::matrix::Vector;`. A doc test is compiled **as if it were a separate crate using your library**, so it starts from the crate name (like `main.rs` in [Note 10](/digital-garden/rust-sandbox/modules-use/#mod-paths)) and can only use public items. That's exactly what a reader of the docs would have to write.
+Notice the first line of the example: `use shapes_demo::math::matrix::Vector;`. A doc test is compiled **as if it were a separate crate using your library**, so it starts from the crate name (like `main.rs` in [Note 13](/digital-garden/rust-sandbox/modules-use/#mod-paths)) and can only use public items. That's exactly what a reader of the docs would have to write.
 
 ### `text` blocks: "this isn't code"
 {: #tst-text}
@@ -131,8 +131,8 @@ mod tests {
 }
 ```
 
-- **`#[cfg(test)]`** is **conditional compilation**: the attribute ([Note 06](/digital-garden/rust-sandbox/derive/#der-glossary)) tells the compiler to include this block **only** when running `cargo test`. Your normal program doesn't contain the tests at all.
-- **`mod tests { ... }`** declares a module **inside the file**. A module doesn't have to be a separate file ([Note 10](/digital-garden/rust-sandbox/modules-use/#mod-tree)).
+- **`#[cfg(test)]`** is **conditional compilation**: the attribute ([Note 09](/digital-garden/rust-sandbox/derive/#der-glossary)) tells the compiler to include this block **only** when running `cargo test`. Your normal program doesn't contain the tests at all.
+- **`mod tests { ... }`** declares a module **inside the file**. A module doesn't have to be a separate file ([Note 13](/digital-garden/rust-sandbox/modules-use/#mod-tree)).
 - **`use super::*;`**: `super` is the parent module (`matrix`), and `*` means everything in it. It's like Python's `from parent import *`.
 - **`use crate::math::{approx_eq, DEFAULT_TOLERANCE};`** imports two names in one line with braces.
 
@@ -193,7 +193,7 @@ assertion `left == right` failed
 assert_eq!(a.dot(&b), Ok(32.0));
 ```
 
-This compares two `Result<f64, DimensionMismatch>` values. Rust can only compare them if **both** `f64` and `DimensionMismatch` implement `PartialEq`, and only print them on failure if both implement `Debug`. That's one more reason the error type derives `Debug` and `PartialEq` ([Note 06](/digital-garden/rust-sandbox/derive/#der-traits)).
+This compares two `Result<f64, DimensionMismatch>` values. Rust can only compare them if **both** `f64` and `DimensionMismatch` implement `PartialEq`, and only print them on failure if both implement `Debug`. That's one more reason the error type derives `Debug` and `PartialEq` ([Note 09](/digital-garden/rust-sandbox/derive/#der-traits)).
 
 ### `unwrap` is fine in tests
 {: #tst-unwrap}
@@ -203,7 +203,7 @@ let sum = a.checked_add(&b).unwrap();
 assert_eq!(sum.components(), &[11.0, 22.0, 33.0]);
 ```
 
-In a test, a panic from `unwrap` simply means "the test fails", which is exactly what you want. In library code, return the `Result` instead ([Note 08](/digital-garden/rust-sandbox/error-handling-result/#err-unwrap)).
+In a test, a panic from `unwrap` simply means "the test fails", which is exactly what you want. In library code, return the `Result` instead ([Note 11](/digital-garden/rust-sandbox/error-handling-result/#err-unwrap)).
 
 ## 6. `#[should_panic]`: testing that code fails correctly
 {: #tst-should-panic}
@@ -216,7 +216,7 @@ fn get_out_of_range_panics() {
 }
 ```
 
-This test passes **only if** the code panics. It proves the bounds check from [Note 08](/digital-garden/rust-sandbox/error-handling-result/#err-panic) works.
+This test passes **only if** the code panics. It proves the bounds check from [Note 11](/digital-garden/rust-sandbox/error-handling-result/#err-panic) works.
 
 A stricter version also checks the panic message, so the test can't pass because of some unrelated panic:
 
@@ -238,11 +238,11 @@ fn assert_vector2_eq(actual: Vector2, expected: Vector2) {
 ```
 
 - No `#[test]` on it, so it's a **helper** that the tests call.
-- `&&` means **and**.
+- `&&` means **and** ([Note 03](/digital-garden/rust-sandbox/booleans-chars-strings/#txt-logic)).
 - The second argument of `assert!` is the message shown when it fails.
 - **`{expected:?}`** puts the variable straight into the text, in `Debug` format. It's like a Python f-string, `f"expected {expected!r}"`.
 
-**Why not just `assert_eq!`?** Floating-point maths is rarely exact. A quarter turn of `[1, 0]` gives `[6.123233995736766e-17, 1.0]`, not `[0, 1]` ([Note 07](/digital-garden/rust-sandbox/arrays-tuples-constants/#arr-free)). So the helper accepts any difference up to `DEFAULT_TOLERANCE` (`1e-9`), via `approx_eq` from `src/math/mod.rs`:
+**Why not just `assert_eq!`?** Floating-point maths is rarely exact. A quarter turn of `[1, 0]` gives `[6.123233995736766e-17, 1.0]`, not `[0, 1]` ([Note 10](/digital-garden/rust-sandbox/arrays-tuples-constants/#arr-free)). So the helper accepts any difference up to `DEFAULT_TOLERANCE` (`1e-9`), via `approx_eq` from `src/math/mod.rs`:
 
 ```rust
 pub const DEFAULT_TOLERANCE: f64 = 1e-9;

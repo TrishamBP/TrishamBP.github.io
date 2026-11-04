@@ -1,8 +1,8 @@
 ---
 layout: garden
 guide: rust-sandbox
-order: 7
-note_no: "07"
+order: 10
+note_no: "10"
 nav_title: "Arrays, tuples and constants"
 title: "Rust Arrays, Tuples, Constants and Destructuring: The Matrix2 Type"
 seo_title: "Rust Arrays, Tuples, const fn and Destructuring Explained (Matrix2)"
@@ -34,7 +34,7 @@ sections:
     title: "Summary: Rust arrays, tuples and constants"
 ---
 
-`Vector` ([Note 03](/digital-garden/rust-sandbox/methods-constructors/)) can hold any number of components, so it needs a heap-allocated `Vec`. For 2-D geometry the size is **always 2**, and Rust has better tools for fixed-size data. This note covers the rest of `src/math/matrix.rs`: `Vector2`, `Matrix2` and `rotate_vector`.
+`Vector` ([Note 06](/digital-garden/rust-sandbox/methods-constructors/)) can hold any number of components, so it needs a heap-allocated `Vec`. For 2-D geometry the size is **always 2**, and Rust has better tools for fixed-size data. This note covers the rest of `src/math/matrix.rs`: `Vector2`, `Matrix2` and `rotate_vector`.
 
 ## 1. Arrays: `[T; N]`
 {: #arr-arrays}
@@ -58,6 +58,37 @@ help: consider specifying the actual array length
 
 Indexing starts at 0, as in Python: `a[0]`, `a[1]`.
 
+### Reading and writing array elements
+{: #arr-elements}
+
+```rust
+let mut scores = [0.0; 3];   // [0.0, 0.0, 0.0]: value; count
+scores[1] = 2.5;             // write one element
+scores[2] += 1.0;            // update in place
+let first = scores[0];       // read (f64 is Copy, so this copies it)
+println!("{:?} len={}", scores, scores.len());   // [0.0, 2.5, 1.0] len=3
+```
+
+- `[value; count]` builds an array with every element set to the same value. `[[0; 2]; 2]` is a 2×2 grid of zeros.
+- Writing an element changes the array, so the array must be `let mut`. Without it you get `error[E0594]: cannot assign to 'a[_]', as 'a' is not declared as mutable`.
+- The index must be a `usize` ([Note 02](/digital-garden/rust-sandbox/integers-floats-casting/#num-usize)).
+- Arrays print with `{:?}`, not `{}`.
+
+**Out of bounds:** Python raises `IndexError`; Rust never reads past the end either. A constant index the compiler can check is a build error. An index computed at runtime is checked when it runs, and **panics**:
+
+```text
+error: this operation will panic at runtime
+  |     println!("{}", a[3]);
+  |                    ^^^^ index out of bounds: the length is 3 but the index is 3
+```
+
+```text
+thread 'main' panicked at ...
+index out of bounds: the len is 3 but the index is 3
+```
+
+When an index might be invalid, use `.get(i)`. It returns an `Option` instead of panicking: `scores.get(1)` is `Some(2.5)` and `scores.get(5)` is `None`.
+
 ## 2. Type aliases: `Vector2`
 {: #arr-alias}
 
@@ -65,9 +96,9 @@ Indexing starts at 0, as in Python: `a[0]`, `a[1]`.
 pub type Vector2 = [f64; 2];
 ```
 
-`type ... = ...` creates a **type alias**: a second name for an existing type. It makes signatures readable, as in `fn mul_vector(self, v: Vector2) -> Vector2`.
+`Vector2` is a **type alias** ([Note 01](/digital-garden/rust-sandbox/variables-mutability/#var-alias)): a second name for `[f64; 2]`. It makes signatures readable, as in `fn mul_vector(self, v: Vector2) -> Vector2`.
 
-An alias is **not a new type**. `Vector2` and `[f64; 2]` are completely interchangeable, so a plain `[f64; 2]` can be passed wherever a `Vector2` is expected. If you wanted the compiler to keep them apart, you'd need a wrapper struct instead (like `Vector` wraps `Vec<f64>`).
+Because an alias isn't a new type, a plain `[f64; 2]` can be passed wherever a `Vector2` is expected.
 
 ## 3. Array or `Vec`?
 {: #arr-vs-vec}
@@ -80,7 +111,7 @@ An alias is **not a new type**. `Vector2` and `[f64; 2]` are completely intercha
 | Dimension check | done by the compiler (types) | must happen at runtime (`DimensionMismatch`) |
 | `Copy` | yes (if `T` is `Copy`) | no |
 
-For 2-D rotations the length is always 2, so the array is both **faster** (no allocation) and **safer** (a wrong length doesn't even compile). Compare that with `Vector::checked_add`, which has to check lengths at runtime ([Note 08](/digital-garden/rust-sandbox/error-handling-result/#err-result)).
+For 2-D rotations the length is always 2, so the array is both **faster** (no allocation) and **safer** (a wrong length doesn't even compile). Compare that with `Vector::checked_add`, which has to check lengths at runtime ([Note 11](/digital-garden/rust-sandbox/error-handling-result/#err-result)).
 
 ## 4. `Matrix2`: a nested array inside a struct
 {: #arr-matrix2}
@@ -92,7 +123,7 @@ pub struct Matrix2 {
 }
 ```
 
-`[[f64; 2]; 2]` is an array of 2 arrays, each holding 2 `f64` values: 4 × 8 = **32 bytes**, all inline. There's no heap data, so the type can derive `Copy` ([Note 06](/digital-garden/rust-sandbox/derive/#der-copy)). Like `Vector`, the field is private.
+`[[f64; 2]; 2]` is an array of 2 arrays, each holding 2 `f64` values: 4 × 8 = **32 bytes**, all inline. There's no heap data, so the type can derive `Copy` ([Note 09](/digital-garden/rust-sandbox/derive/#der-copy)). Like `Vector`, the field is private.
 
 ## 5. Compile-time constants: `const`, associated constants and `const fn`
 {: #arr-const}
@@ -109,9 +140,8 @@ impl Matrix2 {
 }
 ```
 
-- **`const`** declares a constant. The compiler computes its value **while compiling** and bakes it into the program.
+- **`const`** declares a constant, computed **while compiling** ([Note 01](/digital-garden/rust-sandbox/variables-mutability/#var-const) covers `const` vs `let`).
 - Because it's inside `impl Matrix2`, you use it as `Matrix2::IDENTITY`. That's an **associated constant**, like a class attribute in Python (`Matrix2.IDENTITY`).
-- Convention: constants use `UPPER_CASE` names.
 
 ### `const fn`: functions the compiler can run
 {: #arr-const-fn}
@@ -148,7 +178,7 @@ pub const fn rows(self) -> [[f64; 2]; 2] {
 }
 ```
 
-The receiver is `self`, not `&self`. For `Vector`, `self` meant "consume the value" ([Note 01](/digital-garden/rust-sandbox/ownership-borrowing/#own-self)). `Matrix2` is `Copy`, though, so the method receives a **copy**, and the caller keeps the original.
+The receiver is `self`, not `&self`. For `Vector`, `self` meant "consume the value" ([Note 04](/digital-garden/rust-sandbox/ownership-borrowing/#own-self)). `Matrix2` is `Copy`, though, so the method receives a **copy**, and the caller keeps the original.
 
 Why not `&self`? A reference is an 8-byte pointer to the 32 bytes, and every read has to follow it. For small `Copy` types, passing the bytes directly is often just as cheap or cheaper, and the values can stay in CPU registers. That's why all the `Matrix2` methods take `self` by value.
 
@@ -227,22 +257,19 @@ Try it with a quarter turn, `rotate_vector([1.0, 0.0], FRAC_PI_2)`. Mathematical
 [6.123233995736766e-17, 1.0]
 ```
 
-`cos(π/2)` isn't exactly 0 in floating point. That tiny error is why the tests compare floats with a tolerance ([Note 11](/digital-garden/rust-sandbox/doc-comments-tests/#tst-helpers)).
+`cos(π/2)` isn't exactly 0 in floating point. That tiny error is why the tests compare floats with a tolerance ([Note 14](/digital-garden/rust-sandbox/doc-comments-tests/#tst-helpers)).
 
 ## 10. Number literals: Rust doesn't mix integers and floats
 {: #arr-literals}
 
-- `1.0` is a float (`f64` by default). `1` is an integer (`i32` by default).
-- Rust **never converts between them automatically**:
+The `Matrix2` code writes `1.0` and `0.0`, never `1` and `0`. `1` is an integer and `1.0` is a float, and Rust **never converts between them automatically**:
 
 ```rust
 let x = 1.0 + 1;      // error[E0277]: cannot add an integer to a float
 let y: f64 = 1;       // error[E0308]: mismatched types
 ```
 
-- Scientific notation: `1e10` is 1 × 10¹⁰ and `1e-3` is 0.001. Both are floats.
-- Suffixes pick an exact type: `2.5_f64`, `3_u8`, `10_usize`.
-- Underscores make big numbers readable: `1_000_000`.
+So `Matrix2::new(1, 0, 0, 1)` wouldn't compile. [Note 02](/digital-garden/rust-sandbox/integers-floats-casting/#num-literals) covers number literals, suffixes like `2.5_f64`, and casting with `as`.
 
 ## Summary: Rust arrays, tuples and constants
 {: #arr-summary}
