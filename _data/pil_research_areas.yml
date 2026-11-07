@@ -1,0 +1,38 @@
+# Physical Intelligence Lab research areas, shown as cards on
+# /physical-intelligence-lab/ (5 per page). Images are original SVG
+# illustrations in assets/pil/.
+- title: World Models & Simulation
+  tag: World Models
+  image: /assets/pil/world-models.svg
+  alt: "World models and simulation illustration: a predicted trajectory through a simulated 3D scene"
+  description: "Learning predictive models of dynamic environments, so an agent can imagine what happens next before it acts."
+
+- title: 4D Perception
+  tag: Perception
+  image: /assets/pil/4d-perception.svg
+  alt: "4D perception illustration: a point cloud of a moving scene tracked over time"
+  description: "Understanding 3D scenes as they change over time, from video, depth and lidar, including objects, motion and spatial relations."
+
+- title: Vision-Language-Action Models
+  tag: VLA
+  image: /assets/pil/vla-models.svg
+  alt: "Vision-language-action model illustration: image and text tokens mapped to robot action tokens"
+  description: "Grounding language instructions in what a robot sees, and turning both into motor actions it can execute."
+
+- title: Robot Learning & Manipulation
+  tag: Manipulation
+  image: /assets/pil/robot-manipulation.svg
+  alt: "Robot learning and manipulation illustration: a robot arm grasping an object"
+  description: "Teaching robots dexterous skills such as grasping, placing and tool use through imitation learning and reinforcement learning."
+
+- title: Sim-to-Real Transfer
+  tag: Sim-to-Real
+  image: /assets/pil/sim-to-real.svg
+  alt: "Sim-to-real transfer illustration: a wireframe simulated robot mirrored by its real-world counterpart"
+  description: "Closing the gap between simulation and the physical world with domain randomization, digital twins and real-world fine-tuning."
+
+- title: Locomotion & Humanoids
+  tag: Locomotion
+  image: /assets/pil/locomotion.svg
+  alt: "Locomotion and humanoid robots illustration: a legged robot gait across uneven terrain"
+  description: "Whole-body control for legged and humanoid robots that walk, balance and recover on terrain they have never seen."

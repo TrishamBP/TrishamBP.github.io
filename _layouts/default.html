@@ -24,7 +24,10 @@
   {%- assign url_prefix = page.url | slice: 0, 13 -%}
   {%- assign is_signals = false -%}
   {%- if page.url == '/signals/' or page.collection == 'signals' -%}{%- assign is_signals = true -%}{%- endif -%}
-  <body class="{% unless page_theme == 'none' %}theme-{{ page_theme }} {% endunless %}{% if url_prefix == '/engineering/' or page.collection == 'implementations' %}eng-glossary {% endif %}{% if is_signals %}fn-notes {% elsif page.url == '/blog/' or page.url == '/newsletter/' or page.url == '/models/' or page.layout == 'post' %}ts-paper {% endif %}{% if page.url == '/newsletter/' or page.collection == 'newsletters' %}nl-space {% endif %}{% if page.url == '/research-articles/' %}spx-cinema {% endif %}{% if page.url == '/certifications/' %}grid-neon {% endif %}{% if page.url == '/physical-systems/' %}ps-systems {% endif %}{% if page.url == '/projects/' %}tx-term {% endif %}{% if page.url == '/digital-garden/' or page.collection == 'garden' %}dg-garden {% endif %}{% if page.collection == 'garden' %}dg-docs-page {% endif %}{% if page.skin %}skin-{{ page.skin }} {% endif %}dark-mode">
+  {%- comment -%} Physical Intelligence Lab: the Signals field-notes skin (fn-notes) re-inked dark by `pil-lab` (css/pil-lab.css). {%- endcomment -%}
+  {%- assign is_pil = false -%}
+  {%- if page.url contains '/physical-intelligence-lab/' -%}{%- assign is_pil = true -%}{%- endif -%}
+  <body class="{% unless page_theme == 'none' %}theme-{{ page_theme }} {% endunless %}{% if url_prefix == '/engineering/' or page.collection == 'implementations' %}eng-glossary {% endif %}{% if is_signals %}fn-notes {% elsif is_pil %}fn-notes pil-lab {% elsif page.url == '/blog/' or page.url == '/newsletter/' or page.url == '/models/' or page.layout == 'post' %}ts-paper {% endif %}{% if page.url == '/newsletter/' or page.collection == 'newsletters' %}nl-space {% endif %}{% if page.url == '/research-articles/' %}spx-cinema {% endif %}{% if page.url == '/certifications/' %}grid-neon {% endif %}{% if page.url == '/physical-systems/' %}ps-systems {% endif %}{% if page.url == '/projects/' %}tx-term {% endif %}{% if page.url == '/digital-garden/' or page.collection == 'garden' %}dg-garden {% endif %}{% if page.collection == 'garden' %}dg-docs-page {% endif %}{% if page.skin %}skin-{{ page.skin }} {% endif %}dark-mode">
     {%- if is_signals %}
     <div class="fn-strip">
       <span class="fn-strip-label">Signals</span>
@@ -85,6 +88,11 @@
             class="topnav-link{% if page.url contains '/signals' %} active{% endif %}"
             href="{{ '/signals/' | relative_url }}"
           >Signals</a>
+          <a
+            class="topnav-link{% if page.url contains '/physical-intelligence-lab' %} active{% endif %}"
+            href="{{ '/physical-intelligence-lab/' | relative_url }}"
+            title="Physical Intelligence Lab"
+          >PIL</a>
           <a
             class="topnav-link{% if page.url contains '/sessions' %} active{% endif %}"
             href="{{ '/sessions/' | relative_url }}"
@@ -411,12 +419,13 @@
           }
 
           /* The blog paper and signals skins are light even though `dark-mode` is set
-             (the newsletter's nl-space skin is the dark exception). */
+             (the newsletter's nl-space and the PIL's pil-lab skins are the dark exceptions). */
           var isDark =
             document.body.classList.contains("dark-mode") &&
             (!document.body.classList.contains("ts-paper") ||
               document.body.classList.contains("nl-space")) &&
-            !document.body.classList.contains("fn-notes");
+            (!document.body.classList.contains("fn-notes") ||
+              document.body.classList.contains("pil-lab"));
           window.mermaid.initialize({
             startOnLoad: false,
             securityLevel: "loose",

@@ -1,0 +1,150 @@
+/* =============================================================================
+   PHYSICAL INTELLIGENCE LAB — DARK FIELD NOTES
+   -----------------------------------------------------------------------------
+   /physical-intelligence-lab/ reuses the Signals field-notes skin
+   (css/signals-field-notes.css, body class `fn-notes`) and re-inks it here
+   (body class `pil-lab`): #0E1111 canvas, white type, Aptos everywhere.
+   Aptos ships with Windows 11 / Microsoft 365; elsewhere it falls back to the
+   system sans. Gate is duplicated in _includes/head.html and
+   _layouts/default.html. Card art: scripts/pil_card_art.py -> assets/pil/.
+   ========================================================================== */
+
+body.theme-typesafe.fn-notes.pil-lab,
+body.theme-typesafe.fn-notes.pil-lab.dark-mode {
+  --fn-paper: #0e1111;
+  --fn-card: #141a1a;
+  --fn-panel: #182020;
+  --fn-ink: #ffffff;
+  --fn-soft: rgba(255, 255, 255, 0.82);
+  --fn-faint: rgba(255, 255, 255, 0.56);
+  --fn-hair: rgba(255, 255, 255, 0.14);
+  --fn-grid: rgba(255, 255, 255, 0.035);
+  --fn-green: #2f8f74;
+  --fn-mint: rgba(111, 211, 176, 0.38);
+  --fn-orange: #f0743e;
+
+  --fn-display: "Aptos Display", "Aptos", "Segoe UI", -apple-system,
+    BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --fn-body: "Aptos", "Segoe UI", -apple-system, BlinkMacSystemFont,
+    "Helvetica Neue", Arial, sans-serif;
+  --fn-mono: var(--fn-body);
+
+  background-color: var(--fn-paper);
+  color: var(--fn-ink);
+}
+
+body.theme-typesafe.fn-notes.pil-lab ::selection {
+  background: #6fd3b0;
+  color: #0e1111;
+}
+
+/* Nav: dark bar instead of the paper one. */
+body.theme-typesafe.fn-notes.pil-lab .topnav {
+  background: rgba(14, 17, 17, 0.94);
+  border-bottom-color: var(--fn-hair);
+}
+
+body.theme-typesafe.fn-notes.pil-lab .topnav-brand::after {
+  content: "Physical AI Lab";
+}
+
+body.theme-typesafe.fn-notes.pil-lab .topnav-link {
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+}
+
+/* Intro card: dark panel, mint corner ticks, no heavy shadow. */
+body.theme-typesafe.fn-notes.pil-lab .site-shell .fn-dossier {
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 24px 48px -30px rgba(0, 0, 0, 0.9);
+}
+
+body.theme-typesafe.fn-notes.pil-lab .site-shell .fn-dossier::before,
+body.theme-typesafe.fn-notes.pil-lab .site-shell .fn-dossier::after {
+  border-color: #6fd3b0;
+}
+
+body.theme-typesafe.fn-notes.pil-lab .site-shell .fn-eyebrow,
+body.theme-typesafe.fn-notes.pil-lab .site-shell .fn-card-tag {
+  font-size: 0.74rem;
+}
+
+body.theme-typesafe.fn-notes.pil-lab .site-shell .fn-title {
+  max-width: none;
+}
+
+body.theme-typesafe.fn-notes.pil-lab .site-shell .fn-lede {
+  max-width: 44em;
+  margin-bottom: 0;
+}
+
+/* -----------------------------------------------------------------------------
+   Research Areas: centred heading, image-topped cards, 3 per row, centred
+   when a row is short (5 per page leaves a row of two).
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.fn-notes.pil-lab .site-shell .pil-areas-title {
+  max-width: none;
+  margin: 0 0 1.8rem;
+  text-align: center;
+}
+
+body.theme-typesafe.fn-notes.pil-lab .pil-areas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.1rem;
+  margin: 0 0 1.8rem;
+}
+
+body.theme-typesafe.fn-notes.pil-lab .site-shell .pil-area-card {
+  flex: 0 1 calc((100% - 2.2rem) / 3);
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body.theme-typesafe.fn-notes.pil-lab .site-shell .pil-area-card:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+body.theme-typesafe.fn-notes.pil-lab .pil-area-media {
+  aspect-ratio: 16 / 9;
+  border-bottom: 1px solid var(--fn-hair);
+  background: var(--fn-panel);
+}
+
+body.theme-typesafe.fn-notes.pil-lab .site-shell .pil-area-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+body.theme-typesafe.fn-notes.pil-lab .pil-area-body {
+  padding: 1.25rem 1.4rem 1.4rem;
+}
+
+body.theme-typesafe.fn-notes.pil-lab .site-shell .pil-area-card .fn-card-text {
+  margin-bottom: 0;
+}
+
+body.theme-typesafe.fn-notes.pil-lab .pil-pagination {
+  justify-content: center;
+}
+
+@media (max-width: 900px) {
+  body.theme-typesafe.fn-notes.pil-lab .site-shell .pil-area-card {
+    flex-basis: calc((100% - 1.1rem) / 2);
+  }
+}
+
+@media (max-width: 640px) {
+  body.theme-typesafe.fn-notes.pil-lab .site-shell .pil-area-card {
+    flex-basis: 100%;
+  }
+}
