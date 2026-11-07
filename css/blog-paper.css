@@ -1903,3 +1903,34 @@ body.theme-typesafe.ts-paper .post-content figure.mtp-demo {
 @media (prefers-reduced-motion: reduce) {
   .mtp-demo * { transition: none !important; animation: none !important; }
 }
+
+/* -----------------------------------------------------------------------------
+   PHYSICAL INTELLIGENCE LAB POSTS (collection `pil`, body `skin-noir pil-post`)
+   Blog structure and Aptos type from the noir variant above, on the PIL
+   #0E1111 canvas (matches css/pil-lab.css).
+   -------------------------------------------------------------------------- */
+body.theme-typesafe.ts-paper.skin-noir.pil-post {
+  --ts-bg: #0e1111;
+  --ts-surface: #141a1a;
+  --ts-surface-2: #182020;
+  --ts-light: #0e1111;
+  --ts-line: rgba(255, 255, 255, 0.16);
+
+  background-color: #0e1111;
+}
+
+body.theme-typesafe.ts-paper.skin-noir.pil-post .pil-post-crumb {
+  margin: 0 0 1.2rem;
+  font-family: var(--ts-body);
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+body.theme-typesafe.ts-paper.skin-noir.pil-post .pil-post-crumb a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+}
+
+body.theme-typesafe.ts-paper.skin-noir.pil-post .pil-post-crumb a:hover {
+  text-decoration: underline;
+}

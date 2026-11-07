@@ -7,6 +7,10 @@ layout: default
   {%- assign signal_words = content | strip_html | number_of_words -%}
   {% include signal-dossier.html words=signal_words %}
   {% else %}
+  {%- if page.collection == 'pil' %}
+  {%- assign pil_area_url = '/physical-intelligence-lab/' | append: page.area | append: '/' %}
+  <p class="pil-post-crumb"><a href="{{ '/physical-intelligence-lab/' | relative_url }}">Physical Intelligence Lab</a> / <a href="{{ pil_area_url | relative_url }}">{{ page.category | default: page.area }}</a></p>
+  {%- endif %}
   <header class="post-header">
     {% if page.collection == 'newsletters' %}<img class="nl-masthead-logo" src="{{ '/assets/newsletter/newsletter-logo.png' | relative_url }}" alt="The Weekly Tech Brew newsletter logo: three coffee beans inside a Tech Brew badge" width="120" height="120">{% endif %}
     <h1>{{ page.title }}{% if page.subtitle %}<span class="post-subtitle">{{ page.subtitle }}</span>{% endif %}</h1>

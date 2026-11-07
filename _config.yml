@@ -71,6 +71,14 @@ collections:
     output: true
     sort_by: date
     permalink: /signals/:name/
+  # Physical Intelligence Lab posts, grouped by research area folder:
+  # _pil/<area>/<post>.md -> /physical-intelligence-lab/<area>/<post>/
+  # Each sets `layout: post`, `area: <area>` and an explicit `date:`. Posts
+  # use the blog structure/fonts on the PIL background (skin-noir + pil-post).
+  pil:
+    output: true
+    sort_by: date
+    permalink: /physical-intelligence-lab/:path/
   # Digital Garden: documentation-style learning guides (e.g. The Rust
   # Sandbox). Only guide roots (`guide_root: true`) are listed as cards on
   # /digital-garden/. Every page uses `layout: garden`.

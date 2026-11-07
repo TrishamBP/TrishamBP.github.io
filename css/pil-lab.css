@@ -148,3 +148,33 @@ body.theme-typesafe.fn-notes.pil-lab .pil-pagination {
     flex-basis: 100%;
   }
 }
+
+/* Linked area cards: the title link's ::after (signals skin) covers the card. */
+body.theme-typesafe.fn-notes.pil-lab .site-shell .pil-area-card {
+  position: relative;
+}
+
+body.theme-typesafe.fn-notes.pil-lab .site-shell .pil-area-card--link:hover .fn-card-tag {
+  color: #6fd3b0;
+}
+
+/* -----------------------------------------------------------------------------
+   Research-area listing pages (e.g. /physical-intelligence-lab/slam/): the
+   Signals card index, with a breadcrumb back to the lab.
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.fn-notes.pil-lab .site-shell .pil-crumb {
+  margin: 1.4rem 0 0;
+  font-family: var(--fn-body);
+  font-size: 0.82rem;
+  color: var(--fn-faint);
+}
+
+body.theme-typesafe.fn-notes.pil-lab .site-shell .pil-crumb a {
+  color: var(--fn-soft);
+  text-decoration: none;
+}
+
+body.theme-typesafe.fn-notes.pil-lab .site-shell .pil-crumb a:hover {
+  color: var(--fn-orange);
+}

@@ -132,12 +132,13 @@
   {%- comment -%}
     Physical Intelligence Lab: the same field-notes skin, re-inked dark
     (#0E1111, white type, Aptos) by css/pil-lab.css. Same gate as the
-    `fn-notes pil-lab` body classes in _layouts/default.html.
+    `fn-notes pil-lab` body classes in _layouts/default.html. PIL posts
+    (layout post) skip this and get blog-paper.css via the ts-paper gate.
   {%- endcomment -%}
-  {%- if page.url contains '/physical-intelligence-lab/' %}
+  {%- if page.url contains '/physical-intelligence-lab/' %}{% unless page.layout == 'post' %}
   <link rel="stylesheet" href="{{ '/css/signals-field-notes.css' | relative_url }}?v={{ site.time | date: '%s' }}" />
   <link rel="stylesheet" href="{{ '/css/pil-lab.css' | relative_url }}?v={{ site.time | date: '%s' }}" />
-  {%- endif %}
+  {%- endunless %}{% endif %}
   {%- comment -%}
     Research page: full-screen cinematic sections. Same gate as the
     `spx-cinema` body class in _layouts/default.html.

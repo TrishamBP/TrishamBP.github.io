@@ -24,10 +24,15 @@
   {%- assign url_prefix = page.url | slice: 0, 13 -%}
   {%- assign is_signals = false -%}
   {%- if page.url == '/signals/' or page.collection == 'signals' -%}{%- assign is_signals = true -%}{%- endif -%}
-  {%- comment -%} Physical Intelligence Lab: the Signals field-notes skin (fn-notes) re-inked dark by `pil-lab` (css/pil-lab.css). {%- endcomment -%}
+  {%- comment -%}
+    Physical Intelligence Lab listings (landing + research-area pages): the
+    Signals field-notes skin (fn-notes) re-inked dark by `pil-lab`
+    (css/pil-lab.css). PIL posts (collection `pil`, layout post) instead get
+    the blog paper skin as `skin-noir pil-post` (css/blog-paper.css).
+  {%- endcomment -%}
   {%- assign is_pil = false -%}
-  {%- if page.url contains '/physical-intelligence-lab/' -%}{%- assign is_pil = true -%}{%- endif -%}
-  <body class="{% unless page_theme == 'none' %}theme-{{ page_theme }} {% endunless %}{% if url_prefix == '/engineering/' or page.collection == 'implementations' %}eng-glossary {% endif %}{% if is_signals %}fn-notes {% elsif is_pil %}fn-notes pil-lab {% elsif page.url == '/blog/' or page.url == '/newsletter/' or page.url == '/models/' or page.layout == 'post' %}ts-paper {% endif %}{% if page.url == '/newsletter/' or page.collection == 'newsletters' %}nl-space {% endif %}{% if page.url == '/research-articles/' %}spx-cinema {% endif %}{% if page.url == '/certifications/' %}grid-neon {% endif %}{% if page.url == '/physical-systems/' %}ps-systems {% endif %}{% if page.url == '/projects/' %}tx-term {% endif %}{% if page.url == '/digital-garden/' or page.collection == 'garden' %}dg-garden {% endif %}{% if page.collection == 'garden' %}dg-docs-page {% endif %}{% if page.skin %}skin-{{ page.skin }} {% endif %}dark-mode">
+  {%- if page.url contains '/physical-intelligence-lab/' -%}{%- unless page.layout == 'post' -%}{%- assign is_pil = true -%}{%- endunless -%}{%- endif -%}
+  <body class="{% unless page_theme == 'none' %}theme-{{ page_theme }} {% endunless %}{% if url_prefix == '/engineering/' or page.collection == 'implementations' %}eng-glossary {% endif %}{% if is_signals %}fn-notes {% elsif is_pil %}fn-notes pil-lab {% elsif page.url == '/blog/' or page.url == '/newsletter/' or page.url == '/models/' or page.layout == 'post' %}ts-paper {% endif %}{% if page.url == '/newsletter/' or page.collection == 'newsletters' %}nl-space {% endif %}{% if page.url == '/research-articles/' %}spx-cinema {% endif %}{% if page.url == '/certifications/' %}grid-neon {% endif %}{% if page.url == '/physical-systems/' %}ps-systems {% endif %}{% if page.url == '/projects/' %}tx-term {% endif %}{% if page.url == '/digital-garden/' or page.collection == 'garden' %}dg-garden {% endif %}{% if page.collection == 'garden' %}dg-docs-page {% endif %}{% if page.collection == 'pil' %}skin-noir pil-post {% elsif page.skin %}skin-{{ page.skin }} {% endif %}dark-mode">
     {%- if is_signals %}
     <div class="fn-strip">
       <span class="fn-strip-label">Signals</span>
