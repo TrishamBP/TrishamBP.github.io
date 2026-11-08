@@ -265,6 +265,60 @@ Most frontier labs compete on one axis: a bigger, smarter general model. Thinkin
 </div>
 </details>
 
+## The Model Drop
+
+<p class="nl-section-kicker">New Models &middot; Open Weights &middot; API Releases &middot; Benchmarks</p>
+
+A weekly roundup of the latest models, capabilities, releases, and breakthroughs shaping the AI landscape.
+
+### 1. GPT-6 Cyber by OpenAI
+
+![GPT-6 Cyber by OpenAI: the OpenAI logo on a stone sign outside a glass office building, for OpenAI's cybersecurity AI model](/assets/newsletter/weekly-tech-brew-2026-11-09/gpt-6-cyber-openai-headquarters.png){: .nl-hero}
+
+*(Representative image)*
+
+Released on **5 November 2026**, **GPT-6 Cyber** is a specialised variant of the **GPT-6 Astra** architecture, built for authorised cybersecurity work: automated vulnerability discovery, exploit validation and patch development.
+
+It is the **first model to receive a "Critical" rating** under OpenAI's Preparedness Framework, after it found hundreds of Linux and Firefox exploits during evaluation.
+
+The full technical breakdown and safety evaluations are in the **GPT-6 Cyber System Card** on OpenAI's Deployment Safety Hub, with a technical overview on DataCamp.
+
+<a class="nl-source" href="https://deploymentsafety.openai.com/" target="_blank" rel="noopener">Read the system card on OpenAI's Deployment Safety Hub &rarr;</a>
+
+### 2. Gemini Omni 1.2 Flash by Google DeepMind
+
+![Gemini Omni 1.2 Flash by Google DeepMind: the Gemini logo with its blue-to-pink gradient and four-point star, for Google's fast video generation model](/assets/newsletter/weekly-tech-brew-2026-11-09/gemini-omni-1-2-flash-video-model-logo.png){: .nl-hero}
+
+Generally available from **5 November 2026**, **Gemini Omni 1.2 Flash** is Google DeepMind's fast, cost-efficient model for **video generation and conversational editing**.
+
+Built for high-volume production, it generates **3- to 15-second clips** with native multi-speaker audio and lip-sync from up to **six reference images**, at roughly **$0.07 per second at 720p**. You can also swap products or change camera angles mid-conversation instead of starting over.
+
+Its architecture and enterprise benchmarks are covered on the Google Cloud AI Blog and in the Google DeepMind Model Card.
+
+<a class="nl-source" href="https://deepmind.google/" target="_blank" rel="noopener">Read more on Google DeepMind &rarr;</a>
+
+### 3. Sarvam Prism by Sarvam AI
+
+![Sarvam Prism by Sarvam AI: the black lowercase sarvam wordmark on white, for the Bengaluru AI lab's open-weight enterprise decision model](/assets/newsletter/weekly-tech-brew-2026-11-09/sarvam-prism-sarvam-ai-logo.png){: .nl-hero}
+
+Unveiled on **3 November 2026** by Bengaluru-based **Sarvam AI**, **Sarvam Prism** is an open-weight **"System One" enterprise decision model**, built by LoRA fine-tuning the **Sarvam 105B-10B MoE** base.
+
+Instead of writing out long token-by-token reasoning chains, it scores a set of predefined options in a **single forward pass** with calibrated confidence bounds. That gets it to a **44 ms median latency** on an NVIDIA B200 GPU (FP8), fast enough for workflow routing, security alert triage and deciding when an agent should escalate.
+
+<a class="nl-source" href="https://www.sarvam.ai/" target="_blank" rel="noopener">Read the architecture and benchmarks on Sarvam AI &rarr;</a>
+
+### 4. Tencent Hy4 by Tencent
+
+![Tencent Hy4 by Tencent: the blue Tencent wordmark on white, for Tencent's open-source 770B mixture-of-experts foundation model](/assets/newsletter/weekly-tech-brew-2026-11-09/tencent-hy4-open-source-moe-model-logo.png){: .nl-hero}
+
+Open-sourced on **4 November 2026**, **Tencent Hy4** is a **770-billion-parameter MoE** foundation model with **49 billion active parameters** and a **1-million-token context window**. It adds native visual reasoning and **computer-use agent** skills for driving desktop software and web browsers.
+
+It was trained alongside Tencent's own business units, which shows in its strong results on **quantitative finance workflows**, and it integrates deeply with **Unreal Engine, Unity and Godot** for writing game logic.
+
+Tencent's newsroom and TechRepublic have more on its recursive self-improvement harness and benchmarks.
+
+<a class="nl-source" href="https://www.tencent.com/" target="_blank" rel="noopener">Read more on Tencent &rarr;</a>
+
 {% comment %}
   Sections go below, in the usual order:
   The World Brief / The Company Dossier / The Model Drop / Repo Radar /
