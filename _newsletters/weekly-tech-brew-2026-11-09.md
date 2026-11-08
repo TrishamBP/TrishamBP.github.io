@@ -10,7 +10,7 @@ author: Trisham Patil
 email_subject: "The Weekly Tech Brew #5 Diwali Edition: US Midterms 2026, Democrats Take Congress & More"
 seo_title: "US Midterm Elections 2026 Results & What They Mean | The Weekly Tech Brew #5 Diwali Edition"
 description: "The Weekly Tech Brew Diwali Edition: US midterm elections 2026 results, Democrats take Congress, what it means for Trump and Iran, plus AI and tech news."
-keywords: "US midterm elections 2026, midterm election results, Democrats win Congress, Senate results 2026, House results 2026, War Powers Resolution, Santiago Peña impeachment, Ueno Bank collapse, Thinking Machines Lab, GPT-6 Cyber, Genie 4, BMW AWS Graviton migration, always-on AI agents, OpenAI Dots vs Claude Duet, Weekly Tech Brew Diwali Edition, AI newsletter"
+keywords: "US midterm elections 2026, midterm election results, Democrats win Congress, Senate results 2026, House results 2026, War Powers Resolution, Santiago Peña impeachment, Ueno Bank collapse, Thinking Machines Lab, GPT-6 Cyber, Genie 4, BMW AWS Graviton migration, always-on AI agents, OpenAI Dots vs Claude Duet, kotaemon RAG UI, Floci local AWS emulator, Weekly Tech Brew Diwali Edition, AI newsletter"
 ---
 
 <div class="nl-diwali-greeting" markdown="1">
@@ -524,6 +524,111 @@ Under the hood, all four work the same way: you give an instruction, the agent r
 Four labs, one idea, four very different deals. Muse is the cheapest way in. Grok Bot is the cheapest paid option for builders. Dots is the most expensive and the best fit for teams already inside ChatGPT. Duet is the newest and the most careful. **None of them let you choose the model doing the work.**
 
 The agent that wins this race probably won't be the smartest one. It will be the one **still standing in six months with the same price and the same access**.
+
+</div>
+</details>
+
+## Repo Radar
+
+<p class="nl-section-kicker">GitHub &middot; Open Source &middot; Developer Tools &middot; Experiments</p>
+
+Discovering interesting repositories, underrated projects, and tools worth starring.
+
+### 1. kotaemon (Cinnamon/kotaemon): An Open-Source RAG UI for Chatting With Your Documents
+
+**kotaemon** is an open-source, clean and customizable **RAG UI for chatting with your documents**, built with both end users and developers in mind.
+
+For end users, it's a ready-to-use app for **question answering over their own documents**. For developers, it's a working base for **building their own RAG pipeline**, with the UI already done.
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+#### For End Users: Document QA That Shows Its Sources
+
+- **Hybrid retrieval:** combines full-text and vector search, with re-ranking, so it catches both exact keyword matches and semantically similar passages.
+- **Multi-modal QA:** answers questions about **figures and tables** inside documents, not just the body text.
+- **Citations you can check:** answers come with citations, and an in-browser PDF viewer highlights the exact passage each one came from.
+- **Complex questions:** breaks hard questions into smaller sub-questions before answering.
+- **Multi-user:** login, with private and public document collections.
+- **Your choice of model:** works with LLM API providers like OpenAI, Azure OpenAI, Cohere and Groq, or fully local models through **Ollama** and llama-cpp-python.
+
+#### For Developers: A RAG Pipeline You Can Rebuild
+
+- **A framework, not just an app:** it's built for constructing RAG-based document QA pipelines, and the UI lets you see your pipeline working right away.
+- **Built on Gradio:** you can customize the interface or add new UI elements.
+- **Pluggable indexing:** it aims to support multiple indexing and retrieval strategies. **GraphRAG** is included as an example, and the project recommends the **NanoGraphRAG** implementation for the simplest integration.
+
+#### Try It in One Command
+
+The project ships Docker images in three flavours: `main-lite`, `main-full`, and `main-ollama` (with Ollama bundled for local, private RAG).
+
+```shell
+docker run \
+  -e GRADIO_SERVER_NAME=0.0.0.0 \
+  -e GRADIO_SERVER_PORT=7860 \
+  -v ./ktem_app_data:/app/ktem_app_data \
+  -p 7860:7860 -it --rm \
+  ghcr.io/cinnamon/kotaemon:main-full
+```
+
+Then open `http://localhost:7860/`. It's tested on `linux/amd64` and `linux/arm64`, so it runs on Apple Silicon Macs too. The code is **Apache-2.0**.
+
+**Why it's worth a star:** most RAG demos stop at "it answered". kotaemon puts **verifiable citations and hybrid retrieval** in front of the user, which is exactly what you need before anyone trusts a document-QA tool at work.
+
+<a class="nl-source" href="https://github.com/Cinnamon/kotaemon" target="_blank" rel="noopener">View Cinnamon/kotaemon on GitHub &rarr;</a> &middot; <a class="nl-source" href="https://huggingface.co/spaces/cin-model/kotaemon-demo" target="_blank" rel="noopener">Try the live demo &rarr;</a> &middot; <a class="nl-source" href="https://cinnamon.github.io/kotaemon/" target="_blank" rel="noopener">Read the user guide &rarr;</a>
+
+</div>
+</details>
+
+### 2. Floci (floci-io/floci): A Free Local AWS Emulator for Development and CI
+
+**Floci** is a free, open-source **local AWS emulator** for development, testing and CI. You get AWS-shaped services on your own machine, with **no cloud account, no auth token and no paid feature gates**.
+
+This one is personal: **I use Floci for my own local development to emulate AWS services**, so I can build and test against S3, DynamoDB, Lambda and friends without touching a real account or racking up a bill.
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+#### How It Works
+
+Point your AWS SDK, CLI, Terraform, CDK, OpenTofu or test suite at **`http://localhost:4566`** and keep your existing workflow. Nothing in your code has to know it isn't talking to AWS.
+
+Already on **LocalStack**? Floci is built as a **drop-in replacement**: swap the image and carry on. It also has siblings for other clouds: **floci-az** (Azure), **floci-gcp** (GCP) and **floci-oci** (Oracle Cloud).
+
+#### Try It in a Minute
+
+```bash
+floci start            # start the emulator with the Floci CLI
+eval $(floci env)      # export the AWS environment variables
+
+aws s3 mb s3://my-bucket
+aws dynamodb list-tables
+```
+
+No Docker? Every release also ships a standalone `floci-aws` binary for Linux, macOS and Windows.
+
+#### What Floci Emulates
+
+Floci supports local emulation for application services, data services, eventing, identity, infrastructure, billing and container-backed workloads.
+
+| Category | Services |
+|---|---|
+| **Core app services** | S3, SQS, SNS, DynamoDB, Lambda, Lambda MicroVMs, Lambda Web Functions, IAM, STS, KMS, Payment Cryptography, Secrets Manager, SSM |
+| **Events and workflows** | EventBridge, EventBridge V2, EventBridge Pipes, EventBridge Scheduler, Step Functions, SWF, CloudWatch Logs, CloudWatch Metrics, CloudWatch OAM, CloudWatch RUM, Managed Prometheus (AMP) |
+| **API and identity** | API Gateway REST, API Gateway v2, AppSync, Cognito, Cognito Identity, ACM, Route53, Route 53 Resolver, Cloud Map, Global Accelerator |
+| **Containers and compute** | ECS, EC2, Lightsail, EKS, MWAA, ECR, EFS, CodeBuild, CodeDeploy, CodePipeline, CodeGuru Reviewer, CodeArtifact, AWS Batch, Auto Scaling, Application Auto Scaling, Elastic Beanstalk, ELB v2, ELB Classic |
+| **Data, analytics, and AI** | Athena, Glue, Lake Formation, EMR, EMR Serverless, Redshift, Redshift Data API, Redshift Serverless, Firehose, Managed Service for Apache Flink, OpenSearch, S3 Tables, S3 Vectors, Textract, Transcribe, Comprehend, Rekognition, Translate, Bedrock, Bedrock Runtime, Bedrock AgentCore, Bedrock AgentCore Control, SageMaker |
+| **Databases and caching** | Aurora DSQL, RDS, RDS Data API, Neptune, DocumentDB, DMS, MemoryDB, ElastiCache, Timestream for InfluxDB |
+| **Messaging and transfer** | SES, Kinesis, MSK, Amazon MQ, Transfer Family, DataSync, IoT Core, Amazon Connect, Amazon AppIntegrations |
+| **Security and governance** | AWS Network Firewall, AWS RAM, Service Quotas, WAF v2, GuardDuty, Amazon Inspector, CloudTrail, CloudFront, Resource Groups Tagging API, Resource Explorer 2, CloudHSM v2, Organizations, AWS Account Management, IAM Access Analyzer, IAM Identity Center (SSO Admin, OIDC, Access Portal, SCIM), Identity Store, Amazon Macie, Amazon Detective, Security Hub, Amazon Verified Permissions, Control Catalog, Control Tower, Service Catalog, AWS Marketplace |
+| **Cost and billing** | AWS Budgets, Pricing, Cost Explorer, Cost and Usage Reports, BCM Pricing Calculator, BCM Data Exports |
+| **Resilience, backup, and config** | AWS FIS, AWS Backup, Amazon Data Lifecycle Manager, AWS Config, AppConfig, AppConfigData, CloudFormation, Cloud Control API |
+
+The code is **MIT-licensed**.
+
+<a class="nl-source" href="https://github.com/floci-io/floci" target="_blank" rel="noopener">View floci-io/floci on GitHub &rarr;</a> &middot; <a class="nl-source" href="https://floci.io/floci/" target="_blank" rel="noopener">Read the docs &rarr;</a>
 
 </div>
 </details>
