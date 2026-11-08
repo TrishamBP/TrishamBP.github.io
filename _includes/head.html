@@ -117,6 +117,10 @@
   {%- comment -%} Newsletter space palette on top of the paper skin. Same gate as the `nl-space` body class. {%- endcomment %}
   <link rel="stylesheet" href="{{ '/css/newsletter-space.css' | relative_url }}?v={{ site.time | date: '%s' }}" />
   {%- endif %}
+  {%- if page.url == '/newsletter/' or page.festive == 'diwali' %}
+  {%- comment -%} Diwali Edition: festive card on /newsletter/ + fireworks layer on the issue (assets/js/newsletter-diwali.js). {%- endcomment %}
+  <link rel="stylesheet" href="{{ '/css/newsletter-diwali.css' | relative_url }}?v={{ site.time | date: '%s' }}" />
+  {%- endif %}
   {%- endunless %}
   {%- comment -%}
     Signals listing and signal posts: warm grid-paper "field notes" dossier

@@ -1,0 +1,285 @@
+/* =============================================================================
+   THE WEEKLY TECH BREW: DIWALI EDITION
+   -----------------------------------------------------------------------------
+   Loaded on /newsletter/ (festive edition card) and on any issue with
+   `festive: diwali` (greeting card, diyas, fireworks canvas). Sits on top of
+   css/newsletter-space.css; same four-class scope so it outranks it.
+
+     gold     #FFC94A   (accents, text on black: 12.9:1)
+     saffron  #FF8A1F   (borders, flames)
+     marigold #FFB000
+     rose     #FF4F9A   (spark colour only, never text)
+
+   All motion is switched off under prefers-reduced-motion; the JS fireworks
+   layer checks the same query and does not start.
+   ========================================================================== */
+
+body.theme-typesafe.ts-paper.nl-space {
+  --dw-gold: #ffc94a;
+  --dw-saffron: #ff8a1f;
+  --dw-marigold: #ffb000;
+  --dw-rose: #ff4f9a;
+  --dw-ink: #1a0b00;
+}
+
+/* -----------------------------------------------------------------------------
+   Edition badge (card + masthead)
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.ts-paper.nl-space .nl-edition-badge {
+  display: inline-block;
+  justify-self: start;
+  margin: 0 0 0.7rem;
+  padding: 0.25rem 0.65rem;
+  font-family: var(--ts-term);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #020b20;
+  background: var(--nl-cyan);
+}
+
+body.theme-typesafe.ts-paper.nl-space .nl-edition-badge--diwali {
+  position: relative;
+  color: var(--dw-ink);
+  background: linear-gradient(100deg, var(--dw-saffron), var(--dw-gold) 45%, #fff3c4 50%, var(--dw-gold) 55%, var(--dw-saffron));
+  background-size: 250% 100%;
+  animation: dw-shimmer 3.2s linear infinite;
+  box-shadow: 0 0 18px rgba(255, 176, 0, 0.45);
+}
+
+body.theme-typesafe.ts-paper.nl-space .nl-edition-badge--diwali::before {
+  content: "\2726\00a0";
+}
+
+body.theme-typesafe.ts-paper.nl-space .post--newsletter .post-header .nl-edition-badge {
+  margin: 0.4rem auto 0.9rem;
+}
+
+@keyframes dw-shimmer {
+  from { background-position: 100% 0; }
+  to { background-position: -150% 0; }
+}
+
+/* -----------------------------------------------------------------------------
+   /newsletter/ festive card: saffron frame, gold glow, popping sparks
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.ts-paper.nl-space .newsletter-grid .newsletter-item--diwali {
+  overflow: hidden;
+  border-color: var(--dw-saffron);
+  box-shadow: 6px 6px 0 var(--dw-saffron), 0 0 28px rgba(255, 138, 31, 0.25);
+  background:
+    radial-gradient(120% 140% at 100% 0%, rgba(255, 176, 0, 0.18), transparent 55%),
+    rgba(26, 11, 0, 0.55);
+}
+
+body.theme-typesafe.ts-paper.nl-space .newsletter-grid .newsletter-item--diwali:hover {
+  border-color: var(--dw-gold);
+  box-shadow: 8px 8px 0 var(--dw-gold), 0 0 40px rgba(255, 201, 74, 0.4);
+  background:
+    radial-gradient(120% 140% at 100% 0%, rgba(255, 176, 0, 0.28), transparent 60%),
+    rgba(26, 11, 0, 0.75);
+}
+
+body.theme-typesafe.ts-paper.nl-space .newsletter-grid .newsletter-item--diwali::before,
+body.theme-typesafe.ts-paper.nl-space .newsletter-grid .newsletter-item--diwali:hover::before,
+body.theme-typesafe.ts-paper.nl-space .newsletter-grid .newsletter-item--diwali .article-title a:hover {
+  color: var(--dw-gold);
+  -webkit-text-stroke-color: var(--dw-gold);
+}
+
+/* Five little bursts in the card's right half. Each <i> is a dot whose
+   box-shadow ring expands and fades, staggered so they pop one after another. */
+.nl-card-sparks {
+  position: absolute;
+  inset: 0 0 0 45%;
+  pointer-events: none;
+}
+
+.nl-card-sparks i {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  color: var(--dw-gold, #ffc94a);
+  filter: drop-shadow(0 0 4px currentColor);
+  opacity: 0;
+  animation: dw-card-burst 3.6s ease-out infinite;
+}
+
+.nl-card-sparks i:nth-child(1) { top: 22%; left: 30%; animation-delay: 0s; }
+.nl-card-sparks i:nth-child(2) { top: 58%; left: 62%; animation-delay: 0.7s; color: var(--dw-rose, #ff4f9a); }
+.nl-card-sparks i:nth-child(3) { top: 30%; left: 82%; animation-delay: 1.4s; color: #7fe7ff; }
+.nl-card-sparks i:nth-child(4) { top: 72%; left: 38%; animation-delay: 2.1s; color: var(--dw-saffron, #ff8a1f); }
+.nl-card-sparks i:nth-child(5) { top: 14%; left: 58%; animation-delay: 2.8s; color: #fff3c4; }
+
+@keyframes dw-card-burst {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+    box-shadow: 0 0 0 0 currentColor;
+  }
+  8% {
+    opacity: 1;
+    background: currentColor;
+  }
+  22% { opacity: 1; }
+  40% {
+    opacity: 0;
+    transform: scale(1);
+    background: transparent;
+    box-shadow:
+      0 -36px 0 -1px currentColor, 0 36px 0 -1px currentColor,
+      -36px 0 0 -1px currentColor, 36px 0 0 -1px currentColor,
+      25px 25px 0 -1px currentColor, -25px 25px 0 -1px currentColor,
+      25px -25px 0 -1px currentColor, -25px -25px 0 -1px currentColor;
+  }
+  100% { opacity: 0; }
+}
+
+/* -----------------------------------------------------------------------------
+   Issue greeting card
+   -------------------------------------------------------------------------- */
+
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-diwali-greeting {
+  position: relative;
+  margin: 0 0 2.6rem;
+  padding: 2rem 1.6rem 1.4rem;
+  text-align: center;
+  border: 2px solid var(--dw-saffron);
+  box-shadow: 6px 6px 0 var(--dw-saffron), 0 0 60px rgba(255, 138, 31, 0.22);
+  background:
+    radial-gradient(90% 120% at 50% 110%, rgba(255, 138, 31, 0.32), transparent 60%),
+    radial-gradient(60% 80% at 50% -20%, rgba(255, 201, 74, 0.16), transparent 70%),
+    rgba(26, 11, 0, 0.72);
+  cursor: crosshair;
+  isolation: isolate;
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-diwali-greeting p {
+  color: #fbe9cf;
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content .nl-diwali-greeting strong {
+  color: var(--dw-gold);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content p.nl-diwali-script {
+  margin: 0;
+  font-size: clamp(1.1rem, 3vw, 1.45rem);
+  letter-spacing: 0.06em;
+  color: var(--dw-gold);
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content p.nl-diwali-title {
+  margin: 0.2rem 0 0.4rem;
+  font-family: var(--ts-display, inherit);
+  font-size: clamp(2.4rem, 8vw, 4.2rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: transparent;
+  background: linear-gradient(100deg, var(--dw-saffron), var(--dw-gold) 40%, #fff7da 50%, var(--dw-gold) 60%, var(--dw-saffron));
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: dw-shimmer 4s linear infinite;
+  filter: drop-shadow(0 0 14px rgba(255, 176, 0, 0.45));
+}
+
+body.theme-typesafe.ts-paper.nl-space .post-content p.nl-diwali-hint {
+  margin: 1.2rem 0 0;
+  font-family: var(--ts-term);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #c9a873;
+}
+
+/* Diyas: clay bowl (half ellipse) + flickering flame. */
+.nl-diwali-diyas {
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.9rem, 4vw, 2rem);
+  margin: 1.2rem 0 1.4rem;
+}
+
+.nl-diya {
+  position: relative;
+  width: 38px;
+  height: 16px;
+  margin-top: 26px;
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+  background: linear-gradient(#e0782a, #8a3a12);
+  box-shadow: 0 6px 18px rgba(255, 138, 31, 0.35);
+}
+
+.nl-diya::before {
+  /* flame */
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  width: 10px;
+  height: 20px;
+  margin-left: -5px;
+  border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+  background: radial-gradient(circle at 50% 75%, #fffbe6 0 22%, #ffd34d 40%, #ff8a1f 75%, transparent 76%);
+  box-shadow: 0 0 14px 4px rgba(255, 190, 60, 0.55), 0 0 36px 10px rgba(255, 138, 31, 0.25);
+  transform-origin: 50% 100%;
+  animation: dw-flicker 1.6s ease-in-out infinite;
+}
+
+.nl-diya::after {
+  /* rim highlight */
+  content: "";
+  position: absolute;
+  inset: 0 2px auto;
+  height: 3px;
+  border-radius: 50%;
+  background: #f3a35a;
+}
+
+.nl-diya:nth-child(2)::before { animation-delay: -0.4s; animation-duration: 1.3s; }
+.nl-diya:nth-child(3)::before { animation-delay: -0.9s; animation-duration: 1.8s; }
+.nl-diya:nth-child(4)::before { animation-delay: -0.2s; animation-duration: 1.45s; }
+.nl-diya:nth-child(5)::before { animation-delay: -1.1s; animation-duration: 1.7s; }
+
+@keyframes dw-flicker {
+  0%, 100% { transform: scale(1, 1) rotate(-2deg); opacity: 1; }
+  25% { transform: scale(0.92, 1.08) rotate(2deg); opacity: 0.92; }
+  50% { transform: scale(1.05, 0.94) rotate(-1deg); opacity: 1; }
+  75% { transform: scale(0.96, 1.1) rotate(3deg); opacity: 0.88; }
+}
+
+/* -----------------------------------------------------------------------------
+   Fireworks canvas: a fixed full-viewport layer above the page, click-through.
+   -------------------------------------------------------------------------- */
+
+.nl-fireworks {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 40;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nl-fireworks,
+  .nl-card-sparks,
+  body.theme-typesafe.ts-paper.nl-space .post-content p.nl-diwali-hint {
+    display: none;
+  }
+
+  body.theme-typesafe.ts-paper.nl-space .nl-edition-badge--diwali,
+  body.theme-typesafe.ts-paper.nl-space .post-content p.nl-diwali-title,
+  .nl-diya::before {
+    animation: none;
+  }
+
+  body.theme-typesafe.ts-paper.nl-space .post-content .nl-diwali-greeting {
+    cursor: auto;
+  }
+}

@@ -13,6 +13,7 @@ layout: default
   {%- endif %}
   <header class="post-header">
     {% if page.collection == 'newsletters' %}<img class="nl-masthead-logo" src="{{ '/assets/newsletter/newsletter-logo.png' | relative_url }}" alt="The Weekly Tech Brew newsletter logo: three coffee beans inside a Tech Brew badge" width="120" height="120">{% endif %}
+    {% if page.collection == 'newsletters' and page.edition %}<p class="nl-edition-badge{% if page.festive %} nl-edition-badge--{{ page.festive }}{% endif %}">{{ page.edition }}</p>{% endif %}
     <h1>{{ page.title }}{% if page.subtitle %}<span class="post-subtitle">{{ page.subtitle }}</span>{% endif %}</h1>
     <p class="meta">{% if page.collection == 'newsletters' %}{% include newsletter-date.html date=page.date %}{% else %}{{ page.date | date: "%B %Y" }}{% endif %}{% if page.author and page.subtitle == nil %} • {{ page.author }}{% endif %}{% if page.meta %} • {{ page.meta }}{% endif %}</p>
   </header>
@@ -24,6 +25,10 @@ layout: default
   {% if page.collection == 'newsletters' %}
   {% include newsletter-subscribe.html id="issue" %}
   <script src="{{ '/assets/js/newsletter-modal.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+  {% if page.festive == 'diwali' %}
+  <canvas class="nl-fireworks" id="nl-fireworks" aria-hidden="true"></canvas>
+  <script src="{{ '/assets/js/newsletter-diwali.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+  {% endif %}
   {% endif %}
   <script>
     (function () {

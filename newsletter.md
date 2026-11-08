@@ -19,7 +19,13 @@ permalink: /newsletter/
 
   <div id="newsletter-list" class="articles-grid newsletter-grid">
     {% for edition in editions %}
-      <article class="article-card newsletter-item">
+      <article class="article-card newsletter-item{% if edition.festive %} newsletter-item--{{ edition.festive }}{% endif %}">
+        {%- if edition.festive == 'diwali' %}
+        <span class="nl-card-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        {%- endif %}
+        {%- if edition.edition %}
+        <p class="nl-edition-badge{% if edition.festive %} nl-edition-badge--{{ edition.festive }}{% endif %}">{{ edition.edition }}</p>
+        {%- endif %}
         <h2 class="article-title">
           <a href="{{ edition.url | relative_url }}">{{ edition.title }}
             {%- if edition.subtitle %}<span class="article-subtitle">{{ edition.subtitle }}</span>{% endif -%}
