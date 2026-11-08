@@ -10,7 +10,7 @@ author: Trisham Patil
 email_subject: "The Weekly Tech Brew #5 Diwali Edition: US Midterms 2026, Democrats Take Congress & More"
 seo_title: "US Midterm Elections 2026 Results & What They Mean | The Weekly Tech Brew #5 Diwali Edition"
 description: "The Weekly Tech Brew Diwali Edition: US midterm elections 2026 results, Democrats take Congress, what it means for Trump and Iran, plus AI and tech news."
-keywords: "US midterm elections 2026, midterm election results, Democrats win Congress, Senate results 2026, House results 2026, War Powers Resolution, Santiago Peña impeachment, Ueno Bank collapse, Thinking Machines Lab, GPT-6 Cyber, Genie 4, BMW AWS Graviton migration, Weekly Tech Brew Diwali Edition, AI newsletter"
+keywords: "US midterm elections 2026, midterm election results, Democrats win Congress, Senate results 2026, House results 2026, War Powers Resolution, Santiago Peña impeachment, Ueno Bank collapse, Thinking Machines Lab, GPT-6 Cyber, Genie 4, BMW AWS Graviton migration, always-on AI agents, OpenAI Dots vs Claude Duet, Weekly Tech Brew Diwali Edition, AI newsletter"
 ---
 
 <div class="nl-diwali-greeting" markdown="1">
@@ -325,6 +325,8 @@ Tencent's newsroom and TechRepublic have more on its recursive self-improvement 
 
 Access is starting as a **research preview** for trusted testers and selected partners, so most of us will be watching the demos for now rather than playing with it.
 
+<a class="nl-source" href="https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/" target="_blank" rel="noopener">Read more on Google DeepMind &rarr;</a>
+
 ## Engineering at Scale
 
 <p class="nl-section-kicker">Case Studies &middot; Platform Engineering &middot; Dev Tools &middot; Best Practices</p>
@@ -364,28 +366,30 @@ Changing the processor architecture under a live connected-vehicle fleet means t
 
 The hard part of a processor migration is not the new hardware. It is making the new path **safe to try**. Once build, test and hosting all supported both architectures, adoption could grow team by team instead of asking every service to jump at once.
 
+<a class="nl-source" href="https://aws.amazon.com/blogs/architecture/how-bmw-group-accelerated-connected-vehicle-workloads-on-aws-graviton/" target="_blank" rel="noopener">Read BMW's case study on the AWS Architecture Blog &rarr;</a>
+
 </div>
 </details>
 
 ### Reads Worth Your Coffee
 
-- **Inside DigitalOcean Simulations.** Instead of grading a single answer, DigitalOcean's Simulations tests a whole conversation: a simulated user reacts turn by turn, the agent runs with its real tools, and the full tool-call trajectory gets judged. The walkthrough compares a baseline against a fix, which is much closer to how agents fail in real work.
-- **Website migration costs are heading to zero.** Dries Buytaert predicts AI could push the technical cost of migrating a website close to zero within three years. If switching gets that easy, vendors will have to earn renewals through product value and services, and platforms that agents can trial and verify may win.
-- **Custom voices with Qwen3-TTS.** Armin Ronacher compares three ways to get a voice out of Qwen3-TTS: cloning a reference voice, using preset speakers, and designing a voice from a text description. The catch he found: the Base model can clone a voice but lacks the instruction controls, so your model choice limits how much you can direct the narrator.
-- **"We should be more ambitious with the software we build."** Dan Luu uses pgrust as his example: deep testing on the project has already turned up real Postgres bugs in indexing, JSONPath, cryptography and memory safety. Even if pgrust never takes off, that work leaves lasting improvements behind.
-- **Running local development services.** A lightweight NixOS VM lets your dev shell start databases, queues and other backing services from existing Nixpkgs modules managed by systemd. Teammates get the same reproducible stack with one command instead of installing everything by hand.
-- **Fix the gap, not just the bug.** When production breaks, patching the failing line is only step one. Benjamin Cane argues you should find the missing guardrail, observability or recovery path that let the bug through, and spread ownership through on-call practices instead of relying on one hero.
+- **Inside DigitalOcean Simulations.** Instead of grading a single answer, DigitalOcean's Simulations tests a whole conversation: a simulated user reacts turn by turn, the agent runs with its real tools, and the full tool-call trajectory gets judged. The walkthrough compares a baseline against a fix, which is much closer to how agents fail in real work. <a href="https://www.digitalocean.com/blog/inside-digitalocean-simulations" target="_blank" rel="noopener">Read more &rarr;</a>
+- **Website migration costs are heading to zero.** Dries Buytaert predicts AI could push the technical cost of migrating a website close to zero within three years. If switching gets that easy, vendors will have to earn renewals through product value and services, and platforms that agents can trial and verify may win. <a href="https://dri.es/website-migration-costs-are-going-to-zero" target="_blank" rel="noopener">Read more &rarr;</a>
+- **Custom voices with Qwen3-TTS.** Armin Ronacher compares three ways to get a voice out of Qwen3-TTS: cloning a reference voice, using preset speakers, and designing a voice from a text description. The catch he found: the Base model can clone a voice but lacks the instruction controls, so your model choice limits how much you can direct the narrator. <a href="https://lucumr.pocoo.org/2026/10/29/qwen3-custom-voices/" target="_blank" rel="noopener">Read more &rarr;</a>
+- **"We should be more ambitious with the software we build."** Dan Luu uses pgrust as his example: deep testing on the project has already turned up real Postgres bugs in indexing, JSONPath, cryptography and memory safety. Even if pgrust never takes off, that work leaves lasting improvements behind. <a href="https://danluu.com/ambitious/" target="_blank" rel="noopener">Read more &rarr;</a>
+- **Running local development services.** A lightweight NixOS VM lets your dev shell start databases, queues and other backing services from existing Nixpkgs modules managed by systemd. Teammates get the same reproducible stack with one command instead of installing everything by hand. <a href="https://www.tweag.io/blog/2026-10-29-running-local-dev-services-with-nix/" target="_blank" rel="noopener">Read more &rarr;</a>
+- **Fix the gap, not just the bug.** When production breaks, patching the failing line is only step one. Benjamin Cane argues you should find the missing guardrail, observability or recovery path that let the bug through, and spread ownership through on-call practices instead of relying on one hero. <a href="https://bencane.com/posts/2026-10-28-production-bugs-fix-the-gap/" target="_blank" rel="noopener">Read more &rarr;</a>
 
 **Also worth bookmarking:**
 
-- *Why don't more developers "use the platform"?*
-- *The Agent Said It Was Done. The Database Disagreed.*
-- *Anti-Patterns in Software Blogging*
-- *Ephemeral testing environments: sometimes you just need to kill your darlings*
-- *&lt;calc-input&gt;: a custom input element that accepts mathematical formulas*
-- *How Claude Code Works in Large Codebases: Best Practices and Where to Start*
-- *Self-Improving Software Is Inevitable*
-- *Cross-Request KV Cache Exposure in Workers AI*
+- <a href="https://nolanlawson.com/2026/10/03/why-dont-more-developers-use-the-platform/" target="_blank" rel="noopener">Why don't more developers "use the platform"?</a> &middot; Nolan Lawson
+- <a href="https://huggingface.co/blog/microsoft/thinkingbox" target="_blank" rel="noopener">The Agent Said It Was Done. The Database Disagreed.</a> &middot; Microsoft on Hugging Face
+- <a href="https://refactoringenglish.com/blog/anti-patterns-software-blogging/" target="_blank" rel="noopener">Anti-Patterns in Software Blogging</a> &middot; Refactoring English
+- <a href="https://www.thoughtworks.com/insights/blog/testing/ephemeral-testing-environments-kill-darlings" target="_blank" rel="noopener">Ephemeral testing environments: sometimes you just need to kill your darlings</a> &middot; Thoughtworks
+- <a href="https://www.bram.us/2026/10/08/calc-input-a-custom-input-element-that-accepts-mathematical-formulas/" target="_blank" rel="noopener">&lt;calc-input&gt;: a custom input element that accepts mathematical formulas</a> &middot; Bram.us
+- <a href="https://claude.com/resources/articles/how-claude-code-works-in-large-codebases-best-practices-and-where-to-start" target="_blank" rel="noopener">How Claude Code Works in Large Codebases: Best Practices and Where to Start</a> &middot; Claude
+- <a href="https://boristane.com/blog/self-improving-software-is-inevitable/" target="_blank" rel="noopener">Self-Improving Software Is Inevitable</a> &middot; Boris Tane
+- <a href="https://blog.cloudflare.com/kv-cache-exposure-remediation" target="_blank" rel="noopener">Cross-Request KV Cache Exposure in Workers AI</a> &middot; Cloudflare
 
 ### Engineer's Tip of the Week: Trust the State, Not the Status Message
 
@@ -418,15 +422,121 @@ class OrderState(Enum):
 
 One field, four legal states, and no combination your code has to guess about.
 
+## Battle of the Always-On Agents
+
+<p class="nl-section-kicker">AI Agents &middot; OpenAI &middot; Meta &middot; Anthropic &middot; xAI</p>
+
+### Dots vs Muse vs Duet vs Grok Bot: Which Always-On AI Agent Should You Use?
+
+![Always-on AI agents compared: OpenAI Dots, Meta Muse, Anthropic Claude Duet and xAI Grok Bot side by side with what each is best for, entry price and who can get access](/assets/newsletter/weekly-tech-brew-2026-11-09/always-on-ai-agents-dots-muse-duet-grok-bot-comparison.png){: .nl-hero}
+
+In roughly ten weeks, the four biggest names in AI shipped the same product. **OpenAI** called it **Dots**, **Meta** called it **Muse**, **Anthropic** called it **Claude Duet**, and **xAI** called it **Grok Bot**.
+
+The pitch is identical: an **always-on AI agent** that keeps working after you close the app. You give it one instruction, it spins up its own cloud computer, and it works through the task while your phone stays in your pocket.
+
+The fine print is where they split: different prices, different waitlists, different rules on what each agent can touch, and a few catches the launch posts leave out.
+
+#### The 30-Second Cheat Sheet
+
+| Agent | Best for | Entry price | Who can get in |
+|---|---|---|---|
+| **Dots** (OpenAI) | Work inside ChatGPT, Slack and Teams | From $100/mo (ChatGPT Pro or Business Premium) | Pro users in the EEA, UK and Switzerland left out at launch |
+| **Muse** (Meta) | Everyday errands | Free tier; paid from $20/mo | US and Canada |
+| **Duet** (Anthropic) | Asking before it acts | No extra charge in preview; needs Claude Pro or Max | US only, waitlist |
+| **Grok Bot** (xAI) | Developers | With Cursor from $20/mo or SuperGrok from $30/mo | Widest device support; cloud computer in the US |
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+![Always-on AI agents launch timeline 2026: Grok Bot beta on 11 August, Meta Muse on 8 September, OpenAI Dots at DevDay on 29 September and Claude Duet research preview on 21 October](/assets/newsletter/weekly-tech-brew-2026-11-09/always-on-ai-agents-launch-timeline-2026.png)
+
+*Four launches in ten weeks: every major lab now has an agent that works while you're away.*
+
+#### 1. What an Always-On Agent Actually Is
+
+A chatbot answers while you watch. An always-on agent **keeps going after you leave**.
+
+That changes what the labs are competing on. It is no longer who answers a question best, but **who you trust to act for you when you're not looking**.
+
+Under the hood, all four work the same way: you give an instruction, the agent runs on **a cloud computer it owns** (not your device), and it reports back or asks for approval when it reaches something sensitive. What really separates them is **what they're allowed to touch, what they cost, and whether you can get in yet**.
+
+#### 2. OpenAI Dots: Built for Work
+
+- **Launched:** at DevDay on 29 September 2026. It is the most work-focused of the four.
+- **How it works:** it runs on **GPT-6 Astra** from its own Linux machine and Chrome browser in OpenAI's cloud. It connects to **4,000+ apps** through ChatGPT plugins, hands coding tasks to **Codex**, and can even make voice calls for you.
+- **Where you use it:** ChatGPT, Slack or Teams.
+- **What it costs:** it is not part of ChatGPT Plus. Access starts at **$100 a month** through ChatGPT Pro or an annually billed Business Premium seat. Pro users in the EEA, UK and Switzerland were left out at launch.
+
+**Verdict:** if your team already lives in ChatGPT, Slack and Teams, Dots is the most natively plugged-in option. If you don't already pay for Pro, it's the hardest to justify.
+
+#### 3. Meta Muse: The Free One for Errands
+
+- **Launched:** 8 September 2026 for US adults, about three weeks before Dots, and later in Canada.
+- **How it works:** it runs on Meta's own **Muse Spark** model and is built for your personal life, not your job: shopping, bookings, email and your calendar.
+- **What it costs:** the only one of the four with a **real free tier**. Paid plans are **Power at $20 a month** and **Maximum at $100 a month**.
+- **Where you use it:** its app, the website or **WhatsApp**, so you can start without installing anything new.
+- **Shopping limits:** it pays with single-use Link cards and works on Shopify stores, but **Amazon has blocked it** from buying on Amazon.com.
+- **Privacy catch:** Meta **trains on your data by default**. There is an opt-out, and it's worth switching on before you hand Muse your calendar and inbox.
+
+**Verdict:** if you want an agent for errands rather than office software, Muse is by far the cheapest way in.
+
+#### 4. Claude Duet: The Cautious One
+
+- **Launched:** 21 October 2026 as a research preview, about three weeks after Dots.
+- **How it works:** it runs on **Claude Opus 5.5** (there's no model picker) from its own cloud computer, with its own browser for sites that don't have a connector.
+- **The workflow:** a **morning brief** built from your email and calendar, a **Tasks** tab for work in progress, a **Make** tab for finished files, and shared memory across a thread.
+- **Integrations:** **6,000+ connectors**, including Gmail, Google Calendar, Drive, Slack, QuickBooks, HubSpot, Docusign and Calendly. Microsoft 365 isn't supported yet.
+- **Getting in:** you need a Claude Pro or Max plan, a US account and an iPhone or Android phone, then you join a waitlist tied to your Claude email.
+- **What it costs:** no extra charge during the preview, but background work **counts against your normal usage limits**. Admitted users get one full limit reset, usable until 30 November 2026.
+- **Guardrails:** Duet asks before it **sends a message, pays, signs a document or deletes anything**. Some actions stay off-limits even with your approval, like trading securities or moving money between accounts.
+
+**Verdict:** the safest agent of the four, and for the same reason the least able to finish an errand like booking a flight without you in the loop.
+
+<a class="nl-source" href="https://claude.com/resources/articles/claude-duet" target="_blank" rel="noopener">Read Anthropic's Claude Duet announcement &rarr;</a>
+
+#### 5. Grok Bot: The Developer's Pick
+
+- **Launched:** in beta since 11 August 2026, the longest of the four.
+- **How it works:** it's built by **Cursor** on an xAI model that **picks itself per task**, so you don't choose. You get one US cloud computer, shared across roughly **50 bots**, each signed in to its own tools and accounts.
+- **What it does:** coding, computer-use tasks, CRM updates, invoice processing, and up to **six bots working together** in one Slack group chat.
+- **Where you use it:** macOS, Windows, Linux and mobile, the widest device reach of the four.
+- **What it costs:** no separate price. It comes with **Cursor plans from $20 a month** or **SuperGrok from $30**, with a 7-day trial. Usage is billed as a **weekly allowance plus token overage**, and that allowance goes fast: one heavy automation can burn a week's worth in a day.
+
+**Verdict:** if your work is already code, this is the cheapest paid way in. It's also the one where a single badly written routine can cost you the most.
+
+#### 6. The Catches Nobody Puts in the Launch Post
+
+- **You can't pick the model.** Dots, Muse and Duet each run one fixed model, and Grok Bot chooses one per task without telling you which. If you care what's reasoning over your calendar or your code, you get no say.
+- **The limits are tighter than the marketing.** Grok Bot's weekly allowance can disappear in one heavy routine. Duet's background work eats the same Claude quota you use for everything else. Dots usage sat outside plan allowances for its first month, and nobody has said what happens after that.
+- **Access is narrower than it sounds.** Muse is US and Canada only. Duet is US only, behind a waitlist. Dots skipped Pro users in the EEA, UK and Switzerland at launch. Grok Bot runs on more devices, but its cloud computer still lives in the US.
+- **Only one talks about prompt injection.** Anthropic is the only company that names it as a risk in its own docs. That doesn't make the other three safer. It just means three of the four haven't addressed it publicly yet.
+
+#### 7. So Which One Should You Use?
+
+- **Your team lives in ChatGPT, Slack and Teams?** Go with **Dots**. The $100 pays for that integration; it isn't a markup.
+- **Want errands handled for free?** Start with **Muse**.
+- **Your work is already code?** Pick **Grok Bot**, and keep an eye on that weekly allowance.
+- **Want the one that asks before it acts?** Choose **Duet**, if you can get off the waitlist.
+
+#### 8. The Bottom Line
+
+Four labs, one idea, four very different deals. Muse is the cheapest way in. Grok Bot is the cheapest paid option for builders. Dots is the most expensive and the best fit for teams already inside ChatGPT. Duet is the newest and the most careful. **None of them let you choose the model doing the work.**
+
+The agent that wins this race probably won't be the smartest one. It will be the one **still standing in six months with the same price and the same access**.
+
+</div>
+</details>
+
 ## Tech Signals
 
 <p class="nl-section-kicker">AI Industry &middot; Safety &middot; Developer Platforms &middot; Quick Hits</p>
 
-- **OpenAI paused frontier training after a model reached the internet through DNS.** A DNS resolver misconfiguration gave an internal model limited live-internet access during training. OpenAI says it contained the incident, paused training and evaluation, and used the pause to harden its monitoring and automatic run-stopping.
-- **Anthropic is testing Claude in drug discovery with six partners.** Anthropic is working with six organisations on drug-development research and has started discovery work of its own, covering everything from target selection through molecule design to clinical trials.
-- **GPT-6.1 Terra matches GPT-6 Astra at a tenth of the price.** A follow-up to last week's Model Drop: OpenAI says Terra performs on par with GPT-6 Astra on Agents' Last Exam at one-tenth the token price. Those comparisons are OpenAI's own, not independent benchmarks.
-- **October was the inflection point for vibe game development.** Simon Willison argues coding agents got good at building games last month, especially 3D modelling, music generation and game design, and his examples are playable projects, not just screenshots.
-- **Discourse is adding Markdown endpoints.** Agents and search systems will be able to read community posts as clean Markdown, without stripping HTML layout and scripts first.
+- **OpenAI paused frontier training after a model reached the internet through DNS.** A DNS resolver misconfiguration gave an internal model limited live-internet access during training. OpenAI says it contained the incident, paused training and evaluation, and used the pause to harden its monitoring and automatic run-stopping. <a href="https://openai.com/index/securing-our-frontier-model-training-environment" target="_blank" rel="noopener">Read more &rarr;</a>
+- **Anthropic is testing Claude in drug discovery with six partners.** Anthropic is working with six organisations on drug-development research and has started discovery work of its own, covering everything from target selection through molecule design to clinical trials. <a href="https://www.anthropic.com/research/early-progress-drug-development" target="_blank" rel="noopener">Read more &rarr;</a>
+- **GPT-6.1 Terra matches GPT-6 Astra at a tenth of the price.** A follow-up to last week's Model Drop: OpenAI says Terra performs on par with GPT-6 Astra on Agents' Last Exam at one-tenth the token price. Those comparisons are OpenAI's own, not independent benchmarks. <a href="https://openai.com/index/introducing-gpt-6-1-terra" target="_blank" rel="noopener">Read more &rarr;</a>
+- **October was the inflection point for vibe game development.** Simon Willison argues coding agents got good at building games last month, especially 3D modelling, music generation and game design, and his examples are playable projects, not just screenshots. <a href="https://simonwillison.net/2026/Oct/28/vibe-game-development/" target="_blank" rel="noopener">Read more &rarr;</a>
+- **Discourse is adding Markdown endpoints.** Agents and search systems will be able to read community posts as clean Markdown, without stripping HTML layout and scripts first. <a href="https://blog.discourse.org/2026/10/markdown-endpoints-your-community-in-a-format-that-ai-agents-can-read/" target="_blank" rel="noopener">Read more &rarr;</a>
 
 {% comment %}
   Sections go below, in the usual order:
