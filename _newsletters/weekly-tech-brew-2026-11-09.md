@@ -10,7 +10,7 @@ author: Trisham Patil
 email_subject: "The Weekly Tech Brew #5 Diwali Edition: US Midterms 2026, Democrats Take Congress & More"
 seo_title: "US Midterm Elections 2026 Results & What They Mean | The Weekly Tech Brew #5 Diwali Edition"
 description: "The Weekly Tech Brew Diwali Edition: US midterm elections 2026 results, Democrats take Congress, what it means for Trump and Iran, plus AI and tech news."
-keywords: "US midterm elections 2026, midterm election results, Democrats win Congress, Senate results 2026, House results 2026, War Powers Resolution, Santiago Peña impeachment, Ueno Bank collapse, Thinking Machines Lab, GPT-6 Cyber, Genie 4, BMW AWS Graviton migration, always-on AI agents, OpenAI Dots vs Claude Duet, kotaemon RAG UI, Floci local AWS emulator, Understand Anything codebase onboarding, Weekly Tech Brew Diwali Edition, AI newsletter"
+keywords: "US midterm elections 2026, midterm election results, Democrats win Congress, Senate results 2026, House results 2026, War Powers Resolution, Santiago Peña impeachment, Ueno Bank collapse, Thinking Machines Lab, GPT-6 Cyber, Genie 4, BMW AWS Graviton migration, always-on AI agents, OpenAI Dots vs Claude Duet, kotaemon RAG UI, Floci local AWS emulator, Understand Anything codebase onboarding, FastAFD, ARCBench, SwarmEvolve, AI research papers, Weekly Tech Brew Diwali Edition, AI newsletter"
 ---
 
 <div class="nl-diwali-greeting" markdown="1">
@@ -693,9 +693,113 @@ A **multi-agent pipeline** scans your project and extracts every file, function,
 - **October was the inflection point for vibe game development.** Simon Willison argues coding agents got good at building games last month, especially 3D modelling, music generation and game design, and his examples are playable projects, not just screenshots. <a href="https://simonwillison.net/2026/Oct/28/vibe-game-development/" target="_blank" rel="noopener">Read more &rarr;</a>
 - **Discourse is adding Markdown endpoints.** Agents and search systems will be able to read community posts as clean Markdown, without stripping HTML layout and scripts first. <a href="https://blog.discourse.org/2026/10/markdown-endpoints-your-community-in-a-format-that-ai-agents-can-read/" target="_blank" rel="noopener">Read more &rarr;</a>
 
+## Beyond The Abstract
+
+<p class="nl-section-kicker">Research Papers &middot; AI &middot; Systems &middot; Robotics &middot; Science</p>
+
+**Five papers, fresh ideas, and the research shaping tomorrow's technology.**
+
+This week's picks were all released in the first week of November and span **LLM inference systems, agent memory and safety, multi-agent reasoning, agentic RL and Physical AI**. All results below are as reported by the authors.
+
+| Paper | arXiv | Domain | Core mechanism | Key result |
+|---|---|---|---|---|
+| **FastAFD** | 2611.07149 | LLM inference systems | Attention–FFN disaggregation on NVLink | **1.35&times;–1.45&times;** decode throughput |
+| **ARCBench** | 2611.03223 | Agent memory and safety | Rule-compliance audit after context compaction | **Over 2&times;** violation rate after compaction |
+| **SwarmEvolve** | 2611.08483 | Multi-agent reasoning | Evolutionary swarms that talk in latent space | **8B model** beats frontier-scale AlphaEvolve results |
+| **AttnSR** | 2611.07932 | Agentic RL | Policy attention as a step-reward prior | **29.9% fewer** environment interactions |
+| **Seeing Beyond the Next Step** | 2611.07730 | Physical AI and robotics | World-model preference distillation | Single-pass policy with rollout foresight |
+
+### 1. FastAFD: When Does Attention-FFN Disaggregation Pay on Rack-Scale NVLink?
+
+*LLM inference systems · arXiv 2611.07149 · Yichao Fu et al., Hao AI Lab*
+
+**The problem:** splitting prefill and decode across machines is now standard in production LLM serving. Going one step further and splitting the **Attention and FFN layers** of large Mixture-of-Experts (MoE) models onto different GPUs often stalls on communication. FastAFD maps exactly **when Attention–FFN Disaggregation (AFD) beats colocated serving** on rack-scale hardware like the **NVIDIA GB200 NVL72**.
+
+- **N2M/M2N MoE megakernel:** maps the attention-to-MLP boundary onto an asymmetric, DeepEP-style dispatch-and-combine path. The whole receive, group, expert-compute, combine and return loop runs inside one kernel on the MLP ranks, stripping out kernel-launch and synchronization overhead.
+- **Micro-batch ping-pong overlap:** decode batches are split into micro-batches so cross-rank dispatch, expert execution and attention overlap across layers, instead of everything waiting at each disaggregation boundary.
+- **Off-path cluster coordination:** micro-batch ordering, buffer slots and peer metadata are published **one step ahead of execution**, so coordination never sits on the critical path.
+
+**Reported results:** **1.35&times; to 1.45&times; higher per-GPU decode throughput** on **Qwen3-235B-A22B-FP8** and **MiniMax-M2.5**.
+
+**Why read it:** it doesn't just claim AFD is faster. It tells you **which operating regimes make it pay**, which is the question you actually face when you plan a serving cluster.
+
+<a class="nl-source" href="https://arxiv.org/abs/2611.07149" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+### 2. ARCBench: Do Agents Still Follow the Rules After Context Compaction?
+
+*Agent memory and safety · arXiv 2611.03223 · Yiwei Zha, Qingyu Meng, Herbert Bos, Min Chen*
+
+**The problem:** every long-running agent eventually hits its context limit and has to **compact or summarize its history** to keep going. ARCBench tests whether the standing system and organizational rules survive that compaction, across **disclosure, access, action and control** boundaries.
+
+- **Retention is not compliance:** the authors separate two questions earlier benchmarks blurred together. *Did the rule text survive compaction?* And *did the agent actually obey it while executing tools?*
+- **Rules get structurally weakened:** even when the compactor explicitly keeps the rule, compacted agents break operational constraints **more than twice as often** as full-context runs. Summaries tend to keep **what a rule is about** while quietly flattening its **scope, exceptions or negations**: "never share X except with Y" can come out as "be careful with X".
+
+**Companion finding: The Memory Trap** (<a href="https://arxiv.org/abs/2611.07554" target="_blank" rel="noopener">arXiv 2611.07554</a>, Kaiqu Liang and Jaime Fernández Fisac). Released the same week, it shows that **persistent cross-session memory** overgeneralizes procedures learned on harmless tasks into **unsafe behaviour on later tasks**, unless each memory entry is strictly scoped.
+
+**Why read it:** if you run agents in production, this is a direct warning that your **compaction step is a safety-critical component**, not just a token-saving trick.
+
+<a class="nl-source" href="https://arxiv.org/abs/2611.03223" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+### 3. SwarmEvolve: Latent Agent Swarms for Evolutionary Discovery and Optimization
+
+*Multi-agent reasoning · arXiv 2611.08483 · Qile Jiang, George Em Karniadakis*
+
+**The problem:** multi-agent evolutionary frameworks such as **AlphaEvolve** make agents decode their thoughts into natural-language tokens, pass text to each other, and re-encode it. That costs a huge amount of tokens and latency on every iteration.
+
+- **Swarms that talk in latent space:** SwarmEvolve pairs evolutionary program search with agent swarms that share and refine candidate solutions **directly in continuous latent space**, with no text decoding in between.
+- **Small-model efficiency:** removing the autoregressive decoding step between iterations lets a compact **Qwen3-8B** backbone **beat solutions previously found by AlphaEvolve with frontier-scale LLMs** on several scientific and mathematical optimization benchmarks.
+
+**Why read it:** it's a strong argument that, for agent-to-agent communication, **text may be the bottleneck rather than the model size**.
+
+<a class="nl-source" href="https://arxiv.org/abs/2611.08483" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+### 4. AttnSR: Attention Step Reward for Long-Horizon Agentic RL
+
+*Agentic RL · arXiv 2611.07932 · Mengsong Wu et al.*
+
+**The problem:** training LLM agents with RL over long, multi-turn tool and environment trajectories suffers from badly degraded **credit assignment** when the only reward arrives at the end of the episode. Which of the 40 steps actually mattered?
+
+- **The policy's own attention as a credit prior:** instead of training a separate, heavyweight **process reward model (PRM)** or relying on noisy **LLM-as-a-judge** step critiques, AttnSR reads the policy model's **internal attention weights across trajectory steps** and uses them as a structural prior for handing out step-level reward.
+- **Sample efficiency:** on complex multi-step benchmarks like **ScienceWorld**, it improves task success at **every training checkpoint** while cutting the environment interactions needed by **29.9%**.
+
+**Why read it:** step-level rewards usually mean training another model. AttnSR gets a useful signal **for free from the model you're already training**.
+
+<a class="nl-source" href="https://arxiv.org/abs/2611.07932" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+### 5. Seeing Beyond the Next Step: World-Model-Guided Human-Like Navigation in Multi-Agent Scenes
+
+*Physical AI and robotics · arXiv 2611.07730 · Seong-Eun Hong et al.*
+
+**The problem:** a robot moving through a dense, shifting crowd faces a sharp latency trade-off. **Reactive policies** are fast but short-sighted: they cut into pedestrian lanes or stall at bottlenecks. **Online world-model rollouts** give foresight, but are too heavy to run in real time on edge hardware.
+
+- **World models as training-time oracles:** the authors pair a discrete visual action prior with **two task-aligned world models**, one for **local social dynamics** and one that **predicts future scene semantics**. These run **only during training**, to score candidate action rollouts.
+- **Single-pass deployment through distillation:** with **group-relative preference distillation**, the long-horizon foresight of both world models is baked into the navigation policy itself. At deployment the world models are **dropped entirely**, leaving a lightweight policy that runs in a **single forward pass** and still moves proactively and politely through crowds.
+
+**Why read it:** "use the expensive model to teach, ship the cheap one" is a pattern that reaches well beyond navigation, and this is a clean example of it for **real-time robotics**.
+
+<a class="nl-source" href="https://arxiv.org/abs/2611.07730" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+### Honourable Mention in Physical AI: RM-VLM
+
+**RM-VLM** (arXiv 2611.08308) introduces **vision-grounded reward machines** translated directly from natural-language task descriptions. Embodied RL agents get structured visual rewards, verified by a state machine, instead of brittle scalar scores from a vision-language model.
+
+<a class="nl-source" href="https://arxiv.org/abs/2611.08308" target="_blank" rel="noopener">Read the paper on arXiv &rarr;</a>
+
+### Where These Papers Meet
+
+Read together, three of this week's papers make the same point from different angles: **the hand-offs between components are where systems break or slow down**.
+
+- **FastAFD:** the boundary between attention and FFN layers is a communication cost you have to engineer away.
+- **ARCBench and The Memory Trap:** the boundary between full context and compacted memory is where an agent's rules leak.
+- **SwarmEvolve:** the boundary between agents, when it's forced through text, is the real bottleneck.
+
+The other two show the same idea from the training side: **AttnSR** and the **navigation paper** both pull a cheaper signal out of something you already have, whether that's the policy's own attention or a world model you throw away after training.
+
+I'd start with **ARCBench** if you ship agents, and **FastAFD** if you serve models.
+
 {% comment %}
-  Sections go below, in the usual order:
+  Section order for this issue:
   The World Brief / The Company Dossier / The Model Drop / Engineering at Scale /
-  Repo Radar / Beyond The Abstract / Tech Signals / Extra Time.
+  Battle of the Always-On Agents / Repo Radar / Tech Signals / Beyond The Abstract (last).
   Remove `wip: true` from the front matter once the issue is ready to send.
 {% endcomment %}
