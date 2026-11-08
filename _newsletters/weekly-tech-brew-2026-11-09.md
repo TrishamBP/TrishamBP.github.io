@@ -10,7 +10,7 @@ author: Trisham Patil
 email_subject: "The Weekly Tech Brew #5 Diwali Edition: US Midterms 2026, Democrats Take Congress & More"
 seo_title: "US Midterm Elections 2026 Results & What They Mean | The Weekly Tech Brew #5 Diwali Edition"
 description: "The Weekly Tech Brew Diwali Edition: US midterm elections 2026 results, Democrats take Congress, what it means for Trump and Iran, plus AI and tech news."
-keywords: "US midterm elections 2026, midterm election results, Democrats win Congress, Senate results 2026, House results 2026, War Powers Resolution, Santiago Peña impeachment, Ueno Bank collapse, Weekly Tech Brew Diwali Edition, AI newsletter"
+keywords: "US midterm elections 2026, midterm election results, Democrats win Congress, Senate results 2026, House results 2026, War Powers Resolution, Santiago Peña impeachment, Ueno Bank collapse, Thinking Machines Lab, GPT-6 Cyber, Genie 4, BMW AWS Graviton migration, Weekly Tech Brew Diwali Edition, AI newsletter"
 ---
 
 <div class="nl-diwali-greeting" markdown="1">
@@ -319,9 +319,118 @@ Tencent's newsroom and TechRepublic have more on its recursive self-improvement 
 
 <a class="nl-source" href="https://www.tencent.com/" target="_blank" rel="noopener">Read more on Tencent &rarr;</a>
 
+### 5. Genie 4 by Google DeepMind
+
+**Google DeepMind** has released **Genie 4**, its latest **interactive world model**. You can step into a generated scene and change it in real time, with physics that respond as you go and **audio generated natively** alongside the visuals.
+
+Access is starting as a **research preview** for trusted testers and selected partners, so most of us will be watching the demos for now rather than playing with it.
+
+## Engineering at Scale
+
+<p class="nl-section-kicker">Case Studies &middot; Platform Engineering &middot; Dev Tools &middot; Best Practices</p>
+
+How real engineering teams build, migrate and run software, plus the reads worth your coffee this week.
+
+### How BMW Migrated Its Platform for 24.5 Million Connected Cars to Arm
+
+**BMW Connected Company** runs the premium digital services behind more than **24.5 million vehicles** worldwide. In 2024 it started moving its **Orbit** platform from x86 to **Arm-based AWS Graviton** processors, as part of a wider modernisation push with both cost and environmental goals.
+
+The catch: its self-hosted GitHub Actions platform runs more than **130,000 builds and deployments every day**, and none of it could go down during the switch.
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+#### 1. The Problem
+
+Changing the processor architecture under a live connected-vehicle fleet means three things at once:
+
+- **No service disruption** for the cars and drivers depending on it.
+- **Both architectures supported** for as long as it takes.
+- **No forced cutover:** every application team moves when it is ready, not on a platform-wide deadline.
+
+#### 2. How BMW Did It
+
+- **Elastic capacity instead of fixed node groups.** BMW replaced its fixed EKS Managed Node Groups with **Karpenter**-managed, policy-driven node pools. That included dedicated Graviton capacity that workloads opt into, so nothing landed on Arm by accident.
+- **CI that builds for both worlds.** The self-hosted GitHub Actions runners were extended to build for **x86 and Arm**, and pipelines ran in parallel so each application could switch on its own schedule.
+- **A staged rollout across the platform.** Graviton support started in the CI runners and then moved into the central container platform, giving teams a complete path from build to hosting on Arm.
+
+#### 3. What It Got Out of It
+
+- **Cheaper, faster builds.** BMW reports a lower cost per build minute and faster build times in the first Graviton runner phase. It has not published a percentage saving.
+- **Parallel beats big-bang.** Running x86 and Arm side by side let teams validate the new architecture and move services in stages without interrupting the fleet.
+
+#### 4. The Takeaway
+
+The hard part of a processor migration is not the new hardware. It is making the new path **safe to try**. Once build, test and hosting all supported both architectures, adoption could grow team by team instead of asking every service to jump at once.
+
+</div>
+</details>
+
+### Reads Worth Your Coffee
+
+- **Inside DigitalOcean Simulations.** Instead of grading a single answer, DigitalOcean's Simulations tests a whole conversation: a simulated user reacts turn by turn, the agent runs with its real tools, and the full tool-call trajectory gets judged. The walkthrough compares a baseline against a fix, which is much closer to how agents fail in real work.
+- **Website migration costs are heading to zero.** Dries Buytaert predicts AI could push the technical cost of migrating a website close to zero within three years. If switching gets that easy, vendors will have to earn renewals through product value and services, and platforms that agents can trial and verify may win.
+- **Custom voices with Qwen3-TTS.** Armin Ronacher compares three ways to get a voice out of Qwen3-TTS: cloning a reference voice, using preset speakers, and designing a voice from a text description. The catch he found: the Base model can clone a voice but lacks the instruction controls, so your model choice limits how much you can direct the narrator.
+- **"We should be more ambitious with the software we build."** Dan Luu uses pgrust as his example: deep testing on the project has already turned up real Postgres bugs in indexing, JSONPath, cryptography and memory safety. Even if pgrust never takes off, that work leaves lasting improvements behind.
+- **Running local development services.** A lightweight NixOS VM lets your dev shell start databases, queues and other backing services from existing Nixpkgs modules managed by systemd. Teammates get the same reproducible stack with one command instead of installing everything by hand.
+- **Fix the gap, not just the bug.** When production breaks, patching the failing line is only step one. Benjamin Cane argues you should find the missing guardrail, observability or recovery path that let the bug through, and spread ownership through on-call practices instead of relying on one hero.
+
+**Also worth bookmarking:**
+
+- *Why don't more developers "use the platform"?*
+- *The Agent Said It Was Done. The Database Disagreed.*
+- *Anti-Patterns in Software Blogging*
+- *Ephemeral testing environments: sometimes you just need to kill your darlings*
+- *&lt;calc-input&gt;: a custom input element that accepts mathematical formulas*
+- *How Claude Code Works in Large Codebases: Best Practices and Where to Start*
+- *Self-Improving Software Is Inevitable*
+- *Cross-Request KV Cache Exposure in Workers AI*
+
+### Engineer's Tip of the Week: Trust the State, Not the Status Message
+
+**Assert the outcome, not the success message.** When an agent or async job says "done", check what actually got persisted against the postconditions you expected before you mark the task complete. Check every required status and every side effect.
+
+```python
+result = agent.run(task)                     # agent reports: "Order refunded ✅"
+
+order = db.orders.get(task.order_id)         # don't trust the message, read the state
+assert order.status == "refunded"
+assert order.refund_id is not None
+assert payments.get(order.refund_id).amount == order.total
+```
+
+**A related trap: boolean soup.** Reach for an explicit state type instead of a pile of flags when:
+
+- several booleans can combine into states that should never exist (`is_paid and is_cancelled and not is_refunded`);
+- business logic keeps re-checking the same combination of flags;
+- making invalid states impossible would simplify your branching and every future change.
+
+```python
+from enum import Enum
+
+class OrderState(Enum):
+    PENDING = "pending"
+    PAID = "paid"
+    CANCELLED = "cancelled"
+    REFUNDED = "refunded"
+```
+
+One field, four legal states, and no combination your code has to guess about.
+
+## Tech Signals
+
+<p class="nl-section-kicker">AI Industry &middot; Safety &middot; Developer Platforms &middot; Quick Hits</p>
+
+- **OpenAI paused frontier training after a model reached the internet through DNS.** A DNS resolver misconfiguration gave an internal model limited live-internet access during training. OpenAI says it contained the incident, paused training and evaluation, and used the pause to harden its monitoring and automatic run-stopping.
+- **Anthropic is testing Claude in drug discovery with six partners.** Anthropic is working with six organisations on drug-development research and has started discovery work of its own, covering everything from target selection through molecule design to clinical trials.
+- **GPT-6.1 Terra matches GPT-6 Astra at a tenth of the price.** A follow-up to last week's Model Drop: OpenAI says Terra performs on par with GPT-6 Astra on Agents' Last Exam at one-tenth the token price. Those comparisons are OpenAI's own, not independent benchmarks.
+- **October was the inflection point for vibe game development.** Simon Willison argues coding agents got good at building games last month, especially 3D modelling, music generation and game design, and his examples are playable projects, not just screenshots.
+- **Discourse is adding Markdown endpoints.** Agents and search systems will be able to read community posts as clean Markdown, without stripping HTML layout and scripts first.
+
 {% comment %}
   Sections go below, in the usual order:
-  The World Brief / The Company Dossier / The Model Drop / Repo Radar /
-  Beyond The Abstract / Tech Signals / Extra Time.
+  The World Brief / The Company Dossier / The Model Drop / Engineering at Scale /
+  Repo Radar / Beyond The Abstract / Tech Signals / Extra Time.
   Remove `wip: true` from the front matter once the issue is ready to send.
 {% endcomment %}
