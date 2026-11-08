@@ -190,6 +190,81 @@ Paraguay has been plunged into a major political and financial crisis after the 
 </div>
 </details>
 
+## The Company Dossier
+
+<p class="nl-section-kicker">Startups &middot; AI Labs &middot; Founders &middot; Business Models &middot; Innovation</p>
+
+Inside the companies building the technologies and businesses shaping tomorrow.
+
+### Thinking Machines Lab: Mira Murati's AI Lab for Customizable, Collaborative AI
+
+![Thinking Machines Lab logo: grey THINKING MACHINES wordmark on white, the AI research company founded by former OpenAI CTO Mira Murati](/assets/newsletter/weekly-tech-brew-2026-11-09/thinking-machines-lab-logo-mira-murati.png){: .nl-hero}
+
+In September 2024, **Mira Murati** announced she was stepping down as Chief Technology Officer of OpenAI to make "time and space" for her "own exploration". She left amid a wider wave of executive departures and structural changes at the company.
+
+After her exit she launched **<a href="https://thinkingmachines.ai/" target="_blank" rel="noopener">Thinking Machines Lab</a>** as a **public benefit corporation**. Its goal is to build next-generation AI that is more widely understood, more customizable and more generally capable.
+
+By building an independent lab outside the established frontier players, Murati set out to pursue focused research into **AI agents and customizable models**, such as the lab's tooling product **Tinker**, under a governance structure built around responsible, targeted frontier development.
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+#### 1. What Is Thinking Machines Lab?
+
+Thinking Machines Lab is an **AI research and product company**. Its pitch is simple: everyone should have the knowledge and the tools to make AI work for their own needs and goals, not just the handful of labs that train frontier models.
+
+#### 2. The Three Gaps It Wants to Close
+
+The lab argues that AI capabilities have raced ahead while three things have lagged behind:
+
+- **Understanding:** the scientific community's grasp of how frontier systems actually work trails far behind what those systems can do.
+- **Access to know-how:** knowledge of how these models are trained sits inside a few top labs, which narrows both public debate about AI and people's ability to use it well.
+- **Customization:** for all their power, today's models are still hard to adapt to a specific person's needs and values.
+
+Its answer is to make AI systems **more widely understood, customizable and generally capable**.
+
+#### 3. Who Is Building It
+
+The team is made up of scientists and engineers behind some of the most widely used AI products and tools: **ChatGPT** and **Character.ai**, open-weight models like **Mistral**, and open-source projects such as **PyTorch**, **OpenAI Gym**, **Fairseq** and **Segment Anything**.
+
+That mix matters: it is a team that has shipped consumer products, open models and the infrastructure the rest of the field builds on.
+
+#### 4. How the Lab Says It Will Work
+
+**Open science by default.** Thinking Machines plans to publish technical blog posts, papers and code regularly. Its view is that sharing work both benefits the public and keeps its own research culture sharp. Its research blog is called **Connectionism**.
+
+**AI that works with people, not instead of them.** Rather than chasing fully autonomous systems, the lab wants to build **multimodal systems that collaborate with people**. It also wants AI that adapts to the full range of human expertise, not just the fields current models are best at, like programming and maths.
+
+**Strong foundations:**
+
+- **Model intelligence comes first.** Collaboration and customization only matter if the underlying model is strong, so the lab is building frontier-level models for domains like science and programming.
+- **Infrastructure quality is a priority.** Research speed depends on reliable, efficient, easy-to-use infrastructure, and the lab says it would rather build things properly for the long run than take shortcuts.
+- **Multimodality is core.** Working across text, images and other inputs makes communication more natural, keeps more information and captures intent better.
+
+**Learning by doing:**
+
+- **Research and product are designed together.** Shipping products keeps the research grounded in real problems, and good research makes better products.
+- **Safety is empirical and iterative.** The lab plans to keep a high bar against misuse while maximising user freedom, share safe-building recipes with the industry, and speed up outside alignment research by releasing code, datasets and model specs. It sees today's methods, such as red-teaming and post-deployment monitoring, as lessons that carry over to more capable future systems.
+- **Measure what matters.** The focus is on whether systems create real value in the world. The lab's view is that big breakthroughs often come from rethinking the objective, not just pushing an existing benchmark higher.
+
+#### 5. What It Has Shipped
+
+- **Tinker:** the lab's tooling product for customizing models, with its own docs for developers.
+- **Inkling:** the lab's own model line. The newest release, flagged as new on its homepage, is **Inkling 2 Small**.
+
+#### 6. Why It Matters
+
+Most frontier labs compete on one axis: a bigger, smarter general model. Thinking Machines is betting on a second axis: **who gets to shape the model**. If customization and open research become the differentiator, the lab is positioned less as another chatbot company and more as the toolmaker for everyone who wants AI built around their own work.
+
+#### 7. Where to Explore
+
+- <a href="https://thinkingmachines.ai/" target="_blank" rel="noopener">Thinking Machines Lab: official website (Inkling, Tinker, Connectionism and open roles)</a>
+- <a href="https://x.com/thinkymachines" target="_blank" rel="noopener">Thinking Machines on X: @thinkymachines</a>
+
+</div>
+</details>
+
 {% comment %}
   Sections go below, in the usual order:
   The World Brief / The Company Dossier / The Model Drop / Repo Radar /
