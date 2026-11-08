@@ -10,7 +10,7 @@ author: Trisham Patil
 email_subject: "The Weekly Tech Brew #5 Diwali Edition: US Midterms 2026, Democrats Take Congress & More"
 seo_title: "US Midterm Elections 2026 Results & What They Mean | The Weekly Tech Brew #5 Diwali Edition"
 description: "The Weekly Tech Brew Diwali Edition: US midterm elections 2026 results, Democrats take Congress, what it means for Trump and Iran, plus AI and tech news."
-keywords: "US midterm elections 2026, midterm election results, Democrats win Congress, Senate results 2026, House results 2026, War Powers Resolution, Weekly Tech Brew Diwali Edition, AI newsletter"
+keywords: "US midterm elections 2026, midterm election results, Democrats win Congress, Senate results 2026, House results 2026, War Powers Resolution, Santiago Peña impeachment, Ueno Bank collapse, Weekly Tech Brew Diwali Edition, AI newsletter"
 ---
 
 <div class="nl-diwali-greeting" markdown="1">
@@ -154,6 +154,38 @@ Ashley Hinson met the same fate in **Iowa**, losing a close Senate race to Josh 
 #### Further Reading
 
 - <a href="https://www.bbc.com/news/us-canada" target="_blank" rel="noopener">BBC News: US midterm elections 2026, the big wins and historic firsts &rarr;</a>
+
+</div>
+</details>
+
+### 2. From Bank Run to Impeachment: The Sudden Fall of Paraguay's Santiago Peña
+
+![Paraguay presidential sash worn at a swearing-in ceremony in Congress, as the Ueno Bank collapse leads to the impeachment of President Santiago Peña](/assets/newsletter/weekly-tech-brew-2026-11-09/paraguay-presidential-sash-congress-swearing-in.png){: .nl-hero}
+
+*Paraguay's red, white and blue presidential sash at a swearing-in in Congress. (Representative image)*
+
+Paraguay has been plunged into a major political and financial crisis after the collapse of **Ueno Bank**, which set off massive street protests and led to the impeachment and arrest of President **Santiago Peña**.
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+#### The Ueno Bank Collapse
+
+- **Mass account freezes:** in early November 2026, regulators seized Ueno Bank, a prominent digital lender with a huge retail customer base, over severe insolvency, risky insider lending and illicit related-party transfers. The seizure locked roughly **3 million retail accounts** and put more than **$800 million** in public funds and pensions at risk.
+- **Economic shockwaves:** Ueno had grown into one of the country's main financial platforms, so everyday transactions froze nationwide. Public transport, delivery networks and pension payouts were disrupted immediately.
+
+#### The Impeachment and Arrest of Santiago Peña
+
+- **Political fallout:** Peña, who had close ties to Ueno's leadership, first offered his resignation. The Chamber of Deputies rejected it and opened formal impeachment proceedings instead.
+- **Senate removal:** on **6 November 2026**, the Senate voted unanimously to impeach and remove Peña from office, stripping him of presidential immunity at the same time.
+- **Detention:** prosecutors indicted Peña on charges including breach of trust, influence peddling and illicit enrichment. He was arrested and moved to a military facility for his own protection amid intense public unrest. **Carlos Carvallo**, head of the Central Bank, was also indicted and arrested.
+
+#### Where Paraguay Stands Now
+
+- **New administration:** Vice President **Pedro Alliana** was sworn in as President on 6 November and will serve out the remaining term through August 2028.
+- **Depositor relief:** central bank authorities have activated the Deposit Guarantee Fund, starting phased payouts and moving account balances to stable partner banks.
+- **Public outcry:** protests continue across Asunción, outside government buildings and Ueno's headquarters, demanding accountability and the full recovery of people's savings.
 
 </div>
 </details>
