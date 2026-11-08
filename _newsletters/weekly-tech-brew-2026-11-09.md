@@ -10,7 +10,7 @@ author: Trisham Patil
 email_subject: "The Weekly Tech Brew #5 Diwali Edition: US Midterms 2026, Democrats Take Congress & More"
 seo_title: "US Midterm Elections 2026 Results & What They Mean | The Weekly Tech Brew #5 Diwali Edition"
 description: "The Weekly Tech Brew Diwali Edition: US midterm elections 2026 results, Democrats take Congress, what it means for Trump and Iran, plus AI and tech news."
-keywords: "US midterm elections 2026, midterm election results, Democrats win Congress, Senate results 2026, House results 2026, War Powers Resolution, Santiago Peña impeachment, Ueno Bank collapse, Thinking Machines Lab, GPT-6 Cyber, Genie 4, BMW AWS Graviton migration, always-on AI agents, OpenAI Dots vs Claude Duet, kotaemon RAG UI, Floci local AWS emulator, Weekly Tech Brew Diwali Edition, AI newsletter"
+keywords: "US midterm elections 2026, midterm election results, Democrats win Congress, Senate results 2026, House results 2026, War Powers Resolution, Santiago Peña impeachment, Ueno Bank collapse, Thinking Machines Lab, GPT-6 Cyber, Genie 4, BMW AWS Graviton migration, always-on AI agents, OpenAI Dots vs Claude Duet, kotaemon RAG UI, Floci local AWS emulator, Understand Anything codebase onboarding, Weekly Tech Brew Diwali Edition, AI newsletter"
 ---
 
 <div class="nl-diwali-greeting" markdown="1">
@@ -629,6 +629,56 @@ Floci supports local emulation for application services, data services, eventing
 The code is **MIT-licensed**.
 
 <a class="nl-source" href="https://github.com/floci-io/floci" target="_blank" rel="noopener">View floci-io/floci on GitHub &rarr;</a> &middot; <a class="nl-source" href="https://floci.io/floci/" target="_blank" rel="noopener">Read the docs &rarr;</a>
+
+</div>
+</details>
+
+### 3. Understand Anything (Egonex-AI/Understand-Anything): Knowledge Transfer and Onboarding Docs for Any Codebase
+
+You just joined a new team and the codebase is 200,000 lines. Where do you even start? Usually with a week of **KT sessions** and a wiki that went stale two reorgs ago.
+
+**Understand Anything** turns any codebase, knowledge base or set of docs into an **interactive knowledge graph** you can explore, search and ask questions about. It's a plugin for **Claude Code** that also works with Codex, Cursor, Copilot, Gemini CLI, Devin and more, which makes it a strong fit for **knowledge transfer, onboarding new engineers and generating documentation**.
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+#### How It Works
+
+A **multi-agent pipeline** scans your project and extracts every file, function, class and dependency into a knowledge graph saved at `.ua/knowledge-graph.json`. An interactive dashboard then lets you explore that graph visually. As the project puts it, the goal is not a graph that shows off how complex your code is, but one that **quietly teaches you how the pieces fit together**.
+
+#### Why It Works for KT and Onboarding
+
+- **Auto-written onboarding guide:** `/understand-onboard` generates an onboarding guide for new team members straight from the code.
+- **Guided tours:** auto-generated walkthroughs of the architecture, **ordered by dependency**, so a newcomer learns the system in the right order instead of jumping in at random.
+- **Plain-English explanations:** click any file, function or class to see a summary, its relationships and its code.
+- **Business logic, not just code:** the domain view maps code onto real business processes (domains, flows and steps), which is the part KT sessions usually spend the most time on.
+- **Ask it anything:** `/understand-chat How does the payment flow work?` answers from the graph, and fuzzy plus semantic search finds things by meaning, e.g. "which parts handle auth?".
+- **Persona-adaptive dashboard:** adjusts the level of detail for a junior dev, a PM or a power user.
+- **Architecture at a glance:** automatic grouping by layer (API, Service, Data, UI, Utility), plus 12 programming patterns like generics, closures and decorators explained wherever they appear.
+
+#### Docs That Don't Go Stale
+
+- **Incremental by default:** re-running `/understand` only re-analyzes changed files.
+- **Auto-update on every commit:** `/understand --auto-update` adds a post-commit hook, so the graph and its documentation keep up with the code.
+- **Diff impact analysis:** `/understand-diff` shows which parts of the system your change affects before you commit.
+- **Knowledge bases too:** `/understand-knowledge` turns a Karpathy-style LLM wiki into a clustered graph of connected ideas.
+- **Multilingual:** `--language` generates summaries, tours and the dashboard UI in Chinese, Japanese, Korean, Russian, Vietnamese and more.
+
+#### Try It
+
+```bash
+/plugin marketplace add Egonex-AI/Understand-Anything
+/plugin install understand-anything
+
+/understand              # build the knowledge graph
+/understand-dashboard    # open the interactive dashboard
+/understand-onboard      # generate an onboarding guide
+```
+
+**Heads-up on cost:** the first `/understand` run analyzes the whole codebase and can use a lot of tokens on large projects. The project recommends running it on a subscription plan or a local model (for example via Ollama); later runs are incremental and much cheaper. For huge monorepos you can scope it to one folder, like `/understand src/frontend`. The code is **MIT-licensed**.
+
+<a class="nl-source" href="https://github.com/Egonex-AI/Understand-Anything" target="_blank" rel="noopener">View Egonex-AI/Understand-Anything on GitHub &rarr;</a> &middot; <a class="nl-source" href="https://understand-anything.com/demo/" target="_blank" rel="noopener">Try the live demo &rarr;</a>
 
 </div>
 </details>
