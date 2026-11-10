@@ -1017,3 +1017,42 @@ body.theme-typesafe.fn-notes .post-content .fn-card h4.fn-card-title {
   font-size: 1.17rem;
   margin: 0 0 0.6rem;
 }
+
+/* Tech-stack logo grid (ReAct planner post). White chips keep dark-ink
+   logos legible in dark mode. */
+body.theme-typesafe.fn-notes .fn-stack {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.75rem;
+  margin: 1.2rem 0 1.6rem;
+}
+
+body.theme-typesafe.fn-notes .fn-stack-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 0.6rem;
+  background: #ffffff;
+  border: 1px solid var(--fn-hair);
+  text-align: center;
+}
+
+body.theme-typesafe.fn-notes .post-content .fn-stack-item img {
+  width: auto;
+  height: 40px;
+  max-width: 120px;
+  margin: 0;
+  border: 0;
+  object-fit: contain;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+body.theme-typesafe.fn-notes .fn-stack-item span {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--fn-ink);
+}
