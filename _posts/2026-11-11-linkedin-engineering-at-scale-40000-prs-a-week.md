@@ -20,7 +20,7 @@ tags:
 og_type: article
 robots: "index, follow"
 structured_data: BlogPosting
-# image: /assets/blogs/linkedin-engineering-at-scale/hero.png  # add when the hero exists
+image: /assets/blogs/linkedin-engineering-at-scale/hero.png
 published: true
 ---
 
@@ -36,4 +36,17 @@ published: true
 
   CONTENT
     Body is author-supplied text only; add sections only when the author supplies them.
+    Hero: author-supplied high-level technical diagram (HLTD) of the LinkedIn
+    AI code review pipeline (assets/blogs/linkedin-engineering-at-scale/hero.png).
 -->
+
+![LinkedIn engineering at scale: high-level technical diagram of LinkedIn's multi-agent AI code review pipeline for 40,000 pull requests a week, with an orchestrator, code quality, security and rules subagents, three tiers of rules, merge and verify steps, and evaluation and release gating](/assets/blogs/linkedin-engineering-at-scale/hero.png)
+_High Level Technical Diagram (HLTD) for LinkedIn_
+
+In this article, you'll learn:
+
+- What an AI code reviewer is, and why review is the bottleneck these days
+- Three main directions for teams and companies to handle the code review bottleneck
+- How to build a multi-agent AI reviewing system that works in production
+- What evaluation looks like for AI reviewers
+- What's ahead and where the new bottlenecks move
