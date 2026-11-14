@@ -14,6 +14,17 @@
 #   tags        — optional list of topic tags
 # ─────────────────────────────────────────────────────────────
 
+- title: "AI Swarms Solve Math Without Words: SwarmEvolve and Latent Agent Swarms"
+  youtube_id: "awACg_MTKmU"
+  description: >
+    A podcast on SwarmEvolve: how hundreds of low-cost LLM agents reason in
+    latent space instead of text, share ideas by passing KV caches, and keep the
+    most distinct thoughts with a hidden-state novelty filter. Covers LLM-guided
+    evolutionary search, crossover in latent space, and how a Qwen3 8B swarm on
+    one GPU beats text-based frameworks and some AlphaEvolve results.
+  date: "Nov 2026"
+  tags: ["SwarmEvolve", "Latent Agent Swarms", "Multi-Agent Systems", "Latent Reasoning", "KV Cache", "Evolutionary Search", "AlphaEvolve", "AI for Math"]
+
 - title: "LLM Inference & Serving Deep Dive: vLLM, SGLang, TensorRT-LLM & KV Cache Optimization"
   youtube_id: "Vfg0x0f_1kk"
   description: >
