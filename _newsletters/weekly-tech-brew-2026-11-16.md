@@ -139,3 +139,77 @@ Enterprises standardise almost entirely on a single cloud ecosystem for email, c
 
 </div>
 </details>
+
+### 3. America Grounded: How a Network Upgrade Disrupted 14,000 Flights
+
+![FAA nationwide ground stop: a passenger watches a departure board at New York LaGuardia airport full of delayed and canceled flights](/assets/newsletter/weekly-tech-brew-2026-11-16/faa-ground-stop-flight-cancellations-departure-board-laguardia.jpg){: .nl-hero}
+
+According to **Transportation Secretary Sean Duffy**, a contractor, **L3Harris**, was doing routine maintenance to replace outdated **copper telecommunications wiring** with **fibre-optic** infrastructure.
+
+During the upgrade:
+
+- New equipment and a router were introduced.
+- The system began generating excessive connection attempts.
+- The traffic overloaded other routers in the legacy network.
+- Radar and communications data became inconsistent across air traffic control facilities.
+
+This affected **all 22 en-route air traffic control centres**. The exact underlying fault, including whether it was equipment failure or contractor error, remains under investigation.
+
+<details class="nl-expand nl-expand--release">
+<summary><span class="nl-expand-more">Expand</span><span class="nl-expand-less" hidden>Collapse</span></summary>
+<div class="nl-expand-body" markdown="1">
+
+![FAA air traffic control radar console: a controller works at legacy radar and communications equipment in an en-route air traffic control center](/assets/newsletter/weekly-tech-brew-2026-11-16/faa-air-traffic-control-radar-console-legacy-equipment.jpg){: .nl-hero}
+
+*Much of the US air traffic control network still runs on decades-old telecom hardware. (Representative image)*
+
+On **Friday, November 13, 2026**, the US **Federal Aviation Administration (FAA)** issued a rare **nationwide ground stop**. It halted all flight departures across the United States for **4 hours and 21 minutes** (3:54 PM to 8:15 PM EST).
+
+The cause was a major telecommunications failure that disrupted radar and radio communications across all **22 regional Air Route Traffic Control Centers**.
+
+It was only the **third nationwide ground stop in US history**, after the September 11, 2001 attacks and the January 2023 NOTAM computer outage.
+
+#### What Caused the FAA Outage?
+
+According to briefings from Transportation Secretary Sean Duffy, Homeland Security Secretary Markwayne Mullin and preliminary FAA findings, the failure was a **hardware and packet-flooding cascade during infrastructure upgrades**, not a cyberattack.
+
+**1. Routine copper-to-fibre migration**
+
+A contractor was moving FAA telecommunications lines from legacy **1980s-era copper wiring** to modern fibre-optic lines.
+
+**2. Router flooding**
+
+A newly installed router began flooding the private air traffic control network with roughly **1,000 connection attempts every 4 to 5 seconds**.
+
+**3. Legacy hardware collapse**
+
+That surge overwhelmed ageing switches and legacy **Cisco 600-series routers** (manufactured between 2001 and 2006).
+
+The overloaded routers started injecting out-of-sync data packets into the network. That caused static on pilot-controller radio frequencies and made radar screens flash or go blank.
+
+**4. Safety shutdown**
+
+More than **3,500 aircraft** were already airborne when radar and radio instability began at **3:36 PM EST**. The FAA froze all new departures nationwide so controllers would not lose visibility over busy airspace.
+
+Officials explicitly ruled out both a **cyberattack** and the FAA's newly deployed **"SMART" AI traffic-management tool** as causes.
+
+#### Scale of the Disruption
+
+| Metric / Impact Area | Details |
+|---|---|
+| **Ground Stop Window** | 3:54 PM – 8:15 PM EST on Nov 13 (4 hours, 21 minutes) |
+| **Flight Cancellations** | Over 12,000 flights canceled on Friday, plus up to 5,000 more on Saturday as airlines scrambled to reposition aircraft and crews |
+| **Delays & Diversions** | More than 10,500 flights delayed and at least 827 diverted; airborne planes were safely guided to land |
+| **International Ripple Effect** | At the FAA's request, Eurocontrol temporarily suspended flights departing Europe for the US across 42 member states |
+| **Recovery Timeline** | Full US airline schedules were projected to return to normal by the end of Sunday, November 15 |
+
+#### Why This Happened Again: The Structural Issue
+
+Much like single-point-of-failure outages in cloud infrastructure, the incident exposed how fragile the **US National Airspace System's telecom backbone** remains.
+
+Modern IP switches stayed online during Friday's incident. But they are still bridged into **decades-old analog copper circuits** and **20-year-old routers**, so a single misconfigured node during a routine upgrade can cascade across all 22 en-route centres at once.
+
+For more on how airports and airlines handled the aftermath, watch *Airports warn more delays expected after FAA lifts ground stop*, which covers the flight cancellations and recovery timeline after the ground stop.
+
+</div>
+</details>
